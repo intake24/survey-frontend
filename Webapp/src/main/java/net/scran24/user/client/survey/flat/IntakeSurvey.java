@@ -41,7 +41,7 @@ import net.scran24.user.client.survey.prompts.EditMealPrompt;
 import net.scran24.user.client.survey.prompts.EditTimePrompt;
 import net.scran24.user.shared.FoodEntry;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Callback2;

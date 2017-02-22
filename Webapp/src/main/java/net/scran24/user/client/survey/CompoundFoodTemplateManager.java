@@ -12,7 +12,7 @@ package net.scran24.user.client.survey;
 
 import net.scran24.user.shared.TemplateFoodData;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 
 public class CompoundFoodTemplateManager {
 	private final PMap<String, TemplateFoodData> templates;

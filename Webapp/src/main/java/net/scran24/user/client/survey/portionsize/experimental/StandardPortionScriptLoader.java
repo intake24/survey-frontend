@@ -13,7 +13,7 @@ package net.scran24.user.client.survey.portionsize.experimental;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

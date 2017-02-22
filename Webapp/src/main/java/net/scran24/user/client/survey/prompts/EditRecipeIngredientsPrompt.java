@@ -30,8 +30,8 @@ import net.scran24.user.shared.RawFood;
 import net.scran24.user.shared.SpecialData;
 import net.scran24.user.shared.UUID;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;

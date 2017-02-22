@@ -44,12 +44,12 @@ import net.scran24.user.client.survey.flat.Survey;
 import net.scran24.user.client.survey.portionsize.experimental.PortionSizeScriptManager;
 import net.scran24.user.shared.Meal;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 
 import com.fasterxml.jackson.annotation.JsonCreator;

@@ -10,7 +10,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.client.survey.portionsize.experimental;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

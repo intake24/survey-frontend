@@ -16,8 +16,8 @@ import java.util.Set;
 import net.scran24.user.shared.MissingFood;
 import net.scran24.user.shared.MissingFoodDescription;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 

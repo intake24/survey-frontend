@@ -26,7 +26,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.shared;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Function0;
 import org.workcraft.gwt.shared.client.Option;
 

@@ -12,7 +12,7 @@ package net.scran24.user.client.survey.portionsize.experimental;
 
 import java.util.Arrays;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Function1;
 
 public class UpdateFunc implements Function1<PMap<String, String>, PMap<String, String>> {

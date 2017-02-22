@@ -16,7 +16,7 @@ import net.scran24.user.client.survey.SurveyStage;
 import net.scran24.user.client.survey.flat.Survey;
 import net.scran24.user.client.survey.prompts.RadioButtonQuestion;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Callback2;
 import org.workcraft.gwt.shared.client.Option;

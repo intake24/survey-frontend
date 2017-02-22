@@ -30,10 +30,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Callback2;

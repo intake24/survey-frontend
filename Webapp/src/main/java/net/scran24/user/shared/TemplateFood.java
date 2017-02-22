@@ -22,11 +22,11 @@ import net.scran24.user.shared.TemplateFoodData.ComponentDef;
 import net.scran24.user.shared.TemplateFoodData.ComponentOccurence;
 import net.scran24.user.shared.TemplateFoodData.ComponentType;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
-import org.pcollections.client.PVector;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;

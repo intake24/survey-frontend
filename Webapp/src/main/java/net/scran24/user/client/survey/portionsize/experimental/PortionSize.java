@@ -12,7 +12,7 @@ package net.scran24.user.client.survey.portionsize.experimental;
 
 import net.scran24.datastore.shared.CompletedPortionSize;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Either;
 import org.workcraft.gwt.shared.client.Option;
 

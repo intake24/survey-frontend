@@ -13,7 +13,7 @@ package net.scran24.user.client.survey.portionsize.experimental;
 import net.scran24.user.client.survey.flat.SimplePrompt;
 import net.scran24.user.shared.FoodData;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
 
 /**

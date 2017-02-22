@@ -35,9 +35,9 @@ import net.scran24.user.shared.RawFood;
 import net.scran24.user.shared.WithPriority;
 import net.scran24.user.shared.lookup.PortionSizeMethod;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
+import org.pcollections.HashTreePMap;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Either;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;

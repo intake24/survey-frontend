@@ -31,8 +31,8 @@ import java.util.Map;
 
 import net.scran24.datastore.shared.CompletedPortionSize;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.PMap;
+import org.pcollections.HashTreePMap;
+import org.pcollections.PMap;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -10,8 +10,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.shared;
 
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
 
 public class RawFood extends FoodEntry {
 	public static final String FLAG_DRINK = "drink";

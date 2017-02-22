@@ -39,7 +39,7 @@ import net.scran24.user.shared.FoodData;
 import net.scran24.user.shared.lookup.DrinkScaleDef;
 import net.scran24.user.shared.lookup.DrinkwareDef;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;

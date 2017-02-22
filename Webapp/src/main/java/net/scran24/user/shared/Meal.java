@@ -34,15 +34,15 @@ import static org.workcraft.gwt.shared.client.CollectionUtils.lastIndexOf;
 import java.util.Collection;
 
 import net.scran24.common.client.LocaleUtil;
-import net.scran24.datastore.shared.Time;
+
 import net.scran24.user.client.survey.prompts.messages.PromptMessages;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.CollectionUtils;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
@@ -61,7 +61,7 @@ public class Meal {
 	
 	public final String name;
 	public final PVector<FoodEntry> foods;
-	public final Option<Time> time;
+	public final Option<MealTime> time;
 	public final PSet<String> flags;
 	public final PMap<String, String> customData;
 	
@@ -141,22 +141,22 @@ public class Meal {
 		});
 	}
 
-	public Time guessTime() {
+	public MealTime guessTime() {
 		String lcn = name.toLowerCase();
 		if (lcn.contains(messages.predefMeal_Breakfast().toLowerCase()))
-			return new Time(8, 0);
+			return new MealTime(8, 0);
 		else if (lcn.contains(messages.predefMeal_EarlySnack().toLowerCase()))
-			return new Time(10, 30);
+			return new MealTime(10, 30);
 		else if (lcn.contains(messages.predefMeal_Lunch().toLowerCase()))
-			return new Time(13, 0);
+			return new MealTime(13, 0);
 		else if (lcn.contains(messages.predefMeal_MidDaySnack().toLowerCase()))
-			return new Time(16, 0);
+			return new MealTime(16, 0);
 		else if (lcn.contains(messages.predefMeal_Dinner().toLowerCase()) || lcn.contains(messages.predefMeal_EveningMeal().toLowerCase()))
-			return new Time(19, 0);
+			return new MealTime(19, 0);
 		else if (lcn.contains(messages.predefMeal_LateSnack()))
-			return new Time(22, 0);
+			return new MealTime(22, 0);
 
-		return new Time(12, 0);
+		return new MealTime(12, 0);
 	}
 
 	public static PVector<FoodEntry> linkedFoods(final PVector<FoodEntry> foods, final FoodEntry mainFood) {
@@ -178,7 +178,7 @@ public class Meal {
 		});
 	}
 	
-	public Meal(String name, PVector<FoodEntry> foods, Option<Time> time, PSet<String> flags, PMap<String, String> customData) {
+	public Meal(String name, PVector<FoodEntry> foods, Option<MealTime> time, PSet<String> flags, PMap<String, String> customData) {
 		this.name = name;
 		this.foods = foods;
 		this.time = time;
@@ -203,11 +203,11 @@ public class Meal {
 	}
 
 	public static Meal empty(String name) {
-		return new Meal(name, TreePVector.<FoodEntry> empty(), Option.<Time> none(), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
+		return new Meal(name, TreePVector.<FoodEntry> empty(), Option.<MealTime> none(), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
 	}
 
-	public Meal withTime(Time time) {
-		return new Meal(this.name, this.foods, Option.<Time> some(time), this.flags, this.customData);
+	public Meal withTime(MealTime time) {
+		return new Meal(this.name, this.foods, Option.<MealTime> some(time), this.flags, this.customData);
 	}
 
 	public Meal withFoods(PVector<FoodEntry> foods) {
@@ -278,9 +278,9 @@ public class Meal {
 	}
 	
 	public String safeNameWithTime() {
-		return safeName() + " (" + time.map(new Function1<Time, String>(){
+		return safeName() + " (" + time.map(new Function1<MealTime, String>(){
 			@Override
-			public String apply(Time argument) {
+			public String apply(MealTime argument) {
 				return argument.toString();
 			}
 		}).getOrElse("Time unknown") + ")";
@@ -318,7 +318,7 @@ public class Meal {
 		}		
 	}
 	
-	public static Function1<Meal, Meal> updateTimeFunc(final Time time) {
+	public static Function1<Meal, Meal> updateTimeFunc(final MealTime time) {
 		return new Function1<Meal, Meal>() {
 
 			@Override

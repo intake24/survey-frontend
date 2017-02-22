@@ -30,7 +30,7 @@ import net.scran24.common.client.GoogleAnalytics;
 import net.scran24.common.client.WidgetFactory;
 import net.scran24.user.client.survey.SurveyMessages;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;

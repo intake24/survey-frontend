@@ -19,8 +19,8 @@ import net.scran24.user.client.survey.prompts.messages.HelpMessages;
 import net.scran24.user.client.survey.prompts.messages.PromptMessages;
 import net.scran24.user.shared.Recipe;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
 
 import com.google.gwt.dom.client.Style.Display;

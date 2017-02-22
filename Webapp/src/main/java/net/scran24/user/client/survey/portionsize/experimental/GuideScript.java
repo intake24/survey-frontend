@@ -31,7 +31,7 @@ import static net.scran24.user.client.survey.portionsize.experimental.PortionSiz
 import static net.scran24.user.client.survey.portionsize.experimental.PortionSizeScriptUtil.guidePrompt;
 import static net.scran24.user.client.survey.portionsize.experimental.PortionSizeScriptUtil.quantityPrompt;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 

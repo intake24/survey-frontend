@@ -18,8 +18,8 @@ import net.scran24.user.client.survey.flat.SimplePrompt;
 import net.scran24.user.client.survey.prompts.messages.PromptMessages;
 import net.scran24.user.shared.FoodData;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.PMap;
+import org.pcollections.HashTreePMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;

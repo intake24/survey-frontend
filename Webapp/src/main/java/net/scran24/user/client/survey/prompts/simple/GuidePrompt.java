@@ -15,8 +15,8 @@ import net.scran24.user.client.ShepherdTour;
 import net.scran24.user.client.survey.flat.SimplePrompt;
 import net.scran24.user.client.survey.prompts.messages.HelpMessages;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.imagemap.client.ImageMap;
 import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
 import org.workcraft.gwt.shared.client.Callback1;

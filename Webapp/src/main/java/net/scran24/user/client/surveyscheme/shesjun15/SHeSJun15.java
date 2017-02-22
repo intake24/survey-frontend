@@ -38,8 +38,8 @@ import net.scran24.user.client.surveyscheme.BasicScheme;
 import net.scran24.user.client.surveyscheme.MultipleChoiceCheckboxQuestion;
 import net.scran24.user.client.surveyscheme.MultipleChoiceRadioButtonQuestion;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;

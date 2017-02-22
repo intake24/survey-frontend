@@ -10,10 +10,10 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.shared;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
 
 public class CompoundFood extends FoodEntry {
 	public static final String FLAG_INGREDIENTS_COMPLETE = "ingredients-complete";

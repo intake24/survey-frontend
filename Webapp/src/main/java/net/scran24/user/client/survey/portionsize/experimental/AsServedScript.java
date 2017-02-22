@@ -38,7 +38,7 @@ import net.scran24.user.client.survey.prompts.messages.PromptMessages;
 import net.scran24.user.shared.FoodData;
 import net.scran24.user.shared.lookup.AsServedDef;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.core.shared.GWT;

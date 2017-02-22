@@ -18,7 +18,7 @@ import net.scran24.user.client.survey.prompts.MealOperation;
 import net.scran24.user.shared.Meal;
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PSet;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Option;
 
 public class AskForMealTime implements PromptRule<Meal, MealOperation> {

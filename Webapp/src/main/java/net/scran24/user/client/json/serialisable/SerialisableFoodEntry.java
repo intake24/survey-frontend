@@ -36,9 +36,9 @@ import net.scran24.user.shared.MissingFood;
 import net.scran24.user.shared.RawFood;
 import net.scran24.user.shared.TemplateFood;
 
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
-import org.pcollections.client.PVector;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Function1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

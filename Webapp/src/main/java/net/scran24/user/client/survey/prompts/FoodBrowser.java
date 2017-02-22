@@ -46,10 +46,10 @@ import net.scran24.user.shared.FoodHeader;
 import net.scran24.user.shared.SpecialData;
 import net.scran24.user.shared.lookup.LookupResult;
 
-import org.pcollections.client.ConsPStack;
-import org.pcollections.client.PStack;
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.ConsPStack;
+import org.pcollections.PStack;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Option;

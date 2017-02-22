@@ -10,6 +10,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.shared.client;
 
-public interface Callback1 <T> {
-	void call (T arg1); 
+public interface Callback1<T> {
+  void call(T arg1);
 }

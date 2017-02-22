@@ -11,5 +11,5 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package org.workcraft.gwt.shared.client;
 
 public interface Function2<A1, A2, R> {
-	public R apply (A1 arg1, A2 arg2);
+  public R apply(A1 arg1, A2 arg2);
 }

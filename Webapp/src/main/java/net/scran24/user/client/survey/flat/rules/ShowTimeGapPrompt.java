@@ -20,8 +20,8 @@ import net.scran24.user.client.survey.prompts.ConfirmTimeGapPrompt;
 import net.scran24.user.shared.Meal;
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PSet;
-import org.pcollections.client.PVector;
+import org.pcollections.PSet;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.CollectionUtils.WithIndex;
 import org.workcraft.gwt.shared.client.Option;
 

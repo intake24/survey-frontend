@@ -8,8 +8,8 @@ import net.scran24.user.client.survey.CompoundFoodTemplateManager;
 import net.scran24.user.client.survey.portionsize.experimental.PortionSizeScriptManager;
 import net.scran24.user.shared.Recipe;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 
 import com.fasterxml.jackson.annotation.JsonCreator;

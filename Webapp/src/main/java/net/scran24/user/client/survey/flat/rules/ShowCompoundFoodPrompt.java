@@ -24,7 +24,7 @@ import net.scran24.user.shared.FoodEntry;
 import net.scran24.user.shared.Meal;
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PSet;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;

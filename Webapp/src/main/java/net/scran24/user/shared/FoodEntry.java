@@ -28,11 +28,10 @@ package net.scran24.user.shared;
 
 import java.util.HashMap;
 
-import net.scran24.datastore.shared.CompletedPortionSize;
 import net.scran24.user.client.survey.portionsize.experimental.PortionSize;
 
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Either;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;

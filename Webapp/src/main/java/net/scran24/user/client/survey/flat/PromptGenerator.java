@@ -12,7 +12,7 @@ package net.scran24.user.client.survey.flat;
 
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PSet;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Option;
 
 public interface PromptGenerator<T, Op> {

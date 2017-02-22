@@ -32,8 +32,8 @@ import java.util.List;
 import net.scran24.user.client.services.FoodLookupServiceAsync;
 import net.scran24.user.shared.lookup.AsServedDef;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.PMap;
+import org.pcollections.HashTreePMap;
+import org.pcollections.PMap;
 
 import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
 

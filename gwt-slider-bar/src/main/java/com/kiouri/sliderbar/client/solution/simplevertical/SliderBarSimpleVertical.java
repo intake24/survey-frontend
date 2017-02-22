@@ -39,7 +39,7 @@ public class SliderBarSimpleVertical extends SliderBarVertical {
 		DataResource scalev();				
 	}
 
-	@Override
+
 	public int getStep() {
 		return 1;
 	}

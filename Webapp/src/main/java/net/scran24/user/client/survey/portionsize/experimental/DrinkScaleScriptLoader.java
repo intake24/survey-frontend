@@ -26,7 +26,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.client.survey.portionsize.experimental;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;

@@ -14,8 +14,8 @@ import net.scran24.common.client.BrowserConsole;
 import net.scran24.user.client.survey.prompts.messages.PromptMessages;
 import net.scran24.user.shared.Meal;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;

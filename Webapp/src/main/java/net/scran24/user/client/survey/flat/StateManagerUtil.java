@@ -24,7 +24,7 @@ import net.scran24.user.shared.EncodedFood;
 import net.scran24.user.shared.FoodEntry;
 import net.scran24.user.shared.Meal;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.core.client.GWT;

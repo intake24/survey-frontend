@@ -17,7 +17,7 @@ import net.scran24.user.shared.FoodEntry;
 import net.scran24.user.shared.MissingFood;
 import net.scran24.user.shared.RawFood;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Function1;
 
 public abstract class FoodOperation {

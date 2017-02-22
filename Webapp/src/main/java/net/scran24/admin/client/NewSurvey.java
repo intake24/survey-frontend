@@ -31,8 +31,8 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.*;
 import net.scran24.admin.client.services.SurveyManagementServiceAsync;
 import net.scran24.common.client.WidgetFactory;
-import net.scran24.datastore.shared.SurveySchemeReference;
-import net.scran24.datastore.shared.SurveySchemes;
+/* import net.scran24.datastore.shared.SurveySchemeReference;
+import net.scran24.datastore.shared.SurveySchemes; */
 
 import org.workcraft.gwt.shared.client.Option;
 
@@ -73,8 +73,8 @@ public class NewSurvey extends Composite {
     localeBox.addItem("Danish (Denmark)", "da_DK");
     localeBox.addItem("Arabic (UAE)", "ar_AE");
 
-    for (SurveySchemeReference s : SurveySchemes.allSchemes)
-      schemeBox.addItem(s.description(), s.id());
+    /* for (SurveySchemeReference s : SurveySchemes.allSchemes)
+      schemeBox.addItem(s.description(), s.id()); */
 
     schemeBox.setSelectedIndex(0);
 

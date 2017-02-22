@@ -23,7 +23,7 @@ import org.workcraft.gwt.shared.client.Option;
 
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 
 public class RuleBasedSelectionManager implements SelectionManager {
 	private final PVector<SelectionRule> sortedRules;

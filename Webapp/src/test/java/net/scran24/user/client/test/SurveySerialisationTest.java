@@ -43,12 +43,12 @@ import net.scran24.user.shared.UUID;
 import net.scran24.user.shared.lookup.PortionSizeMethod;
 
 import org.junit.Test;
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Either;
 import org.workcraft.gwt.shared.client.Function2;
 import org.workcraft.gwt.shared.client.Option;

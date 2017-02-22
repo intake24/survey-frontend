@@ -51,8 +51,7 @@ import net.scran24.common.client.LoginForm;
 import net.scran24.common.client.LoginServiceAsync;
 import net.scran24.common.client.NavigationBar;
 import net.scran24.common.client.survey.TutorialVideo;
-import net.scran24.datastore.shared.SurveySchemes;
-import net.scran24.datastore.shared.UserInfo;
+
 import net.scran24.user.client.survey.SurveyMessages;
 import net.scran24.user.client.survey.prompts.FoodLookupPrompt;
 import net.scran24.user.client.surveyscheme.SurveyScheme;

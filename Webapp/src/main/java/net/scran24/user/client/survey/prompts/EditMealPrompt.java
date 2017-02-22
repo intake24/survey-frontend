@@ -40,8 +40,8 @@ import net.scran24.user.client.survey.prompts.messages.PromptMessages;
 import net.scran24.user.shared.FoodEntry;
 import net.scran24.user.shared.Meal;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;

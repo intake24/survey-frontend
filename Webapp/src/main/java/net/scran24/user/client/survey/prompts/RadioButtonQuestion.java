@@ -15,7 +15,7 @@ import net.scran24.common.client.WidgetFactory;
 import net.scran24.user.client.ShepherdTour;
 import net.scran24.user.client.survey.prompts.messages.HelpMessages;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.event.dom.client.FocusEvent;

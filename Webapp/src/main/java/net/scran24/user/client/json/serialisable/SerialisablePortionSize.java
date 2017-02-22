@@ -16,8 +16,8 @@ import net.scran24.user.client.survey.portionsize.experimental.PortionSize;
 import net.scran24.user.client.survey.portionsize.experimental.PortionSizeScript;
 import net.scran24.user.client.survey.portionsize.experimental.PortionSizeScriptManager;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.PMap;
+import org.pcollections.HashTreePMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.fasterxml.jackson.annotation.JsonCreator;

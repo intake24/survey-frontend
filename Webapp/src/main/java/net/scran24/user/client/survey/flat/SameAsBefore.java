@@ -1,6 +1,6 @@
 package net.scran24.user.client.survey.flat;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 
 import net.scran24.user.shared.EncodedFood;
 import net.scran24.user.shared.FoodEntry;

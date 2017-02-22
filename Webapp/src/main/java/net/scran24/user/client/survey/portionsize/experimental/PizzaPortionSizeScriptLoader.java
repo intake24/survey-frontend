@@ -13,8 +13,8 @@ package net.scran24.user.client.survey.portionsize.experimental;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.PMap;
+import org.pcollections.HashTreePMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;

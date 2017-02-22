@@ -10,7 +10,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.shared;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 
 public class Recipe {	
 	public final static String SERVINGS_NUMBER_KEY = "servings-number";

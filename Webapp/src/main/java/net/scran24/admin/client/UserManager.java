@@ -12,7 +12,7 @@ package net.scran24.admin.client;
 
 import net.scran24.common.client.LoginForm;
 import net.scran24.common.client.WidgetFactory;
-import net.scran24.datastore.shared.UserInfo;
+// import net.scran24.datastore.shared.UserInfo;
 
 import org.workcraft.gwt.shared.client.Callback1;
 
@@ -99,12 +99,12 @@ public class UserManager extends Composite {
 				else if (result.startsWith("ERR:")) {
 					Window.alert("There was a problem uploading the user information: " + result.substring(4));
 				} else if (result.contains("401")) {
-					LoginForm.showPopup(new Callback1<UserInfo>() {
+					/* LoginForm.showPopup(new Callback1<UserInfo>() {
 						@Override
 						public void call(UserInfo info) {
 							form.submit();
-						}
-					});
+						} 
+					});*/
 				} else if (result.contains("403")) {
 					// User is not authorised, e.g. someone has logged on as admin,
 					// opened the user upload tab and timed out, then someone else

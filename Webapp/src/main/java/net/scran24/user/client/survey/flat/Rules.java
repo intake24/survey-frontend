@@ -15,7 +15,7 @@ import net.scran24.user.shared.FoodEntry;
 import net.scran24.user.shared.Meal;
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Pair;
 
 public class Rules {

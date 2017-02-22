@@ -28,9 +28,6 @@ package net.scran24.user.shared;
 
 import java.util.Map;
 
-import org.workcraft.gwt.shared.client.Option;
-
-import net.scran24.datastore.shared.CompletedPortionSize;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 

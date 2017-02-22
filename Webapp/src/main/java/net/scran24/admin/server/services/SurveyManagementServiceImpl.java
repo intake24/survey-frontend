@@ -25,7 +25,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
 package net.scran24.admin.server.services;
-
+/*
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -138,4 +138,4 @@ public class SurveyManagementServiceImpl extends RemoteServiceServlet implements
       }
     }));
   }
-}
+}*/

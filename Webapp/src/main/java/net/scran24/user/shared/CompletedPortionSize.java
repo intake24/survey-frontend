@@ -24,7 +24,7 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.datastore.shared;
+package net.scran24.user.shared;
 
 import java.util.HashMap;
 import java.util.Map;

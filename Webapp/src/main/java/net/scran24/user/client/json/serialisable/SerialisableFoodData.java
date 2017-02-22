@@ -32,8 +32,8 @@ import net.scran24.user.shared.FoodData;
 import net.scran24.user.shared.FoodPrompt;
 import net.scran24.user.shared.lookup.PortionSizeMethod;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 
 import static org.workcraft.gwt.shared.client.CollectionUtils.map;

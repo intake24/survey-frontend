@@ -57,8 +57,8 @@ import net.scran24.user.shared.RawFood;
 import net.scran24.user.shared.TemplateFood;
 import net.scran24.user.shared.lookup.PortionSizeMethod;
 
-import org.pcollections.client.PVector;
-import org.pcollections.client.TreePVector;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.CollectionUtils;

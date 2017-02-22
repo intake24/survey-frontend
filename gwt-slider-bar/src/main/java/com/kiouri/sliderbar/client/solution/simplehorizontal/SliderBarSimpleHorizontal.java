@@ -39,7 +39,6 @@ public class SliderBarSimpleHorizontal extends SliderBarHorizontal{
 		DataResource scaleh();		
 	}
 
-	@Override
 	public int getStep() {
 		return 1;
 	}	

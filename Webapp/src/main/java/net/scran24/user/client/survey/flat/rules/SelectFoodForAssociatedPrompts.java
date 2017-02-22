@@ -30,7 +30,7 @@ import net.scran24.user.shared.MissingFood;
 import net.scran24.user.shared.RawFood;
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PVector;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.CollectionUtils.WithIndex;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;

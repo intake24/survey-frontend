@@ -29,7 +29,7 @@ package net.scran24.user.client.survey.portionsize.experimental;
 import net.scran24.user.client.services.FoodLookupServiceAsync;
 import net.scran24.user.shared.lookup.AsServedDef;
 
-import org.pcollections.client.PMap;
+import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.i18n.client.LocaleInfo;

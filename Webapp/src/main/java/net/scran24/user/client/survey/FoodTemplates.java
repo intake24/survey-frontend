@@ -32,7 +32,7 @@ import net.scran24.user.shared.TemplateFoodData.ComponentDef;
 import net.scran24.user.shared.TemplateFoodData.ComponentOccurence;
 import net.scran24.user.shared.TemplateFoodData.ComponentType;
 
-import org.pcollections.client.TreePVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function0;
 import org.workcraft.gwt.shared.client.Option;
 

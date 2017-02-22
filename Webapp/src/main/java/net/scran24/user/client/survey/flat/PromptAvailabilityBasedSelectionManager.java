@@ -16,7 +16,7 @@ import net.scran24.user.client.survey.flat.Selection.SelectedFood;
 import net.scran24.user.client.survey.flat.Selection.SelectedMeal;
 import net.scran24.user.client.survey.flat.Selection.Visitor;
 
-import org.pcollections.client.TreePVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 
 public class PromptAvailabilityBasedSelectionManager implements SelectionManager {

@@ -26,7 +26,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package net.scran24.user.client.survey.flat.rules;
 
-import org.pcollections.client.PSet;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Either;
 import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;

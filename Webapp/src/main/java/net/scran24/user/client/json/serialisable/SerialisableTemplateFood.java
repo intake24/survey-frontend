@@ -20,10 +20,10 @@ import net.scran24.user.client.survey.CompoundFoodTemplateManager;
 import net.scran24.user.shared.TemplateFood;
 import net.scran24.user.shared.UUID;
 
-import org.pcollections.client.HashTreePMap;
-import org.pcollections.client.HashTreePSet;
-import org.pcollections.client.PMap;
-import org.pcollections.client.PSet;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
+import org.pcollections.PMap;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Function1;
 
 import com.fasterxml.jackson.annotation.JsonCreator;

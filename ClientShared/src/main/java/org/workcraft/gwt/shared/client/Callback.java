@@ -11,5 +11,5 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package org.workcraft.gwt.shared.client;
 
 public interface Callback {
-	public void call();
+  public void call();
 }

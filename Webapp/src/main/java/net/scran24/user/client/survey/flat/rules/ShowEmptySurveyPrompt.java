@@ -18,7 +18,7 @@ import net.scran24.user.client.survey.flat.SurveyOperation;
 import net.scran24.user.client.survey.prompts.EmptySurveyPrompt;
 import net.scran24.user.shared.WithPriority;
 
-import org.pcollections.client.PSet;
+import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Option;
 
 public class ShowEmptySurveyPrompt implements PromptRule<Survey, SurveyOperation> {
