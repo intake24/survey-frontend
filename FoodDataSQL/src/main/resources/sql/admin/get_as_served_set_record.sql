@@ -1,1 +1,0 @@
-SELECT description,selection_image_id FROM as_served_sets WHERE as_served_sets.id={id}
