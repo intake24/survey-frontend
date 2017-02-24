@@ -1,7 +1,7 @@
 /*
 This file is part of Intake24.
 
-Copyright 2015, 2016 Newcastle University.
+Copyright 2015, 2016, 2017 Newcastle University.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class Scran24 implements EntryPoint {
 			$wnd.intake24_initComplete();
 	}-*/;
 
-	public void initPage(final UserInfo userInfo) {
+	/*public void initPage(final UserInfo userInfo) {
 		final RootPanel links = RootPanel.get("navigation-bar");
 
 		Anchor watchTutorial = new Anchor(surveyMessages.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
@@ -137,7 +137,7 @@ public class Scran24 implements EntryPoint {
 		RootPanel.get("loading").getElement().removeFromParent();
 
 		initComplete();
-	}
+	}*/
 
 	public void onModuleLoad() {
 
@@ -156,7 +156,7 @@ public class Scran24 implements EntryPoint {
 		// This page should not be accessed unless the user is authenticated
 		// as a respondent (see net.scran24.common.server.auth.ScranAuthFilter)
 
-		loginService.getUserInfo(new AsyncCallback<Option<UserInfo>>() {
+		/*loginService.getUserInfo(new AsyncCallback<Option<UserInfo>>() {
 			@Override
 			public void onSuccess(Option<UserInfo> result) {
 				result.accept(new Option.SideEffectVisitor<UserInfo>() {
@@ -201,7 +201,7 @@ public class Scran24 implements EntryPoint {
 							}
 						});
 					}
-				});
+				});*/
 			}
 
 			@Override
