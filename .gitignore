@@ -25,17 +25,17 @@ bin/
 Admin/src/main/resources/libs
 Admin/bower_components
 
-Webapp/src/main/webapp/images/fsa-logo.png
-Webapp/src/main/webapp/images/fsa-scotland.png
-Webapp/src/main/webapp/images/fsa_logo.png
-Webapp/src/main/webapp/images/fss-logo.png
-Webapp/src/main/webapp/images/fss-logo-small.png
-Webapp/src/main/webapp/images/nu_logo.png
-Webapp/www-test
+SurveyClient/src/main/webapp/images/fsa-logo.png
+SurveyClient/src/main/webapp/images/fsa-scotland.png
+SurveyClient/src/main/webapp/images/fsa_logo.png
+SurveyClient/src/main/webapp/images/fss-logo.png
+SurveyClient/src/main/webapp/images/fss-logo-small.png
+SurveyClient/src/main/webapp/images/nu_logo.png
+SurveyClient/www-test
 
-Webapp/www-test
+SurveyClient/www-test
 
-Webapp/war
+SurveyClient/war
 
 ApiPlayServer/conf/production.conf
 ApiPlayServer/conf/application.conf
