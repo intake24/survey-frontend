@@ -58,6 +58,7 @@ import net.scran24.user.client.surveyscheme.SurveySchemeMap;
 */
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
 
 public class SurveyEntryPoint implements EntryPoint {
     /* final private Logger log = Logger.getLogger("Init");
@@ -139,6 +140,8 @@ public class SurveyEntryPoint implements EntryPoint {
 	}*/
 
     public void onModuleLoad() {
+
+        Window.alert("hi");
 
 
     }

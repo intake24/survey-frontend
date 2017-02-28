@@ -16,7 +16,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kiouri.sliderbar</groupId>
 	<artifactId>sliderbar</artifactId>
-	<version>2.12.0-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<name>Slider widget</name>
 
 	<properties>

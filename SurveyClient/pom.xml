@@ -11,142 +11,158 @@
 	the Open Government Licence 3.0: http://www.nationalarchives.gov.uk/doc/open-government-licence/ -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>uk.ac.ncl.openlab.intake24</groupId>
-	<artifactId>survey-client</artifactId>
-	<packaging>jar</packaging>
-	<version>2.12.0-SNAPSHOT</version>
-	<name>Intake24 survey GWT client code</name>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>uk.ac.ncl.openlab.intake24</groupId>
+    <artifactId>survey-client</artifactId>
+    <packaging>jar</packaging>
+    <version>3.0.0-SNAPSHOT</version>
+    <name>Intake24 survey GWT client code</name>
 
-	<properties>
-		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.8.0</gwtVersion>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <!-- Convenience property to set the GWT version -->
+        <gwtVersion>2.8.0</gwtVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.workcraft.gwt</groupId>
-			<artifactId>shared</artifactId>
-			<version>2.12.0-SNAPSHOT</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>shared</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.workcraft.gwt</groupId>
-			<artifactId>imagemap</artifactId>
-			<version>2.12.0-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>imagemap</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.workcraft.gwt</groupId>
-			<artifactId>imagechooser</artifactId>
-			<version>2.12.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwtVersion}</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>imagechooser</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-codeserver</artifactId>
-			<version>${gwtVersion}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwtVersion}</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.fusesource.restygwt</groupId>
-			<artifactId>restygwt</artifactId>
-			<version>2.2.0-SNAPSHOT-DI</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-codeserver</artifactId>
+            <version>${gwtVersion}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.7</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.fusesource.restygwt</groupId>
+            <artifactId>restygwt</artifactId>
+            <version>2.2.0-SNAPSHOT-DI</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.workcraft.gwt</groupId>
-			<artifactId>slidingscale</artifactId>
-			<version>2.12.0-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <scope>test</scope>
+        </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>slidingscale</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
-	<build>
-		<!-- Generate compiled stuff in the folder used for developing mode -->
-		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+    </dependencies>
 
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.8.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test</goal>
-							<!--goal>i18n</goal> -->
-							<!-- <goal>generateAsync</goal> -->
-						</goals>
-					</execution>
-				</executions>
-				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
-					documentation at codehaus.org -->
-				<configuration>
-					<webappDirectory>${project.build.directory}/META-INF/resources/webjars/${project.artifactId}/${version}/js</webappDirectory>
-					<deploy>${project.build.directory}/${project.build.finalName}-deploy</deploy>
-					<failOnError>true</failOnError>
-					<runTarget>index.html</runTarget>
-					<hostedWebapp>${webappDirectory}</hostedWebapp>
-					<i18nMessagesBundle>net.scran24.client.Messages</i18nMessagesBundle>
-				</configuration>
-			</plugin>
+    <build>
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
-			<plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.8.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test</goal>
+                            <!--goal>i18n</goal> -->
+                            <!-- <goal>generateAsync</goal> -->
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
+                    documentation at codehaus.org -->
+                <configuration>
+                    <webappDirectory>
+                        ${project.build.directory}/META-INF/resources/webjars/${project.artifactId}/${version}/js
+                    </webappDirectory>
+                    <deploy>${project.build.directory}/${project.build.finalName}-deploy</deploy>
+                    <failOnError>true</failOnError>
+                    <runTarget>index.html</runTarget>
+                    <hostedWebapp>${webappDirectory}</hostedWebapp>
+                    <i18nMessagesBundle>net.scran24.client.Messages</i18nMessagesBundle>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.0.2</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<!-- here the phase you need -->
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/META-INF/resources/webjars/${project.artifactId}/${version}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/webapp</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/META-INF/resources/webjars/${project.artifactId}/${version}/intake24
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.2</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <forceCreation>true</forceCreation>
+                    <classesDirectory>${project.build.directory}</classesDirectory>
+                    <includes>
+                        <include>META-INF/**/*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>META-INF/**/gwt-unitCache</exclude>
+                        <exclude>META-INF/**/gwt-unitCache/*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 
-		</plugins>
+        </plugins>
 
-	</build>
+    </build>
 
 </project>

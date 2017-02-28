@@ -1,5 +1,3 @@
-import java.nio.file.{Files, Path, Paths}
-
 /*
 This file is part of Intake24.
 
@@ -26,25 +24,12 @@ version := "3.0.0-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
-lazy val copyGWTJavaScript = TaskKey[Unit]("Copy GWT compiled JavaScript files")
+resolvers += Resolver.mavenLocal
 
-lazy val GWTJavaScriptSources = TaskKey[Path]("Path to GWT compiled JavaScript files")
-
-lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin)
-
-.settings(
-  copyGWTJavaScript <<= target.map {
-    target =>
-      println("ajaja")
-      println(target.getPath)
-    //Files.copy(GWTJavaScriptSources, Paths.get(target.getPath,))
-  },
-  compile <<= (compile in Compile).dependsOn(copyGWTJavaScript)
+libraryDependencies ++= Seq(
+  "org.webjars" %% "webjars-play" % "2.5.0-4",
+  "org.webjars" % "bootstrap" % "3.1.1-2",
+  "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT"
 )
 
-//copyRes <<= (baseDirectory, target) map {
-//  (base, trg) => new File(base, "src/html").listFiles().foreach(
-//    file => Files.copy(file.toPath, new File(trg, file.name).toPath)
-//  )
-
-//)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin)
