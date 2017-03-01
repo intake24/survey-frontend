@@ -1,0 +1,108 @@
+@import _root_.info.PageNames
+
+@(title: String, body: Html)
+
+<!--
+This file is part of Intake24.
+
+© Crown copyright, 2012, 2013, 2014.
+
+This software is licensed under the Open Government Licence 3.0:
+
+http://www.nationalarchives.gov.uk/doc/open-government-licence/
+-->
+
+@linkToContent(url: Call) = @{
+  url.withFragment("content")
+}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Intake24 is a web-based 24 hour dietary recall system" />
+    <meta name="keywords" content="intake24, diet, dietary, recall, nutrition, calories, food, 24 hour, twenty four hour" />
+    <meta name="author" content="Digital Interaction Group, Culture Lab, Newcastle University" />
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="@routes.Assets.at("lib/bootstrap/css/bootstrap.css")"/>
+    <link rel="stylesheet" href="@routes.Assets.at("css/home.css")" />
+
+    <title>Intake24 | @title</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">
+              Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+          class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="@linkToContent(routes.Information.landing())">Intake24</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="@linkToContent(routes.Information.recall())">@PageNames.recall</a></li>
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+            aria-haspopup="true" aria-expanded="false">Features <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="@linkToContent(routes.Information.features())">@PageNames.features</a></li>
+                <li><a href="@linkToContent(routes.Information.openSource())">@PageNames.openSource</a></li>
+                <li><a href="@linkToContent(routes.Information.output())">@PageNames.output</a></li>
+                <li><a href="@linkToContent(routes.Information.validation())">@PageNames.validation</a></li>
+                <li><a href="@linkToContent(routes.Information.localisation())">@PageNames.localisation</a></li>
+              </ul>
+          <li><a href="@linkToContent(routes.Information.feedback())">@PageNames.feedback</a></li>
+            <li><a href="@linkToContent(routes.Information.publications())">@PageNames.publications</a></li>
+            <li><a href="@linkToContent(routes.Information.contacts())">@PageNames.contacts</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="jumbotron home-banner">
+      <div class="container">
+        <h1>Welcome to Intake24</h1>
+        <p>Intake24 is an open-source self-completed computerised dietary recall system based on multiple-pass 24-hour
+          recall. The online system offers similar data quality to interviewer-led recalls at a significantly lower cost.</p>
+        <p>
+          <a class="btn btn-success btn-lg" href="/demo" role="button">Try a demo &raquo;</a> <a
+        class="btn btn-success btn-lg" href="https://www.youtube.com/watch?v=5vB4NgI4ATc" role="button">Watch a video
+            &raquo;</a>
+        </p>
+      </div>
+    </div>
+
+    <div id="content" class="container">
+
+      @body
+
+      <hr>
+
+      <footer>
+        <div class="logo">
+          <a href="https://openlab.ncl.ac.uk/"><img src="@routes.Assets.at("images/nu_logo.png")" title="Newcastle University"></a>
+        </div>
+        <div class="logo">
+          <a href="http://www.foodstandards.gov.scot/"><img src="@routes.Assets.at("images/fss-logo-small.png")"
+          title="Food Standards Scotland"></a>
+        </div>
+        <p>&copy; 2012–2015 Food Standards Scotland</p>
+        <p>&copy; 2012–2017 Newcastle University</p>
+      </footer>
+    </div>
+
+    <script src="@routes.Assets.at("lib/jquery/jquery.min.js")"></script>
+    <script src="@routes.Assets.at("lib/bootstrap/js/bootstrap.js")"></script>
+
+      <!-- analytics -->
+
+  </body>
+</html>
