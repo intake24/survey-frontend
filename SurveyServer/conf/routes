@@ -1,26 +1,16 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-
 GET        /                         controllers.Information.landing()
-
 GET        /info/recall              controllers.Information.recall()
-
 GET        /info/features            controllers.Information.features()
-
 GET        /info/open-source         controllers.Information.openSource()
-
 GET        /info/output              controllers.Information.output()
-
 GET        /info/validation          controllers.Information.validation()
-
 GET        /info/localisation        controllers.Information.localisation()
-
 GET        /info/feedback            controllers.Information.feedback()
-
 GET        /info/publications        controllers.Information.publications()
-
 GET        /info/contacts            controllers.Information.contacts()
+
+
+GET        /demo                     controllers.Surveys.survey(surveyId="demo", genUser: Option[String])
+GET        /surveys/:surveyId        controllers.Surveys.survey(surveyId: String, genUser: Option[String])
 
 GET        /assets/*file             controllers.Assets.at(path="/public", file)

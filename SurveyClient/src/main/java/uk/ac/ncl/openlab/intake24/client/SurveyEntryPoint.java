@@ -141,7 +141,7 @@ public class SurveyEntryPoint implements EntryPoint {
 
     public void onModuleLoad() {
 
-        Window.alert("hi");
+        Window.alert("oy vey!!");
 
 
     }

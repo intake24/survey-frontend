@@ -112,7 +112,7 @@
                     <deploy>${project.build.directory}/${project.build.finalName}-deploy</deploy>
                     <failOnError>true</failOnError>
                     <runTarget>index.html</runTarget>
-                    <hostedWebapp>${webappDirectory}</hostedWebapp>
+                    <hostedWebapp>${project.build.directory}</hostedWebapp>
                     <i18nMessagesBundle>net.scran24.client.Messages</i18nMessagesBundle>
                 </configuration>
             </plugin>
@@ -131,7 +131,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/META-INF/resources/webjars/${project.artifactId}/${version}/intake24
+                                ${project.build.directory}/META-INF/resources/webjars/${project.artifactId}/${version}
                             </outputDirectory>
                             <resources>
                                 <resource>
