@@ -1,4 +1,4 @@
-package net.scran24.common.restygwt;
+package uk.ac.ncl.openlab.intake24.restygwt;
 
 import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.rebind.JsonEncoderDecoderClassCreator;

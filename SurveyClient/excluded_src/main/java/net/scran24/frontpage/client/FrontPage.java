@@ -24,7 +24,7 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.frontpage.client;
+package uk.ac.ncl.openlab.intake24.client.api;
 
 import net.scran24.common.client.CommonMessages;
 import net.scran24.common.client.EmbeddedData;

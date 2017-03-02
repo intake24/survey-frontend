@@ -2,3 +2,7 @@
 	path = resty-gwt
 	url = https://github.com/digitalinteraction/resty-gwt.git
 	branch = master
+[submodule "pcollections"]
+	path = pcollections
+	url = https://github.com/digitalinteraction/pcollections
+	branch = master

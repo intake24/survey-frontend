@@ -30,11 +30,22 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 <module rename-to='survey'>
 	<inherits name='com.google.gwt.user.User' />
 
+	<inherits name="org.workcraft.gwt.shared.ClientShared" />
 	<inherits name='org.workcraft.gwt.imagemap.ImageMap' />
 	<inherits name='org.workcraft.gwt.imagechooser.ImageChooser' />
 	<inherits name='org.workcraft.gwt.slidingscale.SlidingScale' />
+	<inherits name="org.fusesource.restygwt.RestyGWT" />
+	<inherits name="javax.jsr305" />
 	<inherits name="com.google.gwt.logging.Logging" />
 	<inherits name="com.google.gwt.xml.XML" />
+
+	<extend-configuration-property
+			name="org.fusesource.restygwt.restyjsonserializergenerator"
+			value="uk.ac.ncl.openlab.intake24.restygwt.OptionRestySerializerGenerator"/>
+
+	<extend-configuration-property
+			name="org.fusesource.restygwt.restyjsonserializergenerator"
+			value="uk.ac.ncl.openlab.intake24.restygwt.EitherRestySerializerGenerator"/>
 
 	<!-- Inherit the default GWT style sheet. You can change -->
 	<!-- the theme of your GWT application by uncommenting -->

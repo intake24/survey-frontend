@@ -8,10 +8,10 @@ This software is licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.common.client;
+package uk.ac.ncl.openlab.intake24.client.api;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AsyncRequest<T> {
-	public void execute(AsyncCallback<T> callback);
+	void execute(AsyncCallback<T> callback);
 }

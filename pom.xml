@@ -46,6 +46,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     <module>ImageMap</module>
     <module>ImageChooser</module>
     <module>resty-gwt</module>
+	<module>pcollections</module>
     <module>SurveyClient</module>
   </modules>
 

@@ -1,4 +1,4 @@
-package net.scran24.common.restygwt;
+package uk.ac.ncl.openlab.intake24.restygwt;
 
 import org.fusesource.restygwt.rebind.JsonEncoderDecoderClassCreator;
 import org.fusesource.restygwt.rebind.RestyJsonSerializerGenerator;
@@ -9,12 +9,10 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 public class OptionRestySerializerGenerator implements RestyJsonSerializerGenerator {
 
-    @Override
     public Class<? extends JsonEncoderDecoderClassCreator> getGeneratorClass() {
         return OptionCodecGenerator.class;
     }
 
-    @Override
     public JType getType(TypeOracle typeOracle) {
         return typeOracle.findType(Option.class.getName());
     }

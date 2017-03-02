@@ -8,17 +8,11 @@ This software is licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.common.client;
+package uk.ac.ncl.openlab.intake24.client.api;
 
-import net.scran24.datastore.shared.UserInfo;
-
-import org.workcraft.gwt.shared.client.Callback1;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.StatusCodeException;
 
 public class AsyncRequestAuthHandler {
-	public static <T> void execute (final AsyncRequest<T> request, final AsyncCallback<T> resultHandler) {
+	/*public static <T> void execute (final AsyncRequest<T> request, final AsyncCallback<T> resultHandler) {
 		request.execute(new AsyncCallback<T>() {
 			@Override
 			public void onFailure(Throwable caught) {
@@ -48,5 +42,5 @@ public class AsyncRequestAuthHandler {
 				resultHandler.onSuccess(result);
 			}
 		});
-	}		
+	}*/
 }
