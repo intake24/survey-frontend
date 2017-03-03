@@ -24,14 +24,14 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.common.client.survey;
+package uk.ac.ncl.openlab.intake24.client.ui;
 
-import net.scran24.common.client.CommonMessages;
 
+import uk.ac.ncl.openlab.intake24.client.CommonMessages;
 
 public class TutorialVideo {
-	private static final CommonMessages commonMessages = CommonMessages.Util.getInstance();	
-	public static final String url = commonMessages.walkthroughYouTubeUrl();
-	public static final String embedUrl = commonMessages.walkthroughYouTubeEmbedUrl();
-	public static final String embedHTML = "<iframe width=\"560\" height=\"315\" src=\""+ embedUrl +"\" frameborder=\"0\" allowfullscreen></iframe>";
+    private static final CommonMessages commonMessages = CommonMessages.Util.getInstance();
+    public static final String url = commonMessages.walkthroughYouTubeUrl();
+    public static final String embedUrl = commonMessages.walkthroughYouTubeEmbedUrl();
+    public static final String embedHTML = "<iframe width=\"560\" height=\"315\" src=\"" + embedUrl + "\" frameborder=\"0\" allowfullscreen></iframe>";
 }

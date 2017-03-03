@@ -8,15 +8,15 @@ This software is licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.common.client;
+package uk.ac.ncl.openlab.intake24.client.ui;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class LoadingWidget extends Composite {
-	public LoadingWidget() {
-		FlowPanel panel = new FlowPanel();
-		panel.setStyleName("intake24-loading-widget");
-		initWidget(panel);
-	}
+    public LoadingWidget() {
+        FlowPanel panel = new FlowPanel();
+        panel.setStyleName("intake24-loading-widget");
+        initWidget(panel);
+    }
 }

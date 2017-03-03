@@ -65,6 +65,16 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 	<set-property name="gwt.logging.enabled" value="TRUE" />
 	<set-property name="gwt.logging.consoleHandler" value="ENABLED" />
-	<set-property name="gwt.logging.logLevel" value="INFO" />
+	<set-property name="gwt.logging.logLevel" value="FINE" />
 	<set-property name="compiler.useSourceMaps" value="true"/>
+
+	<extend-property name="locale" values="en_GB" />
+	<extend-property name="locale" values="pt_PT" />
+	<extend-property name="locale" values="da_DK" />
+
+	<set-property-fallback name="locale" value="en_GB" />
+
+	<!-- required to get rid of default locale,
+         see  https://github.com/gwtproject/gwt/issues/5768 -->
+	<set-property name="locale" value="en_GB, pt_PT, da_DK" />   <!-- ,ar_AE -->
 </module>

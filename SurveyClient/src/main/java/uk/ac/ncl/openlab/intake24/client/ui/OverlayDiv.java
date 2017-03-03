@@ -8,7 +8,7 @@ This software is licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.common.client;
+package uk.ac.ncl.openlab.intake24.client.ui;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;

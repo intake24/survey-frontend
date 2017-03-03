@@ -59,7 +59,9 @@ import net.scran24.user.client.surveyscheme.SurveySchemeMap;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootPanel;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -147,14 +149,18 @@ public class SurveyEntryPoint implements EntryPoint {
 
     public void onModuleLoad() {
 
-        Defaults.setServiceRoot(EmbeddedData.getApiBaseUrl().getOrDie("API base URL expected in intake24:apiBaseUrl meta tag"));
+        RootPanel.get("loading").getElement().removeFromParent();
+
+        Defaults.setServiceRoot(EmbeddedData.getApiBaseUrl());
+
+        Window.alert(LocaleInfo.getCurrentLocale().getLocaleName());
 
         SurveyService service = GWT.create(SurveyService.class);
 
-        service.getSurveyParameters("kotakbas", new MethodCallback<SurveyParameters>() {
+        service.getSurveyParameters("demo", new MethodCallback<SurveyParameters>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("jalap");
+                Window.alert("Error: " + exception.getClass().getName());
             }
 
             @Override

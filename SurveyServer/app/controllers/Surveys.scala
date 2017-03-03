@@ -11,7 +11,7 @@ import views.html.surveys.Survey
 
 import scala.concurrent.duration._
 
-class Surveys @Inject() (config: Configuration, ws: WSClient) extends Controller {
+class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller {
 
   private val apiBaseUrl = config.getString("intake24.apiBaseUrl").get
 
