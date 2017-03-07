@@ -21,10 +21,10 @@ public class AccessDispatcher implements Dispatcher {
             logger.fine(content);
         }
 
-        String cachedAccessToken = Storage.getLocalStorageIfSupported().getItem(Constants.ACCESS_TOKEN_KEY);
+        String cachedAccessToken = Storage.getLocalStorageIfSupported().getItem(AuthCache.ACCESS_TOKEN_KEY);
 
         if (cachedAccessToken != null)
-            builder.setHeader(Constants.AUTH_TOKEN_HEADER, cachedAccessToken);
+            builder.setHeader(AuthCache.AUTH_TOKEN_HEADER, cachedAccessToken);
 
         RequestCallback userCallback = builder.getCallback();
 

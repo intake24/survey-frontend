@@ -31,6 +31,8 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface CommonMessages extends Messages {
 
+  CommonMessages INSTANCE = GWT.create(CommonMessages.class);
+
   public static class Util {
     private static CommonMessages instance = null;
 
@@ -45,7 +47,27 @@ public interface CommonMessages extends Messages {
 
   public String helpButtonLabel();
 
-  public String serverError();
+  public String serverErrorTitle();
+
+  public String serverErrorText(String supportEmail);
+
+  public String forbiddenErrorTitle();
+
+  public String forbiddenErrorText(String supportEmail);
+
+  public String surveyPendingTitle();
+
+  public String surveyPendingText(String supportEmail);
+
+  public String surveyFinishedTitle();
+
+  public String surveyFinishedText(String supportEmail);
+
+  public String surveySuspendedTitle();
+
+  public String surveySuspendedReason(String reason);
+
+  public String surveySuspendedText(String supportEmail);
 
   public String loginForm_welcome();
 

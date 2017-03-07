@@ -4,7 +4,6 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.MetaElement;
 import com.google.gwt.dom.client.NodeList;
-import org.workcraft.gwt.shared.client.Option;
 
 public class EmbeddedData {
 
@@ -28,6 +27,10 @@ public class EmbeddedData {
 
     public static String getSurveyId() {
         return getMetaTagContent("intake24:surveyId");
+    }
+
+    public static String getSurveySupportEmail() {
+        return getMetaTagContent("intake24:surveySupportEmail");
     }
 
     public static String getApiBaseUrl() {

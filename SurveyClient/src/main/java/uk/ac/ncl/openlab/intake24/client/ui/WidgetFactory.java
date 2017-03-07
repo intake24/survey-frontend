@@ -35,6 +35,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
 
 import uk.ac.ncl.openlab.intake24.client.CommonMessages;
+import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 
 public class WidgetFactory {
     private static final CommonMessages messages = CommonMessages.Util.getInstance();
@@ -117,10 +118,8 @@ public class WidgetFactory {
         return result;
     }
 
-    public static Panel createDefaultErrorMessage() {
-        FlowPanel result = new FlowPanel();
-        result.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverError())));
-        return result;
+    public static Widget createDefaultErrorMessage() {
+        return new ErrorPage(messages.serverErrorTitle(), messages.serverErrorText(EmbeddedData.getSurveySupportEmail()));
     }
 
     public static Anchor createBackLink() {
@@ -148,7 +147,7 @@ public class WidgetFactory {
         Label videoLabel = new Label(messages.loginForm_watchVideo());
         videoLabel.getElement().addClassName("intake24-login-video-label");
 
-        Image videoIcon = new Image("/images/video_icon.png");
+        FlowPanel videoIcon = new FlowPanel();
         videoIcon.getElement().addClassName("intake24-video-icon");
 
         videoLink.getElement().appendChild(videoIcon.getElement());

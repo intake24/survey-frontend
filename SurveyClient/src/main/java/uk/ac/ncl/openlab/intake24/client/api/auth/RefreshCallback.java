@@ -8,7 +8,6 @@ import com.google.gwt.storage.client.Storage;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.workcraft.gwt.shared.client.Callback1;
-import org.workcraft.gwt.shared.client.Function0;
 
 import java.util.logging.Logger;
 
@@ -16,14 +15,14 @@ public class RefreshCallback implements RequestCallback {
 
     private static final Logger logger = Logger.getLogger(RefreshCallback.class.getName());
 
-    private final Method method;
-    private final RequestCallback userCallback;
+    private final Method refreshMethod;
+    private final RequestCallback refreshCallback;
     private final LoginUI loginUI;
 
 
     public RefreshCallback(Method method, RequestCallback userCallback, LoginUI loginUI) {
-        this.method = method;
-        this.userCallback = userCallback;
+        this.refreshMethod = method;
+        this.refreshCallback = userCallback;
         this.loginUI = loginUI;
     }
 
@@ -31,10 +30,7 @@ public class RefreshCallback implements RequestCallback {
     public void onResponseReceived(final Request request, Response response) {
         int code = response.getStatusCode();
 
-        if (code == Response.SC_OK) {
-            userCallback.onResponseReceived(request, response);
-        } else if (code == Response.SC_UNAUTHORIZED) {
-
+        if (code == Response.SC_UNAUTHORIZED) {
             loginUI.show(new Callback1<Credentials>() {
                 @Override
                 public void call(Credentials credentials) {
@@ -51,24 +47,29 @@ public class RefreshCallback implements RequestCallback {
                         public void onSuccess(Method signinMethod, SigninResult response) {
                             loginUI.hide();
 
-                            Storage.getLocalStorageIfSupported().setItem(Constants.REFRESH_TOKEN_KEY, response.refreshToken);
-                            method.header(Constants.AUTH_TOKEN_HEADER, response.refreshToken);
+
+                            logger.fine("Login successful");
+
+                            Storage.getLocalStorageIfSupported().setItem(AuthCache.REFRESH_TOKEN_KEY, response.refreshToken);
+                            refreshMethod.header(AuthCache.AUTH_TOKEN_HEADER, response.refreshToken);
 
                             try {
-                                method.send(RefreshCallback.this);
+                                refreshMethod.send(RefreshCallback.this);
                             } catch (RequestException e) {
-                                userCallback.onError(signinMethod.getRequest(), e);
+                                refreshCallback.onError(signinMethod.getRequest(), e);
                             }
 
                         }
                     });
                 }
             });
+        } else {
+            refreshCallback.onResponseReceived(request, response);
         }
     }
 
     @Override
     public void onError(Request request, Throwable throwable) {
-        userCallback.onError(request, throwable);
+        refreshCallback.onError(request, throwable);
     }
 }

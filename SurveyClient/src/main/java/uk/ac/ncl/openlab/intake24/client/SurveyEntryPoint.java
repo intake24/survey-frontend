@@ -58,17 +58,29 @@ import net.scran24.user.client.surveyscheme.SurveySchemeMap;
 */
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
+import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
+import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
+import uk.ac.ncl.openlab.intake24.client.ui.ErrorPage;
+import uk.ac.ncl.openlab.intake24.client.ui.Layout;
+import uk.ac.ncl.openlab.intake24.client.ui.TutorialVideo;
 
 public class SurveyEntryPoint implements EntryPoint {
+
+
+
     /* final private Logger log = Logger.getLogger("Init");
 
     private final SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
@@ -147,28 +159,75 @@ public class SurveyEntryPoint implements EntryPoint {
 		initComplete();
 	}*/
 
+	private void startSurvey() {
+        SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(mainContentPanel);
+
+        SurveyScheme scheme = SurveySchemeMap.initScheme(SurveySchemes.schemeForId(userInfo.surveyParameters.schemeName),
+                LocaleInfo.getCurrentLocale().getLocaleName(), surveyInterfaceManager);
+
+        links.add(new NavigationBar(scheme.navBarLinks(), watchTutorial, logOut));
+
+        scheme.showNextPage();
+    }
+
     public void onModuleLoad() {
 
         RootPanel.get("loading").getElement().removeFromParent();
 
         Defaults.setServiceRoot(EmbeddedData.getApiBaseUrl());
 
-        Window.alert(LocaleInfo.getCurrentLocale().getLocaleName());
+        Anchor watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
 
-        SurveyService service = GWT.create(SurveyService.class);
+        Anchor logOut = new Anchor(SurveyMessages.INSTANCE.navBar_logOut());
 
-        service.getSurveyParameters("demo", new MethodCallback<SurveyParameters>() {
+        logOut.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                AuthCache.clear();
+                Window.Location.reload();
+            }
+        });
+
+        SurveyService.INSTANCE.getSurveyParameters(EmbeddedData.getSurveyId(), new MethodCallback<SurveyParameters>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
-                Window.alert("Error: " + exception.getClass().getName());
+
+                Layout.createMainPageLayout();
+                Layout.setNavBarLinks(logOut);
+
+
+                switch (method.getResponse().getStatusCode()) {
+                    case 403:
+                        ErrorPage.showForbiddenErrorPage();
+                        break;
+                    default:
+                        ErrorPage.showInternalServerErrorPage();
+                        break;
+                }
             }
 
             @Override
             public void onSuccess(Method method, SurveyParameters response) {
-                Window.alert("it kotak");
+                Layout.createMainPageLayout();
+                Layout.setNavBarLinks(watchTutorial, logOut);
+
+                switch (response.state) {
+                    case "running":
+                        startSurvey();
+                        break;
+                    case "pending":
+                        ErrorPage.showSurveyPendingPage();
+                        break;
+                    case "finished":
+                        ErrorPage.showSurveyFinishedPage();
+                        break;
+                    case "suspended":
+                        ErrorPage.showSurveySuspendedPage(response.suspensionReason);
+                        break;
+                    default:
+                        ErrorPage.showInternalServerErrorPage();
+                }
             }
         });
-
     }
-
 }

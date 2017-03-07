@@ -11,11 +11,11 @@ import views.html.surveys.Survey
 
 import scala.concurrent.duration._
 
+case class PublicSurveyParameters(localeId: String, supportEmail: String)
+
 class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller {
 
   private val apiBaseUrl = config.getString("intake24.apiBaseUrl").get
-
-  private case class PublicSurveyParameters(localeId: String)
 
   private implicit val surveyParamReads = Json.reads[PublicSurveyParameters]
 
@@ -26,7 +26,7 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
         response.status match {
           case 200 => {
             Json.fromJson[PublicSurveyParameters](Json.parse(response.body)) match {
-              case JsSuccess(params, _) => Ok(Survey(surveyId, params.localeId, apiBaseUrl))
+              case JsSuccess(params, _) => Ok(Survey(surveyId, params, apiBaseUrl))
               case JsError(_) => InternalServerError("Internal Server Error")
             }
           }

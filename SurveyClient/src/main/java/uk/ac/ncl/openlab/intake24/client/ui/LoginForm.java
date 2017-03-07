@@ -28,7 +28,9 @@ package uk.ac.ncl.openlab.intake24.client.ui;
 
 
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Option;
@@ -43,7 +45,6 @@ public class LoginForm extends Composite {
     final private TextBox userNameTextBox;
     final private PasswordTextBox passwordTextBox;
     final private Callback1<Credentials> attemptLogin;
-    private final String supportEmail;
     final private FlowPanel statusPanel;
     final private Button loginButton;
 
@@ -58,50 +59,66 @@ public class LoginForm extends Composite {
 
     public void onLoginAttemptFailed() {
         statusPanel.clear();
-        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_passwordNotRecognised(SafeHtmlUtils.htmlEscape(supportEmail)))));
+        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_passwordNotRecognised(SafeHtmlUtils.htmlEscape(EmbeddedData.getSurveySupportEmail())))));
         loginButton.setEnabled(true);
     }
 
     public void onLoginServiceError() {
         statusPanel.clear();
-        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_serviceException(supportEmail))));
+        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_serviceException(SafeHtmlUtils.htmlEscape(EmbeddedData.getSurveySupportEmail())))));
         loginButton.setEnabled(true);
     }
 
-    public LoginForm(final Callback1<Credentials> attemptLogin, String supportEmail) {
+    public LoginForm(final Callback1<Credentials> attemptLogin, boolean sessionExpired) {
         this.attemptLogin = attemptLogin;
-        this.supportEmail = supportEmail;
-        Grid g = new Grid(2, 2);
 
-        g.setCellPadding(5);
+        FlowPanel container = new FlowPanel();
+        container.getElement().addClassName("intake24-login-container");
+
+        FlowPanel header = new FlowPanel();
+        header.getElement().addClassName("intake24-login-header");
+
+        FlowPanel formContainer = new FlowPanel();
+        formContainer.getElement().addClassName("intake24-login-form-container");
+
+        HTMLPanel welcome = new HTMLPanel("h1", messages.loginForm_welcome());
+        header.add(welcome);
+
+        Grid credentials = new Grid(2, 2);
+
+        credentials.setCellPadding(5);
+
         Label userLabel = new Label(messages.loginForm_userNameLabel());
         Label passLabel = new Label(messages.loginForm_passwordLabel());
 
         this.userNameTextBox = new TextBox();
         this.passwordTextBox = new PasswordTextBox();
 
-        g.setWidget(0, 0, userLabel);
-        g.setWidget(1, 0, passLabel);
-        g.setWidget(0, 1, userNameTextBox);
-        g.setWidget(1, 1, passwordTextBox);
+        credentials.setWidget(0, 0, userLabel);
+        credentials.setWidget(1, 0, passLabel);
+        credentials.setWidget(0, 1, userNameTextBox);
+        credentials.setWidget(1, 1, passwordTextBox);
 
-        VerticalPanel contents = new VerticalPanel();
-        contents.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        VerticalPanel form = new VerticalPanel();
+        form.getElement().addClassName("login-form");
+        form.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
         FlowPanel linkPanel = new FlowPanel();
 
         linkPanel.add(WidgetFactory.createTutorialVideoLink());
 
-        HTMLPanel pp = new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_logInToContinue()));
-        contents.add(pp);
+        HTMLPanel messagePanel = new HTMLPanel("h1", sessionExpired ? messages.loginForm_sessionExpired() : messages.loginForm_logInToContinue());
+
         HTMLPanel divider = new HTMLPanel(messages.loginForm_logInSeparator());
         divider.getElement().addClassName("intake24-login-form-divider");
-        contents.add(divider);
-        contents.add(linkPanel);
-        contents.add(g);
+
+        form.add(messagePanel);
+        form.add(divider);
+        form.add(linkPanel);
+        form.add(credentials);
 
         statusPanel = new FlowPanel();
-        contents.add(statusPanel);
+        form.add(statusPanel);
 
         loginButton = WidgetFactory.createButton(messages.loginForm_logInButtonLabel(), new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -109,7 +126,7 @@ public class LoginForm extends Composite {
             }
         });
 
-        loginButton.getElement().setId("intake24-login-button");
+        loginButton.getElement().addClassName("intake24-login-button");
 
         passwordTextBox.addKeyPressHandler(new KeyPressHandler() {
             public void onKeyPress(KeyPressEvent event) {
@@ -125,9 +142,13 @@ public class LoginForm extends Composite {
             }
         });
 
-        contents.add(WidgetFactory.createButtonsPanel(loginButton));
-        contents.addStyleName("intake24-login-form");
+        form.add(WidgetFactory.createButtonsPanel(loginButton));
+        form.getElement().addClassName("intake24-login-form");
 
-        initWidget(contents);
+        container.add(header);
+        formContainer.add(form);
+        container.add(formContainer);
+
+        initWidget(container);
     }
 }

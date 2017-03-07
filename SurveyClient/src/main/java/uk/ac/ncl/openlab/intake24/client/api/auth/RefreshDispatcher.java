@@ -25,10 +25,10 @@ public class RefreshDispatcher implements Dispatcher {
 
         logger.fine("Sending refresh request: " + builder.getHTTPMethod() + " " + builder.getUrl());
 
-        String cachedRefreshToken = localStorage.getItem(Constants.REFRESH_TOKEN_KEY);
+        String cachedRefreshToken = localStorage.getItem(AuthCache.REFRESH_TOKEN_KEY);
 
         if (cachedRefreshToken != null)
-            builder.setHeader(Constants.AUTH_TOKEN_HEADER, cachedRefreshToken);
+            builder.setHeader(AuthCache.AUTH_TOKEN_HEADER, cachedRefreshToken);
 
         RequestCallback userCallback = builder.getCallback();
 

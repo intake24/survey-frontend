@@ -1,7 +1,6 @@
 package uk.ac.ncl.openlab.intake24.client.api.auth;
 
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.*;
 import com.google.gwt.storage.client.Storage;
 import org.fusesource.restygwt.client.Method;
@@ -14,15 +13,15 @@ public class AccessCallback implements RequestCallback {
     private static final Logger logger = Logger.getLogger(AccessCallback.class.getName());
 
 
-    private final Method method;
-    private final RequestCallback userCallback;
+    private final Method serviceMethod;
+    private final RequestCallback serviceCallback;
 
     private boolean refreshAttempted = false;
 
 
-    public AccessCallback(Method method, RequestCallback userCallback) {
-        this.method = method;
-        this.userCallback = userCallback;
+    public AccessCallback(Method serviceMethod, RequestCallback serviceCallback) {
+        this.serviceMethod = serviceMethod;
+        this.serviceCallback = serviceCallback;
     }
 
     @Override
@@ -32,36 +31,38 @@ public class AccessCallback implements RequestCallback {
         if (code == Response.SC_UNAUTHORIZED) {
             if (refreshAttempted) {
                 logger.fine("Access token rejected after refresh");
-                userCallback.onError(request, new RuntimeException("Refreshed access token not recognized"));
+                serviceCallback.onError(request, new RuntimeException("Refreshed access token not recognized"));
             } else {
                 logger.fine("Access token rejected, attempting refresh");
                 AuthenticationService.INSTANCE.refresh(new MethodCallback<RefreshResult>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
-                        userCallback.onError(request, exception);
+                        serviceCallback.onError(request, exception);
                     }
 
                     @Override
                     public void onSuccess(Method method, RefreshResult response) {
                         refreshAttempted = true;
 
-                        Storage.getLocalStorageIfSupported().setItem(Constants.ACCESS_TOKEN_KEY, response.accessToken);
+                        logger.fine("Refresh successful, retrying service request");
+
+                        Storage.getLocalStorageIfSupported().setItem(AuthCache.ACCESS_TOKEN_KEY, response.accessToken);
                         method.header("X-Auth-Token", response.accessToken);
 
                         try {
-                            method.send(AccessCallback.this);
+                            serviceMethod.send(serviceCallback);
                         } catch (RequestException e) {
-                            userCallback.onError(request, e);
+                            serviceCallback.onError(request, e);
                         }
                     }
                 });
             }
         } else
-            userCallback.onResponseReceived(request, response);
+            serviceCallback.onResponseReceived(request, response);
     }
 
     @Override
     public void onError(Request request, Throwable throwable) {
-        userCallback.onError(request, throwable);
+        serviceCallback.onError(request, throwable);
     }
 }

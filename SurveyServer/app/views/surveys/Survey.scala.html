@@ -1,4 +1,4 @@
-@(surveyId: String, locale: String, apiBaseUrl: String)
+@(surveyId: String, parameters: PublicSurveyParameters, apiBaseUrl: String)
 
 <!--
 This file is part of Intake24.
@@ -35,28 +35,31 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
 
-    <meta name="gwt:property" content="locale=@locale">
+    <meta name="gwt:property" content="locale=@{parameters.localeId}">
     <meta name="intake24:surveyId" content="@surveyId">
+    <meta name="intake24:surveySupportEmail" content="@{parameters.supportEmail}">
     <meta name="intake24:apiBaseUrl" content="@apiBaseUrl">
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-common.css")" />
-    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-login.css")" />
-    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-survey.css")" />
-    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-edit-meal.css")" />
-    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-meals-panel.css")" />
-    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-as-served.css")" />
-    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-food-lookup.css")" />
-    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/intake24-shepherd.css")" />
-    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/workcraft-imagemap.css")" />
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-common.css")" />
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-errors.css")" />
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-login.css")" />
+    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-survey.css")" />
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-edit-meal.css")" />
+    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-meals-panel.css")" />
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-as-served.css")" />
+    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-food-lookup.css")" />
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/intake24-shepherd.css")" />
+    <link type=" text/css" rel="stylesheet" href="@routes.Assets.at("survey-client/css/workcraft-imagemap.css")" />
 
     <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/survey-client/css/shepherd/shepherd-theme-arrows.css")" />
 
     <script src="@routes.Assets.at("lib/jquery/jquery.min.js")"></script>
     <script src="@routes.Assets.at("lib/survey-client/js/shepherd/shepherd.min.js")"></script>
-    <script src="@routes.Assets.at("lib/survey-client/js/meals_panel.js")"></script>
+<!--    <script src="@routes.Assets.at("survey-client/js/meals_panel.js")"></script> -->
 
     <title>Intake24</title>
 
@@ -66,7 +69,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
       <![endif]-->
 
-    <script>
+    <!-- <script>
             // Called when GWT code has finished generating UI elements for this page
             function intake24_initComplete() {
               // Other
@@ -89,7 +92,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
             }
 
             $(window).resize(doResize);
-    </script>
+    </script>-->
 
     <script type="text/javascript" src="@routes.Assets.at("lib/survey-client/js/survey/survey.nocache.js")"></script>
   </head>
@@ -122,7 +125,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
       </div>
     </div>
 
-    <div id="header-container">
+    <div id="UIContainer"></div>
+
+    <!-- <div id="header-container">
       <div id="header">
         <h1>Intake24</h1>
       </div>
@@ -140,7 +145,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
       <div id="footer">
         <img src="@routes.Assets.at("images/fss-logo-small.png")"></img>
       </div>
-    </div>
+    </div> -->
 
       <!-- analytics -->
 
