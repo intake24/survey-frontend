@@ -9,6 +9,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ncl.openlab.intake24.client.CommonMessages;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Layout {
@@ -37,6 +40,10 @@ public class Layout {
 
 
     public static void setNavBarLinks(Anchor... links) {
+        setNavBarLinks(Arrays.asList(links));
+    }
+
+    public static void setNavBarLinks(List<Anchor> links) {
         navbar.clear();
 
         HTMLPanel ul = new HTMLPanel("ul", "");
@@ -50,13 +57,17 @@ public class Layout {
         navbar.add(ul);
     }
 
+
     public static void setMainContent(Widget content) {
         mainContent.add(content);
     }
 
+    public static FlowPanel getMainContentPanel() {
+        return mainContent;
+    }
+
     private static void onResize() {
         logger.fine("resize");
-
 
         int windowHeight = Window.getClientHeight();
 

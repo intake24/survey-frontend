@@ -28,7 +28,7 @@ public class SerialisableSameAsBefore {
 	
 	@JsonCreator 
 	public SerialisableSameAsBefore(
-			@JsonProperty("scheme_id") String scheme_id, @JsonProperty("version_id") String version_id, 
+			@JsonProperty("schemeId") String scheme_id, @JsonProperty("versionId") String version_id,
 			@JsonProperty("mainFood") SerialisableEncodedFood mainFood, @JsonProperty("linkedFoods") List<SerialisableFoodEntry> linkedFoods) {
 		this.scheme_id = scheme_id;
 		this.version_id = version_id;

@@ -28,8 +28,6 @@ package uk.ac.ncl.openlab.intake24.client.survey;
 
 import java.util.HashMap;
 
-import net.scran24.user.client.survey.portionsize.experimental.PortionSize;
-
 import org.pcollections.PMap;
 import org.pcollections.PSet;
 import org.workcraft.gwt.shared.client.Either;
@@ -37,6 +35,7 @@ import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 
 public abstract class FoodEntry {
 	public static final String FLAG_READY_MEAL = "ready-meal";

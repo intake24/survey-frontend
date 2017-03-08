@@ -8,7 +8,7 @@ This software is licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package net.scran24.user.client.survey;
+package uk.ac.ncl.openlab.intake24.client.survey;
 
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Option;

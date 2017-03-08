@@ -18,26 +18,25 @@ limitations under the License.
 
 package uk.ac.ncl.openlab.intake24.client.survey;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+public class FoodHeader {
+    public String code;
+    public String localDescription;
 
-public class FoodHeader implements IsSerializable {
-	public String code;
-	public String localDescription;
-	
-	@Deprecated
-	public FoodHeader() {} ;
+    @Deprecated
+    public FoodHeader() {
+    }
 
-	public FoodHeader(String code, String localDescription) {		
-		this.code = code;
-		this.localDescription = localDescription;
-	}
-	
-	@Override
-	public String toString() {
-		return code + " " + localDescription;
-	}
-	
-	public String description() {
-		return localDescription;
-	}
+    public FoodHeader(String code, String localDescription) {
+        this.code = code;
+        this.localDescription = localDescription;
+    }
+
+    @Override
+    public String toString() {
+        return code + " " + localDescription;
+    }
+
+    public String description() {
+        return localDescription;
+    }
 }

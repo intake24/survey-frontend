@@ -72,14 +72,14 @@ public class SurveyManagementServiceImpl extends RemoteServiceServlet implements
   }
 
   @Override
-  public Option<String> createSurvey(String id, String scheme_id, String locale, boolean allowGenUsers, Option<String> surveyMonkeyUrl,
+  public Option<String> createSurvey(String id, String schemeId, String locale, boolean allowGenUsers, Option<String> surveyMonkeyUrl,
       String supportEmail) {
     Option<String> idError = checkId(id);
 
     if (idError.isEmpty()) {
 
       try {
-        dataStore.initSurvey(id, scheme_id, locale, allowGenUsers, surveyMonkeyUrl, supportEmail);
+        dataStore.initSurvey(id, schemeId, locale, allowGenUsers, surveyMonkeyUrl, supportEmail);
 
         File baseDir = new File(new File(getServletContext().getRealPath("/surveys")), id);
         File loginDir = new File(baseDir, "login");

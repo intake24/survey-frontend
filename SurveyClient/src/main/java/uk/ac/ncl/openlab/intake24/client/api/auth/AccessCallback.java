@@ -46,7 +46,8 @@ public class AccessCallback implements RequestCallback {
 
                         logger.fine("Refresh successful, retrying service request");
 
-                        Storage.getLocalStorageIfSupported().setItem(AuthCache.ACCESS_TOKEN_KEY, response.accessToken);
+                        AuthCache.updateAccessToken(response.accessToken);
+
                         method.header("X-Auth-Token", response.accessToken);
 
                         try {

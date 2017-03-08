@@ -21,7 +21,7 @@ public class AccessDispatcher implements Dispatcher {
             logger.fine(content);
         }
 
-        String cachedAccessToken = Storage.getLocalStorageIfSupported().getItem(AuthCache.ACCESS_TOKEN_KEY);
+        String cachedAccessToken = AuthCache.getCachedAccessToken();
 
         if (cachedAccessToken != null)
             builder.setHeader(AuthCache.AUTH_TOKEN_HEADER, cachedAccessToken);

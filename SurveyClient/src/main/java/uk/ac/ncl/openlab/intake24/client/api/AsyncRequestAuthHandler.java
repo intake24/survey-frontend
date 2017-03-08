@@ -11,8 +11,12 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.api;
 
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.StatusCodeException;
+import uk.ac.ncl.openlab.intake24.client.ui.LoginForm;
+
 public class AsyncRequestAuthHandler {
-	/*public static <T> void execute (final AsyncRequest<T> request, final AsyncCallback<T> resultHandler) {
+	public static <T> void execute (final AsyncRequest<T> request, final AsyncCallback<T> resultHandler) {
 		request.execute(new AsyncCallback<T>() {
 			@Override
 			public void onFailure(Throwable caught) {
@@ -23,12 +27,12 @@ public class AsyncRequestAuthHandler {
 				} catch (StatusCodeException e) {
 					if (e.getStatusCode() == 401)
 					{
-						LoginForm.showPopup(new Callback1<UserInfo>() {
+						/*LoginForm.showPopup(new Callback1<UserInfo>() {
 							@Override
 							public void call(UserInfo info) {
 								request.execute(callback);
 							}
-						});
+						});*/
 					} else {
 						resultHandler.onFailure(caught);						
 					}
@@ -42,5 +46,5 @@ public class AsyncRequestAuthHandler {
 				resultHandler.onSuccess(result);
 			}
 		});
-	}*/
+	}
 }

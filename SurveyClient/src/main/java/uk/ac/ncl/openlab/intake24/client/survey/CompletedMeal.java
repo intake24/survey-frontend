@@ -16,14 +16,14 @@ import java.util.Map;
 public class CompletedMeal {
     public String name;
     public List<CompletedFood> foods;
-    public MealTime time;
+    public Time time;
     public Map<String, String> customData;
 
     @Deprecated
     public CompletedMeal() {
     }
 
-    public CompletedMeal(String name, List<CompletedFood> foods, MealTime time, Map<String, String> customData) {
+    public CompletedMeal(String name, List<CompletedFood> foods, Time time, Map<String, String> customData) {
         this.name = name;
         this.foods = foods;
         this.time = time;

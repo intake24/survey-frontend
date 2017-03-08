@@ -50,7 +50,8 @@ public class RefreshCallback implements RequestCallback {
 
                             logger.fine("Login successful");
 
-                            Storage.getLocalStorageIfSupported().setItem(AuthCache.REFRESH_TOKEN_KEY, response.refreshToken);
+                            AuthCache.updateRefreshToken(response.refreshToken);
+
                             refreshMethod.header(AuthCache.AUTH_TOKEN_HEADER, response.refreshToken);
 
                             try {

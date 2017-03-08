@@ -41,21 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.scran24.common.client.CurrentUser;
-import net.scran24.datastore.shared.Time;
-import net.scran24.user.shared.CompletedFood;
-import net.scran24.user.shared.CompletedMeal;
-import net.scran24.user.shared.CompletedMissingFood;
-import net.scran24.user.shared.CompletedSurvey;
-import net.scran24.user.shared.CompoundFood;
-import net.scran24.user.shared.EncodedFood;
-import net.scran24.user.shared.FoodEntry;
-import net.scran24.user.shared.Meal;
-import net.scran24.user.shared.MissingFood;
-import net.scran24.user.shared.MissingFoodDescription;
-import net.scran24.user.shared.RawFood;
-import net.scran24.user.shared.TemplateFood;
-
 import org.pcollections.HashTreePMap;
 import org.pcollections.HashTreePSet;
 import org.pcollections.PMap;
@@ -67,262 +52,262 @@ import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 
 public class Survey {
-	public static final String FLAG_ENERGY_VALUE_CONFIRMED = "energy-value-confirmed";
-	public static final String FLAG_COMPLETION_CONFIRMED = "completion-confirmed";
-	public static final String FLAG_ENCODING_COMPLETE = "encoding-complete";
-	public static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
-	public static final String FLAG_NO_MORE_PROMPTS = "no-more-prompts";
-	public static final String FLAG_SKIP_HISTORY = "skip-history";
+    public static final String FLAG_ENERGY_VALUE_CONFIRMED = "energy-value-confirmed";
+    public static final String FLAG_COMPLETION_CONFIRMED = "completion-confirmed";
+    public static final String FLAG_ENCODING_COMPLETE = "encoding-complete";
+    public static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
+    public static final String FLAG_NO_MORE_PROMPTS = "no-more-prompts";
+    public static final String FLAG_SKIP_HISTORY = "skip-history";
 
-	public final long startTime;
-	public final PVector<Meal> meals;
-	public final Selection selectedElement;
-	public final PSet<String> flags;
-	public final PMap<String, String> customData;
-	public final PVector<WithIndex<Meal>> mealsSortedByTime;
-	
-	public Survey(List<Meal> meals, Selection selectedElement, long startTime, Set<String> flags, Map<String, String> customData) {
-		this(TreePVector.<Meal> from(meals), selectedElement, startTime, HashTreePSet.<String> from(flags), HashTreePMap
-				.<String, String> from(customData));
-	}
+    public final long startTime;
+    public final PVector<Meal> meals;
+    public final Selection selectedElement;
+    public final PSet<String> flags;
+    public final PMap<String, String> customData;
+    public final PVector<WithIndex<Meal>> mealsSortedByTime;
 
-	public Survey(PVector<Meal> meals, Selection selectedElement, long startTime, PSet<String> flags, PMap<String, String> customData) {
-		this.meals = meals;
-		this.startTime = startTime;
-		this.customData = customData;
+    public Survey(List<Meal> meals, Selection selectedElement, long startTime, Set<String> flags, Map<String, String> customData) {
+        this(TreePVector.<Meal>from(meals), selectedElement, startTime, HashTreePSet.<String>from(flags), HashTreePMap
+                .<String, String>from(customData));
+    }
 
-		PVector<WithIndex<Meal>> mealsWithIndex = zipWithIndex(meals);
+    public Survey(PVector<Meal> meals, Selection selectedElement, long startTime, PSet<String> flags, PMap<String, String> customData) {
+        this.meals = meals;
+        this.startTime = startTime;
+        this.customData = customData;
 
-		mealsSortedByTime = sort(mealsWithIndex, new Comparator<WithIndex<Meal>>() {
-			@Override
-			public int compare(WithIndex<Meal> arg0, WithIndex<Meal> arg1) {
-				if (arg0.value.time.isEmpty()) {
-					if (arg1.value.time.isEmpty())
-						return 0;
-					else
-						return 1;
-				} else {
-					if (arg1.value.time.isEmpty())
-						return -1;
-					else {
-						Time t0 = arg0.value.time.getOrDie();
-						Time t1 = arg1.value.time.getOrDie();
+        PVector<WithIndex<Meal>> mealsWithIndex = zipWithIndex(meals);
 
-						if (t0.hours != t1.hours)
-							return t0.hours - t1.hours;
-						else
-							return t0.minutes - t1.minutes;
-					}
-				}
-			}
-		});
+        mealsSortedByTime = sort(mealsWithIndex, new Comparator<WithIndex<Meal>>() {
+            @Override
+            public int compare(WithIndex<Meal> arg0, WithIndex<Meal> arg1) {
+                if (arg0.value.time.isEmpty()) {
+                    if (arg1.value.time.isEmpty())
+                        return 0;
+                    else
+                        return 1;
+                } else {
+                    if (arg1.value.time.isEmpty())
+                        return -1;
+                    else {
+                        Time t0 = arg0.value.time.getOrDie();
+                        Time t1 = arg1.value.time.getOrDie();
 
-		this.selectedElement = selectedElement;
+                        if (t0.hours != t1.hours)
+                            return t0.hours - t1.hours;
+                        else
+                            return t0.minutes - t1.minutes;
+                    }
+                }
+            }
+        });
 
-		PSet<String> f = flags;
+        this.selectedElement = selectedElement;
 
-		if (!meals.isEmpty() && forall(meals, Meal.isFreeEntryCompleteFunc))
-			f = f.plus(FLAG_FREE_ENTRY_COMPLETE);
-		if (!meals.isEmpty() && forall(meals, Meal.isEncodingCompleteFunc))
-			f = f.plus(FLAG_ENCODING_COMPLETE);
+        PSet<String> f = flags;
 
-		this.flags = f;
-	}
+        if (!meals.isEmpty() && forall(meals, Meal.isFreeEntryCompleteFunc))
+            f = f.plus(FLAG_FREE_ENTRY_COMPLETE);
+        if (!meals.isEmpty() && forall(meals, Meal.isEncodingCompleteFunc))
+            f = f.plus(FLAG_ENCODING_COMPLETE);
 
-	public boolean isPortionSizeComplete() {
-		return forall(meals, Meal.isPortionSizeComplete);
-	}
+        this.flags = f;
+    }
 
-	public CompletedSurvey finalise(List<String> log) {
-		PVector<CompletedMeal> completedMeals = map(meals, new Function1<Meal, CompletedMeal>() {
-			@Override
-			public CompletedMeal apply(Meal argument) {
-				PVector<CompletedFood> completedFoods = map(filter(argument.foods, new Function1<FoodEntry, Boolean>() {
-					@Override
-					public Boolean apply(FoodEntry argument) {
-						return !argument.isTemplate() && !argument.isCompound() && !argument.isMissing();
-					}
-				}), new Function1<FoodEntry, CompletedFood>() {
-					@Override
-					public CompletedFood apply(FoodEntry foodEntry) {
-						return foodEntry.finalise();
-					}
-				});
+    public boolean isPortionSizeComplete() {
+        return forall(meals, Meal.isPortionSizeComplete);
+    }
 
-				return new CompletedMeal(argument.name, new ArrayList<CompletedFood>(completedFoods), argument.time
-						.getOrDie("Cannot finalise survey because it contains an undefined time entry"), new HashMap<String, String>(
-						argument.customData));
-			}
-		});
+    public CompletedSurvey finalise(List<String> log) {
+        PVector<CompletedMeal> completedMeals = map(meals, new Function1<Meal, CompletedMeal>() {
+            @Override
+            public CompletedMeal apply(Meal argument) {
+                PVector<CompletedFood> completedFoods = map(filter(argument.foods, new Function1<FoodEntry, Boolean>() {
+                    @Override
+                    public Boolean apply(FoodEntry argument) {
+                        return !argument.isTemplate() && !argument.isCompound() && !argument.isMissing();
+                    }
+                }), new Function1<FoodEntry, CompletedFood>() {
+                    @Override
+                    public CompletedFood apply(FoodEntry foodEntry) {
+                        return foodEntry.finalise();
+                    }
+                });
 
-		PVector<CompletedMissingFood> missingFoods = flatten(map(meals, new Function1<Meal, PVector<CompletedMissingFood>>() {
-			@Override
-			public PVector<CompletedMissingFood> apply(Meal meal) {
-				return flattenOption(map(meal.foods, new Function1<FoodEntry, Option<CompletedMissingFood>>() {
-					@Override
-					public Option<CompletedMissingFood> apply(FoodEntry foodEntry) {
-						return foodEntry.accept(new FoodEntry.Visitor<Option<CompletedMissingFood>>() {
-							@Override
-							public Option<CompletedMissingFood> visitRaw(RawFood food) {
-								return Option.none();
-							}
+                return new CompletedMeal(argument.name, new ArrayList<CompletedFood>(completedFoods), argument.time
+                        .getOrDie("Cannot finalise survey because it contains an undefined time entry"), new HashMap<String, String>(
+                        argument.customData));
+            }
+        });
 
-							@Override
-							public Option<CompletedMissingFood> visitEncoded(EncodedFood food) {
-								return Option.none();
-							}
+        PVector<CompletedMissingFood> missingFoods = flatten(map(meals, new Function1<Meal, PVector<CompletedMissingFood>>() {
+            @Override
+            public PVector<CompletedMissingFood> apply(Meal meal) {
+                return flattenOption(map(meal.foods, new Function1<FoodEntry, Option<CompletedMissingFood>>() {
+                    @Override
+                    public Option<CompletedMissingFood> apply(FoodEntry foodEntry) {
+                        return foodEntry.accept(new FoodEntry.Visitor<Option<CompletedMissingFood>>() {
+                            @Override
+                            public Option<CompletedMissingFood> visitRaw(RawFood food) {
+                                return Option.none();
+                            }
 
-							@Override
-							public Option<CompletedMissingFood> visitTemplate(TemplateFood food) {
-								return Option.none();
-							}
+                            @Override
+                            public Option<CompletedMissingFood> visitEncoded(EncodedFood food) {
+                                return Option.none();
+                            }
 
-							@Override
-							public Option<CompletedMissingFood> visitMissing(MissingFood food) {
+                            @Override
+                            public Option<CompletedMissingFood> visitTemplate(TemplateFood food) {
+                                return Option.none();
+                            }
 
-								MissingFoodDescription desc = food.description
-										.getOrDie("Cannot finalise survey because it contains a missing food entry with no description");
+                            @Override
+                            public Option<CompletedMissingFood> visitMissing(MissingFood food) {
 
-								return Option.some(new CompletedMissingFood(food.name, desc.brand.getOrElse(""), desc.description.getOrElse(""),
-										desc.portionSize.getOrElse(""), desc.leftovers.getOrElse("")));
-							}
+                                MissingFoodDescription desc = food.description
+                                        .getOrDie("Cannot finalise survey because it contains a missing food entry with no description");
 
-							@Override
-							public Option<CompletedMissingFood> visitCompound(CompoundFood food) {
-								return Option.none();
-							}
-						});
-					}
-				}));
-			}
-		}));
+                                return Option.some(new CompletedMissingFood(food.name, desc.brand.getOrElse(""), desc.description.getOrElse(""),
+                                        desc.portionSize.getOrElse(""), desc.leftovers.getOrElse("")));
+                            }
 
-		// FIXME: username should be determined on the server
-		return new CompletedSurvey(startTime, System.currentTimeMillis(), new ArrayList<CompletedMeal>(completedMeals),
-				new ArrayList<CompletedMissingFood>(missingFoods), log, CurrentUser.userInfo.userName, new HashMap<String, String>(customData));
-	}
+                            @Override
+                            public Option<CompletedMissingFood> visitCompound(CompoundFood food) {
+                                return Option.none();
+                            }
+                        });
+                    }
+                }));
+            }
+        }));
 
-	public Survey withSelection(Selection selectedElement) {
-		return new Survey(meals, selectedElement, startTime, flags, customData);
-	}
+        // FIXME: username should be determined on the server
+        return new CompletedSurvey(startTime, System.currentTimeMillis(), new ArrayList<CompletedMeal>(completedMeals),
+                new ArrayList<CompletedMissingFood>(missingFoods), log, new HashMap<String, String>(customData));
+    }
 
-	public Survey plusMeal(Meal meal) {
-		return new Survey(meals.plus(meal), selectedElement, startTime, flags, customData);
-	}
+    public Survey withSelection(Selection selectedElement) {
+        return new Survey(meals, selectedElement, startTime, flags, customData);
+    }
 
-	public Survey minusMeal(int mealIndex) {
-		return new Survey(meals.minus(mealIndex), selectedElement, startTime, flags, customData);
-	}
+    public Survey plusMeal(Meal meal) {
+        return new Survey(meals.plus(meal), selectedElement, startTime, flags, customData);
+    }
 
-	public Survey updateMeal(int mealIndex, Meal value) {
-		return new Survey(meals.with(mealIndex, value), selectedElement, startTime, flags, customData);
-	}
+    public Survey minusMeal(int mealIndex) {
+        return new Survey(meals.minus(mealIndex), selectedElement, startTime, flags, customData);
+    }
 
-	public Survey updateFood(int mealIndex, int foodIndex, FoodEntry value) {
-		return updateMeal(mealIndex, meals.get(mealIndex).updateFood(foodIndex, value));
-	}
+    public Survey updateMeal(int mealIndex, Meal value) {
+        return new Survey(meals.with(mealIndex, value), selectedElement, startTime, flags, customData);
+    }
 
-	public Survey withMeals(PVector<Meal> newMeals) {
-		return new Survey(newMeals, selectedElement, startTime, flags, customData);
-	}
+    public Survey updateFood(int mealIndex, int foodIndex, FoodEntry value) {
+        return updateMeal(mealIndex, meals.get(mealIndex).updateFood(foodIndex, value));
+    }
 
-	public static Function1<Survey, Survey> addMealFunc(final Meal meal) {
-		return new Function1<Survey, Survey>() {
-			@Override
-			public Survey apply(Survey argument) {
-				return argument.plusMeal(meal);
-			}
-		};
-	}
+    public Survey withMeals(PVector<Meal> newMeals) {
+        return new Survey(newMeals, selectedElement, startTime, flags, customData);
+    }
 
-	public Survey invalidateSelection() {
-		return this.withSelection(new Selection.EmptySelection(SelectionMode.AUTO_SELECTION));
-	}
+    public static Function1<Survey, Survey> addMealFunc(final Meal meal) {
+        return new Function1<Survey, Survey>() {
+            @Override
+            public Survey apply(Survey argument) {
+                return argument.plusMeal(meal);
+            }
+        };
+    }
 
-	public Survey withFlag(String flag) {
-		return new Survey(meals, selectedElement, startTime, flags.plus(flag), customData);
-	}
+    public Survey invalidateSelection() {
+        return this.withSelection(new Selection.EmptySelection(SelectionMode.AUTO_SELECTION));
+    }
 
-	public Survey clearFlag(String flag) {
-		return new Survey(meals, selectedElement, startTime, flags.minus(flag), customData);
-	}
+    public Survey withFlag(String flag) {
+        return new Survey(meals, selectedElement, startTime, flags.plus(flag), customData);
+    }
 
-	public Survey markCompletionConfirmed() {
-		return withFlag(FLAG_COMPLETION_CONFIRMED);
-	}
+    public Survey clearFlag(String flag) {
+        return new Survey(meals, selectedElement, startTime, flags.minus(flag), customData);
+    }
 
-	public Survey clearCompletionConfirmed() {
-		return clearFlag(FLAG_COMPLETION_CONFIRMED);
-	}
+    public Survey markCompletionConfirmed() {
+        return withFlag(FLAG_COMPLETION_CONFIRMED);
+    }
 
-	public Survey markEnergyValueConfirmed() {
-		return withFlag(FLAG_ENERGY_VALUE_CONFIRMED);
-	}
+    public Survey clearCompletionConfirmed() {
+        return clearFlag(FLAG_COMPLETION_CONFIRMED);
+    }
 
-	public Survey markFreeEntryComplete() {
-		return withFlag(FLAG_FREE_ENTRY_COMPLETE);
-	}
+    public Survey markEnergyValueConfirmed() {
+        return withFlag(FLAG_ENERGY_VALUE_CONFIRMED);
+    }
 
-	public boolean freeEntryComplete() {
-		return flags.contains(FLAG_FREE_ENTRY_COMPLETE);
-	}
+    public Survey markFreeEntryComplete() {
+        return withFlag(FLAG_FREE_ENTRY_COMPLETE);
+    }
 
-	public Survey clearEnergyValueConfirmed() {
-		return clearFlag(FLAG_ENERGY_VALUE_CONFIRMED);
-	}
+    public boolean freeEntryComplete() {
+        return flags.contains(FLAG_FREE_ENTRY_COMPLETE);
+    }
 
-	public boolean completionConfirmed() {
-		return flags.contains(FLAG_COMPLETION_CONFIRMED);
-	}
+    public Survey clearEnergyValueConfirmed() {
+        return clearFlag(FLAG_ENERGY_VALUE_CONFIRMED);
+    }
 
-	public boolean energyValueConfirmed() {
-		return flags.contains(FLAG_ENERGY_VALUE_CONFIRMED);
-	}
+    public boolean completionConfirmed() {
+        return flags.contains(FLAG_COMPLETION_CONFIRMED);
+    }
 
-	public Survey withData(PMap<String, String> newData) {
-		return new Survey(meals, selectedElement, startTime, flags, newData);
-	}
+    public boolean energyValueConfirmed() {
+        return flags.contains(FLAG_ENERGY_VALUE_CONFIRMED);
+    }
 
-	public Survey withData(String key, String value) {
-		return withData(customData.plus(key, value));
-	}
+    public Survey withData(PMap<String, String> newData) {
+        return new Survey(meals, selectedElement, startTime, flags, newData);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Survey other = (Survey) obj;
-		if (customData == null) {
-			if (other.customData != null)
-				return false;
-		} else if (!customData.equals(other.customData))
-			return false;
-		if (flags == null) {
-			if (other.flags != null)
-				return false;
-		} else if (!flags.equals(other.flags))
-			return false;
-		if (meals == null) {
-			if (other.meals != null)
-				return false;
-		} else if (!meals.equals(other.meals))
-			return false;
-		if (mealsSortedByTime == null) {
-			if (other.mealsSortedByTime != null)
-				return false;
-		} else if (!mealsSortedByTime.equals(other.mealsSortedByTime))
-			return false;
-		if (selectedElement == null) {
-			if (other.selectedElement != null)
-				return false;
-		} else if (!selectedElement.equals(other.selectedElement))
-			return false;
-		if (startTime != other.startTime)
-			return false;
-		return true;
-	}
+    public Survey withData(String key, String value) {
+        return withData(customData.plus(key, value));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Survey other = (Survey) obj;
+        if (customData == null) {
+            if (other.customData != null)
+                return false;
+        } else if (!customData.equals(other.customData))
+            return false;
+        if (flags == null) {
+            if (other.flags != null)
+                return false;
+        } else if (!flags.equals(other.flags))
+            return false;
+        if (meals == null) {
+            if (other.meals != null)
+                return false;
+        } else if (!meals.equals(other.meals))
+            return false;
+        if (mealsSortedByTime == null) {
+            if (other.mealsSortedByTime != null)
+                return false;
+        } else if (!mealsSortedByTime.equals(other.mealsSortedByTime))
+            return false;
+        if (selectedElement == null) {
+            if (other.selectedElement != null)
+                return false;
+        } else if (!selectedElement.equals(other.selectedElement))
+            return false;
+        if (startTime != other.startTime)
+            return false;
+        return true;
+    }
 }

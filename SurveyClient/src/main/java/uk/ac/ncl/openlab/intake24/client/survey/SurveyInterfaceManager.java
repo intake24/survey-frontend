@@ -10,10 +10,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey;
 
-import net.scran24.user.client.survey.SimpleSurveyStageInterface;
-import net.scran24.user.client.survey.SurveyStage;
-import net.scran24.user.client.survey.flat.Survey;
-
 import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Callback2;

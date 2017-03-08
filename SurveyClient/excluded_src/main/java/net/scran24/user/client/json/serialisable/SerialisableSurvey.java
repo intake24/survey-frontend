@@ -76,8 +76,8 @@ public class SerialisableSurvey {
 	@JsonCreator
 	public SerialisableSurvey(@JsonProperty("meals") List<SerialisableMeal> meals, @JsonProperty("selectedElement") SerialisableSelection selectedElement,
 			@JsonProperty("startTime") long startTime, @JsonProperty("flags") Set<String> flags,
-			@JsonProperty("customData") Map<String, String> customData, @JsonProperty("scheme_id") String scheme_id, 
-			@JsonProperty("version_id") String version_id) {
+			@JsonProperty("customData") Map<String, String> customData, @JsonProperty("schemeId") String scheme_id,
+			@JsonProperty("versionId") String version_id) {
 		this.startTime = startTime;
 		this.meals = TreePVector.from(meals);
 		this.selectedElement = selectedElement;
