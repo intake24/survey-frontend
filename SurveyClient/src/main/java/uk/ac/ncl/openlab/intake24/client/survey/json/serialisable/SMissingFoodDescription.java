@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.ac.ncl.openlab.intake24.client.survey.MissingFoodDescription;
 
-public class SerialisableMissingFoodDescription {
+public class SMissingFoodDescription {
 	
 	@JsonProperty
 	public final Option<String> brand;
@@ -27,15 +27,15 @@ public class SerialisableMissingFoodDescription {
 	public final Option<String> leftovers;
 
 	@JsonCreator
-	public SerialisableMissingFoodDescription(@JsonProperty("brand") Option<String> brand, @JsonProperty("description") Option<String> description, 
-			@JsonProperty("portionSize") Option<String> portionSize, @JsonProperty("leftovers") Option<String> leftovers) {
+	public SMissingFoodDescription(@JsonProperty("brand") Option<String> brand, @JsonProperty("description") Option<String> description,
+                                   @JsonProperty("portionSize") Option<String> portionSize, @JsonProperty("leftovers") Option<String> leftovers) {
 		this.brand = brand;
 		this.description = description;
 		this.portionSize = portionSize;
 		this.leftovers = leftovers;
 	}
 	
-	public SerialisableMissingFoodDescription(MissingFoodDescription missingFoodDescription) {
+	public SMissingFoodDescription(MissingFoodDescription missingFoodDescription) {
 		this(missingFoodDescription.brand, missingFoodDescription.description, missingFoodDescription.portionSize, missingFoodDescription.leftovers);		
 	}
 	

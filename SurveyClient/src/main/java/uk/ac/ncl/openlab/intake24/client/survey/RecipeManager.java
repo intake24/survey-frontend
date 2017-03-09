@@ -22,7 +22,7 @@ import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.core.client.GWT;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
-import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.recipes.SerialisableRecipes;
+import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.recipes.SRecipes;
 import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.recipes.SerialisableRecipesCodec;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
@@ -56,10 +56,10 @@ public class RecipeManager {
 			@Override
 			public PVector<Recipe> visitSome(String item) {
 				try {
-					SerialisableRecipes decoded = recipesCodec.decode(item);
+					SRecipes decoded = recipesCodec.decode(item);
 
-					if (decoded.scheme_id != scheme_id || decoded.version_id != version_id) {
-						log.warning("Version mismatch for recipes: stored version is (" + decoded.scheme_id + ", " + decoded.version_id
+					if (decoded.schemeId != scheme_id || decoded.versionId != version_id) {
+						log.warning("Version mismatch for recipes: stored version is (" + decoded.schemeId + ", " + decoded.versionId
 								+ "), runtime version is (" + scheme_id + ", " + version_id + "). Ignoring stored recipes.");
 						return TreePVector.empty();
 					} else
@@ -80,7 +80,7 @@ public class RecipeManager {
 
 	public void saveRecipe(Recipe recipe) {
 		PVector<Recipe> newRecipes = getSavedRecipes().plus(recipe);
-		StateManagerUtil.setItem(localStorageKey(), recipesCodec.encode(new SerialisableRecipes(scheme_id, version_id, newRecipes)).toString());
+		StateManagerUtil.setItem(localStorageKey(), recipesCodec.encode(new SRecipes(scheme_id, version_id, newRecipes)).toString());
 	}
 
 	public boolean deleteRecipe(final UUID mainFood) {
@@ -90,7 +90,7 @@ public class RecipeManager {
 				return !argument.mainFood.link.id.equals(mainFood);
 			}
 		});
-		StateManagerUtil.setItem(localStorageKey(), recipesCodec.encode(new SerialisableRecipes(scheme_id, version_id, newRecipes)).toString());
+		StateManagerUtil.setItem(localStorageKey(), recipesCodec.encode(new SRecipes(scheme_id, version_id, newRecipes)).toString());
 
 		return !newRecipes.isEmpty();
 	}

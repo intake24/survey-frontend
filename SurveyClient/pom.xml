@@ -27,11 +27,31 @@
     </properties>
 
     <dependencies>
+
+        <!--
+          Only GWT compiled files will be included in the final jar ("sources" dependencies), but RestyGWT needs
+          classes used in annotations to be compiled with Java as well which pulls all regular dependencies.
+
+          Maven won't accept multiple classifiers in a single dependency.
+        -->
+
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>shared</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.workcraft.gwt</groupId>
             <artifactId>shared</artifactId>
             <version>3.0.0-SNAPSHOT</version>
             <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kiouri.sliderbar</groupId>
+            <artifactId>sliderbar</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -45,6 +65,12 @@
             <groupId>org.workcraft.gwt</groupId>
             <artifactId>imagemap</artifactId>
             <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>imagemap</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
 
@@ -52,7 +78,19 @@
             <groupId>org.workcraft.gwt</groupId>
             <artifactId>slidingscale</artifactId>
             <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>slidingscale</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
             <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.workcraft.gwt</groupId>
+            <artifactId>imagechooser</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -74,6 +112,13 @@
             <artifactId>gwt-codeserver</artifactId>
             <version>${gwtVersion}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.pcollections</groupId>
+            <artifactId>pcollections</artifactId>
+            <version>2.1.3-SNAPSHOT-DI</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.pcollections</groupId>
@@ -190,9 +235,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <includes>
-                        <include>src/main/java/uk/ac/ncl/openlab/intake24/restygwt</include>
-                    </includes>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 

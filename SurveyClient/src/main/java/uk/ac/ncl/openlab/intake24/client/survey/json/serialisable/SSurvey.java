@@ -42,63 +42,63 @@ import java.util.Set;
 
 import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 
-public class SerialisableSurvey {
+public class SSurvey {
 
     @JsonProperty
     public long startTime;
     @JsonProperty
-    public final PVector<SerialisableMeal> meals;
+    public final PVector<SMeal> meals;
     @JsonProperty
-    public final SerialisableSelection selectedElement;
+    public final SSelection selectedElement;
     @JsonProperty
     public final PSet<String> flags;
     @JsonProperty
     public final PMap<String, String> customData;
     @JsonProperty
-    public final String scheme_id;
+    public final String schemeId;
     @JsonProperty
-    public final String version_id;
+    public final String versionId;
 
 
     @JsonCreator
-    public SerialisableSurvey(@JsonProperty("meals") List<SerialisableMeal> meals, @JsonProperty("selectedElement") SerialisableSelection selectedElement,
-                              @JsonProperty("startTime") long startTime, @JsonProperty("flags") Set<String> flags,
-                              @JsonProperty("customData") Map<String, String> customData, @JsonProperty("schemeId") String scheme_id,
-                              @JsonProperty("versionId") String version_id) {
+    public SSurvey(@JsonProperty("meals") List<SMeal> meals, @JsonProperty("selectedElement") SSelection selectedElement,
+                   @JsonProperty("startTime") long startTime, @JsonProperty("flags") Set<String> flags,
+                   @JsonProperty("customData") Map<String, String> customData, @JsonProperty("schemeId") String schemeId,
+                   @JsonProperty("versionId") String versionId) {
         this.startTime = startTime;
         this.meals = TreePVector.from(meals);
         this.selectedElement = selectedElement;
         this.flags = HashTreePSet.from(flags);
         this.customData = HashTreePMap.from(customData);
-        this.scheme_id = scheme_id;
-        this.version_id = version_id;
+        this.schemeId = schemeId;
+        this.versionId = versionId;
     }
 
-    public SerialisableSurvey(Survey survey, String scheme_id, String version_id) {
+    public SSurvey(Survey survey, String scheme_id, String version_id) {
         this.startTime = survey.startTime;
-        this.scheme_id = scheme_id;
-        this.version_id = version_id;
-        this.meals = map(survey.meals, new Function1<Meal, SerialisableMeal>() {
+        this.schemeId = scheme_id;
+        this.versionId = version_id;
+        this.meals = map(survey.meals, new Function1<Meal, SMeal>() {
             @Override
-            public SerialisableMeal apply(Meal argument) {
-                return new SerialisableMeal(argument);
+            public SMeal apply(Meal argument) {
+                return new SMeal(argument);
             }
         });
 
-        this.selectedElement = survey.selectedElement.accept(new Selection.Visitor<SerialisableSelection>() {
+        this.selectedElement = survey.selectedElement.accept(new Selection.Visitor<SSelection>() {
             @Override
-            public SerialisableSelection visitMeal(Selection.SelectedMeal meal) {
-                return new SerialisableSelection.SerialisableSelectedMeal(meal);
+            public SSelection visitMeal(Selection.SelectedMeal meal) {
+                return new SSelection.SSelectedMeal(meal);
             }
 
             @Override
-            public SerialisableSelection visitFood(Selection.SelectedFood food) {
-                return new SerialisableSelection.SerialisableSelectedFood(food);
+            public SSelection visitFood(Selection.SelectedFood food) {
+                return new SSelection.SSelectedFood(food);
             }
 
             @Override
-            public SerialisableSelection visitNothing(Selection.EmptySelection selection) {
-                return new SerialisableSelection.SerialisableEmptySelection(selection);
+            public SSelection visitNothing(Selection.EmptySelection selection) {
+                return new SSelection.SEmptySelection(selection);
             }
         });
 
@@ -108,26 +108,26 @@ public class SerialisableSurvey {
 
     public Survey toSurvey(final PortionSizeScriptManager scriptManager, final CompoundFoodTemplateManager templateManager) {
 
-        PVector<Meal> surveyMeals = map(meals, new Function1<SerialisableMeal, Meal>() {
+        PVector<Meal> surveyMeals = map(meals, new Function1<SMeal, Meal>() {
             @Override
-            public Meal apply(SerialisableMeal argument) {
+            public Meal apply(SMeal argument) {
                 return argument.toMeal(scriptManager, templateManager);
             }
         });
 
-        Selection surveySelectedElement = selectedElement.accept(new SerialisableSelection.Visitor<Selection>() {
+        Selection surveySelectedElement = selectedElement.accept(new SSelection.Visitor<Selection>() {
             @Override
-            public Selection visitMeal(SerialisableSelection.SerialisableSelectedMeal meal) {
+            public Selection visitMeal(SSelection.SSelectedMeal meal) {
                 return meal.toSelectedMeal();
             }
 
             @Override
-            public Selection visitFood(SerialisableSelection.SerialisableSelectedFood food) {
+            public Selection visitFood(SSelection.SSelectedFood food) {
                 return food.toSelectedFood();
             }
 
             @Override
-            public Selection visitNothing(SerialisableSelection.SerialisableEmptySelection selection) {
+            public Selection visitNothing(SSelection.SEmptySelection selection) {
                 return selection.toEmptySelection();
             }
         });

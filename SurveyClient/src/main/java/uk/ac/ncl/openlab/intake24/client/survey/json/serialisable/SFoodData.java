@@ -40,7 +40,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 import uk.ac.ncl.openlab.intake24.client.survey.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.FoodPrompt;
 
-public class SerialisableFoodData {
+public class SFoodData {
     @JsonProperty
     public final String code;
     @JsonProperty
@@ -52,24 +52,24 @@ public class SerialisableFoodData {
     @JsonProperty
     public final double caloriesPer100g;
     @JsonProperty
-    public final PVector<SerialisablePortionSizeMethod> portionSizeMethods;
+    public final PVector<SPortionSizeMethod> portionSizeMethods;
     @JsonProperty
-    public final PVector<SerialisableFoodPrompt> prompts;
+    public final PVector<SFoodPrompt> prompts;
     @JsonProperty
     public final PVector<String> brands;
     @JsonProperty
     public final PVector<String> categories;
 
     @JsonCreator
-    public SerialisableFoodData(@JsonProperty("code") String code,
-                                @JsonProperty("askIfReadyMeal") boolean askIfReadyMeal,
-                                @JsonProperty("sameAsBeforeOption") boolean sameAsBeforeOption,
-                                @JsonProperty("caloriesPer100g") double caloriesPer100g,
-                                @JsonProperty("localDescription") String localDescription,
-                                @JsonProperty("portionSizeMethods") List<SerialisablePortionSizeMethod> portionSizeMethods,
-                                @JsonProperty("prompts") List<SerialisableFoodPrompt> prompts,
-                                @JsonProperty("brands") List<String> brands,
-                                @JsonProperty("categories") List<String> categories) {
+    public SFoodData(@JsonProperty("code") String code,
+                     @JsonProperty("askIfReadyMeal") boolean askIfReadyMeal,
+                     @JsonProperty("sameAsBeforeOption") boolean sameAsBeforeOption,
+                     @JsonProperty("caloriesPer100g") double caloriesPer100g,
+                     @JsonProperty("localDescription") String localDescription,
+                     @JsonProperty("portionSizeMethods") List<SPortionSizeMethod> portionSizeMethods,
+                     @JsonProperty("prompts") List<SFoodPrompt> prompts,
+                     @JsonProperty("brands") List<String> brands,
+                     @JsonProperty("categories") List<String> categories) {
         this.askIfReadyMeal = askIfReadyMeal;
         this.sameAsBeforeOption = sameAsBeforeOption;
         this.caloriesPer100g = caloriesPer100g;
@@ -81,19 +81,19 @@ public class SerialisableFoodData {
         this.categories = TreePVector.from(categories);
     }
 
-    public SerialisableFoodData(FoodData data) {
+    public SFoodData(FoodData data) {
         this(data.code, data.askIfReadyMeal, data.sameAsBeforeOption, data.caloriesPer100g, data.localDescription,
-                map(TreePVector.from(data.portionSizeMethods), new Function1<PortionSizeMethod, SerialisablePortionSizeMethod>() {
+                map(TreePVector.from(data.portionSizeMethods), new Function1<PortionSizeMethod, SPortionSizeMethod>() {
                     @Override
-                    public SerialisablePortionSizeMethod apply(PortionSizeMethod argument) {
-                        return new SerialisablePortionSizeMethod(argument);
+                    public SPortionSizeMethod apply(PortionSizeMethod argument) {
+                        return new SPortionSizeMethod(argument);
                     }
 
                 }),
-                map(TreePVector.from(data.prompts), new Function1<FoodPrompt, SerialisableFoodPrompt>() {
+                map(TreePVector.from(data.prompts), new Function1<FoodPrompt, SFoodPrompt>() {
                     @Override
-                    public SerialisableFoodPrompt apply(FoodPrompt argument) {
-                        return new SerialisableFoodPrompt(argument);
+                    public SFoodPrompt apply(FoodPrompt argument) {
+                        return new SFoodPrompt(argument);
                     }
                 }),
                 TreePVector.from(data.brands), TreePVector.from(data.categories));
@@ -101,16 +101,16 @@ public class SerialisableFoodData {
 
     public FoodData toFoodData() {
         return new FoodData(code, askIfReadyMeal, sameAsBeforeOption, caloriesPer100g, localDescription,
-                map(portionSizeMethods, new Function1<SerialisablePortionSizeMethod, PortionSizeMethod>() {
+                map(portionSizeMethods, new Function1<SPortionSizeMethod, PortionSizeMethod>() {
                     @Override
-                    public PortionSizeMethod apply(SerialisablePortionSizeMethod argument) {
+                    public PortionSizeMethod apply(SPortionSizeMethod argument) {
                         return argument.toPortionSizeMethod();
                     }
 
                 }),
-                map(prompts, new Function1<SerialisableFoodPrompt, FoodPrompt>() {
+                map(prompts, new Function1<SFoodPrompt, FoodPrompt>() {
                     @Override
-                    public FoodPrompt apply(SerialisableFoodPrompt argument) {
+                    public FoodPrompt apply(SFoodPrompt argument) {
                         return argument.toFoodPrompt();
                     }
                 }),

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.ac.ncl.openlab.intake24.client.survey.FoodPrompt;
 
-public class SerialisableFoodPrompt {
+public class SFoodPrompt {
     @JsonProperty
     public final String code;
     @JsonProperty
@@ -27,8 +27,8 @@ public class SerialisableFoodPrompt {
     public final String genericName;
 
     @JsonCreator
-    public SerialisableFoodPrompt(@JsonProperty("code") String code, @JsonProperty("isCategoryCode") boolean isCategoryCode, @JsonProperty("text") String text, @JsonProperty("linkAsMain") boolean linkAsMain,
-                                  @JsonProperty("genericName") String genericName) {
+    public SFoodPrompt(@JsonProperty("code") String code, @JsonProperty("isCategoryCode") boolean isCategoryCode, @JsonProperty("text") String text, @JsonProperty("linkAsMain") boolean linkAsMain,
+                       @JsonProperty("genericName") String genericName) {
         this.isCategoryCode = isCategoryCode;
         this.code = code;
         this.text = text;
@@ -36,7 +36,7 @@ public class SerialisableFoodPrompt {
         this.genericName = genericName;
     }
 
-    public SerialisableFoodPrompt(FoodPrompt prompt) {
+    public SFoodPrompt(FoodPrompt prompt) {
         this(prompt.code, prompt.isCategoryCode, prompt.text, prompt.linkAsMain, prompt.genericName);
     }
 

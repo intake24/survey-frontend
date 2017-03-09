@@ -18,19 +18,19 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.FoodLink;
 import uk.ac.ncl.openlab.intake24.client.survey.UUID;
 
-public class SerialisableFoodLink {
+public class SFoodLink {
     @JsonProperty
     public final String id;
     @JsonProperty
     public final Option<String> linkedTo;
 
     @JsonCreator
-    public SerialisableFoodLink(@JsonProperty("id") String id, @JsonProperty("linkedTo") Option<String> linkedTo) {
+    public SFoodLink(@JsonProperty("id") String id, @JsonProperty("linkedTo") Option<String> linkedTo) {
         this.id = id;
         this.linkedTo = linkedTo;
     }
 
-    public SerialisableFoodLink(FoodLink link) {
+    public SFoodLink(FoodLink link) {
         this(link.id.value, link.linkedTo.map(new Function1<UUID, String>() {
             @Override
             public String apply(UUID argument) {

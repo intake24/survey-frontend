@@ -13,37 +13,37 @@ import java.util.List;
 
 import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 
-public class SerialisableRecipes {
+public class SRecipes {
 
     @JsonProperty
-    public final String version_id;
+    public final String versionId;
     @JsonProperty
-    public final String scheme_id;
+    public final String schemeId;
     @JsonProperty
-    public final PVector<SerialisableRecipe> recipes;
+    public final PVector<SRecipe> recipes;
 
     @JsonCreator
-    public SerialisableRecipes(@JsonProperty("schemeId") String scheme_id, @JsonProperty("versionId") String version_id, @JsonProperty("recipes") List<SerialisableRecipe> recipes) {
-        this.scheme_id = scheme_id;
-        this.version_id = version_id;
+    public SRecipes(@JsonProperty("schemeId") String scheme_id, @JsonProperty("versionId") String version_id, @JsonProperty("recipes") List<SRecipe> recipes) {
+        this.schemeId = scheme_id;
+        this.versionId = version_id;
         this.recipes = TreePVector.from(recipes);
     }
 
-    public SerialisableRecipes(String scheme_id, String version_id, PVector<Recipe> recipes) {
-        this.scheme_id = scheme_id;
-        this.version_id = version_id;
-        this.recipes = map(recipes, new Function1<Recipe, SerialisableRecipe>() {
+    public SRecipes(String schemeId, String versionId, PVector<Recipe> recipes) {
+        this.schemeId = schemeId;
+        this.versionId = versionId;
+        this.recipes = map(recipes, new Function1<Recipe, SRecipe>() {
             @Override
-            public SerialisableRecipe apply(Recipe argument) {
-                return new SerialisableRecipe(argument);
+            public SRecipe apply(Recipe argument) {
+                return new SRecipe(argument);
             }
         });
     }
 
     public PVector<Recipe> toRecipes(final PortionSizeScriptManager scriptManager, final CompoundFoodTemplateManager templateManager) {
-        return map(recipes, new Function1<SerialisableRecipe, Recipe>() {
+        return map(recipes, new Function1<SRecipe, Recipe>() {
             @Override
-            public Recipe apply(SerialisableRecipe argument) {
+            public Recipe apply(SRecipe argument) {
                 return argument.toRecipe(scriptManager, templateManager);
             }
         });

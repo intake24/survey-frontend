@@ -16,7 +16,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 
 import java.util.Map;
 
-public class SerialisablePortionSizeMethod {
+public class SPortionSizeMethod {
     @JsonProperty
     public final String name;
     @JsonProperty
@@ -29,8 +29,8 @@ public class SerialisablePortionSizeMethod {
     public final boolean useForRecipes;
 
     @JsonCreator
-    public SerialisablePortionSizeMethod(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("imageUrl") String imageUrl,
-                                         @JsonProperty("useForRecipes") boolean useForRecipes, @JsonProperty("params") Map<String, String> params) {
+    public SPortionSizeMethod(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("imageUrl") String imageUrl,
+                              @JsonProperty("useForRecipes") boolean useForRecipes, @JsonProperty("params") Map<String, String> params) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -38,7 +38,7 @@ public class SerialisablePortionSizeMethod {
         this.params = params;
     }
 
-    public SerialisablePortionSizeMethod(PortionSizeMethod method) {
+    public SPortionSizeMethod(PortionSizeMethod method) {
         this(method.name, method.description, method.imageUrl, method.useForRecipes, method.params);
     }
 

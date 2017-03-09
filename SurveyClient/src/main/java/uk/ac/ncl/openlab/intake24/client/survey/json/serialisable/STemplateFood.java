@@ -29,7 +29,7 @@ import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 import static org.workcraft.gwt.shared.client.CollectionUtils.mapValues;
 
 @JsonTypeName("template")
-public class SerialisableTemplateFood extends SerialisableFoodEntry {
+public class STemplateFood extends SFoodEntry {
 
     @JsonProperty
     public final String template_id;
@@ -52,8 +52,8 @@ public class SerialisableTemplateFood extends SerialisableFoodEntry {
     }
 
     @JsonCreator
-    public SerialisableTemplateFood(
-            @JsonProperty("link") SerialisableFoodLink link,
+    public STemplateFood(
+            @JsonProperty("link") SFoodLink link,
             @JsonProperty("description") String description,
             @JsonProperty("isDrink") boolean isDrink,
             @JsonProperty("template_id") String template_id,
@@ -70,8 +70,8 @@ public class SerialisableTemplateFood extends SerialisableFoodEntry {
         this.components = mapComponents(components);
     }
 
-    public SerialisableTemplateFood(TemplateFood food) {
-        super(new SerialisableFoodLink(food.link), food.flags, food.customData);
+    public STemplateFood(TemplateFood food) {
+        super(new SFoodLink(food.link), food.flags, food.customData);
         this.description = food.description;
         this.template_id = food.data.template_id;
         this.isDrink = food.isDrink;

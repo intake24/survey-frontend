@@ -35,19 +35,19 @@ import uk.ac.ncl.openlab.intake24.client.survey.CompletedPortionSize;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SerialisableCompletedPortionSize {
+public class SCompletedPortionSize {
     @JsonProperty
     public final String scriptName;
     @JsonProperty
     public PMap<String, String> data;
 
     @JsonCreator
-    public SerialisableCompletedPortionSize(@JsonProperty("scriptName") String scriptName, @JsonProperty("data") Map<String, String> data) {
+    public SCompletedPortionSize(@JsonProperty("scriptName") String scriptName, @JsonProperty("data") Map<String, String> data) {
         this.scriptName = scriptName;
         this.data = HashTreePMap.from(data);
     }
 
-    public SerialisableCompletedPortionSize(CompletedPortionSize completedPortionSize) {
+    public SCompletedPortionSize(CompletedPortionSize completedPortionSize) {
         this(completedPortionSize.scriptName, completedPortionSize.data);
     }
 

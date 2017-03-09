@@ -37,12 +37,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SerialisableMeal {
+public class SMeal {
 
     @JsonProperty
     public final String name;
     @JsonProperty
-    public final PVector<SerialisableFoodEntry> foods;
+    public final PVector<SFoodEntry> foods;
     @JsonProperty
     public final Option<Time> time;
     @JsonProperty
@@ -51,9 +51,9 @@ public class SerialisableMeal {
     public final PMap<String, String> customData;
 
     @JsonCreator
-    public SerialisableMeal(@JsonProperty("name") String name, @JsonProperty("foods") List<SerialisableFoodEntry> foods,
-                            @JsonProperty("time") Option<Time> time, @JsonProperty("flags") Set<String> flags,
-                            @JsonProperty("customData") Map<String, String> customData) {
+    public SMeal(@JsonProperty("name") String name, @JsonProperty("foods") List<SFoodEntry> foods,
+                 @JsonProperty("time") Option<Time> time, @JsonProperty("flags") Set<String> flags,
+                 @JsonProperty("customData") Map<String, String> customData) {
         this.name = name;
         this.foods = TreePVector.from(foods);
         this.time = time;
@@ -61,9 +61,9 @@ public class SerialisableMeal {
         this.customData = HashTreePMap.from(customData);
     }
 
-    public SerialisableMeal(Meal meal) {
+    public SMeal(Meal meal) {
         this.name = meal.name;
-        this.foods = SerialisableFoodEntry.toSerialisable(meal.foods);
+        this.foods = SFoodEntry.toSerialisable(meal.foods);
         this.time = meal.time;
         this.flags = meal.flags;
         this.customData = meal.customData;
@@ -71,7 +71,7 @@ public class SerialisableMeal {
 
     public Meal toMeal(final PortionSizeScriptManager scriptManager, final CompoundFoodTemplateManager templateManager) {
 
-        PVector<FoodEntry> mealFoods = SerialisableFoodEntry.toRuntime(foods, scriptManager, templateManager);
+        PVector<FoodEntry> mealFoods = SFoodEntry.toRuntime(foods, scriptManager, templateManager);
 
         return new Meal(name, mealFoods, time, flags, customData);
     }

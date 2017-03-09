@@ -50,30 +50,30 @@ import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
 @JsonTypeName("encoded")
-public class SerialisableEncodedFood extends SerialisableFoodEntry {
+public class SEncodedFood extends SFoodEntry {
 
 	@JsonProperty
-	public final SerialisableFoodData data;
+	public final SFoodData data;
 	@JsonProperty
 	public final Option<Integer> portionSizeMethodIndex;
 	@JsonProperty
-	public final Option<Either<SerialisablePortionSize, SerialisableCompletedPortionSize>> portionSize;
+	public final Option<Either<SPortionSize, SCompletedPortionSize>> portionSize;
 	@JsonProperty
 	public final Option<String> brand;
 	@JsonProperty
 	public final String searchTerm;
 	@JsonProperty
-	public final PVector<SerialisableFoodPrompt> enabledPrompts;
+	public final PVector<SFoodPrompt> enabledPrompts;
 
 	@JsonCreator
-	public SerialisableEncodedFood(
-			@JsonProperty("data") SerialisableFoodData data, 
-			@JsonProperty("link") SerialisableFoodLink link,
+	public SEncodedFood(
+			@JsonProperty("data") SFoodData data,
+			@JsonProperty("link") SFoodLink link,
 			@JsonProperty("portionSizeMethodIndex") Option<Integer> portionSizeMethodIndex,
-			@JsonProperty("portionSize") Option<Either<SerialisablePortionSize, SerialisableCompletedPortionSize>> portionSize, 
+			@JsonProperty("portionSize") Option<Either<SPortionSize, SCompletedPortionSize>> portionSize,
 			@JsonProperty("brand") Option<String> brand,
 			@JsonProperty("searchTerm") String searchTerm,
-			@JsonProperty("enabledPrompts") List<SerialisableFoodPrompt> enabledPrompts,
+			@JsonProperty("enabledPrompts") List<SFoodPrompt> enabledPrompts,
 			@JsonProperty("flags") Set<String> flags,
 			@JsonProperty("customData") Map<String, String> customData) {
 		super(link, HashTreePSet.from(flags), HashTreePMap.from(customData));
@@ -85,37 +85,37 @@ public class SerialisableEncodedFood extends SerialisableFoodEntry {
 		this.enabledPrompts = TreePVector.from(enabledPrompts);
 	}
 
-	private static Option<Either<SerialisablePortionSize, SerialisableCompletedPortionSize>> toSerialisable(
+	private static Option<Either<SPortionSize, SCompletedPortionSize>> toSerialisable(
 			Option<Either<PortionSize, CompletedPortionSize>> portionSize) {
-		return portionSize.map(new Function1<Either<PortionSize, CompletedPortionSize>, Either<SerialisablePortionSize, SerialisableCompletedPortionSize>>() {
+		return portionSize.map(new Function1<Either<PortionSize, CompletedPortionSize>, Either<SPortionSize, SCompletedPortionSize>>() {
 					@Override
-					public Either<SerialisablePortionSize, SerialisableCompletedPortionSize> apply(Either<PortionSize, CompletedPortionSize> argument) {
-						return argument.accept(new Either.Visitor<PortionSize, CompletedPortionSize, Either<SerialisablePortionSize, SerialisableCompletedPortionSize>>() {
+					public Either<SPortionSize, SCompletedPortionSize> apply(Either<PortionSize, CompletedPortionSize> argument) {
+						return argument.accept(new Either.Visitor<PortionSize, CompletedPortionSize, Either<SPortionSize, SCompletedPortionSize>>() {
 							@Override
-							public Either<SerialisablePortionSize, SerialisableCompletedPortionSize> visitRight(CompletedPortionSize value) {
-								return new Either.Right<SerialisablePortionSize, SerialisableCompletedPortionSize>(new SerialisableCompletedPortionSize(value));
+							public Either<SPortionSize, SCompletedPortionSize> visitRight(CompletedPortionSize value) {
+								return new Either.Right<SPortionSize, SCompletedPortionSize>(new SCompletedPortionSize(value));
 							}
 
 							@Override
-							public Either<SerialisablePortionSize, SerialisableCompletedPortionSize> visitLeft(PortionSize value) {
-								return new Either.Left<SerialisablePortionSize, SerialisableCompletedPortionSize>(new SerialisablePortionSize(value));
+							public Either<SPortionSize, SCompletedPortionSize> visitLeft(PortionSize value) {
+								return new Either.Left<SPortionSize, SCompletedPortionSize>(new SPortionSize(value));
 							}
 						});
 					}});
 	}
 	
-	private static Option<Either<PortionSize, CompletedPortionSize>> toRuntime(Option<Either<SerialisablePortionSize, SerialisableCompletedPortionSize>> portionSize, final PortionSizeScriptManager scriptManager) {
-		return portionSize.map(new Function1<Either<SerialisablePortionSize, SerialisableCompletedPortionSize>, Either<PortionSize, CompletedPortionSize>> () {
+	private static Option<Either<PortionSize, CompletedPortionSize>> toRuntime(Option<Either<SPortionSize, SCompletedPortionSize>> portionSize, final PortionSizeScriptManager scriptManager) {
+		return portionSize.map(new Function1<Either<SPortionSize, SCompletedPortionSize>, Either<PortionSize, CompletedPortionSize>> () {
 			@Override
-			public Either<PortionSize, CompletedPortionSize> apply(Either<SerialisablePortionSize, SerialisableCompletedPortionSize> argument) {
-				return argument.accept(new Either.Visitor<SerialisablePortionSize, SerialisableCompletedPortionSize, Either<PortionSize, CompletedPortionSize>> () {
+			public Either<PortionSize, CompletedPortionSize> apply(Either<SPortionSize, SCompletedPortionSize> argument) {
+				return argument.accept(new Either.Visitor<SPortionSize, SCompletedPortionSize, Either<PortionSize, CompletedPortionSize>> () {
 					@Override
-					public Either<PortionSize, CompletedPortionSize> visitRight(SerialisableCompletedPortionSize value) {
+					public Either<PortionSize, CompletedPortionSize> visitRight(SCompletedPortionSize value) {
 						return new Either.Right<PortionSize, CompletedPortionSize>(value.toCompletedPortionSize());
 					}
 
 					@Override
-					public Either<PortionSize, CompletedPortionSize> visitLeft(SerialisablePortionSize value) {
+					public Either<PortionSize, CompletedPortionSize> visitLeft(SPortionSize value) {
 						return new Either.Left<PortionSize, CompletedPortionSize>(value.toPortionSize(scriptManager));
 					}					
 				});
@@ -123,18 +123,18 @@ public class SerialisableEncodedFood extends SerialisableFoodEntry {
 		});
 	}
 
-	public SerialisableEncodedFood(EncodedFood food) {
+	public SEncodedFood(EncodedFood food) {
 		this(
-				new SerialisableFoodData(food.data), 
-				new SerialisableFoodLink(food.link), 				
+				new SFoodData(food.data),
+				new SFoodLink(food.link),
 				food.portionSizeMethodIndex, 
 				toSerialisable(food.portionSize),
 				food.brand,
 				food.searchTerm,
-				map(food.enabledPrompts, new Function1<FoodPrompt, SerialisableFoodPrompt>() {
+				map(food.enabledPrompts, new Function1<FoodPrompt, SFoodPrompt>() {
 					@Override
-					public SerialisableFoodPrompt apply(FoodPrompt argument) {
-						return new SerialisableFoodPrompt(argument);
+					public SFoodPrompt apply(FoodPrompt argument) {
+						return new SFoodPrompt(argument);
 					}			
 				}),
 				food.flags,
@@ -144,9 +144,9 @@ public class SerialisableEncodedFood extends SerialisableFoodEntry {
 	
 	public EncodedFood toEncodedFood(PortionSizeScriptManager scriptManager) {
 		return new EncodedFood(data.toFoodData(), link.toFoodLink(), portionSizeMethodIndex, toRuntime(portionSize, scriptManager), brand, searchTerm,
-				map(enabledPrompts, new Function1<SerialisableFoodPrompt, FoodPrompt>() {
+				map(enabledPrompts, new Function1<SFoodPrompt, FoodPrompt>() {
 					@Override
-					public FoodPrompt apply(SerialisableFoodPrompt argument) {
+					public FoodPrompt apply(SFoodPrompt argument) {
 						return argument.toFoodPrompt();
 					}
 					

@@ -17,32 +17,32 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import uk.ac.ncl.openlab.intake24.client.survey.Selection;
 import uk.ac.ncl.openlab.intake24.client.survey.SelectionMode;
 
-@JsonSubTypes({@Type(SerialisableSelection.SerialisableSelectedMeal.class), @Type(SerialisableSelection.SerialisableSelectedFood.class), @Type(SerialisableSelection.SerialisableEmptySelection.class)})
+@JsonSubTypes({@Type(SSelection.SSelectedMeal.class), @Type(SSelection.SSelectedFood.class), @Type(SSelection.SEmptySelection.class)})
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "selectionType")
-public abstract class SerialisableSelection {
+public abstract class SSelection {
     public interface Visitor<R> {
-        public R visitMeal(SerialisableSelectedMeal meal);
+        public R visitMeal(SSelectedMeal meal);
 
-        public R visitFood(SerialisableSelectedFood food);
+        public R visitFood(SSelectedFood food);
 
-        public R visitNothing(SerialisableEmptySelection selection);
+        public R visitNothing(SEmptySelection selection);
     }
 
     @JsonTypeName("food")
-    public static class SerialisableSelectedFood extends SerialisableSelection {
+    public static class SSelectedFood extends SSelection {
         @JsonProperty
         public final int mealIndex;
         @JsonProperty
         public final int foodIndex;
 
         @JsonCreator
-        public SerialisableSelectedFood(@JsonProperty("mealIndex") int mealIndex, @JsonProperty("foodIndex") int foodIndex, @JsonProperty("selectionMode") SelectionMode selectionMode) {
+        public SSelectedFood(@JsonProperty("mealIndex") int mealIndex, @JsonProperty("foodIndex") int foodIndex, @JsonProperty("selectionMode") SelectionMode selectionMode) {
             super(selectionMode);
             this.mealIndex = mealIndex;
             this.foodIndex = foodIndex;
         }
 
-        public SerialisableSelectedFood(Selection.SelectedFood selectedFood) {
+        public SSelectedFood(Selection.SelectedFood selectedFood) {
             this(selectedFood.mealIndex, selectedFood.foodIndex, selectedFood.selectionMode);
         }
 
@@ -57,17 +57,17 @@ public abstract class SerialisableSelection {
     }
 
     @JsonTypeName("meal")
-    public static class SerialisableSelectedMeal extends SerialisableSelection {
+    public static class SSelectedMeal extends SSelection {
         @JsonProperty
         public final int mealIndex;
 
         @JsonCreator
-        public SerialisableSelectedMeal(@JsonProperty("mealIndex") int mealIndex, @JsonProperty("selectionMode") SelectionMode selectionMode) {
+        public SSelectedMeal(@JsonProperty("mealIndex") int mealIndex, @JsonProperty("selectionMode") SelectionMode selectionMode) {
             super(selectionMode);
             this.mealIndex = mealIndex;
         }
 
-        public SerialisableSelectedMeal(Selection.SelectedMeal selectedMeal) {
+        public SSelectedMeal(Selection.SelectedMeal selectedMeal) {
             this(selectedMeal.mealIndex, selectedMeal.selectionMode);
         }
 
@@ -82,14 +82,14 @@ public abstract class SerialisableSelection {
     }
 
     @JsonTypeName("empty")
-    public static class SerialisableEmptySelection extends SerialisableSelection {
+    public static class SEmptySelection extends SSelection {
 
         @JsonCreator
-        public SerialisableEmptySelection(@JsonProperty("selectionMode") final SelectionMode selectionMode) {
+        public SEmptySelection(@JsonProperty("selectionMode") final SelectionMode selectionMode) {
             super(selectionMode);
         }
 
-        public SerialisableEmptySelection(Selection.EmptySelection emptySelection) {
+        public SEmptySelection(Selection.EmptySelection emptySelection) {
             this(emptySelection.selectionMode);
         }
 
@@ -107,7 +107,7 @@ public abstract class SerialisableSelection {
 
     public abstract <R> R accept(Visitor<R> visitor);
 
-    public SerialisableSelection(SelectionMode type) {
+    public SSelection(SelectionMode type) {
         this.selectionMode = type;
     }
 

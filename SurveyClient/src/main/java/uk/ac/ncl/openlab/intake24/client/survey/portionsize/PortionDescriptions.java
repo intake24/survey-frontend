@@ -24,7 +24,7 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package uk.ac.ncl.openlab.intake24.client.survey;
+package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;

@@ -41,31 +41,31 @@ import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptMan
 
 import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 
-@JsonSubTypes({@Type(SerialisableRawFood.class), @Type(SerialisableEncodedFood.class), @Type(SerialisableCompoundFood.class),
-        @Type(SerialisableTemplateFood.class), @Type(SerialisableMissingFood.class)})
+@JsonSubTypes({@Type(SRawFood.class), @Type(SEncodedFood.class), @Type(SCompoundFood.class),
+        @Type(STemplateFood.class), @Type(SMissingFood.class)})
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "entryType")
-public abstract class SerialisableFoodEntry {
+public abstract class SFoodEntry {
 
     @JsonProperty
-    public final SerialisableFoodLink link;
+    public final SFoodLink link;
     @JsonProperty
     public final PSet<String> flags;
     @JsonProperty
     public final PMap<String, String> customData;
 
     public interface Visitor<T> {
-        public T visitRaw(SerialisableRawFood food);
+        public T visitRaw(SRawFood food);
 
-        public T visitEncoded(SerialisableEncodedFood food);
+        public T visitEncoded(SEncodedFood food);
 
-        public T visitCompound(SerialisableCompoundFood food);
+        public T visitCompound(SCompoundFood food);
 
-        public T visitTemplate(SerialisableTemplateFood food);
+        public T visitTemplate(STemplateFood food);
 
-        public T visitMissing(SerialisableMissingFood food);
+        public T visitMissing(SMissingFood food);
     }
 
-    public SerialisableFoodEntry(SerialisableFoodLink link, PSet<String> flags, PMap<String, String> customData) {
+    public SFoodEntry(SFoodLink link, PSet<String> flags, PMap<String, String> customData) {
         this.link = link;
         this.flags = flags;
         this.customData = customData;
@@ -76,93 +76,93 @@ public abstract class SerialisableFoodEntry {
     public FoodEntry toFoodEntry(final PortionSizeScriptManager scriptManager, final CompoundFoodTemplateManager templateManager) {
         return accept(new Visitor<FoodEntry>() {
             @Override
-            public FoodEntry visitRaw(SerialisableRawFood food) {
+            public FoodEntry visitRaw(SRawFood food) {
                 return food.toRawFood();
             }
 
             @Override
-            public FoodEntry visitEncoded(SerialisableEncodedFood food) {
+            public FoodEntry visitEncoded(SEncodedFood food) {
                 return food.toEncodedFood(scriptManager);
             }
 
             @Override
-            public FoodEntry visitCompound(SerialisableCompoundFood food) {
+            public FoodEntry visitCompound(SCompoundFood food) {
                 return food.toCompoundFood();
             }
 
             @Override
-            public FoodEntry visitTemplate(SerialisableTemplateFood food) {
+            public FoodEntry visitTemplate(STemplateFood food) {
                 return food.toTemplateFood(templateManager);
             }
 
             @Override
-            public FoodEntry visitMissing(SerialisableMissingFood food) {
+            public FoodEntry visitMissing(SMissingFood food) {
                 return food.toMissingFood();
             }
         });
     }
 
-    public static PVector<SerialisableFoodEntry> toSerialisable(PVector<FoodEntry> foods) {
-        return map(foods, new Function1<FoodEntry, SerialisableFoodEntry>() {
+    public static PVector<SFoodEntry> toSerialisable(PVector<FoodEntry> foods) {
+        return map(foods, new Function1<FoodEntry, SFoodEntry>() {
             @Override
-            public SerialisableFoodEntry apply(FoodEntry argument) {
-                return argument.accept(new FoodEntry.Visitor<SerialisableFoodEntry>() {
+            public SFoodEntry apply(FoodEntry argument) {
+                return argument.accept(new FoodEntry.Visitor<SFoodEntry>() {
                     @Override
-                    public SerialisableFoodEntry visitRaw(RawFood food) {
-                        return new SerialisableRawFood(food);
+                    public SFoodEntry visitRaw(RawFood food) {
+                        return new SRawFood(food);
                     }
 
                     @Override
-                    public SerialisableFoodEntry visitEncoded(EncodedFood food) {
-                        return new SerialisableEncodedFood(food);
+                    public SFoodEntry visitEncoded(EncodedFood food) {
+                        return new SEncodedFood(food);
                     }
 
                     @Override
-                    public SerialisableFoodEntry visitCompound(CompoundFood food) {
-                        return new SerialisableCompoundFood(food);
+                    public SFoodEntry visitCompound(CompoundFood food) {
+                        return new SCompoundFood(food);
                     }
 
                     @Override
-                    public SerialisableFoodEntry visitTemplate(TemplateFood food) {
-                        return new SerialisableTemplateFood(food);
+                    public SFoodEntry visitTemplate(TemplateFood food) {
+                        return new STemplateFood(food);
                     }
 
                     @Override
-                    public SerialisableFoodEntry visitMissing(MissingFood food) {
-                        return new SerialisableMissingFood(food);
+                    public SFoodEntry visitMissing(MissingFood food) {
+                        return new SMissingFood(food);
                     }
                 });
             }
         });
     }
 
-    public static PVector<FoodEntry> toRuntime(PVector<SerialisableFoodEntry> foods, final PortionSizeScriptManager scriptManager, final CompoundFoodTemplateManager templateManager) {
-        return map(foods, new Function1<SerialisableFoodEntry, FoodEntry>() {
+    public static PVector<FoodEntry> toRuntime(PVector<SFoodEntry> foods, final PortionSizeScriptManager scriptManager, final CompoundFoodTemplateManager templateManager) {
+        return map(foods, new Function1<SFoodEntry, FoodEntry>() {
             @Override
-            public FoodEntry apply(SerialisableFoodEntry argument) {
+            public FoodEntry apply(SFoodEntry argument) {
                 return argument.accept(new Visitor<FoodEntry>() {
                     @Override
-                    public FoodEntry visitRaw(SerialisableRawFood food) {
+                    public FoodEntry visitRaw(SRawFood food) {
                         return food.toRawFood();
                     }
 
                     @Override
-                    public FoodEntry visitEncoded(SerialisableEncodedFood food) {
+                    public FoodEntry visitEncoded(SEncodedFood food) {
                         return food.toEncodedFood(scriptManager);
                     }
 
                     @Override
-                    public FoodEntry visitCompound(SerialisableCompoundFood food) {
+                    public FoodEntry visitCompound(SCompoundFood food) {
                         return food.toCompoundFood();
                     }
 
                     @Override
-                    public FoodEntry visitTemplate(SerialisableTemplateFood food) {
+                    public FoodEntry visitTemplate(STemplateFood food) {
                         return food.toTemplateFood(templateManager);
                     }
 
                     @Override
-                    public FoodEntry visitMissing(SerialisableMissingFood food) {
+                    public FoodEntry visitMissing(SMissingFood food) {
                         return food.toMissingFood();
                     }
                 });

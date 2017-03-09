@@ -24,17 +24,17 @@ import java.util.Map;
 import java.util.Set;
 
 @JsonTypeName("missing")
-public class SerialisableMissingFood extends SerialisableFoodEntry {
+public class SMissingFood extends SFoodEntry {
     @JsonProperty
     public final String name;
     @JsonProperty
-    public final Option<SerialisableMissingFoodDescription> description;
+    public final Option<SMissingFoodDescription> description;
     @JsonProperty
     public final boolean isDrink;
 
     @JsonCreator
-    public SerialisableMissingFood(@JsonProperty("link") SerialisableFoodLink link, @JsonProperty("name") String name, @JsonProperty("isDrink") boolean isDrink,
-                                   @JsonProperty("description") Option<SerialisableMissingFoodDescription> description, @JsonProperty("flags") Set<String> flags, @JsonProperty("customData") Map<String, String> customData) {
+    public SMissingFood(@JsonProperty("link") SFoodLink link, @JsonProperty("name") String name, @JsonProperty("isDrink") boolean isDrink,
+                        @JsonProperty("description") Option<SMissingFoodDescription> description, @JsonProperty("flags") Set<String> flags, @JsonProperty("customData") Map<String, String> customData) {
         super(link, HashTreePSet.from(flags), HashTreePMap.from(customData));
 
         this.name = name;
@@ -42,19 +42,19 @@ public class SerialisableMissingFood extends SerialisableFoodEntry {
         this.isDrink = isDrink;
     }
 
-    public SerialisableMissingFood(MissingFood food) {
-        this(new SerialisableFoodLink(food.link), food.name, food.isDrink, food.description.map(new Function1<MissingFoodDescription, SerialisableMissingFoodDescription>() {
+    public SMissingFood(MissingFood food) {
+        this(new SFoodLink(food.link), food.name, food.isDrink, food.description.map(new Function1<MissingFoodDescription, SMissingFoodDescription>() {
             @Override
-            public SerialisableMissingFoodDescription apply(MissingFoodDescription argument) {
-                return new SerialisableMissingFoodDescription(argument);
+            public SMissingFoodDescription apply(MissingFoodDescription argument) {
+                return new SMissingFoodDescription(argument);
             }
         }), food.flags, food.customData);
     }
 
     public MissingFood toMissingFood() {
-        return new MissingFood(link.toFoodLink(), name, isDrink, description.map(new Function1<SerialisableMissingFoodDescription, MissingFoodDescription>() {
+        return new MissingFood(link.toFoodLink(), name, isDrink, description.map(new Function1<SMissingFoodDescription, MissingFoodDescription>() {
             @Override
-            public MissingFoodDescription apply(SerialisableMissingFoodDescription argument) {
+            public MissingFoodDescription apply(SMissingFoodDescription argument) {
                 return argument.toMissingFoodDescription();
             }
         }), flags, customData);

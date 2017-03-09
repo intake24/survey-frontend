@@ -21,8 +21,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.storage.client.Storage;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.survey.json.SerialisableSurveyCodec;
-import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.SerialisableSurvey;
-import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.SerialisableSameAsBefore;
+import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.SSurvey;
+import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.SSameAsBefore;
 import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.SerialisableSameAsBeforeCodec;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
@@ -89,7 +89,7 @@ public class StateManagerUtil {
     PVector<FoodEntry> linkedFoods = Meal.linkedFoods(meal.foods, mainFood);
 
     localStorage.setItem(key,
-        sameAsBeforeCodec.encode(new SerialisableSameAsBefore(mainFood, linkedFoods, scheme_id, version_id))
+        sameAsBeforeCodec.encode(new SSameAsBefore(mainFood, linkedFoods, scheme_id, version_id))
           .toString());
   }
 
@@ -103,11 +103,11 @@ public class StateManagerUtil {
       return Option.none();
     else
       try {
-        SerialisableSameAsBefore decoded = sameAsBeforeCodec.decode(serialised);
+        SSameAsBefore decoded = sameAsBeforeCodec.decode(serialised);
 
-        if (decoded.scheme_id != scheme_id || decoded.version_id != version_id) {
-          log.warning("Version mismatch for same as before (" + foodCode + "): stored version is (" + decoded.scheme_id
-              + ", " + decoded.version_id + "), runtime version is (" + scheme_id + ", " + version_id
+        if (decoded.schemeId != scheme_id || decoded.versionId != version_id) {
+          log.warning("Version mismatch for same as before (" + foodCode + "): stored version is (" + decoded.schemeId
+              + ", " + decoded.versionId + "), runtime version is (" + scheme_id + ", " + version_id
               + "). Ignoring record.");
           return Option.none();
         } else
@@ -137,7 +137,7 @@ public class StateManagerUtil {
 
   public static void saveState(Storage storage, String key, Survey survey, String scheme_id, String version_id) {
     // Logger log = Logger.getLogger("StateManager");
-    String serialised = surveyCodec.encode(new SerialisableSurvey(survey, scheme_id, version_id))
+    String serialised = surveyCodec.encode(new SSurvey(survey, scheme_id, version_id))
       .toString();
     storage.setItem(key, serialised);
     // log.info("Saved data for key \"" + key + "\":" + xml);
@@ -154,10 +154,10 @@ public class StateManagerUtil {
       return Option.none();
     else {
       try {
-        SerialisableSurvey decoded = surveyCodec.decode(data);
+        SSurvey decoded = surveyCodec.decode(data);
 
-        if (decoded.scheme_id != scheme_id || decoded.version_id != version_id) {
-          log.warning("Survey version mismatch: stored version is (" + decoded.scheme_id + ", " + decoded.version_id
+        if (decoded.schemeId != scheme_id || decoded.versionId != version_id) {
+          log.warning("Survey version mismatch: stored version is (" + decoded.schemeId + ", " + decoded.versionId
               + "), runtime version is (" + scheme_id + ", " + version_id + "). Ignoring stored survey.");
           return Option.none();
         } else

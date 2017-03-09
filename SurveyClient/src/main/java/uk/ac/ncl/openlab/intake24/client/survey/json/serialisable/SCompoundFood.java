@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import uk.ac.ncl.openlab.intake24.client.survey.CompoundFood;
 
 @JsonTypeName("compound")
-public class SerialisableCompoundFood extends SerialisableFoodEntry {
+public class SCompoundFood extends SFoodEntry {
 	
 	@JsonProperty
 	public final String description;
@@ -30,16 +30,16 @@ public class SerialisableCompoundFood extends SerialisableFoodEntry {
 	public final boolean isDrink;
 
 	@JsonCreator
-	public SerialisableCompoundFood(@JsonProperty("link") SerialisableFoodLink link, @JsonProperty("description") String description,
-			@JsonProperty("isDrink") boolean isDrink, @JsonProperty("flags") Set<String> flags,
-			@JsonProperty("customData") Map<String, String> customData) {
+	public SCompoundFood(@JsonProperty("link") SFoodLink link, @JsonProperty("description") String description,
+                         @JsonProperty("isDrink") boolean isDrink, @JsonProperty("flags") Set<String> flags,
+                         @JsonProperty("customData") Map<String, String> customData) {
 		super(link, HashTreePSet.from(flags), HashTreePMap.from(customData));
 		this.description = description;
 		this.isDrink = isDrink;
 	}
 	
-	public SerialisableCompoundFood(CompoundFood food) {
-		super(new SerialisableFoodLink(food.link), food.flags, food.customData);
+	public SCompoundFood(CompoundFood food) {
+		super(new SFoodLink(food.link), food.flags, food.customData);
 		this.description = food.description;
 		this.isDrink = food.isDrink;
 	}

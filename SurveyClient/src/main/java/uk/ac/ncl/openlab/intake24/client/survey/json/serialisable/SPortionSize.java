@@ -22,19 +22,19 @@ import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScript;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
-public class SerialisablePortionSize {
+public class SPortionSize {
     @JsonProperty
     public final String scriptName;
     @JsonProperty
     public final PMap<String, String> data;
 
     @JsonCreator
-    public SerialisablePortionSize(@JsonProperty("scriptName") String scriptName, @JsonProperty("data") Map<String, String> data) {
+    public SPortionSize(@JsonProperty("scriptName") String scriptName, @JsonProperty("data") Map<String, String> data) {
         this.scriptName = scriptName;
         this.data = HashTreePMap.from(data);
     }
 
-    public SerialisablePortionSize(PortionSize portionSize) {
+    public SPortionSize(PortionSize portionSize) {
         this(portionSize.scriptName, portionSize.data);
     }
 
