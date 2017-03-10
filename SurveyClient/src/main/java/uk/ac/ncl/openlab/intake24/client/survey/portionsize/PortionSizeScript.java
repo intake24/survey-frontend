@@ -12,11 +12,11 @@ package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodData;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 
 /**
- * Generates prompts for portion size estimation.
+ * Generates associatedFoods for portion size estimation.
  */
 public interface PortionSizeScript {
     public Option<SimplePrompt<UpdateFunc>> nextPrompt(PMap<String, String> data, FoodData foodData);

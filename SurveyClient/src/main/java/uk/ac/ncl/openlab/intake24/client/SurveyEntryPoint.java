@@ -46,6 +46,8 @@ import uk.ac.ncl.openlab.intake24.client.ui.ErrorPage;
 import uk.ac.ncl.openlab.intake24.client.ui.Layout;
 import uk.ac.ncl.openlab.intake24.client.ui.TutorialVideo;
 
+import java.util.ArrayList;
+
 public class SurveyEntryPoint implements EntryPoint {
 
     private native void initComplete() /*-{
@@ -53,12 +55,21 @@ public class SurveyEntryPoint implements EntryPoint {
             $wnd.intake24_initComplete();
     }-*/;
 
+    Anchor watchTutorial;
+    Anchor logOut;
+
     private void startSurvey(SurveyParameters params) {
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
 
         SurveyScheme scheme = SurveyScheme.createScheme(params.schemeId, LocaleInfo.getCurrentLocale().getLocaleName(), surveyInterfaceManager);
 
-        Layout.setNavBarLinks(scheme.navBarLinks());
+        ArrayList<Anchor> navbarLinks = new ArrayList<>();
+
+        navbarLinks.addAll(scheme.navBarLinks());
+        navbarLinks.add(watchTutorial);
+        navbarLinks.add(logOut);
+
+        Layout.setNavBarLinks(navbarLinks);
 
         scheme.showNextPage();
     }
@@ -69,9 +80,9 @@ public class SurveyEntryPoint implements EntryPoint {
 
         Defaults.setServiceRoot(EmbeddedData.getApiBaseUrl());
 
-        Anchor watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
+        watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
 
-        Anchor logOut = new Anchor(SurveyMessages.INSTANCE.navBar_logOut());
+        logOut = new Anchor(SurveyMessages.INSTANCE.navBar_logOut());
 
         logOut.addClickHandler(new ClickHandler() {
             @Override

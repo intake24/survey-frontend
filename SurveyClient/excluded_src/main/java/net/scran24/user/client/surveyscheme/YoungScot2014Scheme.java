@@ -318,7 +318,7 @@ public class YoungScot2014Scheme extends BasicScheme {
 		
 		
 		return new Rules(
-		// meal prompts
+		// meal associatedFoods
 				TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>> empty()
 				.plus(AskForMealTime.withPriority(8))
 				.plus(ShowEditMeal.withPriority(7))
@@ -331,7 +331,7 @@ public class YoungScot2014Scheme extends BasicScheme {
 				.plus(new WithPriority<PromptRule<Meal, MealOperation>>(showSchoolPricePrompt, 0)),
 				
 
-				// food prompts
+				// food associatedFoods
 				TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>> empty()
 				.plus(ShowBrandNamePrompt.withPriority(-1))
 				.plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
@@ -347,7 +347,7 @@ public class YoungScot2014Scheme extends BasicScheme {
 				.plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
 				
 				,
-				// global prompts
+				// global associatedFoods
 
 				TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>> empty()
 				.plus(new WithPriority<PromptRule<Survey, SurveyOperation>>(confirmCompletion, 0))

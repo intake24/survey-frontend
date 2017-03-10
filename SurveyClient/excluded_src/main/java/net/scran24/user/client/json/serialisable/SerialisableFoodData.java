@@ -63,12 +63,12 @@ public class SerialisableFoodData {
 
 	@JsonCreator
 	public SerialisableFoodData(@JsonProperty("code") String code, 
-			@JsonProperty("askIfReadyMeal") boolean askIfReadyMeal,
+			@JsonProperty("readyMealOption") boolean askIfReadyMeal,
 			@JsonProperty("sameAsBeforeOption") boolean sameAsBeforeOption, 
 			@JsonProperty("caloriesPer100g") double caloriesPer100g,
 			@JsonProperty("localDescription") String localDescription,
 			@JsonProperty("portionSizeMethods") List<SerialisablePortionSizeMethod> portionSizeMethods,
-			@JsonProperty("prompts") List<SerialisableFoodPrompt> prompts, 
+			@JsonProperty("associatedFoods") List<SerialisableFoodPrompt> prompts,
 			@JsonProperty("brands") List<String> brands,
 			@JsonProperty("categories") List<String> categories) {
 		this.askIfReadyMeal = askIfReadyMeal;

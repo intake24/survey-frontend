@@ -35,6 +35,7 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
@@ -131,7 +132,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
     public SurveyStageInterface getInterface(final Callback1<MealOperation> onComplete,
                                              Callback1<Function1<Pair<FoodEntry, Meal>, Pair<FoodEntry, Meal>>> updateIntermediateState) {
         final EncodedFood food = (EncodedFood) pair.left;
-        final FoodPrompt prompt = food.enabledPrompts.get(promptIndex);
+        final AssociatedFood prompt = food.enabledPrompts.get(promptIndex);
 
         final FlowPanel content = new FlowPanel();
         PromptUtil.addBackLink(content);

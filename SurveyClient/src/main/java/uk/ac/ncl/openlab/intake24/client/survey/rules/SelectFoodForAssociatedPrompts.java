@@ -99,7 +99,7 @@ public class SelectFoodForAssociatedPrompts implements SelectionRule {
 
     @Override
     public String toString() {
-        return "Select food for associated prompts";
+        return "Select food for associated associatedFoods";
     }
 
     public static WithPriority<SelectionRule> withPriority(int priority) {

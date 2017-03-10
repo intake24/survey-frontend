@@ -34,6 +34,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.ConsPStack;
 import org.pcollections.PStack;
 import org.pcollections.PVector;
@@ -42,13 +44,16 @@ import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
-import uk.ac.ncl.openlab.intake24.client.api.foods.LookupResult;
-import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.api.foods.*;
+import uk.ac.ncl.openlab.intake24.client.survey.PromptInterfaceManager;
+import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
+import uk.ac.ncl.openlab.intake24.client.survey.SpecialData;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
@@ -73,7 +78,6 @@ public class FoodBrowser extends Composite {
         }
     }
 
-    ;
 
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
@@ -142,20 +146,22 @@ public class FoodBrowser extends Composite {
                 if (foodHeader.code.equals(SpecialData.FOOD_CODE_SANDWICH) || foodHeader.code.equals(SpecialData.FOOD_CODE_SALAD)) {
                     onSpecialFoodChosen.call(foodHeader.code);
                 } else {
-                    throw new RuntimeException("Not implemented");
 
-					/* lookupService.getFoodData(foodHeader.code, locale, new AsyncCallback<FoodData>() {
+                    FoodDataService.INSTANCE.getFoodData(locale, foodHeader.code, new MethodCallback<FoodData>() {
                         @Override
-						public void onFailure(Throwable caught) {
-							contents.clear();
-							contents.add(WidgetFactory.createDefaultErrorMessage());
-						}
+                        public void onFailure(Method method, Throwable exception) {
+                            contents.clear();
+                            contents.add(WidgetFactory.createDefaultErrorMessage());
+                        }
 
-						@Override
-						public void onSuccess(final FoodData result) {
-							onFoodChosen.call(result);
-						}
-					});*/
+                        @Override
+                        public void onSuccess(Method method, FoodData foodData) {
+
+                            BrowserConsole.warn(foodData.toString());
+
+                            onFoodChosen.call(foodData);
+                        }
+                    });
                 }
             }
         });

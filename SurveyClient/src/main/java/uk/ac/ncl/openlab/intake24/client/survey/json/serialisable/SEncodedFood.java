@@ -43,9 +43,9 @@ import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import uk.ac.ncl.openlab.intake24.client.survey.AssociatedFood;
 import uk.ac.ncl.openlab.intake24.client.survey.CompletedPortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.EncodedFood;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodPrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
@@ -63,7 +63,7 @@ public class SEncodedFood extends SFoodEntry {
 	@JsonProperty
 	public final String searchTerm;
 	@JsonProperty
-	public final PVector<SFoodPrompt> enabledPrompts;
+	public final PVector<SAssociatedFood> enabledPrompts;
 
 	@JsonCreator
 	public SEncodedFood(
@@ -73,7 +73,7 @@ public class SEncodedFood extends SFoodEntry {
 			@JsonProperty("portionSize") Option<Either<SPortionSize, SCompletedPortionSize>> portionSize,
 			@JsonProperty("brand") Option<String> brand,
 			@JsonProperty("searchTerm") String searchTerm,
-			@JsonProperty("enabledPrompts") List<SFoodPrompt> enabledPrompts,
+			@JsonProperty("enabledPrompts") List<SAssociatedFood> enabledPrompts,
 			@JsonProperty("flags") Set<String> flags,
 			@JsonProperty("customData") Map<String, String> customData) {
 		super(link, HashTreePSet.from(flags), HashTreePMap.from(customData));
@@ -131,10 +131,10 @@ public class SEncodedFood extends SFoodEntry {
 				toSerialisable(food.portionSize),
 				food.brand,
 				food.searchTerm,
-				map(food.enabledPrompts, new Function1<FoodPrompt, SFoodPrompt>() {
+				map(food.enabledPrompts, new Function1<AssociatedFood, SAssociatedFood>() {
 					@Override
-					public SFoodPrompt apply(FoodPrompt argument) {
-						return new SFoodPrompt(argument);
+					public SAssociatedFood apply(AssociatedFood argument) {
+						return new SAssociatedFood(argument);
 					}			
 				}),
 				food.flags,
@@ -144,9 +144,9 @@ public class SEncodedFood extends SFoodEntry {
 	
 	public EncodedFood toEncodedFood(PortionSizeScriptManager scriptManager) {
 		return new EncodedFood(data.toFoodData(), link.toFoodLink(), portionSizeMethodIndex, toRuntime(portionSize, scriptManager), brand, searchTerm,
-				map(enabledPrompts, new Function1<SFoodPrompt, FoodPrompt>() {
+				map(enabledPrompts, new Function1<SAssociatedFood, AssociatedFood>() {
 					@Override
-					public FoodPrompt apply(SFoodPrompt argument) {
+					public AssociatedFood apply(SAssociatedFood argument) {
 						return argument.toFoodPrompt();
 					}
 					

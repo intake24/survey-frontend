@@ -2,9 +2,7 @@ package uk.ac.ncl.openlab.intake24.client.api.auth;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.storage.client.Storage;
-import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 
 public class AuthCache {
     public final static String ACCESS_TOKEN_KEY = "accessToken";
@@ -28,7 +26,6 @@ public class AuthCache {
     }
 
     private static String getUserNameFromJWT(String token) {
-
         String payloadBase64Url = token.split("\\.")[1];
 
         String payloadJson = new String(Base64Utils.fromBase64Url(payloadBase64Url));
@@ -37,8 +34,6 @@ public class AuthCache {
         JSONObject subjectValue = JSONParser.parseStrict(subjectJson).isObject();
 
         String intake24UserKey = subjectValue.get("providerKey").isString().stringValue();
-
-        BrowserConsole.warn(intake24UserKey);
 
         return intake24UserKey;
     }

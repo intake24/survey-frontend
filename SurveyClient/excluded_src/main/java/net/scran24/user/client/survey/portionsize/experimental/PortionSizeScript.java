@@ -17,7 +17,7 @@ import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
 
 /**
- * Generates prompts for portion size estimation.
+ * Generates associatedFoods for portion size estimation.
  */
 public interface PortionSizeScript {
 	public Option<SimplePrompt<UpdateFunc>> nextPrompt(PMap<String, String> data, FoodData foodData);

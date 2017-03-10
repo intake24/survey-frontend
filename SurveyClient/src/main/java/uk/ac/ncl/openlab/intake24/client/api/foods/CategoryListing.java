@@ -30,10 +30,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-import uk.ac.ncl.openlab.intake24.client.survey.CategoryHeader;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodData;
-
 public class CategoryListing {
     public List<FoodData> foods;
     public List<CategoryHeader> categories;

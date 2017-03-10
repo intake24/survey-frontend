@@ -59,7 +59,7 @@ public class ShowNextPortionSizeStep implements PromptRule<FoodEntry, FoodOperat
                         public Option<Prompt<FoodEntry, FoodOperation>> visitSome(Either<PortionSize, CompletedPortionSize> portionSize) {
                             return portionSize.accept(new Either.Visitor<PortionSize, CompletedPortionSize, Option<Prompt<FoodEntry, FoodOperation>>>() {
 
-                                // portion size estimation complete, no prompts to show
+                                // portion size estimation complete, no associatedFoods to show
                                 @Override
                                 public Option<Prompt<FoodEntry, FoodOperation>> visitRight(CompletedPortionSize value) {
                                     return new Option.None<Prompt<FoodEntry, FoodOperation>>();
@@ -78,7 +78,7 @@ public class ShowNextPortionSizeStep implements PromptRule<FoodEntry, FoodOperat
                                             return loaded.nextPrompt(incompletePoritonSize.data, food.data).accept(
                                                     new Option.Visitor<SimplePrompt<UpdateFunc>, Option<Prompt<FoodEntry, FoodOperation>>>() {
 
-                                                        // still some prompts to show
+                                                        // still some associatedFoods to show
                                                         @Override
                                                         public Option<Prompt<FoodEntry, FoodOperation>> visitSome(final SimplePrompt<UpdateFunc> simplePrompt) {
                                                             return Option.<Prompt<FoodEntry, FoodOperation>>some(PromptUtil.asFoodPrompt(simplePrompt,
@@ -161,7 +161,7 @@ public class ShowNextPortionSizeStep implements PromptRule<FoodEntry, FoodOperat
                                 }
 
                                 // a specific portion size method is not yet known
-                                // cannot show any prompts
+                                // cannot show any associatedFoods
                                 @Override
                                 public Option<Prompt<FoodEntry, FoodOperation>> visitNone() {
                                     return new Option.None<Prompt<FoodEntry, FoodOperation>>();

@@ -26,33 +26,23 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 
-import org.pcollections.PVector;
-import org.pcollections.TreePVector;
-import org.workcraft.gwt.shared.client.Callback;
-import org.workcraft.gwt.shared.client.Callback1;
-import org.workcraft.gwt.shared.client.Function1;
-import org.workcraft.gwt.shared.client.Option;
-import org.workcraft.gwt.shared.client.Pair;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
+import org.workcraft.gwt.shared.client.*;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodLookupService;
 import uk.ac.ncl.openlab.intake24.client.api.foods.LookupResult;
 import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
@@ -123,26 +113,14 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             final SafeHtml headerText = SafeHtmlUtils
                     .fromSafeConstant(messages.foodLookup_searchResultsHeader(SafeHtmlUtils.htmlEscape(description)));
 
-            AsyncRequestAuthHandler.execute(new AsyncRequest<LookupResult>() {
+            MethodCallback<LookupResult> lookupCallback = new MethodCallback<LookupResult>() {
                 @Override
-                public void execute(AsyncCallback<LookupResult> callback) {
-
-                    throw new RuntimeException("Not implemented");
-/*
-                    if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
-						lookupService.lookupInCategory(description, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), locale,
-								MAX_RESULTS, callback);
-					else
-						lookupService.lookup(description, locale, MAX_RESULTS, callback);*/
-                }
-            }, new AsyncCallback<LookupResult>() {
-                @Override
-                public void onFailure(Throwable caught) {
+                public void onFailure(Method method, Throwable exception) {
                     showWithSearchHeader(headerText, WidgetFactory.createDefaultErrorMessage());
                 }
 
                 @Override
-                public void onSuccess(LookupResult result) {
+                public void onSuccess(Method method, LookupResult result) {
                     recipeBrowser.lookup(description);
                     foodBrowser.showLookupResult(result, messages.foodLookup_resultsDataSetName());
 
@@ -153,7 +131,12 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
 
                     showWithSearchHeader(headerText, div);
                 }
-            });
+            };
+
+            if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
+                FoodLookupService.INSTANCE.lookupInCategory(locale, description, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
+            else
+                FoodLookupService.INSTANCE.lookup(locale, description, MAX_RESULTS, lookupCallback);
         }
 
         private void showWithSearchHeader(SafeHtml headerText, Widget stuff) {

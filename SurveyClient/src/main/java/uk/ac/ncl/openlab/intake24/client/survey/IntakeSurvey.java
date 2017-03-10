@@ -137,7 +137,7 @@ public class IntakeSurvey implements SurveyStage<Survey> {
 
 							@Override
 							public void visitNone() {
-								// no prompts left, report completion
+								// no associatedFoods left, report completion
 								onComplete.call(stateWithForcedAutoSelection.withFlag(Survey.FLAG_NO_MORE_PROMPTS).withFlag(Survey.FLAG_SKIP_HISTORY));
 							}
 						});

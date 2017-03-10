@@ -145,14 +145,14 @@ public abstract class BasicScheme implements SurveyScheme {
   protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
       RecipeManager recipeManager) {
     return new Rules(
-        // meal prompts
+        // meal associatedFoods
         TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
           .plus(AskForMealTime.withPriority(3))
           .plus(ShowEditMeal.withPriority(2))
           .plus(ShowDrinkReminderPrompt.withPriority(1))
           .plus(ShowReadyMealsPrompt.withPriority(0)),
 
-        // food prompts
+        // food associatedFoods
         TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
           .plus(ShowBrandNamePrompt.withPriority(-1))
           .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
@@ -175,7 +175,7 @@ public abstract class BasicScheme implements SurveyScheme {
           .plus(ShowBreadLinkedFoodAmountPrompt.withPriority(0))
 
         ,
-        // global prompts
+        // global associatedFoods
 
         TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>>empty()
           .plus(ConfirmCompletion.withPriority(0))

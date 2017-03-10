@@ -26,9 +26,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.api.foods;
 
-import uk.ac.ncl.openlab.intake24.client.survey.CategoryHeader;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodHeader;
-
 import java.util.List;
 
 public class LookupResult {

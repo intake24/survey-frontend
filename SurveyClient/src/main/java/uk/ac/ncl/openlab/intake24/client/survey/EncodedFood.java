@@ -34,6 +34,7 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Either;
 import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 
 public class EncodedFood extends FoodEntry {
@@ -44,11 +45,11 @@ public class EncodedFood extends FoodEntry {
     public final Option<Either<PortionSize, CompletedPortionSize>> portionSize;
     public final Option<String> brand;
     public final String searchTerm;
-    public final PVector<FoodPrompt> enabledPrompts;
+    public final PVector<AssociatedFood> enabledPrompts;
 
     public EncodedFood(FoodData data, FoodLink link, Option<Integer> portionSizeMethodIndex,
                        Option<Either<PortionSize, CompletedPortionSize>> portionSize, Option<String> brand, String searchTerm,
-                       PVector<FoodPrompt> enabledPrompts, PSet<String> flags, PMap<String, String> customData) {
+                       PVector<AssociatedFood> enabledPrompts, PSet<String> flags, PMap<String, String> customData) {
         super(link, flags, customData);
         this.data = data;
         this.portionSizeMethodIndex = portionSizeMethodIndex;
@@ -60,14 +61,14 @@ public class EncodedFood extends FoodEntry {
 
     public EncodedFood(FoodData data, Option<Integer> portionSizeMethodIndex, Option<Either<PortionSize, CompletedPortionSize>> portionSize,
                        Option<String> brand, String searchTerm, FoodLink link, PSet<String> flags, PMap<String, String> customData) {
-        this(data, link, portionSizeMethodIndex, portionSize, brand, searchTerm, TreePVector.<FoodPrompt>empty().plusAll(data.prompts), flags,
+        this(data, link, portionSizeMethodIndex, portionSize, brand, searchTerm, TreePVector.<AssociatedFood>empty().plusAll(data.associatedFoods), flags,
                 customData);
     }
 
     public EncodedFood(FoodData data, FoodLink link, String searchTerm) {
         this(data, link, data.portionSizeMethods.size() == 1 ? Option.some(0) : Option.<Integer>none(), Option
-                .<Either<PortionSize, CompletedPortionSize>>none(), Option.<String>none(), searchTerm, TreePVector.<FoodPrompt>empty().plusAll(
-                data.prompts), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
+                .<Either<PortionSize, CompletedPortionSize>>none(), Option.<String>none(), searchTerm, TreePVector.<AssociatedFood>empty().plusAll(
+                data.associatedFoods), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
     }
 
     @Override
@@ -147,7 +148,7 @@ public class EncodedFood extends FoodEntry {
     }
 
     public EncodedFood disableAllPrompts() {
-        return new EncodedFood(data, link, portionSizeMethodIndex, portionSize, brand, searchTerm, TreePVector.<FoodPrompt>empty(), flags,
+        return new EncodedFood(data, link, portionSizeMethodIndex, portionSize, brand, searchTerm, TreePVector.<AssociatedFood>empty(), flags,
                 customData);
     }
 

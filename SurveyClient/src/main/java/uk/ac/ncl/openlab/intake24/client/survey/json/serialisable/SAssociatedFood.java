@@ -12,9 +12,9 @@ package uk.ac.ncl.openlab.intake24.client.survey.json.serialisable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodPrompt;
+import uk.ac.ncl.openlab.intake24.client.survey.AssociatedFood;
 
-public class SFoodPrompt {
+public class SAssociatedFood {
     @JsonProperty
     public final String code;
     @JsonProperty
@@ -27,8 +27,8 @@ public class SFoodPrompt {
     public final String genericName;
 
     @JsonCreator
-    public SFoodPrompt(@JsonProperty("code") String code, @JsonProperty("isCategoryCode") boolean isCategoryCode, @JsonProperty("text") String text, @JsonProperty("linkAsMain") boolean linkAsMain,
-                       @JsonProperty("genericName") String genericName) {
+    public SAssociatedFood(@JsonProperty("code") String code, @JsonProperty("isCategoryCode") boolean isCategoryCode, @JsonProperty("text") String text, @JsonProperty("linkAsMain") boolean linkAsMain,
+                           @JsonProperty("genericName") String genericName) {
         this.isCategoryCode = isCategoryCode;
         this.code = code;
         this.text = text;
@@ -36,11 +36,11 @@ public class SFoodPrompt {
         this.genericName = genericName;
     }
 
-    public SFoodPrompt(FoodPrompt prompt) {
+    public SAssociatedFood(AssociatedFood prompt) {
         this(prompt.code, prompt.isCategoryCode, prompt.text, prompt.linkAsMain, prompt.genericName);
     }
 
-    public FoodPrompt toFoodPrompt() {
-        return new FoodPrompt(code, isCategoryCode, text, linkAsMain, genericName);
+    public AssociatedFood toFoodPrompt() {
+        return new AssociatedFood(code, isCategoryCode, text, linkAsMain, genericName);
     }
 }

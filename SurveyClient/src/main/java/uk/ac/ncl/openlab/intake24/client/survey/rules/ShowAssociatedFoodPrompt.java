@@ -35,9 +35,9 @@ public class ShowAssociatedFoodPrompt implements PromptRule<Pair<FoodEntry, Meal
     }
 
     public static int applicablePromptIndex(final PVector<FoodEntry> foods, final EncodedFood food) {
-        return indexOf(food.enabledPrompts, new Function1<FoodPrompt, Boolean>() {
+        return indexOf(food.enabledPrompts, new Function1<AssociatedFood, Boolean>() {
             @Override
-            public Boolean apply(final FoodPrompt prompt) {
+            public Boolean apply(final AssociatedFood prompt) {
                 return !exists(Meal.linkedFoods(foods, food), new Function1<FoodEntry, Boolean>() {
                     @Override
                     public Boolean apply(FoodEntry argument) {

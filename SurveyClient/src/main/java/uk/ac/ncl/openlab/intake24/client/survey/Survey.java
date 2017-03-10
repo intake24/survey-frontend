@@ -56,7 +56,7 @@ public class Survey {
     public static final String FLAG_COMPLETION_CONFIRMED = "completion-confirmed";
     public static final String FLAG_ENCODING_COMPLETE = "encoding-complete";
     public static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
-    public static final String FLAG_NO_MORE_PROMPTS = "no-more-prompts";
+    public static final String FLAG_NO_MORE_PROMPTS = "no-more-associatedFoods";
     public static final String FLAG_SKIP_HISTORY = "skip-history";
 
     public final long startTime;

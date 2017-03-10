@@ -37,8 +37,8 @@ import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodData;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodPrompt;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
+import uk.ac.ncl.openlab.intake24.client.survey.AssociatedFood;
 
 public class SFoodData {
     @JsonProperty
@@ -46,7 +46,7 @@ public class SFoodData {
     @JsonProperty
     public final String localDescription;
     @JsonProperty
-    public final boolean askIfReadyMeal;
+    public final boolean readyMealOption;
     @JsonProperty
     public final boolean sameAsBeforeOption;
     @JsonProperty
@@ -54,7 +54,7 @@ public class SFoodData {
     @JsonProperty
     public final PVector<SPortionSizeMethod> portionSizeMethods;
     @JsonProperty
-    public final PVector<SFoodPrompt> prompts;
+    public final PVector<SAssociatedFood> associatedFoods;
     @JsonProperty
     public final PVector<String> brands;
     @JsonProperty
@@ -62,27 +62,27 @@ public class SFoodData {
 
     @JsonCreator
     public SFoodData(@JsonProperty("code") String code,
-                     @JsonProperty("askIfReadyMeal") boolean askIfReadyMeal,
+                     @JsonProperty("readyMealOption") boolean readyMealOption,
                      @JsonProperty("sameAsBeforeOption") boolean sameAsBeforeOption,
                      @JsonProperty("caloriesPer100g") double caloriesPer100g,
                      @JsonProperty("localDescription") String localDescription,
                      @JsonProperty("portionSizeMethods") List<SPortionSizeMethod> portionSizeMethods,
-                     @JsonProperty("prompts") List<SFoodPrompt> prompts,
+                     @JsonProperty("associatedFoods") List<SAssociatedFood> associatedFoods,
                      @JsonProperty("brands") List<String> brands,
                      @JsonProperty("categories") List<String> categories) {
-        this.askIfReadyMeal = askIfReadyMeal;
+        this.readyMealOption = readyMealOption;
         this.sameAsBeforeOption = sameAsBeforeOption;
         this.caloriesPer100g = caloriesPer100g;
         this.localDescription = localDescription;
         this.code = code;
         this.portionSizeMethods = TreePVector.from(portionSizeMethods);
-        this.prompts = TreePVector.from(prompts);
+        this.associatedFoods = TreePVector.from(associatedFoods);
         this.brands = TreePVector.from(brands);
         this.categories = TreePVector.from(categories);
     }
 
     public SFoodData(FoodData data) {
-        this(data.code, data.askIfReadyMeal, data.sameAsBeforeOption, data.caloriesPer100g, data.localDescription,
+        this(data.code, data.readyMealOption, data.sameAsBeforeOption, data.caloriesPer100g, data.localDescription,
                 map(TreePVector.from(data.portionSizeMethods), new Function1<PortionSizeMethod, SPortionSizeMethod>() {
                     @Override
                     public SPortionSizeMethod apply(PortionSizeMethod argument) {
@@ -90,17 +90,17 @@ public class SFoodData {
                     }
 
                 }),
-                map(TreePVector.from(data.prompts), new Function1<FoodPrompt, SFoodPrompt>() {
+                map(TreePVector.from(data.associatedFoods), new Function1<AssociatedFood, SAssociatedFood>() {
                     @Override
-                    public SFoodPrompt apply(FoodPrompt argument) {
-                        return new SFoodPrompt(argument);
+                    public SAssociatedFood apply(AssociatedFood argument) {
+                        return new SAssociatedFood(argument);
                     }
                 }),
                 TreePVector.from(data.brands), TreePVector.from(data.categories));
     }
 
     public FoodData toFoodData() {
-        return new FoodData(code, askIfReadyMeal, sameAsBeforeOption, caloriesPer100g, localDescription,
+        return new FoodData(code, readyMealOption, sameAsBeforeOption, caloriesPer100g, localDescription,
                 map(portionSizeMethods, new Function1<SPortionSizeMethod, PortionSizeMethod>() {
                     @Override
                     public PortionSizeMethod apply(SPortionSizeMethod argument) {
@@ -108,9 +108,9 @@ public class SFoodData {
                     }
 
                 }),
-                map(prompts, new Function1<SFoodPrompt, FoodPrompt>() {
+                map(associatedFoods, new Function1<SAssociatedFood, AssociatedFood>() {
                     @Override
-                    public FoodPrompt apply(SFoodPrompt argument) {
+                    public AssociatedFood apply(SAssociatedFood argument) {
                         return argument.toFoodPrompt();
                     }
                 }),

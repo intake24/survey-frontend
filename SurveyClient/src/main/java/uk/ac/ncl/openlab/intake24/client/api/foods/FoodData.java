@@ -24,22 +24,21 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package uk.ac.ncl.openlab.intake24.client.survey;
+package uk.ac.ncl.openlab.intake24.client.api.foods;
 
-import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
+import uk.ac.ncl.openlab.intake24.client.survey.AssociatedFood;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FoodData {
     public String code;
     public String localDescription;
-    public boolean askIfReadyMeal;
+    public boolean readyMealOption;
     public boolean sameAsBeforeOption;
     public double caloriesPer100g;
     public List<PortionSizeMethod> portionSizeMethods;
-    public List<FoodPrompt> prompts;
+    public List<AssociatedFood> associatedFoods;
     public List<String> brands;
     public List<String> categories;
 
@@ -47,20 +46,20 @@ public class FoodData {
     public FoodData() {
     }
 
-    public FoodData(String code, boolean askIfReadyMeal, boolean sameAsBeforeOption, double caloriesPer100g, String localDescription, List<PortionSizeMethod> portionSizeMethods, List<FoodPrompt> prompts, List<String> brands, List<String> categories) {
-        this.askIfReadyMeal = askIfReadyMeal;
+    public FoodData(String code, boolean askIfReadyMeal, boolean sameAsBeforeOption, double caloriesPer100g, String localDescription, List<PortionSizeMethod> portionSizeMethods, List<AssociatedFood> associatedFoods, List<String> brands, List<String> categories) {
+        this.readyMealOption = askIfReadyMeal;
         this.sameAsBeforeOption = sameAsBeforeOption;
         this.caloriesPer100g = caloriesPer100g;
         this.localDescription = localDescription;
         this.code = code;
         this.portionSizeMethods = portionSizeMethods;
-        this.prompts = prompts;
+        this.associatedFoods = associatedFoods;
         this.brands = brands;
         this.categories = categories;
     }
 
     public FoodData withPortionSizeMethods(List<PortionSizeMethod> portionSizeMethods) {
-        return new FoodData(code, askIfReadyMeal, sameAsBeforeOption, caloriesPer100g, localDescription, portionSizeMethods, prompts, brands, categories);
+        return new FoodData(code, readyMealOption, sameAsBeforeOption, caloriesPer100g, localDescription, portionSizeMethods, associatedFoods, brands, categories);
     }
 
     public FoodData withRecipePortionSizeMethods(PortionSizeMethod weight) {
@@ -90,7 +89,7 @@ public class FoodData {
         if (getClass() != obj.getClass())
             return false;
         FoodData other = (FoodData) obj;
-        if (askIfReadyMeal != other.askIfReadyMeal)
+        if (readyMealOption != other.readyMealOption)
             return false;
         if (brands == null) {
             if (other.brands != null)
@@ -119,10 +118,10 @@ public class FoodData {
                 return false;
         } else if (!portionSizeMethods.equals(other.portionSizeMethods))
             return false;
-        if (prompts == null) {
-            if (other.prompts != null)
+        if (associatedFoods == null) {
+            if (other.associatedFoods != null)
                 return false;
-        } else if (!prompts.equals(other.prompts))
+        } else if (!associatedFoods.equals(other.associatedFoods))
             return false;
         if (sameAsBeforeOption != other.sameAsBeforeOption)
             return false;
@@ -131,8 +130,8 @@ public class FoodData {
 
     @Override
     public String toString() {
-        return "FoodData [code=" + code + ", localDescription=" + localDescription + ", askIfReadyMeal=" + askIfReadyMeal + ", sameAsBeforeOption="
-                + sameAsBeforeOption + ", caloriesPer100g=" + caloriesPer100g + ", portionSizeMethods=" + portionSizeMethods + ", prompts=" + prompts
+        return "FoodData [code=" + code + ", localDescription=" + localDescription + ", readyMealOption=" + readyMealOption + ", sameAsBeforeOption="
+                + sameAsBeforeOption + ", caloriesPer100g=" + caloriesPer100g + ", portionSizeMethods=" + portionSizeMethods + ", associatedFoods=" + associatedFoods
                 + ", brands=" + brands + ", categories=" + categories + "]";
     }
 

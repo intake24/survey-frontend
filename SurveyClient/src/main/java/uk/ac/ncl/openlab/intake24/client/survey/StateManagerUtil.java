@@ -27,9 +27,9 @@ import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.S
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
 public class StateManagerUtil {
-  final public static String LatestStateKeyPrefix = "scran24-survey-state-";
-  final public static String HistoryStateKeyPrefix = "scran24-history-";
-  final public static String SameAsBeforePrefix = "scran24-sab-";
+  final public static String LatestStateKeyPrefix = "survey-state-";
+  final public static String HistoryStateKeyPrefix = "history-";
+  final public static String SameAsBeforePrefix = "sab-";
 
   final public static Storage localStorage = Storage.getLocalStorageIfSupported();
   final public static Storage sessionStorage = Storage.getSessionStorageIfSupported();

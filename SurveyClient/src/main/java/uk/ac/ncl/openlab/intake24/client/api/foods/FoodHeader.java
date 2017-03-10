@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package uk.ac.ncl.openlab.intake24.client.survey;
+package uk.ac.ncl.openlab.intake24.client.api.foods;
 
 public class FoodHeader {
     public String code;

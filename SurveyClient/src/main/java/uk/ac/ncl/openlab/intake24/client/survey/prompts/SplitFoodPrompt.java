@@ -31,26 +31,26 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
-import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
-import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodLookupService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.SplitSuggestion;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
-import java.util.List;
-
 public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
-    // private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
+
     private final RawFood food;
     private final PromptMessages messages = PromptMessages.Util.getInstance();
 
@@ -74,21 +74,16 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
             }
         });
 
-        AsyncRequestAuthHandler.execute(new AsyncRequest<List<String>>() {
+        FoodLookupService.INSTANCE.getSplitSuggestion(currentLocale, food.description, new MethodCallback<SplitSuggestion>() {
             @Override
-            public void execute(AsyncCallback<List<String>> callback) {
-                throw new RuntimeException("Not implemented");
-                // lookupService.split(food.description, currentLocale, callback);
-            }
-        }, new AsyncCallback<List<String>>() {
-            @Override
-            public void onFailure(Throwable caught) {
+            public void onFailure(Method method, Throwable exception) {
+                BrowserConsole.error("Split description failed with code " + method.getResponse().getStatusCode());
                 onComplete.call(disableSplit);
             }
 
             @Override
-            public void onSuccess(final List<String> result) {
-                if (result.size() == 1)
+            public void onSuccess(Method method, SplitSuggestion result) {
+                if (result.parts.size() == 1)
                     onComplete.call(disableSplit);
                 else {
 
@@ -107,7 +102,7 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
 
                     sb.append("<ul>");
 
-                    for (String s : result) {
+                    for (String s : result.parts) {
                         sb.append("<li>");
                         sb.append(SafeHtmlUtils.htmlEscape(s));
                         sb.append("</li>");
@@ -135,7 +130,7 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
                         public void onClick(ClickEvent event) {
                             PVector<FoodEntry> replacement = TreePVector.<FoodEntry>empty();
 
-                            for (String s : result)
+                            for (String s : result.parts)
                                 replacement = replacement.plus(new RawFood(FoodLink.newUnlinked(), s, food.flags.plus(RawFood.FLAG_DISABLE_SPLIT),
                                         food.customData));
 

@@ -12,9 +12,7 @@ package uk.ac.ncl.openlab.intake24.client.api.foods;
 
 import java.util.Map;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class PortionSizeMethod implements IsSerializable {
+public class PortionSizeMethod {
 	public String name;
 	public Map<String, String> params;
 	public String description;

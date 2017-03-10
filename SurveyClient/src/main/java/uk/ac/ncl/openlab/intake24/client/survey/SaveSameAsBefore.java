@@ -40,7 +40,7 @@ public class SaveSameAsBefore implements Function2<Survey, Survey, Survey> {
     }
 
     private boolean portionSizeComplete(Meal meal, EncodedFood food) {
-        if (food.data.prompts.isEmpty())
+        if (food.data.associatedFoods.isEmpty())
             return food.isPortionSizeComplete();
         else {
             boolean promptsLeft = ShowAssociatedFoodPrompt.applicablePromptIndex(meal.foods, food) != -1;

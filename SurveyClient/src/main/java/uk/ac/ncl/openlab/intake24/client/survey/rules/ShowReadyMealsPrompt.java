@@ -34,7 +34,7 @@ public class ShowReadyMealsPrompt implements PromptRule<Meal, MealOperation> {
 
                     @Override
                     public Boolean visitEncoded(EncodedFood food) {
-                        return !food.isDrink() && !food.link.isLinked() && food.data.askIfReadyMeal;
+                        return !food.isDrink() && !food.link.isLinked() && food.data.readyMealOption;
                     }
 
                     @Override
