@@ -32,7 +32,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -48,8 +47,6 @@ import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
-import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
-import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
@@ -404,32 +401,24 @@ public class FoodBrowser extends Composite {
         contents.clear();
         contents.add(new LoadingPanel(messages.foodBrowser_loadingMessage()));
 
-        throw new RuntimeException("Not implemented");
+        FoodDataService.INSTANCE.getCategoryContents(locale, categoryCode, new MethodCallback<LookupResult>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                contents.clear();
+                contents.add(WidgetFactory.createDefaultErrorMessage());
 
-		/*
+                if (!browseHistory.isEmpty())
+                    contents.add(historyBackLink());
+                else
+                    contents.add(WidgetFactory.createBackLink());
 
-		AsyncRequestAuthHandler.execute(new AsyncRequest<LookupResult>() {
-			@Override
-			public void execute(AsyncCallback<LookupResult> callback) {
-				lookupService.browseCategory(categoryCode, locale, callback);
-			}
-		}, new AsyncCallback<LookupResult>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				contents.clear();
-				contents.add(WidgetFactory.createDefaultErrorMessage());
+            }
 
-				if (!browseHistory.isEmpty())
-					contents.add(historyBackLink());
-				else
-					contents.add(WidgetFactory.createBackLink());
-			}
-
-			@Override
-			public void onSuccess(LookupResult result) {
-				show(result, dataSetName, foodsHeader, categoryHeader);
-			}
-		});*/
+            @Override
+            public void onSuccess(Method method, LookupResult response) {
+                show(response, dataSetName, foodsHeader, categoryHeader);
+            }
+        });
     }
 
     public void browse(final String categoryCode, final String dataSetName) {
@@ -440,24 +429,20 @@ public class FoodBrowser extends Composite {
         contents.clear();
         contents.add(new LoadingPanel(messages.foodBrowser_loadingMessage()));
 
-        AsyncRequestAuthHandler.execute(new AsyncRequest<List<CategoryHeader>>() {
+        FoodDataService.INSTANCE.getRootCategories(locale, new MethodCallback<List<CategoryHeader>>() {
             @Override
-            public void execute(AsyncCallback<List<CategoryHeader>> callback) {
-                throw new RuntimeException("Not implemented");
-                // lookupService.getRootCategories(locale, callback);
-            }
-        }, new AsyncCallback<List<CategoryHeader>>() {
-            @Override
-            public void onFailure(Throwable caught) {
+            public void onFailure(Method method, Throwable exception) {
                 contents.clear();
                 contents.add(WidgetFactory.createDefaultErrorMessage());
                 contents.add(historyBackLink());
+
             }
 
             @Override
-            public void onSuccess(List<CategoryHeader> result) {
-                show(new LookupResult(new ArrayList<FoodHeader>(), result), messages.foodBrowser_allFoodsDataSetName(), "",
+            public void onSuccess(Method method, List<CategoryHeader> response) {
+                show(new LookupResult(new ArrayList<FoodHeader>(), response), messages.foodBrowser_allFoodsDataSetName(), "",
                         messages.foodBrowser_allCategoriesHeader());
+
             }
         });
     }

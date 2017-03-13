@@ -39,7 +39,7 @@ public class SPortionSizeMethod {
     }
 
     public SPortionSizeMethod(PortionSizeMethod method) {
-        this(method.name, method.description, method.imageUrl, method.useForRecipes, method.params);
+        this(method.method, method.description, method.imageUrl, method.useForRecipes, method.parameters);
     }
 
     public PortionSizeMethod toPortionSizeMethod() {

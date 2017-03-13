@@ -49,7 +49,10 @@ public class ShowAssociatedFoodPrompt implements PromptRule<Pair<FoodEntry, Meal
 
                             @Override
                             public Boolean visitEncoded(EncodedFood food) {
-                                return food.isInCategory(prompt.code) || food.data.code.equals(prompt.code);
+                                if (prompt.foodOrCategoryCode.isLeft())
+                                    return food.data.code.equals(prompt.foodOrCategoryCode.getLeftOrDie());
+                                else
+                                    return food.isInCategory(prompt.foodOrCategoryCode.getRightOrDie());
                             }
 
                             @Override
@@ -59,7 +62,7 @@ public class ShowAssociatedFoodPrompt implements PromptRule<Pair<FoodEntry, Meal
 
                             @Override
                             public Boolean visitMissing(MissingFood food) {
-                                return prompt.code.equals(food.customData.get(MissingFood.KEY_ASSOC_FOOD_CATEGORY));
+                                return prompt.foodOrCategoryCode.getRightOrDie().equals(food.customData.get(MissingFood.KEY_ASSOC_FOOD_CATEGORY));
                             }
 
                             @Override

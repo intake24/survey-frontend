@@ -27,27 +27,27 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PMap;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.GuideImage;
 
 public class GuideScriptLoader implements PortionSizeScriptLoader {
-    // private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
-
-    private final String currentLocale = "en_GB"; // LocaleInfo.getCurrentLocale().getLocaleName()
 
     @Override
     public void loadResources(final PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
 
-        throw new RuntimeException("Not implemented");
-    /* lookupService.getGuideDef(data.get("guide-image-id"), currentLocale, new AsyncCallback<GuideDef>() {
-      @Override
-      public void onFailure(Throwable caught) {
-        onComplete.onFailure(caught);
-      }
+        FoodDataService.INSTANCE.getGuideImage(data.get("guide-image-id"), new MethodCallback<GuideImage>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                onComplete.onFailure(exception);
+            }
 
-      @Override
-      public void onSuccess(final GuideDef guideDef) {
-        onComplete.onSuccess(new GuideScript(guideDef));
-      }
-    });*/
+            @Override
+            public void onSuccess(Method method, GuideImage image) {
+                onComplete.onSuccess(new GuideScript(image));
+            }
+        });
     }
 }

@@ -13,8 +13,8 @@ package uk.ac.ncl.openlab.intake24.client.api.foods;
 import java.util.Map;
 
 public class PortionSizeMethod {
-	public String name;
-	public Map<String, String> params;
+	public String method;
+	public Map<String, String> parameters;
 	public String description;
 	public String imageUrl;
 	public boolean useForRecipes;
@@ -22,12 +22,12 @@ public class PortionSizeMethod {
 	@Deprecated
 	public PortionSizeMethod() { }
 	
-	public PortionSizeMethod(String name, String description, String imageUrl, boolean useForRecipes, Map<String, String> params) {
-		this.name = name;
+	public PortionSizeMethod(String method, String description, String imageUrl, boolean useForRecipes, Map<String, String> params) {
+		this.method = method;
 		this.description = description;
 		this.imageUrl = imageUrl;
 		this.useForRecipes = useForRecipes;
-		this.params = params;
+		this.parameters = params;
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -48,15 +48,15 @@ public class PortionSizeMethod {
 				return false;
 		} else if (!imageUrl.equals(other.imageUrl))
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (method == null) {
+			if (other.method != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!method.equals(other.method))
 			return false;
-		if (params == null) {
-			if (other.params != null)
+		if (parameters == null) {
+			if (other.parameters != null)
 				return false;
-		} else if (!params.equals(other.params))
+		} else if (!parameters.equals(other.parameters))
 			return false;
 		if (useForRecipes != other.useForRecipes)
 			return false;
@@ -65,7 +65,7 @@ public class PortionSizeMethod {
 
 	@Override
 	public String toString() {
-		return "PortionSizeMethod [name=" + name + ", params=" + params + ", description=" + description + ", imageUrl=" + imageUrl
+		return "PortionSizeMethod [method=" + method + ", params=" + parameters + ", description=" + description + ", imageUrl=" + imageUrl
 				+ ", useForRecipes=" + useForRecipes + "]";
 	}
 }

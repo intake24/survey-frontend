@@ -30,12 +30,15 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.*;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
 import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
@@ -50,8 +53,6 @@ import java.util.List;
 public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOperation> {
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
     private final static HelpMessages helpMessages = HelpMessages.Util.getInstance();
-
-    // private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
 
     private final Pair<FoodEntry, Meal> pair;
     private final int foodIndex;
@@ -101,9 +102,9 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         ArrayList<PortionSizeMethod> result = new ArrayList<PortionSizeMethod>();
         for (PortionSizeMethod m : methods) {
             HashMap<String, String> parameters = new HashMap<String, String>();
-            parameters.putAll(m.params);
+            parameters.putAll(m.parameters);
             parameters.put(id, value);
-            result.add(new PortionSizeMethod(m.name, m.description, m.imageUrl, m.useForRecipes, parameters));
+            result.add(new PortionSizeMethod(m.method, m.description, m.imageUrl, m.useForRecipes, parameters));
         }
         return result;
     }
@@ -137,7 +138,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         final FlowPanel content = new FlowPanel();
         PromptUtil.addBackLink(content);
         final Panel promptPanel = WidgetFactory.createPromptPanel(
-                SafeHtmlUtils.fromSafeConstant("<p>" + SafeHtmlUtils.htmlEscape(prompt.text) + "</p>"),
+                SafeHtmlUtils.fromSafeConstant("<p>" + SafeHtmlUtils.htmlEscape(prompt.promptText) + "</p>"),
                 WidgetFactory.createHelpButton(new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent arg0) {
@@ -191,7 +192,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
                         FoodEntry missingFood = new MissingFood(FoodLink.newUnlinked(), prompt.genericName.substring(0, 1).toUpperCase()
                                 + prompt.genericName.substring(1), false, Option.<MissingFoodDescription>none()).withCustomDataField(
                                 MissingFood.KEY_ASSOC_FOOD_NAME, food.description()).withCustomDataField(MissingFood.KEY_ASSOC_FOOD_CATEGORY,
-                                prompt.code);
+                                prompt.foodOrCategoryCode.getRightOrDie());
 
                         return linkAssociatedFood(meal.plusFood(missingFood), food, missingFood, prompt.linkAsMain);
                     }
@@ -245,7 +246,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         Button yes = WidgetFactory.createButton(messages.assocFoods_yesButtonLabel(), new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (prompt.isCategoryCode) {
+                if (prompt.foodOrCategoryCode.isRight()) {
                     content.clear();
                     PromptUtil.addBackLink(content);
                     content.add(promptPanel);
@@ -255,33 +256,24 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
                     content.add(foodBrowser);
                     isInBrowserMode = true;
 
-                    foodBrowser.browse(prompt.code, messages.assocFoods_allFoodsDataSetName());
+                    foodBrowser.browse(prompt.foodOrCategoryCode.getRightOrDie(), messages.assocFoods_allFoodsDataSetName());
                 } else {
                     content.clear();
                     content.add(new LoadingPanel(messages.foodBrowser_loadingMessage()));
 
-                    throw new RuntimeException("Not implemented");
+                    FoodDataService.INSTANCE.getFoodData(locale, prompt.foodOrCategoryCode.getLeftOrDie(), new MethodCallback<FoodData>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+                            content.clear();
+                            content.add(WidgetFactory.createDefaultErrorMessage());
+                            content.add(WidgetFactory.createBackLink());
+                        }
 
-					/*
-
-					AsyncRequestAuthHandler.execute(new AsyncRequest<FoodData>() {
-						@Override
-						public void execute(AsyncCallback<FoodData> callback) {
-							lookupService.getFoodData(prompt.code, locale, callback);
-						}
-					}, new AsyncCallback<FoodData>() {
-						@Override
-						public void onFailure(Throwable caught) {
-							content.clear();
-							content.add(WidgetFactory.createDefaultErrorMessage());
-							content.add(WidgetFactory.createBackLink());
-						}
-
-						@Override
-						public void onSuccess(FoodData result) {
-							addNewFood.call(result);
-						}
-					});*/
+                        @Override
+                        public void onSuccess(Method method, FoodData response) {
+                            addNewFood.call(response);
+                        }
+                    });
                 }
             }
         });
@@ -309,10 +301,10 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
                             // don't suggest if the food has foods linked to it
                         else if (!Meal.linkedFoods(pair.right.foods, food).isEmpty())
                             return false;
-                        else if (prompt.isCategoryCode)
-                            return food.isInCategory(prompt.code);
+                        else if (prompt.foodOrCategoryCode.isRight())
+                            return food.isInCategory(prompt.foodOrCategoryCode.getRightOrDie());
                         else
-                            return food.data.code.equals(prompt.code);
+                            return food.data.code.equals(prompt.foodOrCategoryCode.getLeftOrDie());
                     }
 
                     @Override

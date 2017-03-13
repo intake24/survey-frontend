@@ -26,19 +26,18 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.json.serialisable;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
+import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
+import uk.ac.ncl.openlab.intake24.client.survey.AssociatedFood;
+
+import java.util.List;
 
 import static org.workcraft.gwt.shared.client.CollectionUtils.map;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
-import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
-import uk.ac.ncl.openlab.intake24.client.survey.AssociatedFood;
 
 public class SFoodData {
     @JsonProperty
@@ -54,7 +53,7 @@ public class SFoodData {
     @JsonProperty
     public final PVector<SPortionSizeMethod> portionSizeMethods;
     @JsonProperty
-    public final PVector<SAssociatedFood> associatedFoods;
+    public final PVector<AssociatedFood> associatedFoods;
     @JsonProperty
     public final PVector<String> brands;
     @JsonProperty
@@ -67,7 +66,7 @@ public class SFoodData {
                      @JsonProperty("caloriesPer100g") double caloriesPer100g,
                      @JsonProperty("localDescription") String localDescription,
                      @JsonProperty("portionSizeMethods") List<SPortionSizeMethod> portionSizeMethods,
-                     @JsonProperty("associatedFoods") List<SAssociatedFood> associatedFoods,
+                     @JsonProperty("associatedFoods") List<AssociatedFood> associatedFoods,
                      @JsonProperty("brands") List<String> brands,
                      @JsonProperty("categories") List<String> categories) {
         this.readyMealOption = readyMealOption;
@@ -90,12 +89,7 @@ public class SFoodData {
                     }
 
                 }),
-                map(TreePVector.from(data.associatedFoods), new Function1<AssociatedFood, SAssociatedFood>() {
-                    @Override
-                    public SAssociatedFood apply(AssociatedFood argument) {
-                        return new SAssociatedFood(argument);
-                    }
-                }),
+                data.associatedFoods,
                 TreePVector.from(data.brands), TreePVector.from(data.categories));
     }
 
@@ -108,12 +102,7 @@ public class SFoodData {
                     }
 
                 }),
-                map(associatedFoods, new Function1<SAssociatedFood, AssociatedFood>() {
-                    @Override
-                    public AssociatedFood apply(SAssociatedFood argument) {
-                        return argument.toFoodPrompt();
-                    }
-                }),
+                associatedFoods,
                 brands, categories);
     }
 

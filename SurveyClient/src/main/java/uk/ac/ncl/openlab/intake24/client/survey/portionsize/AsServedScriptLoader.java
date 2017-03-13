@@ -26,46 +26,49 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PMap;
-import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedDef;
+import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
 
 public class AsServedScriptLoader implements PortionSizeScriptLoader {
-    // private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
 
-    private final static String currentLocale = LocaleInfo.getCurrentLocale().getLocaleName();
+    public final static String SERVING_SET_KEY = "serving-image-set";
+    public final static String LEFTOVERS_SET_KEY = "leftovers-image-set";
 
     @Override
     public void loadResources(final PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
 
-        throw new RuntimeException("Not implemented");
-        /*
-		lookupService.getAsServedDef(data.get("serving-image-set"), currentLocale, new AsyncCallback<AsServedDef>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				onComplete.onFailure(caught);
-			}
+        FoodDataService.INSTANCE.getAsServedSet(data.get(SERVING_SET_KEY), new MethodCallback<AsServedSet>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                onComplete.onFailure(exception);
+            }
 
-			@Override
-			public void onSuccess(final AsServedDef servingImages) {
-				if (data.containsKey("leftovers-image-set"))
-					lookupService.getAsServedDef(data.get("leftovers-image-set"), currentLocale, new AsyncCallback<AsServedDef>() {
-						@Override
-						public void onFailure(Throwable caught) {
-							onComplete.onFailure(caught);
-						}
+            @Override
+            public void onSuccess(Method method, AsServedSet servingSet) {
+                if (data.containsKey(LEFTOVERS_SET_KEY))
+                    FoodDataService.INSTANCE.getAsServedSet(data.get(LEFTOVERS_SET_KEY), new MethodCallback<AsServedSet>() {
+                        @Override
+                        public void onFailure(Method method, Throwable exception) {
+                            onComplete.onFailure(exception);
+                        }
 
-						@Override
-						public void onSuccess(AsServedDef leftoversImages) {
-							onComplete.onSuccess(new AsServedScript(servingImages, Option.some(leftoversImages)));
-						}
-					});
-				else
-					onComplete.onSuccess(new AsServedScript(servingImages, Option.<AsServedDef>none()));
-			}
-		});*/
+                        @Override
+                        public void onSuccess(Method method, AsServedSet leftoversSet) {
+                            onComplete.onSuccess(new AsServedScript(servingSet, Option.some(leftoversSet)));
+                        }
+                    });
+                else
+                    onComplete.onSuccess(new AsServedScript(servingSet, Option.none()));
+
+            }
+        });
     }
 }

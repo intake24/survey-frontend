@@ -32,12 +32,14 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Panel;
 import org.workcraft.gwt.imagechooser.shared.ImageDef;
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedDef;
-import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScaleDef;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedImage;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
+import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScale;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.*;
@@ -137,30 +139,32 @@ public class PortionSizeScriptUtil {
         });
     }
 
-    public static SimplePrompt<UpdateFunc> asServedPrompt(final AsServedDef asServedDef, final String lessText, final String moreText,
+    public static SimplePrompt<UpdateFunc> asServedPrompt(final AsServedSet set, final String lessText, final String moreText,
                                                           final String confirmText, final String indexField, final String imageUrlField, final String weightField, SafeHtml promptText) {
 
-        final ImageDef[] defs = new ImageDef[asServedDef.images.length];
+        final ImageDef[] defs = new ImageDef[set.images.size()];
 
         final NumberFormat nf = NumberFormat.getDecimalFormat();
 
-        for (int i = 0; i < asServedDef.images.length; i++) {
-            defs[i] = asServedDef.images[i].def;
-            defs[i].label = nf.format(Math.round(asServedDef.images[i].weight)) + " " + messages.asServed_weightUnitLabel();
+        int k = 0;
+
+        for (AsServedImage image: set.images) {
+            defs[k] = new ImageDef(image.mainImageUrl, image.thumbnailUrl, nf.format(Math.round(image.weight)) + " " + messages.asServed_weightUnitLabel());
+            k++;
         }
 
         AsServedPromptDef def = new AsServedPromptDef(promptText, defs, moreText, lessText, confirmText);
-
+        
         return map(new AsServedPrompt(def), new Function1<Integer, UpdateFunc>() {
             @Override
             public UpdateFunc apply(Integer choice) {
                 return new UpdateFunc().setField(indexField, choice.toString())
-                        .setField(weightField, Double.toString(asServedDef.images[choice].weight)).setField(imageUrlField, defs[choice].url);
+                        .setField(weightField, Double.toString(set.images.get(choice).weight)).setField(imageUrlField, defs[choice].url);
             }
         });
     }
 
-    public static SimplePrompt<UpdateFunc> guidePromptEx(final SafeHtml promptText, final ImageMapDefinition imageMap, final String indexField,
+    public static SimplePrompt<UpdateFunc> guidePromptEx(final SafeHtml promptText, final ImageMap imageMap, final String indexField,
                                                          final String imageUrlField, final Function1<Callback1<Integer>, Panel> additionalControlsCtor) {
         return map(new GuidePrompt(promptText, imageMap, additionalControlsCtor), new Function1<Integer, UpdateFunc>() {
             @Override
@@ -170,7 +174,7 @@ public class PortionSizeScriptUtil {
         });
     }
 
-    public static SimplePrompt<UpdateFunc> guidePrompt(final SafeHtml promptText, final ImageMapDefinition imageMap, final String indexField,
+    public static SimplePrompt<UpdateFunc> guidePrompt(final SafeHtml promptText, final ImageMap imageMap, final String indexField,
                                                        final String imageUrlField) {
         return map(new GuidePrompt(promptText, imageMap), new Function1<Integer, UpdateFunc>() {
             @Override
@@ -180,7 +184,7 @@ public class PortionSizeScriptUtil {
         });
     }
 
-    public static SimplePrompt<UpdateFunc> drinkScalePrompt(final SafeHtml promptText, final DrinkScaleDef scaleDef, final String lessText,
+    public static SimplePrompt<UpdateFunc> drinkScalePrompt(final SafeHtml promptText, final DrinkScale scaleDef, final String lessText,
                                                             final String moreText, final String confirmText, final double limit, final double initialLevel, final String levelField) {
 
         DrinkScalePromptDef promptDef = new DrinkScalePromptDef(scaleDef, promptText, lessText, moreText, confirmText, limit, initialLevel);

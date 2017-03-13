@@ -27,10 +27,18 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.SImageMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CerealPortionSizeScriptLoader implements PortionSizeScriptLoader {
-//  private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
 
     public static final String bowlImageMap = "gbowl";
 
@@ -38,40 +46,40 @@ public class CerealPortionSizeScriptLoader implements PortionSizeScriptLoader {
     public void loadResources(final PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
         final String cerealType = data.get("type");
 
-        throw new RuntimeException("Not implemented");
-    /*
-    lookupService.getImageMap(bowlImageMap, new AsyncCallback<ImageMapDefinition>() {
-      @Override
-      public void onFailure(Throwable caught) {
-        onComplete.onFailure(caught);
-      }
+        FoodDataService.INSTANCE.getImageMap(bowlImageMap, new MethodCallback<SImageMap>() {
 
-      @Override
-      public void onSuccess(final ImageMapDefinition imageMapDef) {
-        final ArrayList<String> ids = new ArrayList<String>();
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                onComplete.onFailure(exception);
+            }
 
-        for (String bowl : CerealPortionSizeScript.bowlCodes) {
-          ids.add("cereal_" + cerealType + bowl);
-          ids.add("cereal_" + cerealType + bowl + "_leftovers");
-        }
+            @Override
+            public void onSuccess(Method method, SImageMap imageMap) {
+                final ArrayList<String> ids = new ArrayList<String>();
 
-        lookupService.getMultipleAsServedDefs(ids, LocaleInfo.getCurrentLocale().getLocaleName(), new AsyncCallback<List<AsServedDef>>() {
-          @Override
-          public void onSuccess(List<AsServedDef> result) {
-            PMap<String, AsServedDef> defs = HashTreePMap.empty();
+                for (String bowl : CerealPortionSizeScript.bowlCodes) {
+                    ids.add("cereal_" + cerealType + bowl);
+                    ids.add("cereal_" + cerealType + bowl + "_leftovers");
+                }
 
-            for (int i = 0; i < ids.size(); i++)
-              defs = defs.plus(ids.get(i), result.get(i));
+                FoodDataService.INSTANCE.getAsServedSets(ids, new MethodCallback<List<AsServedSet>>() {
 
-            onComplete.onSuccess(new CerealPortionSizeScript(imageMapDef, defs));
-          }
+                    @Override
+                    public void onFailure(Method method, Throwable exception) {
+                        onComplete.onFailure(exception);
+                    }
 
-          @Override
-          public void onFailure(Throwable caught) {
-            onComplete.onFailure(caught);
-          }
+                    @Override
+                    public void onSuccess(Method method, List<AsServedSet> response) {
+                        PMap<String, AsServedSet> defs = HashTreePMap.empty();
+
+                        for (int i = 0; i < ids.size(); i++)
+                            defs = defs.plus(ids.get(i), response.get(i));
+
+                        onComplete.onSuccess(new CerealPortionSizeScript(imageMap.toImageMap(), defs));
+                    }
+                });
+            }
         });
-
-        throw new RuntimeException("Not implemented"));*/
     }
 }

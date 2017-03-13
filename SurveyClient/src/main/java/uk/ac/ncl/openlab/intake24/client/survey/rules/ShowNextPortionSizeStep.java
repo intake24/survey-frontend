@@ -152,9 +152,9 @@ public class ShowNextPortionSizeStep implements PromptRule<FoodEntry, FoodOperat
                                 @Override
                                 public Option<Prompt<FoodEntry, FoodOperation>> visitSome(Integer portionSizeMethodIndex) {
                                     PortionSizeMethod portionSizeMethod = food.data.portionSizeMethods.get(portionSizeMethodIndex);
-                                    PortionSizeScriptLoader instance = scriptManager.getInstance(portionSizeMethod.name);
-                                    PortionSize portionSize = new PortionSize(portionSizeMethod.name, HashTreePMap.<String, String>empty().plusAll(
-                                            portionSizeMethod.params), instance);
+                                    PortionSizeScriptLoader instance = scriptManager.getInstance(portionSizeMethod.method);
+                                    PortionSize portionSize = new PortionSize(portionSizeMethod.method, HashTreePMap.<String, String>empty().plusAll(
+                                            portionSizeMethod.parameters), instance);
 
                                     // return the first prompt
                                     return outer.visitSome(PortionSize.incomplete(portionSize));

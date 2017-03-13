@@ -15,7 +15,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
@@ -31,8 +31,8 @@ public class MilkOnCerealPortionSizeScript implements PortionSizeScript {
     public static final String name = "milk-on-cereal";
     public static final String milkLevelImageMapPrefix = "milkbowl";
 
-    public final ImageMapDefinition bowlImageMap;
-    public final PMap<String, ImageMapDefinition> milkLevelImageMaps;
+    public final ImageMap bowlImageMap;
+    public final PMap<String, ImageMap> milkLevelImageMaps;
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
 	/*
@@ -61,7 +61,7 @@ public class MilkOnCerealPortionSizeScript implements PortionSizeScript {
 			.plus ("CWML", 1.031)
 			.plus ("CKML", 1.036); */
 
-    public MilkOnCerealPortionSizeScript(ImageMapDefinition bowlImageMap, PMap<String, ImageMapDefinition> milkLevelImageMaps) {
+    public MilkOnCerealPortionSizeScript(ImageMap bowlImageMap, PMap<String, ImageMap> milkLevelImageMaps) {
         this.bowlImageMap = bowlImageMap;
         this.milkLevelImageMaps = milkLevelImageMaps;
     }

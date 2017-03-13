@@ -10,13 +10,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.imagemap.shared;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class Polygon implements IsSerializable {
+public class Polygon {
   public Point[] vertices;
-
-  public Polygon() {
-  }
 
   private void verifyLength() {
     if (this.vertices.length < 3)

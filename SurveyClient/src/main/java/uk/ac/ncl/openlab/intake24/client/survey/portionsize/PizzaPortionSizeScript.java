@@ -16,7 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Panel;
 import org.pcollections.PMap;
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
@@ -32,13 +32,13 @@ import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeSc
 public class PizzaPortionSizeScript implements PortionSizeScript {
     public static final String name = "pizza";
 
-    public final ImageMapDefinition pizzaTypeImageMap;
-    public final ImageMapDefinition pizzaThicknessImageMap;
-    public final PMap<Integer, ImageMapDefinition> sliceSizeImageMap;
+    public final ImageMap pizzaTypeImageMap;
+    public final ImageMap pizzaThicknessImageMap;
+    public final PMap<Integer, ImageMap> sliceSizeImageMap;
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
-    public PizzaPortionSizeScript(ImageMapDefinition pizzaTypeImageMap, ImageMapDefinition pizzaThicknessImageMap,
-                                  PMap<Integer, ImageMapDefinition> sliceSizeImageMap) {
+    public PizzaPortionSizeScript(ImageMap pizzaTypeImageMap, ImageMap pizzaThicknessImageMap,
+                                  PMap<Integer, ImageMap> sliceSizeImageMap) {
         this.pizzaTypeImageMap = pizzaTypeImageMap;
         this.pizzaThicknessImageMap = pizzaThicknessImageMap;
         this.sliceSizeImageMap = sliceSizeImageMap;

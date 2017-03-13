@@ -31,7 +31,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.api.foods.GuideDef;
+import uk.ac.ncl.openlab.intake24.client.api.foods.GuideImage;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
@@ -43,11 +43,11 @@ import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeSc
 public class GuideScript implements PortionSizeScript {
     public static final String name = "guide-image";
 
-    public final GuideDef guideDef;
+    public final GuideImage guideDef;
 
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
-    public GuideScript(GuideDef guideDef) {
+    public GuideScript(GuideImage guideDef) {
         this.guideDef = guideDef;
     }
 
@@ -55,7 +55,7 @@ public class GuideScript implements PortionSizeScript {
     public Option<SimplePrompt<UpdateFunc>> nextPrompt(PMap<String, String> data, FoodData foodData) {
         if (!data.containsKey("objectWeight")) {
             return Option.some(PromptUtil.map(
-                    withBackLink(guidePrompt(SafeHtmlUtils.fromSafeConstant(messages.guide_choicePromptText()), guideDef.imageMap, "objectIndex", "imageUrl")),
+                    withBackLink(guidePrompt(SafeHtmlUtils.fromSafeConstant(messages.guide_choicePromptText()), guideDef.imageMap.toImageMap(), "objectIndex", "imageUrl")),
                     new Function1<UpdateFunc, UpdateFunc>() {
                         @Override
                         public UpdateFunc apply(final UpdateFunc f) {

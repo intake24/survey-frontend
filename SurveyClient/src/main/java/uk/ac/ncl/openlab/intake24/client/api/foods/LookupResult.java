@@ -33,29 +33,10 @@ public class LookupResult {
     public List<CategoryHeader> categories;
 
     @Deprecated
-    public LookupResult() {
-    }
+    public LookupResult() { }
 
     public LookupResult(List<FoodHeader> foods, List<CategoryHeader> categories) {
         this.foods = foods;
         this.categories = categories;
-    }
-
-    ;
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Foods:\n");
-
-        for (FoodHeader f : foods)
-            sb.append("  " + f.description() + "\n");
-
-        sb.append("Categories:\n");
-
-        for (CategoryHeader c : categories)
-            sb.append("  " + c.description() + "\n");
-
-        return sb.toString();
     }
 }

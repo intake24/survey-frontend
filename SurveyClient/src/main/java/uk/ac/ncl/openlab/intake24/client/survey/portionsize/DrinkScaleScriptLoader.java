@@ -27,39 +27,41 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PMap;
+import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkwareSet;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.SImageMap;
 
 
 public class DrinkScaleScriptLoader implements PortionSizeScriptLoader {
-    //private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
-
-    private final String currentLocale = "en_GB";// LocaleInfo.getCurrentLocale().getLocaleName();
 
     @Override
     public void loadResources(PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
 
-        throw new RuntimeException("Not implemented");
-    /*
-    lookupService.getDrinkwareDef(data.get("drinkware-id"), currentLocale, new AsyncCallback<DrinkwareDef>() {
-      @Override
-      public void onFailure(Throwable caught) {
-        onComplete.onFailure(caught);
-      }
+        FoodDataService.INSTANCE.getDrinkwareSet(data.get("drinkware-id"), new MethodCallback<DrinkwareSet>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                onComplete.onFailure(exception);
+            }
 
-      @Override
-      public void onSuccess(final DrinkwareDef drinkwareDef) {
-        lookupService.getImageMap(drinkwareDef.guide_id, new AsyncCallback<ImageMapDefinition>() {
-          @Override
-          public void onFailure(Throwable caught) {
-            onComplete.onFailure(caught);
-          }
+            @Override
+            public void onSuccess(Method method, DrinkwareSet drinkwareSet) {
+                FoodDataService.INSTANCE.getImageMap(drinkwareSet.guideId, new MethodCallback<SImageMap>() {
+                    @Override
+                    public void onFailure(Method method, Throwable exception) {
+                        onComplete.onFailure(exception);
 
-          @Override
-          public void onSuccess(ImageMapDefinition imageMapDef) {
-            onComplete.onSuccess(new DrinkScaleScript(imageMapDef, drinkwareDef));
-          }
+                    }
+
+                    @Override
+                    public void onSuccess(Method method, SImageMap imageMap) {
+                        onComplete.onSuccess(new DrinkScaleScript(imageMap.toImageMap(), drinkwareSet));
+                    }
+
+                });
+            }
         });
-      }
-    });*/
     }
 }

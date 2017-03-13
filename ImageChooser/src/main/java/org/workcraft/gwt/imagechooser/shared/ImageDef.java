@@ -10,21 +10,14 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.imagechooser.shared;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+public class ImageDef {
+    public final String url;
+    public final String thumbnailUrl;
+    public final String label;
 
-public class ImageDef implements IsSerializable {
-	public String url;
-	public String thumbnailUrl;
-	public String label;
-	
-	@Deprecated
-	public ImageDef() {
-		
-	}
-	
-	public ImageDef(String url, String thumbnailUrl, String label) {
-		this.url = url;
-		this.thumbnailUrl = thumbnailUrl;
-		this.label = label;
-	}
+    public ImageDef(String url, String thumbnailUrl, String label) {
+        this.url = url;
+        this.thumbnailUrl = thumbnailUrl;
+        this.label = label;
+    }
 }

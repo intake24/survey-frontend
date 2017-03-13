@@ -71,7 +71,7 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
         FlowPanel promptPanel = WidgetFactory.createPromptPanel(def.message, ShepherdTour.createTourButton(tour, DrinkScalePrompt.class.getSimpleName()));
         content.add(promptPanel);
 
-        SlidingScaleDef ssd = new SlidingScaleDef(def.scaleDef.baseImage, def.scaleDef.overlayImage, def.scaleDef.width, def.scaleDef.height, def.scaleDef.emptyLevel, def.scaleDef.fullLevel);
+        SlidingScaleDef ssd = new SlidingScaleDef(def.scaleDef.baseImageUrl, def.scaleDef.overlayImageUrl, def.scaleDef.width, def.scaleDef.height, def.scaleDef.emptyLevel, def.scaleDef.fullLevel);
 
         final Function1<Double, String> label = new Function1<Double, String>() {
             @Override

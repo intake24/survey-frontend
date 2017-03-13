@@ -29,7 +29,7 @@ package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedDef;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
@@ -41,10 +41,10 @@ import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeSc
 public class AsServedScript implements PortionSizeScript {
     public static final String name = "as-served";
 
-    public final AsServedDef servingImages;
-    public final Option<AsServedDef> leftoversImages;
+    public final AsServedSet servingImages;
+    public final Option<AsServedSet> leftoversImages;
 
-    public AsServedScript(AsServedDef servingImages, Option<AsServedDef> leftoversImages) {
+    public AsServedScript(AsServedSet servingImages, Option<AsServedSet> leftoversImages) {
         this.servingImages = servingImages;
         this.leftoversImages = leftoversImages;
     }

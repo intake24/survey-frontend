@@ -30,10 +30,10 @@ package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PMap;
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedDef;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
@@ -49,12 +49,12 @@ public class CerealPortionSizeScript implements PortionSizeScript {
     public static final String name = "cereal";
     public static final List<String> bowlCodes = Arrays.asList(new String[]{"A", "B", "C", "D", "E", "F"});
 
-    public final ImageMapDefinition bowlImageDef;
-    public final PMap<String, AsServedDef> asServedDefs;
+    public final ImageMap bowlImageDef;
+    public final PMap<String, AsServedSet> asServedDefs;
 
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
-    public CerealPortionSizeScript(ImageMapDefinition bowlImageMap, PMap<String, AsServedDef> asServedDefs) {
+    public CerealPortionSizeScript(ImageMap bowlImageMap, PMap<String, AsServedSet> asServedDefs) {
         this.bowlImageDef = bowlImageMap;
         this.asServedDefs = asServedDefs;
     }

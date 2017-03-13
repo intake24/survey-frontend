@@ -10,11 +10,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.imagemap.client;
 
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition.Area;
+import org.workcraft.gwt.imagemap.shared.ImageMapObject;
 import org.workcraft.gwt.imagemap.shared.Point;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -35,7 +33,7 @@ public class ImageMap extends Composite {
     public void handleResult(int choice);
   }
 
-  private final ImageMapDefinition definition;
+  private final org.workcraft.gwt.imagemap.shared.ImageMap definition;
   private final FlowPanel imageDiv;
   private final MouseMoveHandler mouseMoveHandler;
   private final ClickHandler clickHandler;
@@ -56,7 +54,7 @@ public class ImageMap extends Composite {
     clearOverlay();
 
     if (index != -1) {
-      final Image overlay = new Image(definition.areas[index].overlayUrl);
+      final Image overlay = new Image(definition.objects[index].overlayUrl);
       overlay.addStyleName("imagemap-overlay");
 
       imageDiv.add(overlay);
@@ -75,7 +73,7 @@ public class ImageMap extends Composite {
   private void next() {
     if (activeArea != -1) {
       int nextActive = activeArea + 1;
-      if (nextActive == definition.areas.length)
+      if (nextActive == definition.objects.length)
         nextActive = 0;
       setActiveArea(nextActive);
     }
@@ -85,18 +83,18 @@ public class ImageMap extends Composite {
     if (activeArea != -1) {
       int nextActive = activeArea - 1;
       if (nextActive == -1)
-        nextActive = definition.areas.length - 1;
+        nextActive = definition.objects.length - 1;
       setActiveArea(nextActive);
     }
   }
 
   private void prefetchImages() {
-    for (Area a : definition.areas) {
+    for (ImageMapObject a : definition.objects) {
       Image.prefetch(a.overlayUrl);
     }
   }
 
-  public ImageMap(final ImageMapDefinition definition, final ResultHandler handler) {
+  public ImageMap(final org.workcraft.gwt.imagemap.shared.ImageMap definition, final ResultHandler handler) {
     this.definition = definition;
 
     imageDiv = new FlowPanel();
@@ -118,8 +116,8 @@ public class ImageMap extends Composite {
 
         int mouseOverArea = -1;
 
-        for (int i = 0; i < definition.areas.length; i++) {
-          if (definition.areas[i].shape.isInside(new Point(mouseX, mouseY))) {
+        for (int i = 0; i < definition.objects.length; i++) {
+          if (definition.objects[i].outline.isInside(new Point(mouseX, mouseY))) {
             mouseOverArea = i;
             break;
           }
@@ -137,7 +135,7 @@ public class ImageMap extends Composite {
     clickHandler = new ClickHandler() {
       @Override
       public void onClick(ClickEvent event) {
-        handler.handleResult(definition.areas[activeArea].id);
+        handler.handleResult(definition.objects[activeArea].id);
       }
     };
 
@@ -193,4 +191,18 @@ public class ImageMap extends Composite {
     prefetchImages();
   }
 
+
+  @Override
+  public String toString() {
+    return "ImageMap{" +
+            "definition=" + definition +
+            ", imageDiv=" + imageDiv +
+            ", mouseMoveHandler=" + mouseMoveHandler +
+            ", clickHandler=" + clickHandler +
+            ", activeOverlay=" + activeOverlay +
+            ", activeArea=" + activeArea +
+            ", lastActiveArea=" + lastActiveArea +
+            ", hasFocus=" + hasFocus +
+            '}';
+  }
 }

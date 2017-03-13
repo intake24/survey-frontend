@@ -11,46 +11,50 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.SImageMap;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class PizzaPortionSizeScriptLoader implements PortionSizeScriptLoader {
-    public static final String pizzaImageMapName = "gpizza";
-    public static final String pizzaThicknessImageMapName = "gpthick";
-    public static final String sliceImageMapPrefix = "gpiz";
-    public static final int pizzaTypesCount = 9;
-
-    // private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
+    public static final String PIZZA_IMAGE_MAP_NAME = "gpizza";
+    public static final String PIZZA_THICKNESS_IMAGE_MAP_NAME = "gpthick";
+    public static final String SLICE_IMAGE_MAP_PREFIX = "gpiz";
+    public static final int PIZZA_TYPES_COUNT = 9;
 
     @Override
     public void loadResources(final PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
         ArrayList<String> imageMapNames = new ArrayList<String>();
 
-        for (int i = 0; i < pizzaTypesCount; i++)
-            imageMapNames.add(sliceImageMapPrefix + Integer.toString(i + 1));
+        for (int i = 0; i < PIZZA_TYPES_COUNT; i++)
+            imageMapNames.add(SLICE_IMAGE_MAP_PREFIX + Integer.toString(i + 1));
 
-        imageMapNames.add(pizzaImageMapName);
-        imageMapNames.add(pizzaThicknessImageMapName);
+        imageMapNames.add(PIZZA_IMAGE_MAP_NAME);
+        imageMapNames.add(PIZZA_THICKNESS_IMAGE_MAP_NAME);
 
-        throw new RuntimeException("Not implemented");
-/*
-    lookupService.getImageMaps(imageMapNames, new AsyncCallback<List<ImageMapDefinition>>() {
-      @Override
-      public void onFailure(Throwable caught) {
-        onComplete.onFailure(caught);
-      }
+        FoodDataService.INSTANCE.getImageMaps(imageMapNames, new MethodCallback<List<SImageMap>>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                onComplete.onFailure(exception);
+            }
 
-      @Override
-      public void onSuccess(List<ImageMapDefinition> result) {
-        PMap<Integer, ImageMapDefinition> sliceMaps = HashTreePMap.<Integer, ImageMapDefinition>empty();
+            @Override
+            public void onSuccess(Method method, List<SImageMap> response) {
+                PMap<Integer, ImageMap> sliceMaps = HashTreePMap.empty();
 
-        for (int i = 0; i < pizzaTypesCount; i++)
-          sliceMaps = sliceMaps.plus(i + 1, result.get(i));
+                for (int i = 0; i < PIZZA_TYPES_COUNT; i++)
+                    sliceMaps = sliceMaps.plus(i + 1, response.get(i).toImageMap());
 
-        onComplete.onSuccess(new PizzaPortionSizeScript(result.get(pizzaTypesCount), result.get(pizzaTypesCount + 1), sliceMaps));
-      }
-    });*/
+                onComplete.onSuccess(new PizzaPortionSizeScript(response.get(PIZZA_TYPES_COUNT).toImageMap(), response.get(PIZZA_TYPES_COUNT + 1).toImageMap(), sliceMaps));
+
+            }
+        });
     }
 }

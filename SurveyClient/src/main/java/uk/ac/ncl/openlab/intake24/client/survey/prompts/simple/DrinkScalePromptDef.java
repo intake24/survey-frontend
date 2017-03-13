@@ -11,10 +11,10 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.prompts.simple;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
-import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScaleDef;
+import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScale;
 
 public class DrinkScalePromptDef {
-    final public DrinkScaleDef scaleDef;
+    final public DrinkScale scaleDef;
     final public SafeHtml message;
 
     final public String lessLabel;
@@ -24,7 +24,7 @@ public class DrinkScalePromptDef {
     final public double initialLevel;
     final public double limit;
 
-    public DrinkScalePromptDef(DrinkScaleDef scaleDef, SafeHtml message, String lessLabel, String moreLabel, String acceptLabel, double limit, double initialLevel) {
+    public DrinkScalePromptDef(DrinkScale scaleDef, SafeHtml message, String lessLabel, String moreLabel, String acceptLabel, double limit, double initialLevel) {
         this.scaleDef = scaleDef;
         this.message = message;
         this.lessLabel = lessLabel;
@@ -32,5 +32,18 @@ public class DrinkScalePromptDef {
         this.acceptLabel = acceptLabel;
         this.limit = limit;
         this.initialLevel = initialLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "DrinkScalePromptDef{" +
+                "scaleDef=" + scaleDef +
+                ", message=" + message +
+                ", lessLabel='" + lessLabel + '\'' +
+                ", moreLabel='" + moreLabel + '\'' +
+                ", acceptLabel='" + acceptLabel + '\'' +
+                ", initialLevel=" + initialLevel +
+                ", limit=" + limit +
+                '}';
     }
 }

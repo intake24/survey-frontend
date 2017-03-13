@@ -29,11 +29,11 @@ package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PMap;
-import org.workcraft.gwt.imagemap.shared.ImageMapDefinition;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScaleDef;
-import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkwareDef;
+import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScale;
+import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkwareSet;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
@@ -46,21 +46,21 @@ import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeSc
 public class DrinkScaleScript implements PortionSizeScript {
     public static String name = "drink-scale";
 
-    private final DrinkwareDef drinkwareDef;
-    private final ImageMapDefinition guideImage;
+    private final DrinkwareSet drinkwareDef;
+    private final ImageMap guideImage;
 
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
-    public DrinkScaleScript(ImageMapDefinition guideImage, DrinkwareDef drinkwareDef) {
+    public DrinkScaleScript(ImageMap guideImage, DrinkwareSet drinkwareDef) {
         this.guideImage = guideImage;
         this.drinkwareDef = drinkwareDef;
     }
 
-    private DrinkScaleDef getScaleDef(int index) {
-        DrinkScaleDef scale = null;
+    private DrinkScale getScaleDef(int index) {
+        DrinkScale scale = null;
 
-        for (DrinkScaleDef d : drinkwareDef.scaleDefs)
-            if (d.choice_id == index)
+        for (DrinkScale d : drinkwareDef.scales)
+            if (d.objectId == index)
                 scale = d;
 
         if (scale == null)

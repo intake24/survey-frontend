@@ -11,12 +11,18 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
+import org.workcraft.gwt.imagemap.shared.ImageMap;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.SImageMap;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MilkOnCerealPortionSizeScriptLoader implements PortionSizeScriptLoader {
-    // private final FoodLookupServiceAsync lookupService = FoodLookupServiceAsync.Util.getInstance();
 
     @Override
     public void loadResources(final PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
@@ -27,23 +33,21 @@ public class MilkOnCerealPortionSizeScriptLoader implements PortionSizeScriptLoa
 
         milkLevelImageMapNames.add(CerealPortionSizeScriptLoader.bowlImageMap);
 
-        throw new RuntimeException("Not implemented");
+        FoodDataService.INSTANCE.getImageMaps(milkLevelImageMapNames, new MethodCallback<List<SImageMap>>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                onComplete.onFailure(exception);
+            }
 
-    /* lookupService.getImageMaps(milkLevelImageMapNames, new AsyncCallback<List<ImageMapDefinition>>() {
-      @Override
-      public void onFailure(Throwable caught) {
-        onComplete.onFailure(caught);
-      }
+            @Override
+            public void onSuccess(Method method, List<SImageMap> response) {
+                PMap<String, ImageMap> defs = HashTreePMap.empty();
 
-      @Override
-      public void onSuccess(final List<ImageMapDefinition> imageMapDef) {
-        PMap<String, ImageMapDefinition> defs = HashTreePMap.empty();
+                for (int i = 0; i < milkLevelImageMapNames.size() - 1; i++)
+                    defs = defs.plus(milkLevelImageMapNames.get(i), response.get(i).toImageMap());
 
-        for (int i = 0; i < milkLevelImageMapNames.size() - 1; i++)
-          defs = defs.plus(milkLevelImageMapNames.get(i), imageMapDef.get(i));
-
-        onComplete.onSuccess(new MilkOnCerealPortionSizeScript(imageMapDef.get(milkLevelImageMapNames.size() - 1), defs));
-      }
-    });*/
+                onComplete.onSuccess(new MilkOnCerealPortionSizeScript(response.get(milkLevelImageMapNames.size() - 1).toImageMap(), defs));
+            }
+        });
     }
 }
