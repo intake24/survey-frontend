@@ -111,6 +111,8 @@ public interface CommonMessages extends Messages {
 
   public String genUserWelcome();
 
+  public String genUserForbidden(String supportEmail);
+
   public String genUserSaveInfo();
 
   public String genUserSurveyLink();

@@ -6,6 +6,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import org.fusesource.restygwt.client.Dispatcher;
 import org.fusesource.restygwt.client.Method;
+import uk.ac.ncl.openlab.intake24.client.ui.GenUserUIAdapter;
 import uk.ac.ncl.openlab.intake24.client.ui.LoginUIAdapter;
 
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ public class RefreshDispatcher implements Dispatcher {
     private static final Logger logger = Logger.getLogger(RefreshDispatcher.class.getName());
 
     private static final LoginUIAdapter loginUIAdapter = new LoginUIAdapter();
+    private static final GenUserUIAdapter genUserUIAdapter = new GenUserUIAdapter();
 
     @Override
     public Request send(Method method, RequestBuilder builder) throws RequestException {
@@ -29,7 +31,7 @@ public class RefreshDispatcher implements Dispatcher {
 
         RequestCallback userCallback = builder.getCallback();
 
-        builder.setCallback(new RefreshCallback(method, userCallback, loginUIAdapter));
+        builder.setCallback(new RefreshCallback(method, userCallback, loginUIAdapter, genUserUIAdapter));
 
         return builder.send();
     }
