@@ -13,7 +13,11 @@ package uk.ac.ncl.openlab.intake24.client;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.*;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.workcraft.gwt.shared.client.Callback;
+import uk.ac.ncl.openlab.intake24.client.api.survey.CallbackRequest;
+import uk.ac.ncl.openlab.intake24.client.api.survey.HelpService;
 import uk.ac.ncl.openlab.intake24.client.ui.LoadingWidget;
 import uk.ac.ncl.openlab.intake24.client.ui.OverlayDiv;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
@@ -50,37 +54,34 @@ public class CallbackRequestForm extends Composite {
 
         errorMessage.add(new LoadingWidget());
 
-        throw new RuntimeException("Not implemented");
+        HelpService.INSTANCE.requestCallback(new CallbackRequest(nameTextBox.getText(), phoneNumberTextBox.getText()), new MethodCallback<Void>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
 
-    /*
-    helpService.requestCall(nameTextBox.getText(), phoneNumberTextBox.getText(), new AsyncCallback<Boolean>() {
+                if (method.getResponse().getStatusCode() == 429) {
+                    errorMessage.clear();
+                    errorMessage.getElement().addClassName("intake24-login-error-message");
+                    errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_tooSoon())));
 
-      @Override
-      public void onFailure(Throwable caught) {
-        errorMessage.clear();
-        errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverError())));
-        errorMessage.getElement().addClassName("intake24-login-error-message");
-        requestCallbackButton.setEnabled(true);
-      }
+                    GoogleAnalytics.trackHelpCallbackRejected();
+                } else {
+                    errorMessage.clear();
+                    errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorTitle())));
+                    errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.getSurveySupportEmail()))));
+                    errorMessage.getElement().addClassName("intake24-login-error-message");
+                    requestCallbackButton.setEnabled(true);
+                }
+            }
 
-      @Override
-      public void onSuccess(Boolean result) {
-        if (result) {
-          errorMessage.clear();
-          errorMessage.getElement().addClassName("intake24-login-success-message");
-          errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_success())));
+            @Override
+            public void onSuccess(Method method, Void response) {
+                errorMessage.clear();
+                errorMessage.getElement().addClassName("intake24-login-success-message");
+                errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_success())));
 
-          GoogleAnalytics.trackHelpCallbackAccepted();
-        } else {
-          errorMessage.clear();
-          errorMessage.getElement().addClassName("intake24-login-error-message");
-          errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_tooSoon())));
-
-          GoogleAnalytics.trackHelpCallbackRejected();
-        }
-      }
-
-    });*/
+                GoogleAnalytics.trackHelpCallbackAccepted();
+            }
+        });
     }
 
     public CallbackRequestForm(final Callback onComplete) {
