@@ -1,4 +1,4 @@
-package uk.ac.ncl.openlab.intake24.client.api.survey;
+package uk.ac.ncl.openlab.intake24.client.api.help;
 
 import com.google.gwt.core.client.GWT;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -10,7 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-@Options(dispatcher = AccessDispatcher.class)
+@Options(dispatcher = AccessDispatcher.class, serviceRootKey = "intake24-api")
 public interface HelpService extends RestService {
 
     HelpService INSTANCE = GWT.create(HelpService.class);

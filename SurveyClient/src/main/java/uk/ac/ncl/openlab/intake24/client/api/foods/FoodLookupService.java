@@ -11,7 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
-@Options(dispatcher = AccessDispatcher.class)
+@Options(dispatcher = AccessDispatcher.class, serviceRootKey = "intake24-api")
 public interface FoodLookupService extends RestService {
 
     FoodLookupService INSTANCE = GWT.create(FoodLookupService.class);

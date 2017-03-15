@@ -1,4 +1,4 @@
-package uk.ac.ncl.openlab.intake24.client.api.survey;
+package uk.ac.ncl.openlab.intake24.client.api.help;
 
 public class CallbackRequest {
     public String name;

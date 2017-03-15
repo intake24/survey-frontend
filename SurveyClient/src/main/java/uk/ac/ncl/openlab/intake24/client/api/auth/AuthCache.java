@@ -3,6 +3,7 @@ package uk.ac.ncl.openlab.intake24.client.api.auth;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.storage.client.Storage;
+import org.workcraft.gwt.shared.client.Option;
 
 public class AuthCache {
     public final static String ACCESS_TOKEN_KEY = "accessToken";
@@ -63,6 +64,10 @@ public class AuthCache {
 
     public static boolean currentUserNameKnown() {
         return currentUserName != null;
+    }
+
+    public static Option<String> getCurrentUserNameOption() {
+        return Option.fromNullable(currentUserName);
     }
 
     public static String getCurrentUserName() {

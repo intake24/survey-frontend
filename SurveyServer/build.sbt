@@ -30,7 +30,9 @@ libraryDependencies ++= Seq(
   ws,
   "org.webjars" %% "webjars-play" % "2.5.0-4",
   "org.webjars" % "bootstrap" % "3.1.1-2",
-  "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT"
+  "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT",
+  "com.lihaoyi" %% "upickle" % "0.4.1",
+  "com.google.gwt" % "gwt-user" % "2.8.0" // for stack trace deobfuscator
 )
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin)

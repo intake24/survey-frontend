@@ -10,7 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-@Options(dispatcher=AccessDispatcher.class)
+@Options(dispatcher=AccessDispatcher.class, serviceRootKey = "intake24-api")
 public interface SurveyService extends RestService {
 
     SurveyService INSTANCE = GWT.create(SurveyService.class);

@@ -229,7 +229,9 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                         }
                     });
 
-                    onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(data, food.link, lastSearchTerm)));
+                    throw new RuntimeException("Kablam");
+
+                    // onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(data, food.link, lastSearchTerm)));
 
                 }
             }, new Callback1<String>() {

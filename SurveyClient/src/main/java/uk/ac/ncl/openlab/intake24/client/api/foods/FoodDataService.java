@@ -12,7 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import java.util.List;
 
-@Options(dispatcher = AccessDispatcher.class)
+@Options(dispatcher = AccessDispatcher.class, serviceRootKey = "intake24-api")
 public interface FoodDataService extends RestService {
 
     FoodDataService INSTANCE = GWT.create(FoodDataService.class);

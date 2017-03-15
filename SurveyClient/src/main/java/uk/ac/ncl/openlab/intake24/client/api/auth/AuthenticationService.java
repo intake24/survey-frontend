@@ -9,6 +9,7 @@ import org.fusesource.restygwt.client.dispatcher.DefaultDispatcher;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
+@Options(serviceRootKey = "intake24-api")
 public interface AuthenticationService extends RestService {
     AuthenticationService INSTANCE = GWT.create(AuthenticationService.class);
 

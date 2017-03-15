@@ -1,7 +1,13 @@
 package uk.ac.ncl.openlab.intake24.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import org.fusesource.restygwt.client.Json;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.errors.*;
 import uk.ac.ncl.openlab.intake24.client.survey.StateManagerUtil;
 
 import java.util.ArrayList;
@@ -9,48 +15,41 @@ import java.util.List;
 
 public class Intake24UncaughtExceptionHandler implements UncaughtExceptionHandler {
 
-    // private final static HelpServiceAsync helpService = HelpServiceAsync.Util.getInstance();
+    public static final Intake24UncaughtExceptionHandler INSTANCE = new Intake24UncaughtExceptionHandler();
+
+    private static final ExceptionChainCodec exceptionChainCodec = GWT.create(ExceptionChainCodec.class);
 
     @Override
     public void onUncaughtException(final Throwable e) {
-        String encodedSurveyState = "{}";
+        String surveyStateJSON = "{}";
 
+        String surveyId = EmbeddedData.getSurveyId();
+        Option<String> userName = AuthCache.getCurrentUserNameOption();
 
-        if (AuthCache.currentUserNameKnown())
-            encodedSurveyState = StateManagerUtil.getLatestStateSerialised(AuthCache.getCurrentUserName()).getOrElse("{}");
-
+        if (!userName.isEmpty())
+            surveyStateJSON = StateManagerUtil.getLatestStateSerialised(userName.getOrDie()).getOrElse("{}");
 
         Throwable cur = e;
 
-        List<String> classNames = new ArrayList<String>();
-        List<String> messages = new ArrayList<String>();
-        List<StackTraceElement[]> stackTraces = new ArrayList<StackTraceElement[]>();
+        List<SThrowable> exceptionChain = new ArrayList<>();
 
-        while (cur != null)
-
-        {
-            classNames.add(cur.getClass()
-                    .getName());
-            messages.add(cur.getMessage());
-            stackTraces.add(cur.getStackTrace());
+        while (cur != null) {
+            exceptionChain.add(new SThrowable(cur));
             cur = cur.getCause();
         }
 
-    /*
-    helpService.reportUncaughtException(GWT.getPermutationStrongName(), classNames, messages, stackTraces,
-        encodedSurveyState, new AsyncCallback<Void>() {
+        ErrorReportingService.INSTANCE.reportError(new ErrorReport(surveyId, userName, GWT.getPermutationStrongName(), exceptionChain, surveyStateJSON), new MethodCallback<Void>() {
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                GWT.log("Failed to reported uncaught exception to the server:");
+                GWT.log("Uncaught exception", e);
+            }
 
-          @Override
-          public void onSuccess(Void result) {
-            GWT.log("Reported uncaught exception to the server:");
-            GWT.log("Uncaught exception", e);
-          }
-
-          @Override
-          public void onFailure(Throwable caught) {
-            GWT.log("Failed to reported uncaught exception to the server:");
-            GWT.log("Uncaught exception", e);
-          }
-        });*/
+            @Override
+            public void onSuccess(Method method, Void response) {
+                GWT.log("Reported uncaught exception to the server:");
+                GWT.log("Uncaught exception", e);
+            }
+        });
     }
 }

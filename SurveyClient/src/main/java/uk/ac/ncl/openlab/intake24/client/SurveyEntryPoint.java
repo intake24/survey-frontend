@@ -27,6 +27,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
@@ -36,6 +37,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.ServiceRoots;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
@@ -75,10 +77,12 @@ public class SurveyEntryPoint implements EntryPoint {
     }
 
     public void onModuleLoad() {
+        GWT.setUncaughtExceptionHandler(Intake24UncaughtExceptionHandler.INSTANCE);
 
         RootPanel.get("loading").getElement().removeFromParent();
 
-        Defaults.setServiceRoot(EmbeddedData.getApiBaseUrl());
+        Defaults.setServiceRoot("/");
+        ServiceRoots.add("intake24-api", EmbeddedData.getApiBaseUrl());
 
         watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
 
