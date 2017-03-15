@@ -54,7 +54,7 @@ public class CallbackRequestForm extends Composite {
 
         errorMessage.add(new LoadingWidget());
 
-        HelpService.INSTANCE.requestCallback(new CallbackRequest(nameTextBox.getText(), phoneNumberTextBox.getText()), new MethodCallback<Void>() {
+        HelpService.INSTANCE.requestCallback(EmbeddedData.getSurveyId(), new CallbackRequest(nameTextBox.getText(), phoneNumberTextBox.getText()), new MethodCallback<Void>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
 
