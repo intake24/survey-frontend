@@ -12,21 +12,28 @@ public class AuthCache {
 
     private final static Storage localStorage = Storage.getLocalStorageIfSupported();
 
+    private static String currentUserKey;
     private static String currentUserName;
 
     static {
         String cachedAccessToken = getCachedAccessToken();
         String cachedRefreshToken = getCachedRefreshToken();
 
-        if (cachedAccessToken != null)
-            currentUserName = getUserNameFromJWT(cachedAccessToken);
-        else if (cachedRefreshToken != null)
-            currentUserName = getUserNameFromJWT(cachedRefreshToken);
-        else
+        if (cachedAccessToken != null) {
+            currentUserKey = getUserKeyFromJWT(cachedAccessToken);
+            currentUserName = extractUserName(currentUserKey);
+
+        } else if (cachedRefreshToken != null) {
+            currentUserKey = getUserKeyFromJWT(cachedRefreshToken);
+            currentUserName = extractUserName(currentUserKey);
+        } else {
+            currentUserKey = null;
             currentUserName = null;
+        }
+
     }
 
-    private static String getUserNameFromJWT(String token) {
+    private static String getUserKeyFromJWT(String token) {
         String payloadBase64Url = token.split("\\.")[1];
 
         String payloadJson = new String(Base64Utils.fromBase64Url(payloadBase64Url));
@@ -39,6 +46,14 @@ public class AuthCache {
         return intake24UserKey;
     }
 
+    private static String extractUserName(String key) {
+        int index = key.indexOf('#');
+        if (index == -1)
+            return key;
+        else
+            return key.substring(index + 1);
+    }
+
     public static void clear() {
         localStorage.removeItem(ACCESS_TOKEN_KEY);
         localStorage.removeItem(REFRESH_TOKEN_KEY);
@@ -46,12 +61,14 @@ public class AuthCache {
 
     public static void updateRefreshToken(String refreshToken) {
         localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-        currentUserName = getUserNameFromJWT(refreshToken);
+        currentUserKey = getUserKeyFromJWT(refreshToken);
+        currentUserName = extractUserName(currentUserKey);
     }
 
     public static void updateAccessToken(String accessToken) {
         localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-        currentUserName = getUserNameFromJWT(accessToken);
+        currentUserKey = getUserKeyFromJWT(accessToken);
+        currentUserName = extractUserName(currentUserKey);
     }
 
     public static String getCachedRefreshToken() {
@@ -62,8 +79,12 @@ public class AuthCache {
         return localStorage.getItem(ACCESS_TOKEN_KEY);
     }
 
-    public static boolean currentUserNameKnown() {
-        return currentUserName != null;
+    public static Option<String> getCurrentUserKeyOption() {
+        return Option.fromNullable(currentUserKey);
+    }
+
+    public static String getCurrentUserKey() {
+        return getCurrentUserKeyOption().getOrDie("Current user key required, but has not been set");
     }
 
     public static Option<String> getCurrentUserNameOption() {
@@ -71,8 +92,7 @@ public class AuthCache {
     }
 
     public static String getCurrentUserName() {
-        if (currentUserName == null)
-            throw new RuntimeException("Current user name required, but has not been set");
-        return currentUserName;
+        return getCurrentUserNameOption().getOrDie("Current user name required, but has not been set");
     }
+
 }

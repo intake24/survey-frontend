@@ -82,7 +82,7 @@ public class ShowBreadLinkedFoodAmountPrompt implements PromptRule<Pair<FoodEntr
                             @Override
                             public Option<Prompt<Pair<FoodEntry, Meal>, MealOperation>> visitRight(CompletedPortionSize completedPortionSize) {
 
-                              if (completedPortionSize.scriptName.equals("guide-image")) {
+                              if (completedPortionSize.method.equals("guide-image")) {
                                 double quantity = Double.parseDouble(completedPortionSize.data.get("quantity"));
                                 if (quantity > 1.0)
                                   return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(

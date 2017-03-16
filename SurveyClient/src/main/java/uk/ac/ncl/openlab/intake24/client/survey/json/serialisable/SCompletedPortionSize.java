@@ -48,7 +48,7 @@ public class SCompletedPortionSize {
     }
 
     public SCompletedPortionSize(CompletedPortionSize completedPortionSize) {
-        this(completedPortionSize.scriptName, completedPortionSize.data);
+        this(completedPortionSize.method, completedPortionSize.data);
     }
 
     public CompletedPortionSize toCompletedPortionSize() {

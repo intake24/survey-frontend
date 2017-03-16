@@ -30,17 +30,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CompletedPortionSize {
-  public final String scriptName;
-  public final Map<String, String> data;
+  public String method;
+  public Map<String, String> data;
 
-  public CompletedPortionSize(String scriptName, Map<String, String> data) {
-    this.scriptName = scriptName;
+  @Deprecated
+  public CompletedPortionSize() {
 
-    // this is to ensure that the data is stored internally as a standard
-    // HashMap
-    // (it could have come in as a PMap) to prevent serialization exceptions
-    this.data = new HashMap<String, String>();
-    this.data.putAll(data);
+  }
+
+  public CompletedPortionSize(String method, Map<String, String> data) {
+    this.method = method;
+    this.data = data;
   }
 
   public double servingWeight() {
@@ -57,7 +57,7 @@ public class CompletedPortionSize {
     newData.put("servingWeight", Double.toString(servingWeight() * x));
     newData.put("leftoversWeight", Double.toString(leftoversWeight() * x));
     
-    return new CompletedPortionSize(scriptName, newData);
+    return new CompletedPortionSize(method, newData);
   }
 
   public static CompletedPortionSize ignore(String reason) {
@@ -75,7 +75,7 @@ public class CompletedPortionSize {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((data == null) ? 0 : data.hashCode());
-    result = prime * result + ((scriptName == null) ? 0 : scriptName.hashCode());
+    result = prime * result + ((method == null) ? 0 : method.hashCode());
     return result;
   }
 
@@ -99,10 +99,10 @@ public class CompletedPortionSize {
 
     // System.out.println("CPS data ok");
 
-    if (scriptName == null) {
-      if (other.scriptName != null)
+    if (method == null) {
+      if (other.method != null)
         return false;
-    } else if (!scriptName.equals(other.scriptName))
+    } else if (!method.equals(other.method))
       return false;
 
     // System.out.println("CPS script OK");

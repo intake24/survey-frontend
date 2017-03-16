@@ -13,6 +13,7 @@ import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
+import uk.ac.ncl.openlab.intake24.client.api.errors.ErrorReportingService;
 
 import java.util.logging.Logger;
 
@@ -60,6 +61,7 @@ public class RefreshCallback implements RequestCallback {
                                 AuthenticationService.INSTANCE.signin(new Credentials(Option.some(EmbeddedData.getSurveyId()), response.userName, response.password), new MethodCallback<SigninResult>() {
                                     @Override
                                     public void onFailure(Method signinMethod, Throwable exception) {
+                                        ErrorReportingService.reportError(new RuntimeException("Failed to generate user", exception));
                                         genUserUI.onServiceError();
                                     }
 
@@ -83,14 +85,15 @@ public class RefreshCallback implements RequestCallback {
                             public void onFailure(Method signinMethod, Throwable exception) {
                                 if (signinMethod.getResponse().getStatusCode() == Response.SC_UNAUTHORIZED) {
                                     loginUI.onLoginAttemptFailed();
-                                } else
+                                } else {
+                                    ErrorReportingService.reportError(new RuntimeException("Login service error", exception));
                                     loginUI.onLoginServiceError();
+                                }
                             }
 
                             @Override
                             public void onSuccess(Method signinMethod, SigninResult response) {
                                 loginUI.hide();
-
 
                                 logger.fine("Login with provided credentials successful");
 

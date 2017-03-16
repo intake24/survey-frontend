@@ -95,8 +95,8 @@ public class ProcessMilkInHotDrinks implements Function1<Survey, Survey> {
         finalDrinkData.put("servingWeight", Double.toString(finalDrinkVolume));
         finalDrinkData.put("leftoversWeight", Double.toString(finalDrinkLeftoverVolume));
 
-        CompletedPortionSize finalMilkPs = new CompletedPortionSize(milk_ps.scriptName, finalMilkData);
-        CompletedPortionSize finalDrinkPs = new CompletedPortionSize(milk_ps.scriptName, finalDrinkData);
+        CompletedPortionSize finalMilkPs = new CompletedPortionSize(milk_ps.method, finalMilkData);
+        CompletedPortionSize finalDrinkPs = new CompletedPortionSize(milk_ps.method, finalDrinkData);
 
         return meal.updateFood(pair.left, milk.withPortionSize(PortionSize.complete(finalMilkPs)))
                 .updateFood(pair.right, drink.withPortionSize(PortionSize.complete(finalDrinkPs)));

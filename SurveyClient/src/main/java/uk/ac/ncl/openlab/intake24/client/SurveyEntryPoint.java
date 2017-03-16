@@ -77,7 +77,7 @@ public class SurveyEntryPoint implements EntryPoint {
     }
 
     public void onModuleLoad() {
-        GWT.setUncaughtExceptionHandler(Intake24UncaughtExceptionHandler.INSTANCE);
+        GWT.setUncaughtExceptionHandler(UncaughtExceptionHandler.INSTANCE);
 
         RootPanel.get("loading").getElement().removeFromParent();
 

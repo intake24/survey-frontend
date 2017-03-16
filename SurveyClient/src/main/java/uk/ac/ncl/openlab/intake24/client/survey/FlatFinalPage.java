@@ -26,16 +26,29 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.RequestTimeoutException;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Callback2;
+import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
+import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
 import java.util.List;
 
 public class FlatFinalPage implements SurveyStage<Survey> {
-    //public final SurveyProcessingServiceAsync processingService = SurveyProcessingServiceAsync.Util.getInstance(EmbeddedData.surveyId());
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
     private final static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
 
@@ -57,30 +70,20 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
         contents.add(new LoadingPanel(messages.submitPage_loadingMessage()));
 
-        throw new RuntimeException("Not implemented");
-        /*
-
-        AsyncRequestAuthHandler.execute(new AsyncRequest<Void>() {
+        SurveyService.INSTANCE.submitSurvey(EmbeddedData.getSurveyId(), finalData, new MethodCallback<Void>() {
             @Override
-            public void execute(AsyncCallback<Void> callback) {
-                processingService.submit(finalData, callback);
-            }
-        }, new AsyncCallback<Void>() {
-            @Override
-            public void onFailure(final Throwable caught) {
+            public void onFailure(Method method, Throwable exception) {
                 contents.clear();
 
-                caught.printStackTrace();
-
-                if (caught instanceof RequestTimeoutException) {
-                    final AsyncCallback<Void> outer = this;
+                if (exception instanceof RequestTimeoutException) {
+                    final MethodCallback<Void> outer = this;
 
                     contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
 
                     contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                            processingService.submit(finalData, outer);
+                            SurveyService.INSTANCE.submitSurvey(EmbeddedData.getSurveyId(), finalData, outer);
                         }
                     }));
                 } else {
@@ -91,37 +94,48 @@ public class FlatFinalPage implements SurveyStage<Survey> {
             }
 
             @Override
-            public void onSuccess(Void result) {
+            public void onSuccess(Method method, Void response) {
                 contents.clear();
                 contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_success())));
 
-                CurrentUser.userInfo.surveyParameters.surveyMonkeyUrl.accept(new Option.SideEffectVisitor<String>() {
+                SurveyService.INSTANCE.getSurveyParameters(EmbeddedData.getSurveyId(), new MethodCallback<SurveyParameters>() {
                     @Override
-                    public void visitSome(final String url) {
-
-                        FlowPanel surveyMonkeyDiv = new FlowPanel();
-
-                        surveyMonkeyDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), new ClickHandler() {
-                            @Override
-                            public void onClick(ClickEvent clickEvent) {
-                                Window.Location.replace(url.replace("[intake24_username_value]", CurrentUser.userInfo.userName));
-                            }
-                        }));
-
-                        contents.add(surveyMonkeyDiv);
+                    public void onFailure(Method method, Throwable exception) {
+                        contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));
                     }
 
                     @Override
-                    public void visitNone() {
+                    public void onSuccess(Method method, SurveyParameters response) {
+                        response.externalFollowUpURL.accept(new Option.SideEffectVisitor<String>() {
+
+                            @Override
+                            public void visitSome(String url) {
+                                FlowPanel externalLinkDiv = new FlowPanel();
+
+                                externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), new ClickHandler() {
+                                    @Override
+                                    public void onClick(ClickEvent clickEvent) {
+                                        Window.Location.replace(url.replace("[intake24_username_value]", AuthCache.getCurrentUserName()));
+                                    }
+                                }));
+
+                                contents.add(externalLinkDiv);
+                            }
+
+                            @Override
+                            public void visitNone() {
+
+                            }
+                        });
 
                     }
                 });
 
                 contents.add(new HTMLPanel(finalPageHtml));
-                StateManagerUtil.clearLatestState(CurrentUser.userInfo.userName);
+                // StateManagerUtil.clearLatestState(AuthCache.getCurrentUserKey());
             }
-        });*/
+        });
 
-        // return new SimpleSurveyStageInterface(contents);
+        return new SimpleSurveyStageInterface(contents);
     }
 }

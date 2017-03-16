@@ -178,7 +178,7 @@ public abstract class BasicScheme implements SurveyScheme {
 
         defaultSelectionManager = new PromptAvailabilityBasedSelectionManager(defaultPromptManager);
 
-        Survey initialState = StateManagerUtil.getLatestState(AuthCache.getCurrentUserName(), getSchemeId(),
+        Survey initialState = StateManagerUtil.getLatestState(AuthCache.getCurrentUserKey(), getSchemeId(),
                 getDataVersion(), defaultScriptManager, defaultTemplateManager)
                 .accept(new Option.Visitor<Survey, Survey>() {
                     @Override
