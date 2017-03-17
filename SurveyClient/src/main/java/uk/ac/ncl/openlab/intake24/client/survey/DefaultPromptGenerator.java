@@ -51,15 +51,15 @@ public class DefaultPromptGenerator<T, Op> implements PromptGenerator<T, Op> {
                     }
                 });
 
-        log.log(Level.INFO, "Choosing next prompt for selection " + selection.toString());
+        log.fine("Choosing next prompt for selection " + selection.toString());
 
         PVector<WithPriority<Prompt<T, Op>>> applicable = flattenOption(allRules);
 
         if (applicable.isEmpty()) {
-            log.log(Level.INFO, "No prompt available for current selection");
+            log.fine("No prompt available for current selection");
             return new Option.None<WithPriority<Prompt<T, Op>>>();
         } else {
-            log.log(Level.INFO, "Chosen prompt: " + applicable.get(0));
+            log.fine("Chosen prompt: " + applicable.get(0));
             return new Option.Some<WithPriority<Prompt<T, Op>>>(applicable.get(0));
         }
     }

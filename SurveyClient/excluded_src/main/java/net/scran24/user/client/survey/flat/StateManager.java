@@ -30,7 +30,7 @@ public class StateManager {
   private Survey currentState;
   private int historyEventCounter = 0;
 
-  private final Logger log = Logger.getLogger(StateManager.class.getSimpleName());
+  private final Logger log = Logger.
 
   public final String version_id;
   public final String scheme_id;
@@ -69,7 +69,7 @@ public class StateManager {
     this.version_id = version_id;
     this.currentState = initialState;
 
-    log.info("Making initial history entry");
+    log.fine("Making initial history entry");
     makeHistoryEntry();
 
     History.addValueChangeHandler(new ValueChangeHandler<String>() {

@@ -240,10 +240,10 @@ public abstract class BasicScheme implements SurveyScheme {
         @Override
         public Survey visitSome(Survey data) {
           double age = (System.currentTimeMillis() - data.startTime) / 3600000.0;
-          logger.info("Saved state is " + age + " hours old.");
+          logger.fine("Saved state is " + age + " hours old.");
 
           if (age > MAX_AGE_HOURS) {
-            logger.info("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
+            logger.fine("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
             return startingSurveyData();
           } else {
             return data.clearCompletionConfirmed()

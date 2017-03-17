@@ -21,7 +21,6 @@ public class RefreshDispatcher implements Dispatcher {
 
     @Override
     public Request send(Method method, RequestBuilder builder) throws RequestException {
-
         logger.fine("Sending refresh request: " + builder.getHTTPMethod() + " " + builder.getUrl());
 
         String cachedRefreshToken = AuthCache.getCachedRefreshToken();

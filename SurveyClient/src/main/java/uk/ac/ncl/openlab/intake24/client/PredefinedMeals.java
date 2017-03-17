@@ -59,7 +59,6 @@ public class PredefinedMeals {
     };
 
     public static PVector<Meal> getStartingMealsForCurrentLocale() {
-        BrowserConsole.warn(LocaleInfo.getCurrentLocale().getLocaleName());
         switch (LocaleInfo.getCurrentLocale().getLocaleName()) {
             case "pt_PT":
                 return portugueseStartingMeals;

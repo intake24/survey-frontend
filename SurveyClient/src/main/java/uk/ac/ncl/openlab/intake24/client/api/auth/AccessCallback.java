@@ -31,12 +31,10 @@ public class AccessCallback implements RequestCallback {
 
         if (code == Response.SC_UNAUTHORIZED) {
             if (refreshAttempted) {
-                logger.fine("Access token rejected after refresh");
                 Throwable exception = new RuntimeException("Refreshed access token not recognized");
                 ErrorReportingService.reportError(exception);
                 serviceCallback.onError(request, exception);
             } else {
-                logger.fine("Access token rejected, attempting refresh");
                 AuthenticationService.INSTANCE.refresh(new MethodCallback<RefreshResult>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
@@ -47,8 +45,6 @@ public class AccessCallback implements RequestCallback {
                     @Override
                     public void onSuccess(Method method, RefreshResult response) {
                         refreshAttempted = true;
-
-                        logger.fine("Refresh successful, retrying service request");
 
                         AuthCache.updateAccessToken(response.accessToken);
                         method.header("X-Auth-Token", response.accessToken);

@@ -67,8 +67,6 @@ public class Layout {
     }
 
     private static void onResize() {
-        logger.fine("resize");
-
         int windowHeight = Window.getClientHeight();
 
         int headerHeight = headerContainer.getOffsetHeight();

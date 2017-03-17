@@ -153,9 +153,6 @@ public class FoodBrowser extends Composite {
 
                         @Override
                         public void onSuccess(Method method, FoodData foodData) {
-
-                            BrowserConsole.warn(foodData.toString());
-
                             onFoodChosen.call(foodData);
                         }
                     });

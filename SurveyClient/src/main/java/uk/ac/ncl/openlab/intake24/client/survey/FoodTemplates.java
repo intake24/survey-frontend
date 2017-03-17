@@ -68,37 +68,37 @@ public class FoodTemplates {
                     messages.compFood_sandwich_bread_primary(), messages.compFood_sandwich_bread_secondary(),
                     messages.compFood_sandwich_bread_primary_negative(), messages.compFood_sandwich_bread_secondary_negative(),
                     messages.compFood_sandwich_bread_foods_label(), messages.compFood_sandwich_bread_categories_label(), messages.compFood_sandwich_bread_dataset_label(),
-                    "SW01", imageHeader("../../images/sandwich-wizard/icons_2.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Required))
+                    "SW01", imageHeader("/assets/survey-client/images/sandwich-wizard/icons_2.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Required))
             .plus(new TemplateFoodData.ComponentDef(
                     messages.compFood_sandwich_spread(),
                     messages.compFood_sandwich_spread_primary(), messages.compFood_sandwich_spread_secondary(),
                     messages.compFood_sandwich_spread_primary_negative(), messages.compFood_sandwich_spread_secondary_negative(),
                     messages.compFood_sandwich_spread_foods_label(), messages.compFood_sandwich_spread_categories_label(), messages.compFood_sandwich_spread_dataset_label(),
-                    "SW02", imageHeader("../../images/sandwich-wizard/icons_3.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Optional))
+                    "SW02", imageHeader("/assets/survey-client/images/sandwich-wizard/icons_3.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Optional))
             .plus(new TemplateFoodData.ComponentDef(
                     messages.compFood_sandwich_meat_or_fish(),
                     messages.compFood_sandwich_meat_or_fish_primary(), messages.compFood_sandwich_meat_or_fish_secondary(),
                     messages.compFood_sandwich_meat_or_fish_primary_negative(), messages.compFood_sandwich_meat_or_fish_secondary_negative(),
                     messages.compFood_sandwich_meat_or_fish_foods_label(), messages.compFood_sandwich_meat_or_fish_categories_label(), messages.compFood_sandwich_meat_or_fish_dataset_label(),
-                    "SW03", imageHeader("../../images/sandwich-wizard/icons_4.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Optional))
+                    "SW03", imageHeader("/assets/survey-client/images/sandwich-wizard/icons_4.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Optional))
             .plus(new TemplateFoodData.ComponentDef(
                     messages.compFood_sandwich_cheese_or_dairy(),
                     messages.compFood_sandwich_cheese_or_dairy_primary(), messages.compFood_sandwich_cheese_or_dairy_secondary(),
                     messages.compFood_sandwich_cheese_or_dairy_primary_negative(), messages.compFood_sandwich_cheese_or_dairy_secondary_negative(),
                     messages.compFood_sandwich_cheese_or_dairy_foods_label(), messages.compFood_sandwich_cheese_or_dairy_categories_label(), messages.compFood_sandwich_cheese_or_dairy_dataset_label(),
-                    "SW04", imageHeader("../../images/sandwich-wizard/icons_5.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Optional))
+                    "SW04", imageHeader("/assets/survey-client/images/sandwich-wizard/icons_5.png"), TemplateFoodData.ComponentOccurence.Single, TemplateFoodData.ComponentType.Optional))
             .plus(new TemplateFoodData.ComponentDef(
                     messages.compFood_sandwich_extra_filling(),
                     messages.compFood_sandwich_extra_filling_primary(), messages.compFood_sandwich_extra_filling_secondary(),
                     messages.compFood_sandwich_extra_filling_primary_negative(), messages.compFood_sandwich_extra_filling_secondary_negative(),
                     messages.compFood_sandwich_extra_filling_foods_label(), messages.compFood_sandwich_extra_filling_categories_label(), messages.compFood_sandwich_extra_filling_dataset_label(),
-                    "SW05", imageHeader("../../images/sandwich-wizard/icons_6.png"), TemplateFoodData.ComponentOccurence.Multiple, TemplateFoodData.ComponentType.Optional))
+                    "SW05", imageHeader("/assets/survey-client/images/sandwich-wizard/icons_6.png"), TemplateFoodData.ComponentOccurence.Multiple, TemplateFoodData.ComponentType.Optional))
             .plus(new TemplateFoodData.ComponentDef(
                     messages.compFood_sandwich_sauce_or_dressing(),
                     messages.compFood_sandwich_sauce_or_dressing_primary(), messages.compFood_sandwich_sauce_or_dressing_secondary(),
                     messages.compFood_sandwich_sauce_or_dressing_primary_negative(), messages.compFood_sandwich_sauce_or_dressing_secondary_negative(),
                     messages.compFood_sandwich_sauce_or_dressing_foods_label(), messages.compFood_sandwich_sauce_or_dressing_categories_label(), messages.compFood_sandwich_sauce_or_dressing_dataset_label(),
-                    "SW06", imageHeader("../../images/sandwich-wizard/icons_7.png"), TemplateFoodData.ComponentOccurence.Multiple, TemplateFoodData.ComponentType.Optional)));
+                    "SW06", imageHeader("/assets/survey-client/images/sandwich-wizard/icons_7.png"), TemplateFoodData.ComponentOccurence.Multiple, TemplateFoodData.ComponentType.Optional)));
 
     public static final TemplateFoodData salad = new TemplateFoodData("salad", TreePVector.<TemplateFoodData.ComponentDef>empty()
             .plus(new TemplateFoodData.ComponentDef(

@@ -14,13 +14,6 @@ public class AccessDispatcher implements Dispatcher {
 
     @Override
     public Request send(Method method, RequestBuilder builder) throws RequestException {
-
-        String content = builder.getRequestData();
-
-        if (content != null && content.length() > 0) {
-            logger.fine(content);
-        }
-
         String cachedAccessToken = AuthCache.getCachedAccessToken();
 
         if (cachedAccessToken != null)

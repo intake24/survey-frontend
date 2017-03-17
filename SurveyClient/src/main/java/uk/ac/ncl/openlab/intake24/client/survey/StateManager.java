@@ -28,7 +28,7 @@ public class StateManager {
     private Survey currentState;
     private int historyEventCounter = 0;
 
-    private final Logger log = Logger.getLogger(StateManager.class.getSimpleName());
+    private final Logger log = Logger.getLogger(StateManager.class.getName());
 
     public final String versionId;
     public final String schemeId;
@@ -51,12 +51,12 @@ public class StateManager {
         currentState = newState;
 
         if (makeHistoryEntry) {
-            // log.info ("Making history entry");
+            log.fine("Making history entry");
             makeHistoryEntry();
         }
 
         StateManagerUtil.setLatestState(AuthCache.getCurrentUserKey(), currentState, schemeId, versionId);
-        // log.info("Updated latest state");
+        log.fine("Updated latest state");
 
         // updateUi.call(newState);
     }
@@ -67,7 +67,7 @@ public class StateManager {
         this.versionId = versionId;
         this.currentState = initialState;
 
-        log.info("Making initial history entry");
+        log.fine("Making initial history entry");
         makeHistoryEntry();
 
         History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -81,7 +81,7 @@ public class StateManager {
                             .accept(new Option.SideEffectVisitor<Survey>() {
                                 @Override
                                 public void visitSome(Survey item) {
-                                    log.info("Switching to historical state #" + state_id);
+                                    log.fine("Switching to historical state #" + state_id);
                                     updateState(item, false);
                                     showNextPage.call();
                                 }
