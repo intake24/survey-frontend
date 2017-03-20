@@ -16,9 +16,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-name := "survey-frontend-server"
+name := "intake24-survey-frontend"
 
 organization := "uk.ac.ncl.openlab.intake24"
+
+description := "Intake24 GWT survey client"
+
+maintainer := "Ivan Poliakov <ivan.poliakov@ncl.ac.uk>"
 
 version := "3.0.0-SNAPSHOT"
 
@@ -33,6 +37,21 @@ libraryDependencies ++= Seq(
   "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT",
   "com.lihaoyi" %% "upickle" % "0.4.1",
   "com.google.gwt" % "gwt-user" % "2.8.0" // for stack trace deobfuscator
+)
+
+javaOptions in Universal ++= Seq(
+  // JVM memory tuning
+  "-J-Xmx320m",
+  "-J-Xms128m",
+
+  // Since play uses separate pidfile we have to provide it with a proper path
+  s"-Dpidfile.path=/dev/null",
+
+  // Use separate configuration file for production environment
+  s"-Dconfig.file=/usr/share/${packageName.value}/conf/production.conf",
+
+  // Use separate logger configuration file for production environment
+  s"-Dlogger.file=/usr/share/${packageName.value}/conf/production-logger.xml"
 )
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin)
