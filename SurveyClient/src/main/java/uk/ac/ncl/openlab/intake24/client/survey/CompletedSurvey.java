@@ -23,7 +23,6 @@ public class CompletedSurvey {
     public List<CompletedMissingFood> missingFoods;
     public List<String> log;
     public Map<String, String> customData;
-    public String _up;
 
     @Deprecated
     public CompletedSurvey() {
@@ -36,6 +35,5 @@ public class CompletedSurvey {
         this.missingFoods = missingFoods;
         this.log = log;
         this.customData = customData;
-        this._up = "";
     }
 }
