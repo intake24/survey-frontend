@@ -93,7 +93,7 @@ public class MultipleChoiceCheckboxQuestion implements SurveyStage<Survey> {
 
         content.add(checkboxesDiv);
 
-        Button accept = WidgetFactory.createGreenButton(acceptText, new ClickHandler() {
+        Button accept = WidgetFactory.createGreenButton(acceptText, "multipleChoiceCheckboxContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
 
@@ -125,6 +125,6 @@ public class MultipleChoiceCheckboxQuestion implements SurveyStage<Survey> {
         content.add(checkboxesDiv);
         content.add(accept);
 
-        return new SimpleSurveyStageInterface(content);
+        return new SimpleSurveyStageInterface(content, MultipleChoiceCheckboxQuestion.class.getSimpleName());
     }
 }

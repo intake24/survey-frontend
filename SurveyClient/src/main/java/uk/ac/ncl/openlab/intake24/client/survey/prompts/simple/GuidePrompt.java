@@ -83,4 +83,9 @@ public class GuidePrompt implements SimplePrompt<Integer> {
 
         return content;
     }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
+    }
 }

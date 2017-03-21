@@ -57,7 +57,7 @@ public class PromptUtil {
                     public void call(T result) {
                         onComplete.call(updateFunc.apply(result));
                     }
-                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, prompt.getClassName());
             }
         };
     }
@@ -74,7 +74,7 @@ public class PromptUtil {
                     public void call(T result) {
                         onComplete.call(updateFunc.apply(result));
                     }
-                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, prompt.getClassName());
             }
         };
     }
@@ -89,7 +89,7 @@ public class PromptUtil {
                     public void call(T result) {
                         onComplete.call(updateFunc.apply(result));
                     }
-                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, prompt.getClassName());
             }
         };
     }
@@ -118,7 +118,7 @@ public class PromptUtil {
                 });
 
                 return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                        SurveyStageInterface.DEFAULT_OPTIONS);
+                        SurveyStageInterface.DEFAULT_OPTIONS, LoadingPanel.class.getSimpleName());
             }
         };
     }
@@ -133,6 +133,11 @@ public class PromptUtil {
                         onComplete.call(f.apply(arg1));
                     }
                 });
+            }
+
+            @Override
+            public String getClassName() {
+                return prompt.getClassName();
             }
         };
     }
@@ -176,6 +181,11 @@ public class PromptUtil {
 
                 return contents;
             }
+
+            @Override
+            public String getClassName() {
+                return prompt.getClassName();
+            }
         };
     }
 
@@ -188,6 +198,11 @@ public class PromptUtil {
                 contents.insert(new HTMLPanel("h1", headerText), 0);
 
                 return contents;
+            }
+
+            @Override
+            public String getClassName() {
+                return prompt.getClassName();
             }
         };
     }

@@ -83,4 +83,9 @@ public class RadioButtonPrompt implements SimplePrompt<String> {
 
         return content;
     }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
+    }
 }

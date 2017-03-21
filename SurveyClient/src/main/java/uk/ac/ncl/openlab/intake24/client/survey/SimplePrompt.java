@@ -15,5 +15,7 @@ import org.workcraft.gwt.shared.client.Callback1;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public interface SimplePrompt<T> {
-	public FlowPanel getInterface(final Callback1<T> onComplete);
+    public FlowPanel getInterface(final Callback1<T> onComplete);
+
+    public String getClassName();
 }

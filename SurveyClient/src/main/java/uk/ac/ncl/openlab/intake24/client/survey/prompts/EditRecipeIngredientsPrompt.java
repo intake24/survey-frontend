@@ -79,7 +79,7 @@ public class EditRecipeIngredientsPrompt implements Prompt<Pair<FoodEntry, Meal>
 			}
 		};						
 		
-		final Button done = WidgetFactory.createGreenButton(messages.editRecipeIngredientsPrompt_continueButtonLabel(), new ClickHandler() {
+		final Button done = WidgetFactory.createGreenButton(messages.editRecipeIngredientsPrompt_continueButtonLabel(), "editRecipeContinueButton", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				onComplete.call(MealOperation.update(new Function1<Meal, Meal>() {
@@ -142,7 +142,7 @@ public class EditRecipeIngredientsPrompt implements Prompt<Pair<FoodEntry, Meal>
 		
 		ShepherdTour.makeShepherdTarget(done);
 		
-		return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+		return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, EditRecipeIngredientsPrompt.class.getSimpleName());
 	}
 
 	@Override

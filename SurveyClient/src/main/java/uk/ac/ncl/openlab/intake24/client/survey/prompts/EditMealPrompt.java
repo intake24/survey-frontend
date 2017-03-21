@@ -88,7 +88,7 @@ public class EditMealPrompt implements Prompt<Meal, MealOperation> {
             }
         };
 
-        final Button done = WidgetFactory.createGreenButton(messages.editMeal_finishButtonLabel(), new ClickHandler() {
+        final Button done = WidgetFactory.createGreenButton(messages.editMeal_finishButtonLabel(), "editMealFinishButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(new MealOperation() {
@@ -178,7 +178,7 @@ public class EditMealPrompt implements Prompt<Meal, MealOperation> {
 
         ShepherdTour.makeShepherdTarget(changeTime, delete, done);
 
-        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, Option.<Callback>some(new Callback() {
+        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, EditMealPrompt.class.getSimpleName(), Option.<Callback>some(new Callback() {
             @Override
             public void call() {
                 if (addDrink)

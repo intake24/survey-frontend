@@ -51,7 +51,7 @@ public class WeightTypeInPrompt implements SimplePrompt<Double> {
         content.add(weightTextBox);
         content.add(unitsLabel);
 
-        Button accept = WidgetFactory.createGreenButton(acceptText, new ClickHandler() {
+        Button accept = WidgetFactory.createGreenButton(acceptText, "weightTypeInContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
 
@@ -73,5 +73,10 @@ public class WeightTypeInPrompt implements SimplePrompt<Double> {
         content.add(WidgetFactory.createButtonsPanel(accept));
 
         return content;
+    }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
     }
 }

@@ -65,7 +65,7 @@ public class FoodCompletePrompt implements Prompt<FoodEntry, FoodOperation> {
             }
         });
 
-        Button deleteButton = WidgetFactory.createRedButton(messages.foodComplete_deleteFoodButtonLabel(), new ClickHandler() {
+        Button deleteButton = WidgetFactory.createRedButton(messages.foodComplete_deleteFoodButtonLabel(), "deleteFoodButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(FoodOperation.deleteRequest);
@@ -80,7 +80,7 @@ public class FoodCompletePrompt implements Prompt<FoodEntry, FoodOperation> {
         else
             contents.add(WidgetFactory.createButtonsPanel(contButton, addButton, deleteButton));
 
-        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, FoodCompletePrompt.class.getSimpleName());
     }
 
     @Override

@@ -151,7 +151,7 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
         });
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, SplitFoodPrompt.class.getSimpleName());
     }
 
     @Override

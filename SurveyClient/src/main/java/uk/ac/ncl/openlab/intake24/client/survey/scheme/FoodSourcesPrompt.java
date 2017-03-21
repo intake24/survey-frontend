@@ -107,7 +107,7 @@ public class FoodSourcesPrompt implements Prompt<Meal, MealOperation> {
         content.add(WidgetFactory.createButtonsPanel(finished));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, FoodSourcesPrompt.class.getSimpleName());
     }
 
     @Override

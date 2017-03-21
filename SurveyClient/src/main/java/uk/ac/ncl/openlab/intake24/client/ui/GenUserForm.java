@@ -98,7 +98,7 @@ public class GenUserForm extends Composite {
 
         userInfo.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.genUserOneSitting())));
 
-        Button cont = WidgetFactory.createGreenButton(messages.genUserContinue(), new ClickHandler() {
+        Button cont = WidgetFactory.createGreenButton(messages.genUserContinue(), "genUserFormContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onContinueClicked.call();

@@ -44,7 +44,7 @@ public class TimeQuestion extends Composite {
         timePicker.hourCounter.getElement().setId("intake24-time-question-hours");
         timePicker.minuteCounter.getElement().setId("intake24-time-question-minutes");
 
-        confirmButton = WidgetFactory.createGreenButton(acceptLabel, new ClickHandler() {
+        confirmButton = WidgetFactory.createGreenButton(acceptLabel, "timeQuestionConfirmButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 handler.handleAccept(timePicker.getTime());
@@ -61,7 +61,7 @@ public class TimeQuestion extends Composite {
         };
 
         if (scarySkipButton)
-            skipButton = WidgetFactory.createRedButton(skipLabel, skipHandler);
+            skipButton = WidgetFactory.createRedButton(skipLabel, "timeQuestionSkipButton", skipHandler);
         else
             skipButton = WidgetFactory.createButton(skipLabel, skipHandler);
 

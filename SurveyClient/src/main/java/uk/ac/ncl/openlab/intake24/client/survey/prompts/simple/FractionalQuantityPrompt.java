@@ -74,7 +74,7 @@ public class FractionalQuantityPrompt implements SimplePrompt<Double> {
         final QuantityCounter counter = new QuantityCounter(0.25, 30, 1.0);
         amountPanel.add(counter);
 
-        Button cont = WidgetFactory.createGreenButton(buttonLabel, new ClickHandler() {
+        Button cont = WidgetFactory.createGreenButton(buttonLabel, "fractionalQuantityContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(counter.getValue());
@@ -89,5 +89,10 @@ public class FractionalQuantityPrompt implements SimplePrompt<Double> {
         ShepherdTour.makeShepherdTarget(promptPanel, counter.wholeCounter, counter.fractionalCounter, counter.wholeLabel, cont);
 
         return content;
+    }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
     }
 }

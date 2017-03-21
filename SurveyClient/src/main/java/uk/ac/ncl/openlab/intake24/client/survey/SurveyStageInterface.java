@@ -18,73 +18,77 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
 import com.google.gwt.user.client.ui.Panel;
 
 public abstract class SurveyStageInterface {
-	public static final Options DEFAULT_OPTIONS = new Options() {
-		@Override
-		public boolean skipAnimation() {
-			return false;
-		}
-	};
-		
-	public final Option<Callback> onAnimationComplete;
-	
-	public SurveyStageInterface(Option<Callback> onAnimationComplete) {
-		this.onAnimationComplete = onAnimationComplete;
-	}
+    public static final Options DEFAULT_OPTIONS = new Options() {
+        @Override
+        public boolean skipAnimation() {
+            return false;
+        }
+    };
 
-	public abstract void accept (Visitor visitor);
-	
-	public interface Visitor {
-		void visitStretched(Stretched ssi);
-		void visitAligned(Aligned ssi);
-	}
-	
-	public interface Options {
-		boolean skipAnimation();
-	}
-	
-	public static class Stretched extends SurveyStageInterface {
-		public final Panel content;
-		public final Options options;
-		
-		public Stretched (Panel content, Options options) {
-			this (content, options, Option.<Callback>none());
-		}
-		
-		public Stretched (Panel content, Options options, Option<Callback> onAnimationComplete) {
-			super(onAnimationComplete);
-			this.content = content;
-			this.options = options;
-			content.addStyleName("scran24-stretched-survey-page-content");
-		}
+    public final Option<Callback> onAnimationComplete;
 
-		@Override
-		public void accept(Visitor visitor) {
-			visitor.visitStretched(this);
-		}
-	}
-	
-	public static class Aligned extends SurveyStageInterface {
-		public final Panel content;
-		public final VerticalAlignmentConstant verticalAlignment;
-		public final HorizontalAlignmentConstant horizontalAlignment;
-		public final Options options;
+    public final String className;
 
-		public Aligned(Panel content, HorizontalAlignmentConstant horizontalAlignment, VerticalAlignmentConstant verticalAlignment, Options options) {
-			this(content, horizontalAlignment, verticalAlignment, options, Option.<Callback>none());		
-		}
-		
-		public Aligned(Panel content, HorizontalAlignmentConstant horizontalAlignment, VerticalAlignmentConstant verticalAlignment, Options options, Option<Callback> onAnimationComplete) {
-			super(onAnimationComplete);
-			this.content = content;
-			this.horizontalAlignment = horizontalAlignment;
-			this.verticalAlignment = verticalAlignment;
-			this.options = options;
-			content.addStyleName("intake24-prompt-container");
-		}
+    public SurveyStageInterface(Option<Callback> onAnimationComplete, String className) {
+        this.onAnimationComplete = onAnimationComplete;
+        this.className = className;
+    }
 
-		@Override
-		public void accept(Visitor visitor) {
-			visitor.visitAligned(this);
-		}
-	}
+    public abstract void accept(Visitor visitor);
+
+    public interface Visitor {
+        void visitStretched(Stretched ssi);
+
+        void visitAligned(Aligned ssi);
+    }
+
+    public interface Options {
+        boolean skipAnimation();
+    }
+
+    public static class Stretched extends SurveyStageInterface {
+        public final Panel content;
+        public final Options options;
+
+        public Stretched(Panel content, Options options, String className) {
+            this(content, options, className, Option.<Callback>none());
+        }
+
+        public Stretched(Panel content, Options options, String className, Option<Callback> onAnimationComplete) {
+            super(onAnimationComplete, className);
+            this.content = content;
+            this.options = options;
+            content.addStyleName("scran24-stretched-survey-page-content");
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitStretched(this);
+        }
+    }
+
+    public static class Aligned extends SurveyStageInterface {
+        public final Panel content;
+        public final VerticalAlignmentConstant verticalAlignment;
+        public final HorizontalAlignmentConstant horizontalAlignment;
+        public final Options options;
+
+        public Aligned(Panel content, HorizontalAlignmentConstant horizontalAlignment, VerticalAlignmentConstant verticalAlignment, Options options, String className) {
+            this(content, horizontalAlignment, verticalAlignment, options, className, Option.<Callback>none());
+        }
+
+        public Aligned(Panel content, HorizontalAlignmentConstant horizontalAlignment, VerticalAlignmentConstant verticalAlignment, Options options, String className, Option<Callback> onAnimationComplete) {
+            super(onAnimationComplete, className);
+            this.content = content;
+            this.horizontalAlignment = horizontalAlignment;
+            this.verticalAlignment = verticalAlignment;
+            this.options = options;
+            content.addStyleName("intake24-prompt-container");
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitAligned(this);
+        }
+    }
 }

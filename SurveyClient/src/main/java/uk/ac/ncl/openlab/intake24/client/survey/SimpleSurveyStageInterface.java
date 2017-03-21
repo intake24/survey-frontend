@@ -16,22 +16,22 @@ import org.workcraft.gwt.shared.client.Option;
 import com.google.gwt.user.client.ui.Panel;
 
 public class SimpleSurveyStageInterface {
-	public final Option<Callback> onAnimationComplete;
-	public final Panel content;
+    public final Option<Callback> onAnimationComplete;
+    public final Panel content;
+    public final String className;
 
-	public SimpleSurveyStageInterface(final Panel content) {
-		this(content, Option.<Callback> none());
-	}
+    public SimpleSurveyStageInterface(final Panel content, String className) {
+        this(content, className, Option.<Callback>none());
+    }
 
-	/**
-	 * @param content
-	 *          GWT container with the UI elements.
-	 * @param onAnimationComplete
-	 *          a callback that is called when the UI elements are presented to
-	 *          the user (e.g. following a transition animation)
-	 */
-	public SimpleSurveyStageInterface(final Panel content, final Option<Callback> onAnimationComplete) {
-		this.onAnimationComplete = onAnimationComplete;
-		this.content = content;
-	}
+    /**
+     * @param content             GWT container with the UI elements.
+     * @param onAnimationComplete a callback that is called when the UI elements are presented to
+     *                            the user (e.g. following a transition animation)
+     */
+    public SimpleSurveyStageInterface(final Panel content, String className, final Option<Callback> onAnimationComplete) {
+        this.onAnimationComplete = onAnimationComplete;
+        this.className = className;
+        this.content = content;
+    }
 }

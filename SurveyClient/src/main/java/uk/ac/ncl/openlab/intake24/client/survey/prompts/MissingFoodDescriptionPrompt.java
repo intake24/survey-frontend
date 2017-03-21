@@ -134,7 +134,7 @@ public class MissingFoodDescriptionPrompt implements Prompt<FoodEntry, FoodOpera
 
         content.add(leftovers);
 
-        Button cont = WidgetFactory.createGreenButton(messages.missingFood_continueButtonLabel(), new ClickHandler() {
+        Button cont = WidgetFactory.createGreenButton(messages.missingFood_continueButtonLabel(), "missingFoodContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
 
@@ -158,7 +158,7 @@ public class MissingFoodDescriptionPrompt implements Prompt<FoodEntry, FoodOpera
         ShepherdTour.makeShepherdTarget(questionPanel, foodName, description, brand, portionSize, leftovers, cont);
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, MissingFoodDescriptionPrompt.class.getSimpleName());
     }
 
     @Override

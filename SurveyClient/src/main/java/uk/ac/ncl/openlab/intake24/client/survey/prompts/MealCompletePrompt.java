@@ -61,7 +61,7 @@ public class MealCompletePrompt implements Prompt<Meal, MealOperation> {
             }
         });
 
-        Button deleteButton = WidgetFactory.createRedButton(messages.mealComplete_deleteButtonLabel(), new ClickHandler() {
+        Button deleteButton = WidgetFactory.createRedButton(messages.mealComplete_deleteButtonLabel(), "mealCompleteDeleteButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(MealOperation.deleteRequest(true));
@@ -73,7 +73,7 @@ public class MealCompletePrompt implements Prompt<Meal, MealOperation> {
         contents.add(WidgetFactory.createPromptPanel(promptText));
         contents.add(WidgetFactory.createButtonsPanel(contButton, addButton, timeButton, deleteButton));
 
-        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, MealCompletePrompt.class.getSimpleName());
     }
 
     @Override

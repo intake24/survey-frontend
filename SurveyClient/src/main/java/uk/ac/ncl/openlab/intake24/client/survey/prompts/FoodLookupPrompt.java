@@ -171,7 +171,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
         }
 
         LookupInterface(final Meal meal, final FoodEntry food, final Callback1<MealOperation> onComplete) {
-            super(new FlowPanel(), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+            super(new FlowPanel(), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, FoodLookupPrompt.class.getSimpleName());
 
             searchText = new TextBox();
             searchText.setText(food.description());

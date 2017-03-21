@@ -170,7 +170,7 @@ public class CompoundFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
         content.add(foodBrowser);
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, CompoundFoodPrompt.class.getSimpleName());
     }
 
     @Override

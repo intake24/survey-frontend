@@ -53,7 +53,7 @@ public class DeleteMealPrompt implements Prompt<Survey, SurveyOperation> {
     public SurveyStageInterface getInterface(final Callback1<SurveyOperation> onComplete, final Callback1<Function1<Survey, Survey>> onIntermediateStateChange) {
         SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(messages.deleteMeal_promptText(SafeHtmlUtils.htmlEscape(meal.name.toLowerCase())));
 
-        Button deleteButton = WidgetFactory.createRedButton(messages.deleteMeal_deleteButtonLabel(), new ClickHandler() {
+        Button deleteButton = WidgetFactory.createRedButton(messages.deleteMeal_deleteButtonLabel(), "deleteMealButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(SurveyOperation.update(new Function1<Survey, Survey>() {
@@ -77,6 +77,6 @@ public class DeleteMealPrompt implements Prompt<Survey, SurveyOperation> {
         contents.add(WidgetFactory.createPromptPanel(promptText));
         contents.add(WidgetFactory.createButtonsPanel(deleteButton, cancelButton));
 
-        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, DeleteMealPrompt.class.getSimpleName());
     }
 }

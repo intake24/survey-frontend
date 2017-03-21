@@ -60,7 +60,7 @@ public class EnergyValidationPrompt implements Prompt<Survey, SurveyOperation> {
         content.add(WidgetFactory.createButtonsPanel(addMeal, cont));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, EnergyValidationPrompt.class.getSimpleName());
     }
 
     @Override

@@ -55,7 +55,7 @@ public class UnknownPortionSizeMethodPrompt implements Prompt<FoodEntry, FoodOpe
 		content.add(WidgetFactory.createButtonsPanel(contButton));
 
 		return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-				SurveyStageInterface.DEFAULT_OPTIONS);
+				SurveyStageInterface.DEFAULT_OPTIONS, UnknownPortionSizeMethodPrompt.class.getSimpleName());
 	}
 
 	@Override

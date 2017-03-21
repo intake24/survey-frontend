@@ -124,7 +124,7 @@ public class SimpleHomeRecipePrompt implements Prompt<FoodEntry, FoodOperation> 
 
         content.add(leftovers);
 
-        Button cont = WidgetFactory.createGreenButton(messages.missingFood_continueButtonLabel(), new ClickHandler() {
+        Button cont = WidgetFactory.createGreenButton(messages.missingFood_continueButtonLabel(), "simpleRecipeContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
 
@@ -148,7 +148,7 @@ public class SimpleHomeRecipePrompt implements Prompt<FoodEntry, FoodOperation> 
         ShepherdTour.makeShepherdTarget(questionPanel, foodName, recipeTextArea, portionSize, leftovers, cont);
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, SimpleHomeRecipePrompt.class.getSimpleName());
     }
 
     @Override

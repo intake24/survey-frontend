@@ -58,7 +58,7 @@ public class BrandNamePrompt implements Prompt<FoodEntry, FoodOperation> {
 
         content.add(promptPanel);
 
-        final Button contButton = WidgetFactory.createGreenButton(messages.brandName_continueButtonLabel(), new ClickHandler() {
+        final Button contButton = WidgetFactory.createGreenButton(messages.brandName_continueButtonLabel(), "brandNameContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(FoodOperation.updateEncoded(new Function1<EncodedFood, EncodedFood>() {
@@ -98,7 +98,7 @@ public class BrandNamePrompt implements Prompt<FoodEntry, FoodOperation> {
         content.add(WidgetFactory.createButtonsPanel(contButton));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, BrandNamePrompt.class.getSimpleName());
     }
 
     @Override

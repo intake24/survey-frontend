@@ -167,6 +167,6 @@ public class SameAsBeforePrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
 		ShepherdTour.makeShepherdTarget(promptPanel, portionSizePanel, leftoversPanel, assocFoodsPanel, yes, no);
 		
 		return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-				SurveyStageInterface.DEFAULT_OPTIONS);
+				SurveyStageInterface.DEFAULT_OPTIONS, SameAsBeforePrompt.class.getSimpleName());
 	}
 }

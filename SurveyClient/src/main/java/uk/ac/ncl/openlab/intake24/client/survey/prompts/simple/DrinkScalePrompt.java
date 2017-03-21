@@ -115,7 +115,7 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
 
         more.getElement().setId("intake24-sliding-scale-more-button");
 
-        final Button finish = WidgetFactory.createGreenButton(def.acceptLabel, new ClickHandler() {
+        final Button finish = WidgetFactory.createGreenButton(def.acceptLabel, "drinkScaleAcceptButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(scale.getValue());
@@ -129,5 +129,10 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
         ShepherdTour.makeShepherdTarget(promptPanel, scale.image, scale.overlayDiv, scale.sliderBar, less, more, finish);
 
         return content;
+    }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
     }
 }

@@ -116,7 +116,7 @@ public class ChoosePortionSizeMethodPrompt implements Prompt<FoodEntry, FoodOper
         content.add(methodPanel);
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT,
-                HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+                HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, ChoosePortionSizeMethodPrompt.class.getSimpleName());
     }
 
     @Override

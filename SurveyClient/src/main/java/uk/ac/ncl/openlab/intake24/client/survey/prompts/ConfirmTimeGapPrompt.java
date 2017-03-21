@@ -159,7 +159,7 @@ public class ConfirmTimeGapPrompt implements Prompt<Survey, SurveyOperation> {
         }));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, ConfirmTimeGapPrompt.class.getSimpleName());
     }
 
     @Override

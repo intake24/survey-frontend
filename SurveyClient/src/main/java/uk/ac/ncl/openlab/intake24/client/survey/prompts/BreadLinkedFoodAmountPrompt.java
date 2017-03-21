@@ -121,7 +121,7 @@ public class BreadLinkedFoodAmountPrompt implements Prompt<Pair<FoodEntry, Meal>
         ShepherdTour.makeShepherdTarget(counter.wholeLabel);
         ShepherdTour.makeShepherdTarget(counter.wholeCounter);
 
-        Button confirmQuantityButton = WidgetFactory.createGreenButton(messages.quantity_continueButtonLabel(), new ClickHandler() {
+        Button confirmQuantityButton = WidgetFactory.createGreenButton(messages.quantity_continueButtonLabel(), "quantityPromptContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(MealOperation.updateFood(foodIndex, new Function1<FoodEntry, FoodEntry>() {
@@ -135,8 +135,6 @@ public class BreadLinkedFoodAmountPrompt implements Prompt<Pair<FoodEntry, Meal>
             }
         });
 
-        confirmQuantityButton.getElement().setId("intake24-quantity-prompt-continue-button");
-
         quantityPanel.add(counter);
         quantityPanel.add(confirmQuantityButton);
 
@@ -145,7 +143,7 @@ public class BreadLinkedFoodAmountPrompt implements Prompt<Pair<FoodEntry, Meal>
         content.add(quantityPanel);
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, BreadLinkedFoodAmountPrompt.class.getSimpleName());
     }
 
     @Override

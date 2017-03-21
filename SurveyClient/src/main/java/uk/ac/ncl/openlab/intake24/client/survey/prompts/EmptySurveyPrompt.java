@@ -49,7 +49,7 @@ public class EmptySurveyPrompt implements Prompt<Survey, SurveyOperation> {
         content.add(WidgetFactory.createButtonsPanel(addMeal));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, EmptySurveyPrompt.class.getSimpleName());
     }
 
     @Override

@@ -118,4 +118,9 @@ public class OptionalFoodPrompt implements SimplePrompt<Option<String>> {
 
         return content;
     }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
+    }
 }

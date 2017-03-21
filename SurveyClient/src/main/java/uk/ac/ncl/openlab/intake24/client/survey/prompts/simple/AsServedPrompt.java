@@ -71,6 +71,11 @@ public class AsServedPrompt implements SimplePrompt<Integer> {
     }
 
     @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
+    }
+
+    @Override
     public String toString() {
         return "As served portion size prompt";
     }

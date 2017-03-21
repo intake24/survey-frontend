@@ -94,6 +94,6 @@ public class LunchFrequenciesQuestion implements SurveyStage<Survey> {
 
         content.add(WidgetFactory.createButtonsPanel(accept));
 
-        return new SimpleSurveyStageInterface(content);
+        return new SimpleSurveyStageInterface(content, LunchFrequenciesQuestion.class.getSimpleName());
     }
 }

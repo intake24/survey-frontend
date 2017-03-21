@@ -361,7 +361,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         interf = new FlowPanel();
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, AssociatedFoodPrompt.class.getSimpleName());
     }
 
     public PVector<ShepherdTour.Step> getShepherdTourSteps() {

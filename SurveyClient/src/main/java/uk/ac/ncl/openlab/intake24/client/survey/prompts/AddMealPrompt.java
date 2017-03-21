@@ -152,7 +152,7 @@ public class AddMealPrompt implements Prompt<Survey, SurveyOperation> {
         contents.add(WidgetFactory.createButtonsPanel(acceptButton, cancelButton));
 
         return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP,
-                SurveyStageInterface.DEFAULT_OPTIONS);
+                SurveyStageInterface.DEFAULT_OPTIONS, AddMealPrompt.class.getSimpleName());
     }
 
 }

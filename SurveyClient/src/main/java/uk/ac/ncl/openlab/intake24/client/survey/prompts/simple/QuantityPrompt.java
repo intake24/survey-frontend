@@ -74,7 +74,7 @@ public class QuantityPrompt implements SimplePrompt<Double> {
 
         final QuantityCounter counter = new QuantityCounter(0.25, 30, 1.0);
 
-        Button cont = WidgetFactory.createGreenButton(messages.quantity_continueButtonLabel(), new ClickHandler() {
+        Button cont = WidgetFactory.createGreenButton(messages.quantity_continueButtonLabel(), "quantityPromptContinueButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(counter.getValue());
@@ -89,5 +89,10 @@ public class QuantityPrompt implements SimplePrompt<Double> {
         ShepherdTour.makeShepherdTarget(promptPanel, counter.wholeCounter, counter.fractionalCounter, counter.wholeLabel, cont);
 
         return content;
+    }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
     }
 }

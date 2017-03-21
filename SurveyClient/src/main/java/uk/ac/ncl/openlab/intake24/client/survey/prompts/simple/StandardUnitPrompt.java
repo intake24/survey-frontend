@@ -54,7 +54,7 @@ public class StandardUnitPrompt implements SimplePrompt<Integer> {
 
         choice.selectFirst();
 
-        Button accept = WidgetFactory.createGreenButton(acceptText, new ClickHandler() {
+        Button accept = WidgetFactory.createGreenButton(acceptText, "standardUnitAcceptButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(choice.getChoiceIndex().getOrDie());
@@ -65,5 +65,10 @@ public class StandardUnitPrompt implements SimplePrompt<Integer> {
         content.add(WidgetFactory.createButtonsPanel(accept));
 
         return content;
+    }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
     }
 }

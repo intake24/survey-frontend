@@ -52,7 +52,7 @@ public class MultipleChoiceRadioButtonQuestion implements SurveyStage<Survey> {
 
         final RadioButtonQuestion choices = new RadioButtonQuestion(questionText, options, dataField, otherOption);
 
-        Button accept = WidgetFactory.createGreenButton(acceptText, new ClickHandler() {
+        Button accept = WidgetFactory.createGreenButton(acceptText, "multipleChoiceAcceptButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 Option<String> choice = choices.getChoice();
@@ -68,6 +68,6 @@ public class MultipleChoiceRadioButtonQuestion implements SurveyStage<Survey> {
         content.add(choices);
         content.add(accept);
 
-        return new SimpleSurveyStageInterface(content);
+        return new SimpleSurveyStageInterface(content, MultipleChoiceRadioButtonQuestion.class.getSimpleName());
     }
 }

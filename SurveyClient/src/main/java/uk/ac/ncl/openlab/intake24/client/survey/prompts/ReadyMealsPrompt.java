@@ -136,7 +136,7 @@ public class ReadyMealsPrompt implements Prompt<Meal, MealOperation> {
 
         content.add(WidgetFactory.createButtonsPanel(finishedButton));
 
-        return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+        return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, ReadyMealsPrompt.class.getSimpleName());
     }
 
     @Override

@@ -45,4 +45,9 @@ public class YesNoPrompt implements SimplePrompt<Boolean> {
 
         return content;
     }
+
+    @Override
+    public String getClassName() {
+        return getClass().getSimpleName();
+    }
 }

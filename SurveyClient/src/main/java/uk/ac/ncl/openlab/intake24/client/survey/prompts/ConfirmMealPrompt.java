@@ -136,7 +136,7 @@ public class ConfirmMealPrompt implements Prompt<Meal, MealOperation> {
 		
 		ShepherdTour.makeShepherdTarget(timeQuestion.promptPanel, timeQuestion.timePicker.hourCounter, timeQuestion.timePicker.minuteCounter, timeQuestion.skipButton, timeQuestion.confirmButton);
 		
-		return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+		return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, ConfirmMealPrompt.class.getSimpleName());
 	}
 	
 	@Override

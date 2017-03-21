@@ -124,6 +124,7 @@ public class PromptInterfaceManager {
         newPrompt.setWidth("100%");
         newPrompt.getElement().addClassName("intake24-active-prompt");
         newPrompt.getElement().setId("intake24-prompt-scroll-target");
+        newPrompt.getElement().setAttribute("data-intake24-prompt-class", interf.className);
 
         interfacePanel.add(newPrompt);
 

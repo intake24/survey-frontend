@@ -89,7 +89,7 @@ public class SaveHomeRecipePrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         recipeNamePanel.add(new Label(messages.homeRecipe_recipeNameLabel()));
         recipeNamePanel.add(recipeName);
 
-        Button yesButton = WidgetFactory.createGreenButton(messages.yesNoQuestion_defaultYesLabel(), new ClickHandler() {
+        Button yesButton = WidgetFactory.createGreenButton(messages.yesNoQuestion_defaultYesLabel(), "saveRecipeYesButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (!recipeName.getText().isEmpty())
@@ -110,6 +110,6 @@ public class SaveHomeRecipePrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         contents.add(recipeNamePanel);
         contents.add(WidgetFactory.createButtonsPanel(yesButton, noButton));
 
-        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+        return new SurveyStageInterface.Aligned(contents, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, SaveHomeRecipePrompt.class.getSimpleName());
     }
 }

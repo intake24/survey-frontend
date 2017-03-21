@@ -273,7 +273,7 @@ public class IntakeSurvey implements SurveyStage<Survey> {
 
 			showNextPrompt();
 
-			cachedInterface = new SimpleSurveyStageInterface(content);
+			cachedInterface = new SimpleSurveyStageInterface(content, IntakeSurvey.class.getSimpleName());
 
 			return cachedInterface;
 		}

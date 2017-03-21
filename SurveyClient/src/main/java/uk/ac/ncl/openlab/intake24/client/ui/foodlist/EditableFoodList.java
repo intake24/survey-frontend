@@ -17,7 +17,7 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import org.pcollections.PVector;
+
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
@@ -26,6 +26,8 @@ import uk.ac.ncl.openlab.intake24.client.UnorderedList;
 import uk.ac.ncl.openlab.intake24.client.survey.FoodEntry;
 import uk.ac.ncl.openlab.intake24.client.survey.Meal;
 import uk.ac.ncl.openlab.intake24.client.survey.UUID;
+
+import org.pcollections.PVector;
 
 import java.util.ArrayList;
 import java.util.List;

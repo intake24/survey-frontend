@@ -80,7 +80,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
                     contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
 
-                    contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), new ClickHandler() {
+                    contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), "finalPageTryAgainButton", new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
                             SurveyService.INSTANCE.submitSurvey(EmbeddedData.getSurveyId(), finalData, outer);
@@ -112,7 +112,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                             public void visitSome(String url) {
                                 FlowPanel externalLinkDiv = new FlowPanel();
 
-                                externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), new ClickHandler() {
+                                externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), "finalPageExternalUrlButton", new ClickHandler() {
                                     @Override
                                     public void onClick(ClickEvent clickEvent) {
                                         Window.Location.replace(url.replace("[intake24_username_value]", AuthCache.getCurrentUserName()));
@@ -136,6 +136,6 @@ public class FlatFinalPage implements SurveyStage<Survey> {
             }
         });
 
-        return new SimpleSurveyStageInterface(contents);
+        return new SimpleSurveyStageInterface(contents, FlatFinalPage.class.getSimpleName());
     }
 }

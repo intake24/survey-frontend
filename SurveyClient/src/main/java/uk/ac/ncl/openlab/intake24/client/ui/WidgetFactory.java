@@ -58,17 +58,19 @@ public class WidgetFactory {
         return button;
     }
 
-    public static Button createGreenButton(String label, ClickHandler handler) {
+    public static Button createGreenButton(String label, String id, ClickHandler handler) {
         Button result = createButton(label, handler);
         result.addStyleName("intake24-button");
         result.addStyleName("intake24-green-button");
+        result.getElement().setId(id);
         return result;
     }
 
-    public static Button createRedButton(String label, ClickHandler handler) {
+    public static Button createRedButton(String label, String id, ClickHandler handler) {
         Button result = createButton(label, handler);
         result.addStyleName("intake24-button");
         result.addStyleName("intake24-red-button");
+        result.getElement().setId(id);
         return result;
     }
 

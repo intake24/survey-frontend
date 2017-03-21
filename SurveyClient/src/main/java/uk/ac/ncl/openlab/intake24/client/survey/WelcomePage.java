@@ -54,7 +54,7 @@ public class WelcomePage implements SurveyStage<Survey> {
     @Override
     public SimpleSurveyStageInterface getInterface(final Callback1<Survey> onComplete,
                                                    Callback2<Survey, Boolean> onIntermediateStateChange) {
-        final Button startButton = WidgetFactory.createGreenButton(surveyMessages.welcomePage_ready(), new ClickHandler() {
+        final Button startButton = WidgetFactory.createGreenButton(surveyMessages.welcomePage_ready(), "welcomePageReadyButton", new ClickHandler() {
             public void onClick(ClickEvent event) {
                 onComplete.call(initialData.withFlag(FLAG_WELCOME_PAGE_SHOWN));
             }
@@ -70,6 +70,6 @@ public class WelcomePage implements SurveyStage<Survey> {
         contents.add(htmlPanel);
         contents.add(startButton);
 
-        return new SimpleSurveyStageInterface(contents);
+        return new SimpleSurveyStageInterface(contents, WelcomePage.class.getSimpleName());
     }
 }

@@ -73,7 +73,7 @@ public class DrinkReminderPrompt implements Prompt<Meal, MealOperation> {
             }
         }));
 
-        return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS);
+        return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, DrinkReminderPrompt.class.getSimpleName());
     }
 
     @Override
