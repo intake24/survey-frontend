@@ -58,7 +58,7 @@ public class RefreshCallback implements RequestCallback {
                         genUserUI.onCredentialsReceived(response, new Callback() {
                             @Override
                             public void call() {
-                                AuthenticationService.INSTANCE.signin(new Credentials(Option.some(EmbeddedData.getSurveyId()), response.userName, response.password), new MethodCallback<SigninResult>() {
+                                AuthenticationService.INSTANCE.signin(new Credentials(EmbeddedData.getSurveyId(), response.userName, response.password), new MethodCallback<SigninResult>() {
                                     @Override
                                     public void onFailure(Method signinMethod, Throwable exception) {
                                         ErrorReportingService.reportError(new RuntimeException("Failed to generate user", exception));

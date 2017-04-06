@@ -14,6 +14,6 @@ public interface GeneratedUsersService extends RestService {
     GeneratedUsersService INSTANCE = GWT.create(GeneratedUsersService.class);
 
     @POST
-    @Path("/user/surveys/{surveyId}/generate-user")
+    @Path("/surveys/{surveyId}/generate-user")
     void generateUser(@PathParam("surveyId") String surveyId, MethodCallback<GeneratedCredentials> callback);
 }

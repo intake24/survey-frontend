@@ -14,7 +14,7 @@ public interface AuthenticationService extends RestService {
     AuthenticationService INSTANCE = GWT.create(AuthenticationService.class);
 
     @POST
-    @Path("/signin")
+    @Path("/signin/alias")
     void signin(Credentials request, MethodCallback<SigninResult> callback);
 
     @POST

@@ -22,7 +22,7 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
 
   def survey(surveyId: String, genUser: Option[String]) = Action.async {
 
-    ws.url(s"$apiBaseUrl/user/surveys/$surveyId/public-parameters").withRequestTimeout(30 seconds).get.map {
+    ws.url(s"$apiBaseUrl/surveys/$surveyId/public-parameters").withRequestTimeout(30 seconds).get.map {
       response =>
         response.status match {
           case 200 => {

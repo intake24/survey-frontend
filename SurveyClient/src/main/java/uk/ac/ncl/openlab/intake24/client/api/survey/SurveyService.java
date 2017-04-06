@@ -19,10 +19,10 @@ public interface SurveyService extends RestService {
     SurveyService INSTANCE = GWT.create(SurveyService.class);
 
     @GET
-    @Path("/user/surveys/{id}/parameters")
+    @Path("/surveys/{id}/parameters")
     void getSurveyParameters(@PathParam("id") String surveyId, MethodCallback<SurveyParameters> callback);
 
     @POST
-    @Path("/user/surveys/{id}")
+    @Path("/surveys/{id}")
     void submitSurvey(@PathParam("id") String surveyId, CompletedSurvey survey, MethodCallback<Void> callback);
 }

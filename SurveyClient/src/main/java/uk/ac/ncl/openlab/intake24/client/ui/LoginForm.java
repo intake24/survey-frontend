@@ -54,7 +54,7 @@ public class LoginForm extends Composite {
         statusPanel.clear();
         statusPanel.add(new LoadingWidget());
 
-        attemptLogin.call(new Credentials(Option.some(EmbeddedData.getSurveyId()), userNameTextBox.getText(), passwordTextBox.getText()));
+        attemptLogin.call(new Credentials(EmbeddedData.getSurveyId(), userNameTextBox.getText(), passwordTextBox.getText()));
     }
 
     public void onLoginAttemptFailed() {
