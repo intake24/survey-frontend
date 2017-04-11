@@ -52,11 +52,6 @@ import java.util.ArrayList;
 
 public class SurveyEntryPoint implements EntryPoint {
 
-    private native void initComplete() /*-{
-        if (typeof $wnd.intake24_initComplete == 'function')
-            $wnd.intake24_initComplete();
-    }-*/;
-
     Anchor watchTutorial;
     Anchor logOut;
 
