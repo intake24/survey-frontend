@@ -26,10 +26,10 @@ public interface ErrorReportingService extends RestService {
         String surveyStateJSON = "{}";
 
         String surveyId = EmbeddedData.getSurveyId();
-        Option<String> userName = AuthCache.getCurrentUserNameOption();
+        Option<String> userId = AuthCache.getCurrentUserIdOption();
 
-        if (!userName.isEmpty())
-            surveyStateJSON = StateManagerUtil.getLatestStateSerialised(userName.getOrDie()).getOrElse("{}");
+        if (!userId.isEmpty())
+            surveyStateJSON = StateManagerUtil.getLatestStateSerialised(userId.getOrDie()).getOrElse("{}");
 
         Throwable cur = exception;
 
@@ -40,7 +40,7 @@ public interface ErrorReportingService extends RestService {
             cur = cur.getCause();
         }
 
-        INSTANCE.reportError(new ErrorReport(surveyId, userName, GWT.getPermutationStrongName(), exceptionChain, surveyStateJSON), new MethodCallback<Void>() {
+        INSTANCE.reportError(new ErrorReport(surveyId, userId, GWT.getPermutationStrongName(), exceptionChain, surveyStateJSON), new MethodCallback<Void>() {
             @Override
             public void onFailure(Method method, Throwable errorServiceException) {
                 GWT.log("Failed to report exception", errorServiceException);

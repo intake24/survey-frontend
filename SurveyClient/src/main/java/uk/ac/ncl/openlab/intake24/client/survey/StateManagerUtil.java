@@ -95,7 +95,7 @@ public class StateManagerUtil {
 
   public static Option<SameAsBefore> getSameAsBefore(String foodCode, String scheme_id,
       String version_id, PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager) {
-    final String key = SameAsBeforePrefix + AuthCache.getCurrentUserKey() + "-" + foodCode;
+    final String key = SameAsBeforePrefix + AuthCache.getCurrentUserId() + "-" + foodCode;
 
     final String serialised = localStorage.getItem(key);
 

@@ -46,7 +46,7 @@ public class RecipeManager {
 	}
 
 	private String localStorageKey() {
-		return keyPrefix + AuthCache.getCurrentUserKey();
+		return keyPrefix + AuthCache.getCurrentUserId();
 	}
 
 	public PVector<Recipe> getSavedRecipes() {

@@ -12,46 +12,27 @@ public class AuthCache {
 
     private final static Storage localStorage = Storage.getLocalStorageIfSupported();
 
-    private static String currentUserKey;
-    private static String currentUserName;
+    private static String currentUserId;
 
     static {
         String cachedAccessToken = getCachedAccessToken();
         String cachedRefreshToken = getCachedRefreshToken();
 
-        if (cachedAccessToken != null) {
-            currentUserKey = getUserKeyFromJWT(cachedAccessToken);
-            currentUserName = extractUserName(currentUserKey);
-
-        } else if (cachedRefreshToken != null) {
-            currentUserKey = getUserKeyFromJWT(cachedRefreshToken);
-            currentUserName = extractUserName(currentUserKey);
-        } else {
-            currentUserKey = null;
-            currentUserName = null;
-        }
-
+        if (cachedAccessToken != null)
+            currentUserId = getUserIdFromJWT(cachedAccessToken);
+        else if (cachedRefreshToken != null)
+            currentUserId = getUserIdFromJWT(cachedRefreshToken);
+        else
+            currentUserId = null;
     }
 
-    private static String getUserKeyFromJWT(String token) {
+    private static String getUserIdFromJWT(String token) {
         String payloadBase64Url = token.split("\\.")[1];
 
         String payloadJson = new String(Base64Utils.fromBase64Url(payloadBase64Url));
         JSONObject payloadValue = JSONParser.parseStrict(payloadJson).isObject();
-        String subjectJson = new String(Base64Utils.fromBase64(payloadValue.get("sub").isString().stringValue()));
-        JSONObject subjectValue = JSONParser.parseStrict(subjectJson).isObject();
 
-        String intake24UserKey = subjectValue.get("providerKey").isString().stringValue();
-
-        return intake24UserKey;
-    }
-
-    private static String extractUserName(String key) {
-        int index = key.indexOf('#');
-        if (index == -1)
-            return key;
-        else
-            return key.substring(index + 1);
+        return payloadValue.get("userId").toString();
     }
 
     public static void clear() {
@@ -61,14 +42,12 @@ public class AuthCache {
 
     public static void updateRefreshToken(String refreshToken) {
         localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-        currentUserKey = getUserKeyFromJWT(refreshToken);
-        currentUserName = extractUserName(currentUserKey);
+        currentUserId = getUserIdFromJWT(refreshToken);
     }
 
     public static void updateAccessToken(String accessToken) {
         localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-        currentUserKey = getUserKeyFromJWT(accessToken);
-        currentUserName = extractUserName(currentUserKey);
+        currentUserId = getUserIdFromJWT(accessToken);
     }
 
     public static String getCachedRefreshToken() {
@@ -79,20 +58,11 @@ public class AuthCache {
         return localStorage.getItem(ACCESS_TOKEN_KEY);
     }
 
-    public static Option<String> getCurrentUserKeyOption() {
-        return Option.fromNullable(currentUserKey);
+    public static Option<String> getCurrentUserIdOption() {
+        return Option.fromNullable(currentUserId);
     }
 
-    public static String getCurrentUserKey() {
-        return getCurrentUserKeyOption().getOrDie("Current user key required, but has not been set");
+    public static String getCurrentUserId() {
+        return getCurrentUserIdOption().getOrDie("Current user id required, but is not known");
     }
-
-    public static Option<String> getCurrentUserNameOption() {
-        return Option.fromNullable(currentUserName);
-    }
-
-    public static String getCurrentUserName() {
-        return getCurrentUserNameOption().getOrDie("Current user name required, but has not been set");
-    }
-
 }

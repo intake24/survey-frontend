@@ -8,6 +8,7 @@ import org.fusesource.restygwt.client.dispatcher.DefaultDispatcher;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 @Options(serviceRootKey = "intake24-api")
 public interface AuthenticationService extends RestService {
@@ -15,7 +16,11 @@ public interface AuthenticationService extends RestService {
 
     @POST
     @Path("/signin/alias")
-    void signin(Credentials request, MethodCallback<SigninResult> callback);
+    void signinWithAlias(Credentials request, MethodCallback<SigninResult> callback);
+
+    @POST
+    @Path("/signin/token/{token}")
+    void signinWithToken(@PathParam("token") String token, MethodCallback<SigninResult> callback);
 
     @POST
     @Path("/refresh")
