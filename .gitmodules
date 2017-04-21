@@ -6,3 +6,7 @@
 	path = pcollections
 	url = https://github.com/digitalinteraction/pcollections
 	branch = master
+[submodule "intake24feedback"]
+	path = intake24feedback
+	url = ssh://git@openlab.ncl.ac.uk:17150/b0915218/intake24feedback.git
+	branch = master

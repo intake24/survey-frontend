@@ -28,8 +28,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     <meta name="author" content="Digital Interaction Group, Culture Lab, Newcastle University" />
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="@routes.Assets.at("lib/bootstrap/css/bootstrap.css")"/>
-    <link rel="stylesheet" href="@routes.Assets.at("css/home.css")" />
+    <link rel="stylesheet" href="@routes.Assets.at("/public", "lib/bootstrap/css/bootstrap.css")"/>
+    <link rel="stylesheet" href="@routes.Assets.at("/public", "css/home.css")" />
 
     <title>Intake24 | @title</title>
   </head>
@@ -88,10 +88,10 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
       <footer>
         <div class="logo">
-          <a href="https://openlab.ncl.ac.uk/"><img src="@routes.Assets.at("images/nu_logo.png")" title="Newcastle University"></a>
+          <a href="https://openlab.ncl.ac.uk/"><img src="@routes.Assets.at("/public", "images/nu_logo.png")" title="Newcastle University"></a>
         </div>
         <div class="logo">
-          <a href="http://www.foodstandards.gov.scot/"><img src="@routes.Assets.at("images/fss-logo-small.png")"
+          <a href="http://www.foodstandards.gov.scot/"><img src="@routes.Assets.at("/public", "images/fss-logo-small.png")"
           title="Food Standards Scotland"></a>
         </div>
         <p>&copy; 2012–2015 Food Standards Scotland</p>
@@ -99,8 +99,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
       </footer>
     </div>
 
-    <script src="@routes.Assets.at("lib/jquery/jquery.min.js")"></script>
-    <script src="@routes.Assets.at("lib/bootstrap/js/bootstrap.js")"></script>
+    <script src="@routes.Assets.at("/public", "lib/jquery/jquery.min.js")"></script>
+    <script src="@routes.Assets.at("/public", "lib/bootstrap/js/bootstrap.js")"></script>
 
       <!-- analytics -->
 
