@@ -70,7 +70,7 @@ public class SaveSameAsBefore implements Function2<Survey, Survey, Survey> {
                                 if (oldState.right.isEncoded()) {
                                     EncodedFood encOld = oldState.right.asEncoded();
                                     if (!portionSizeComplete(oldState.left, encOld) && portionSizeComplete(m, encNew)) {
-                                        StateManagerUtil.saveSameAsBefore(AuthCache.getCurrentUserKey(), m, encNew, scheme_id, version_id);
+                                        StateManagerUtil.saveSameAsBefore(AuthCache.getCurrentUserId(), m, encNew, scheme_id, version_id);
                                     }
                                 }
                             }

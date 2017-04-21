@@ -1,12 +1,15 @@
 package uk.ac.ncl.openlab.intake24.client.ui;
 
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.CommonMessages;
 
 import java.util.Arrays;
@@ -76,38 +79,6 @@ public class Layout {
         int minHeight = windowHeight - headerHeight - navbarHeight - footerHeight;
 
         mainContent.getElement().getStyle().setProperty("minHeight", minHeight, Style.Unit.PX);
-
-
-                /*
-                var minHeight = windowHeight - headerHeight - navbarHeight - footerHeight;
-                var panelHeight = $('.intake24-meals-panel .intake24-meal-list').height() + 100;
-
-                if (minHeight < panelHeight) {
-                    minHeight = panelHeight;
-                }
-                ;
-
-                // Content height
-                $(".intake24-main-content").css("min-height", minHeight);
-
-                // Side panel
-                $('.intake24-meals-panel').css('height', minHeight);
-
-                // Check panel position
-                if ($('body').width() >= '960') {
-                    $("#intake24-meals-panel").css('margin-left', '0px');
-                    $(".intake24-meals-panel-header-button").removeClass('button-show');
-                    $(".intake24-meals-panel-header-button").removeClass('button-hide');
-                    $(".intake24-meals-panel-header-button").addClass('button-menu');
-                } else {
-                    if (!panelShowing)
-                        $("#intake24-meals-panel").css('margin-left', '-230px');
-                    $(".intake24-meals-panel-header-button").removeClass('button-menu');
-                    $(".intake24-meals-panel-header-button").removeClass('button-hide');
-                    $(".intake24-meals-panel-header-button").addClass('button-show');
-                }
-
-                bindEvents();*/
     }
 
     public static void createMainPageLayout() {
@@ -160,6 +131,7 @@ public class Layout {
         Window.addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(ResizeEvent resizeEvent) {
+
                 Layout.onResize();
             }
         });

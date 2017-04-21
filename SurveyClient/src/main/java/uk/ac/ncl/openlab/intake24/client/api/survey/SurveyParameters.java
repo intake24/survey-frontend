@@ -7,6 +7,5 @@ public class SurveyParameters {
     public String localeId;
     public String state;
     public Option<String> suspensionReason;
-    public Option<String> externalFollowUpURL;
     public String supportEmail;
 }

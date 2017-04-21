@@ -41,6 +41,8 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyFollowUp;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
@@ -98,15 +100,15 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                 contents.clear();
                 contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_success())));
 
-                SurveyService.INSTANCE.getSurveyParameters(EmbeddedData.getSurveyId(), new MethodCallback<SurveyParameters>() {
+                SurveyService.INSTANCE.getFollowUpUrl(EmbeddedData.getSurveyId(), new MethodCallback<SurveyFollowUp>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
                         contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));
                     }
 
                     @Override
-                    public void onSuccess(Method method, SurveyParameters response) {
-                        response.externalFollowUpURL.accept(new Option.SideEffectVisitor<String>() {
+                    public void onSuccess(Method method, SurveyFollowUp response) {
+                        response.url.accept(new Option.SideEffectVisitor<String>() {
 
                             @Override
                             public void visitSome(String url) {
@@ -115,7 +117,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                                 externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), "finalPageExternalUrlButton", new ClickHandler() {
                                     @Override
                                     public void onClick(ClickEvent clickEvent) {
-                                        Window.Location.replace(url.replace("[intake24_username_value]", AuthCache.getCurrentUserName()));
+                                        Window.Location.replace(url);
                                     }
                                 }));
 
@@ -132,7 +134,8 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                 });
 
                 contents.add(new HTMLPanel(finalPageHtml));
-                // StateManagerUtil.clearLatestState(AuthCache.getCurrentUserKey());
+
+                StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
             }
         });
 

@@ -43,7 +43,7 @@ public class StateManager {
         // log.info(SurveyXmlSerialiser.toXml(currentState));
 
         History.newItem(Integer.toString(historyEventCounter), false);
-        StateManagerUtil.setHistoryState(AuthCache.getCurrentUserKey(), historyEventCounter, currentState);
+        StateManagerUtil.setHistoryState(AuthCache.getCurrentUserId(), historyEventCounter, currentState);
         historyEventCounter++;
     }
 
@@ -55,7 +55,7 @@ public class StateManager {
             makeHistoryEntry();
         }
 
-        StateManagerUtil.setLatestState(AuthCache.getCurrentUserKey(), currentState, schemeId, versionId);
+        StateManagerUtil.setLatestState(AuthCache.getCurrentUserId(), currentState, schemeId, versionId);
         log.fine("Updated latest state");
 
         // updateUi.call(newState);
@@ -77,7 +77,7 @@ public class StateManager {
                 try {
                     final int state_id = Integer.parseInt(event.getValue());
 
-                    StateManagerUtil.getHistoryState(AuthCache.getCurrentUserKey(), state_id, scriptManager)
+                    StateManagerUtil.getHistoryState(AuthCache.getCurrentUserId(), state_id, scriptManager)
                             .accept(new Option.SideEffectVisitor<Survey>() {
                                 @Override
                                 public void visitSome(Survey item) {

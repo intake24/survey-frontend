@@ -89,6 +89,8 @@ public interface CommonMessages extends Messages {
 
   public String loginForm_watchVideo();
 
+  public String authToken_invalid(String supportEmail);
+
   public String callbackRequestForm_promptText();
 
   public String callbackRequestForm_nameLabel();

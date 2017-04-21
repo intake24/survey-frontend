@@ -22,7 +22,11 @@ public interface SurveyService extends RestService {
     @Path("/surveys/{id}/parameters")
     void getSurveyParameters(@PathParam("id") String surveyId, MethodCallback<SurveyParameters> callback);
 
+    @GET
+    @Path("/surveys/{id}/follow-up")
+    void getFollowUpUrl(@PathParam("id") String surveyId, MethodCallback<SurveyFollowUp> callback);
+
     @POST
-    @Path("/surveys/{id}")
+    @Path("/surveys/{id}/submissions")
     void submitSurvey(@PathParam("id") String surveyId, CompletedSurvey survey, MethodCallback<Void> callback);
 }

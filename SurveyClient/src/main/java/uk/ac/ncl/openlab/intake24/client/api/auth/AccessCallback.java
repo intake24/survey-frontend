@@ -13,7 +13,6 @@ public class AccessCallback implements RequestCallback {
 
     private static final Logger logger = Logger.getLogger(AccessCallback.class.getName());
 
-
     private final Method serviceMethod;
     private final RequestCallback serviceCallback;
 

@@ -35,9 +35,13 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
 
-    <meta name="gwt:property" content="locale=@{parameters.localeId}">
+    <meta name="gwt:property" content="locale=@{
+      parameters.localeId
+    }">
     <meta name="intake24:surveyId" content="@surveyId">
-    <meta name="intake24:surveySupportEmail" content="@{parameters.supportEmail}">
+    <meta name="intake24:surveySupportEmail" content="@{
+      parameters.supportEmail
+    }">
     <meta name="intake24:apiBaseUrl" content="@apiBaseUrl">
 
 
@@ -59,7 +63,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
     <script src="@routes.Assets.at("/public", "lib/jquery/jquery.min.js")"></script>
     <script src="@routes.Assets.at("/public", "lib/survey-client/js/shepherd/shepherd.min.js")"></script>
-<!--    <script src="@routes.Assets.at("/public", "survey-client/js/meals_panel.js")"></script> -->
 
     <title>Intake24</title>
 
@@ -69,30 +72,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
       <![endif]-->
 
-    <!-- <script>
-            // Called when GWT code has finished generating UI elements for this page
-            function intake24_initComplete() {
-              // Other
-              // $('.intake24-meals-panel-header').html('Your Food Intake');
-              // $('#intake24-meals-panel button').html('+ Add Another Meal');
-
-              doResize();
-            }
-
-            function intake24_mealsPanelChanged() {
-              // Other
-              // $('.intake24-meals-panel-header').html('Your Food Intake');
-              // $('#intake24-meals-panel button').html('+ Add Another Meal');
-
-              doResize();
-            }
-
-            function intake24_addMealClicked() {
-              hidePanel();
-            }
-
-            $(window).resize(doResize);
-    </script>-->
 
     <script type="text/javascript" src="@routes.Assets.at("/public", "lib/survey-client/js/survey/survey.nocache.js")"></script>
   </head>
@@ -127,6 +106,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
     <div id="UIContainer"></div>
 
+<<<<<<< HEAD
     <!-- <div id="header-container">
       <div id="header">
         <h1>Intake24</h1>
@@ -147,6 +127,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
       </div>
     </div> -->
 
+=======
+>>>>>>> separate-frontend
       <!-- analytics -->
 
   </body>

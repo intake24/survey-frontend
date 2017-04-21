@@ -39,6 +39,7 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.ServiceRoots;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
@@ -51,11 +52,6 @@ import uk.ac.ncl.openlab.intake24.client.ui.TutorialVideo;
 import java.util.ArrayList;
 
 public class SurveyEntryPoint implements EntryPoint {
-
-    private native void initComplete() /*-{
-        if (typeof $wnd.intake24_initComplete == 'function')
-            $wnd.intake24_initComplete();
-    }-*/;
 
     Anchor watchTutorial;
     Anchor logOut;
@@ -79,6 +75,10 @@ public class SurveyEntryPoint implements EntryPoint {
     public void onModuleLoad() {
         GWT.setUncaughtExceptionHandler(UncaughtExceptionHandler.INSTANCE);
 
+        // Force re-authentication on page load if using URL token to make sure the current user matches the auth token
+        if (Window.Location.getParameter(UrlParameterConstants.authTokenKey) != null)
+            AuthCache.clear();
+
         RootPanel.get("loading").getElement().removeFromParent();
 
         Defaults.setServiceRoot("/");
@@ -92,7 +92,12 @@ public class SurveyEntryPoint implements EntryPoint {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 AuthCache.clear();
-                Window.Location.reload();
+                String logoutUrl = Window.Location.createUrlBuilder()
+                        .removeParameter(UrlParameterConstants.authTokenKey)
+                        .removeParameter(UrlParameterConstants.generateUserKey)
+                        .setHash(null)
+                        .buildString();
+                Window.Location.replace(logoutUrl);
             }
         });
 
