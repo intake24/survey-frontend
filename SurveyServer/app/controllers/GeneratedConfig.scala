@@ -6,11 +6,11 @@ import play.api.Configuration
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Action, Controller}
 
-class SurveyFeedback @Inject()(config: Configuration, ws: WSClient) extends Controller {
+class GeneratedConfig @Inject()(config: Configuration, ws: WSClient) extends Controller {
 
   private val apiBaseUrl = config.getString("intake24.apiBaseUrl").get
 
-  def feedback() = Action {
-    Ok(views.html.surveyFeedback.index(apiBaseUrl))
+  def generatedConfig() = Action {
+    Ok(views.js.generatedConfig.config(apiBaseUrl))
   }
 }
