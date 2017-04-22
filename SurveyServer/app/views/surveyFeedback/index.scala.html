@@ -1,0 +1,33 @@
+@(apiBaseUrl: String)
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Intake24feedback</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Bahiana|Muli:300,300i,400,700,700i|Slabo+27px" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="@routes.Assets.at("/public/survey-feedback", "favicon.ico")">
+    </head>
+    <body class="fancy-back">
+        <i24-app>
+            <div class="i24-loader">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </i24-app>
+        <script>
+            window.apiBaseUrl = "@apiBaseUrl";
+        </script>
+        <script type="text/javascript" src="@routes.Assets.at("/public/survey-feedback", "inline.bundle.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("/public/survey-feedback", "polyfills.bundle.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("/public/survey-feedback", "scripts.bundle.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("/public/survey-feedback", "styles.bundle.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("/public/survey-feedback", "vendor.bundle.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("/public/survey-feedback", "main.bundle.js")"></script>
+    </body>
+</html>

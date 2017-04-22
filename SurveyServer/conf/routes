@@ -17,5 +17,5 @@ POST        /errors/report                controllers.Errors.report()
 
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)
 
-GET         /survey-feedback              controllers.Assets.at(path="/public/survey-feedback", file="index.html")
+GET         /survey-feedback              controllers.SurveyFeedback.feedback()
 GET         /survey-feedback/*file        controllers.Assets.at(path="/public/survey-feedback", file)
