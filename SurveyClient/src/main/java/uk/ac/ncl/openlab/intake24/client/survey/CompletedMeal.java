@@ -16,6 +16,7 @@ import java.util.Map;
 public class CompletedMeal {
     public String name;
     public List<CompletedFood> foods;
+    public List<CompletedMissingFood> missingFoods;
     public Time time;
     public Map<String, String> customData;
 
@@ -23,9 +24,10 @@ public class CompletedMeal {
     public CompletedMeal() {
     }
 
-    public CompletedMeal(String name, List<CompletedFood> foods, Time time, Map<String, String> customData) {
+    public CompletedMeal(String name, List<CompletedFood> foods, List<CompletedMissingFood> missingFoods, Time time, Map<String, String> customData) {
         this.name = name;
         this.foods = foods;
+        this.missingFoods = missingFoods;
         this.time = time;
         this.customData = customData;
     }
