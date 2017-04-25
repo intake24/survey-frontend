@@ -70,7 +70,7 @@ public class AuthTokenForm extends Composite {
     public void showInvalidToken() {
         form.clear();
 
-        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.authToken_invalid(EmbeddedData.getSurveySupportEmail()))));
+        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.authToken_invalid(EmbeddedData.surveySupportEmail))));
     }
 
     public void showServiceError() {
@@ -78,6 +78,6 @@ public class AuthTokenForm extends Composite {
 
         form.add(new HTMLPanel(messages.serverErrorTitle()));
 
-        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.getSurveySupportEmail()))));
+        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.surveySupportEmail))));
     }
 }

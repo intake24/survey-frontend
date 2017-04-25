@@ -61,26 +61,26 @@ public class ErrorPage extends Composite {
     }
 
     public static void showForbiddenErrorPage() {
-        showErrorPage(messages.forbiddenErrorTitle(), messages.forbiddenErrorText(EmbeddedData.getSurveySupportEmail()));
+        showErrorPage(messages.forbiddenErrorTitle(), messages.forbiddenErrorText(EmbeddedData.surveySupportEmail));
     }
 
     public static void showInternalServerErrorPage() {
-        showErrorPage(messages.serverErrorTitle(), messages.serverErrorText(EmbeddedData.getSurveySupportEmail()));
+        showErrorPage(messages.serverErrorTitle(), messages.serverErrorText(EmbeddedData.surveySupportEmail));
     }
 
     public static void showSurveyPendingPage() {
-        showErrorPage(messages.surveyPendingTitle(), messages.surveyPendingText(EmbeddedData.getSurveySupportEmail()));
+        showErrorPage(messages.surveyPendingTitle(), messages.surveyPendingText(EmbeddedData.surveySupportEmail));
     }
 
     public static void showSurveyFinishedPage() {
-        showErrorPage(messages.surveyFinishedTitle(), messages.surveyFinishedText(EmbeddedData.getSurveySupportEmail()));
+        showErrorPage(messages.surveyFinishedTitle(), messages.surveyFinishedText(EmbeddedData.surveySupportEmail));
     }
 
     public static void showSurveySuspendedPage(Option<String> reason) {
 
-        String message = reason.map(r -> messages.surveySuspendedReason(r)).getOrElse("") + messages.surveySuspendedText(EmbeddedData.getSurveySupportEmail());
+        String message = reason.map(r -> messages.surveySuspendedReason(r)).getOrElse("") + messages.surveySuspendedText(EmbeddedData.surveySupportEmail);
 
-        showErrorPage(messages.surveySuspendedTitle(), messages.surveyFinishedText(EmbeddedData.getSurveySupportEmail()));
+        showErrorPage(messages.surveySuspendedTitle(), messages.surveyFinishedText(EmbeddedData.surveySupportEmail));
     }
 
 }

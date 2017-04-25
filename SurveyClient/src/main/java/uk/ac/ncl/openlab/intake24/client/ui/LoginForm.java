@@ -54,18 +54,18 @@ public class LoginForm extends Composite {
         statusPanel.clear();
         statusPanel.add(new LoadingWidget());
 
-        attemptLogin.call(new Credentials(EmbeddedData.getSurveyId(), userNameTextBox.getText(), passwordTextBox.getText()));
+        attemptLogin.call(new Credentials(EmbeddedData.surveyId, userNameTextBox.getText(), passwordTextBox.getText()));
     }
 
     public void onLoginAttemptFailed() {
         statusPanel.clear();
-        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_passwordNotRecognised(SafeHtmlUtils.htmlEscape(EmbeddedData.getSurveySupportEmail())))));
+        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_passwordNotRecognised(SafeHtmlUtils.htmlEscape(EmbeddedData.surveySupportEmail)))));
         loginButton.setEnabled(true);
     }
 
     public void onLoginServiceError() {
         statusPanel.clear();
-        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_serviceException(SafeHtmlUtils.htmlEscape(EmbeddedData.getSurveySupportEmail())))));
+        statusPanel.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.loginForm_serviceException(SafeHtmlUtils.htmlEscape(EmbeddedData.surveySupportEmail)))));
         loginButton.setEnabled(true);
     }
 

@@ -45,7 +45,7 @@ public class CallbackRequestForm extends Composite {
             return;
         }
 
-        if (EmbeddedData.getSurveyId().equals("demo")) {
+        if (EmbeddedData.surveyId.equals("demo")) {
             errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_disabledForDemo("support@intake24.co.uk"))));
             errorMessage.getElement().addClassName("intake24-login-error-message");
             requestCallbackButton.setEnabled(true);
@@ -54,7 +54,7 @@ public class CallbackRequestForm extends Composite {
 
         errorMessage.add(new LoadingWidget());
 
-        HelpService.INSTANCE.requestCallback(EmbeddedData.getSurveyId(), new CallbackRequest(nameTextBox.getText(), phoneNumberTextBox.getText()), new MethodCallback<Void>() {
+        HelpService.INSTANCE.requestCallback(EmbeddedData.surveyId, new CallbackRequest(nameTextBox.getText(), phoneNumberTextBox.getText()), new MethodCallback<Void>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
 
@@ -67,7 +67,7 @@ public class CallbackRequestForm extends Composite {
                 } else {
                     errorMessage.clear();
                     errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorTitle())));
-                    errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.getSurveySupportEmail()))));
+                    errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.surveySupportEmail))));
                     errorMessage.getElement().addClassName("intake24-login-error-message");
                     requestCallbackButton.setEnabled(true);
                 }

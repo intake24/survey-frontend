@@ -4,7 +4,9 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.workcraft.gwt.shared.client.Callback;
@@ -42,7 +44,7 @@ public class RefreshCallback implements RequestCallback {
             if (Window.Location.getParameter(UrlParameterConstants.generateUserKey) != null) {
                 genUserUI.show();
 
-                GeneratedUsersService.INSTANCE.generateUser(EmbeddedData.getSurveyId(), new MethodCallback<GeneratedCredentials>() {
+                GeneratedUsersService.INSTANCE.generateUser(EmbeddedData.surveyId, new MethodCallback<GeneratedCredentials>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
                         if (method.getResponse().getStatusCode() == 403)
@@ -57,7 +59,7 @@ public class RefreshCallback implements RequestCallback {
                         genUserUI.onCredentialsReceived(response, new Callback() {
                             @Override
                             public void call() {
-                                AuthenticationService.INSTANCE.signinWithAlias(new Credentials(EmbeddedData.getSurveyId(), response.userName, response.password), new MethodCallback<SigninResult>() {
+                                AuthenticationService.INSTANCE.signinWithAlias(new Credentials(EmbeddedData.surveyId, response.userName, response.password), new MethodCallback<SigninResult>() {
                                     @Override
                                     public void onFailure(Method signinMethod, Throwable exception) {
                                         ErrorReportingService.reportError(new RuntimeException("Failed to generate user", exception));
@@ -82,7 +84,11 @@ public class RefreshCallback implements RequestCallback {
                     @Override
                     public void onFailure(Method signinMethod, Throwable exception) {
                         if (signinMethod.getResponse().getStatusCode() == Response.SC_UNAUTHORIZED) {
-                            authTokenUI.onSigninAttemptFailed();
+
+                            if (!EmbeddedData.originatingUrl.isEmpty())
+                                Window.Location.replace(EmbeddedData.originatingUrl.getOrDie());
+
+                            // authTokenUI.onSigninAttemptFailed();
                         } else {
                             ErrorReportingService.reportError(new RuntimeException("Authentication service error while trying to sign in with URL auth token", exception));
                             authTokenUI.onAuthenticationServiceError();
@@ -93,15 +99,22 @@ public class RefreshCallback implements RequestCallback {
                     public void onSuccess(Method signinMethod, SigninResult response) {
                         AuthCache.updateRefreshToken(response.refreshToken);
 
+                        String urlWithoutToken = Window.Location.createUrlBuilder().removeParameter(UrlParameterConstants.authTokenKey).buildString();
+
+                        Window.Location.replace(urlWithoutToken);
+
+                        /*
                         refreshMethod.header(AuthCache.AUTH_TOKEN_HEADER, response.refreshToken);
 
                         try {
                             refreshMethod.send(RefreshCallback.this);
                         } catch (RequestException e) {
                             refreshCallback.onError(signinMethod.getRequest(), e);
-                        }
+                        }*/
                     }
                 });
+            } else if (!EmbeddedData.originatingUrl.isEmpty()) {
+                Window.Location.replace(EmbeddedData.originatingUrl.getOrDie());
             } else {
                 loginUI.show(new Callback1<Credentials>() {
                     @Override
