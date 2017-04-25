@@ -54,6 +54,4 @@ javaOptions in Universal ++= Seq(
   s"-Dlogger.file=/usr/share/${packageName.value}/conf/production-logger.xml"
 )
 
-unmanagedResourceDirectories in Assets += baseDirectory.value / "surveyFeedback"
-
 lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin)

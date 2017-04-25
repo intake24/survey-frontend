@@ -8,7 +8,7 @@ import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Action, Controller}
 import views.html.errors.{Error404, Error500}
-import views.html.surveys.Survey
+import views.html.surveys.{Survey, SurveyFeedback}
 
 import scala.concurrent.duration._
 
@@ -36,4 +36,9 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
         }
     }
   }
+
+  def surveyFeedbackPage(surveyId: String) = Action {
+    Ok(SurveyFeedback(apiBaseUrl, surveyId))
+  }
+
 }
