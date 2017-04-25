@@ -35,15 +35,15 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
 
-    <meta name="gwt:property" content="locale=@{
-      parameters.localeId
-    }">
-    <meta name="intake24:surveyId" content="@surveyId">
-    <meta name="intake24:surveySupportEmail" content="@{
-      parameters.supportEmail
-    }">
-    <meta name="intake24:apiBaseUrl" content="@apiBaseUrl">
+    <meta name="gwt:property" content="locale=@parameters.localeId"/>
 
+    <meta name="intake24:surveyId" content="@surveyId"/>
+    <meta name="intake24:surveySupportEmail" content="@parameters.supportEmail"/>
+    <meta name="intake24:apiBaseUrl" content="@apiBaseUrl"/>
+
+    @if(parameters.originatingURL.nonEmpty) {
+      <meta name="intake24:originatingUrl" content="@parameters.originatingURL.head"/>
+    }
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">

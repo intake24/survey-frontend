@@ -121,8 +121,8 @@ public class Survey {
     public CompletedSurvey finalise(List<String> log) {
         PVector<CompletedMeal> completedMeals = map(meals, new Function1<Meal, CompletedMeal>() {
             @Override
-            public CompletedMeal apply(Meal argument) {
-                PVector<CompletedFood> completedFoods = map(filter(argument.foods, new Function1<FoodEntry, Boolean>() {
+            public CompletedMeal apply(Meal meal) {
+                PVector<CompletedFood> completedFoods = map(filter(meal.foods, new Function1<FoodEntry, Boolean>() {
                     @Override
                     public Boolean apply(FoodEntry argument) {
                         return !argument.isTemplate() && !argument.isCompound() && !argument.isMissing();
@@ -134,16 +134,7 @@ public class Survey {
                     }
                 });
 
-                return new CompletedMeal(argument.name, new ArrayList<CompletedFood>(completedFoods), argument.time
-                        .getOrDie("Cannot finalise survey because it contains an undefined time entry"), new HashMap<String, String>(
-                        argument.customData));
-            }
-        });
-
-        PVector<CompletedMissingFood> missingFoods = flatten(map(meals, new Function1<Meal, PVector<CompletedMissingFood>>() {
-            @Override
-            public PVector<CompletedMissingFood> apply(Meal meal) {
-                return flattenOption(map(meal.foods, new Function1<FoodEntry, Option<CompletedMissingFood>>() {
+                PVector<CompletedMissingFood> missingFoods = flattenOption(map(meal.foods, new Function1<FoodEntry, Option<CompletedMissingFood>>() {
                     @Override
                     public Option<CompletedMissingFood> apply(FoodEntry foodEntry) {
                         return foodEntry.accept(new FoodEntry.Visitor<Option<CompletedMissingFood>>() {
@@ -179,12 +170,13 @@ public class Survey {
                         });
                     }
                 }));
-            }
-        }));
 
-        // FIXME: username should be determined on the server
-        return new CompletedSurvey(startTime, System.currentTimeMillis(), new ArrayList<CompletedMeal>(completedMeals),
-                new ArrayList<CompletedMissingFood>(missingFoods), log, new HashMap<String, String>(customData));
+                return new CompletedMeal(meal.name, new ArrayList<CompletedFood>(completedFoods), new ArrayList<CompletedMissingFood>(missingFoods),
+                        meal.time.getOrDie("Cannot finalise survey because it contains an undefined time entry"), new HashMap<String, String>(meal.customData));
+            }
+        });
+
+        return new CompletedSurvey(startTime, System.currentTimeMillis(), new ArrayList<CompletedMeal>(completedMeals), log, new HashMap<String, String>(customData));
     }
 
     public Survey withSelection(Selection selectedElement) {

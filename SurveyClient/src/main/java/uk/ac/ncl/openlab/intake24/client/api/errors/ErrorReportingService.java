@@ -25,7 +25,7 @@ public interface ErrorReportingService extends RestService {
     static void reportError(Throwable exception) {
         String surveyStateJSON = "{}";
 
-        String surveyId = EmbeddedData.getSurveyId();
+        String surveyId = EmbeddedData.surveyId;
         Option<String> userId = AuthCache.getCurrentUserIdOption();
 
         if (!userId.isEmpty())

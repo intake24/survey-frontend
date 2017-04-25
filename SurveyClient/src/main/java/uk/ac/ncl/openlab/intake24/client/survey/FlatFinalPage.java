@@ -72,7 +72,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
         contents.add(new LoadingPanel(messages.submitPage_loadingMessage()));
 
-        SurveyService.INSTANCE.submitSurvey(EmbeddedData.getSurveyId(), finalData, new MethodCallback<Void>() {
+        SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, new MethodCallback<Void>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 contents.clear();
@@ -85,7 +85,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                     contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), "finalPageTryAgainButton", new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                            SurveyService.INSTANCE.submitSurvey(EmbeddedData.getSurveyId(), finalData, outer);
+                            SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, outer);
                         }
                     }));
                 } else {
@@ -100,7 +100,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                 contents.clear();
                 contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_success())));
 
-                SurveyService.INSTANCE.getFollowUpUrl(EmbeddedData.getSurveyId(), new MethodCallback<SurveyFollowUp>() {
+                SurveyService.INSTANCE.getFollowUpUrl(EmbeddedData.surveyId, new MethodCallback<SurveyFollowUp>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
                         contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));

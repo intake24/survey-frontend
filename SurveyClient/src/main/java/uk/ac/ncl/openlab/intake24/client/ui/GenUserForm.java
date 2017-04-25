@@ -113,7 +113,7 @@ public class GenUserForm extends Composite {
     public void showForbidden() {
         form.clear();
 
-        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.genUserForbidden(EmbeddedData.getSurveySupportEmail()))));
+        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.genUserForbidden(EmbeddedData.surveySupportEmail))));
     }
 
     public void showServiceError() {
@@ -121,6 +121,6 @@ public class GenUserForm extends Composite {
 
         form.add(new HTMLPanel(messages.serverErrorTitle()));
 
-        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.getSurveySupportEmail()))));
+        form.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.serverErrorText(EmbeddedData.surveySupportEmail))));
     }
 }

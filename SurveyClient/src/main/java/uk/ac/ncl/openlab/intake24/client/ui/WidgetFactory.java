@@ -121,7 +121,7 @@ public class WidgetFactory {
     }
 
     public static Widget createDefaultErrorMessage() {
-        return new ErrorPage(messages.serverErrorTitle(), messages.serverErrorText(EmbeddedData.getSurveySupportEmail()));
+        return new ErrorPage(messages.serverErrorTitle(), messages.serverErrorText(EmbeddedData.surveySupportEmail));
     }
 
     public static Anchor createBackLink() {

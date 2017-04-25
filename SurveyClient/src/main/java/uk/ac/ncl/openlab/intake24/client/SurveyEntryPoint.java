@@ -82,7 +82,7 @@ public class SurveyEntryPoint implements EntryPoint {
         RootPanel.get("loading").getElement().removeFromParent();
 
         Defaults.setServiceRoot("/");
-        ServiceRoots.add("intake24-api", EmbeddedData.getApiBaseUrl());
+        ServiceRoots.add("intake24-api", EmbeddedData.apiBaseUrl);
 
         watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
 
@@ -101,7 +101,7 @@ public class SurveyEntryPoint implements EntryPoint {
             }
         });
 
-        SurveyService.INSTANCE.getSurveyParameters(EmbeddedData.getSurveyId(), new MethodCallback<SurveyParameters>() {
+        SurveyService.INSTANCE.getSurveyParameters(EmbeddedData.surveyId, new MethodCallback<SurveyParameters>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
 

@@ -20,7 +20,6 @@ public class CompletedSurvey {
     public String startTime;
     public String endTime;
     public List<CompletedMeal> meals;
-    public List<CompletedMissingFood> missingFoods;
     public List<String> log;
     public Map<String, String> customData;
 
@@ -28,11 +27,10 @@ public class CompletedSurvey {
     public CompletedSurvey() {
     }
 
-    public CompletedSurvey(long startTime, long endTime, List<CompletedMeal> meals, List<CompletedMissingFood> missingFoods, List<String> log, Map<String, String> customData) {
+    public CompletedSurvey(long startTime, long endTime, List<CompletedMeal> meals, List<String> log, Map<String, String> customData) {
         this.startTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601).format(new Date(startTime));
         this.endTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601).format(new Date(endTime));
         this.meals = meals;
-        this.missingFoods = missingFoods;
         this.log = log;
         this.customData = customData;
     }
