@@ -26,14 +26,18 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
+import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 
 public class DefaultScheme extends BasicScheme {
 
     public static final String ID = "default";
+    public SurveyParameters surveyParameters;
 
-    public DefaultScheme(String locale, final SurveyInterfaceManager interfaceManager) {
+    public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
         super(locale, interfaceManager);
+        this.surveyParameters = surveyParameters;
     }
 
     private IntakeSurvey cachedSurveyPage = null;
@@ -45,7 +49,19 @@ public class DefaultScheme extends BasicScheme {
         // log.info(SurveyXmlSerialiser.toXml(state));
 
         if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
-            interfaceManager.show(new WelcomePage(SurveyMessages.INSTANCE.welcomePage_welcomeText(), state));
+
+            this.surveyParameters.description.accept(new Option.SideEffectVisitor<String>() {
+                @Override
+                public void visitSome(String description) {
+                    interfaceManager.show(new WelcomePage(description, state));
+                }
+
+                @Override
+                public void visitNone() {
+                    interfaceManager.show(new WelcomePage(SurveyMessages.INSTANCE.welcomePage_welcomeText(), state));
+                }
+            });
+
         } else if (!state.completionConfirmed()) {
             if (cachedSurveyPage == null)
                 cachedSurveyPage = new IntakeSurvey(stateManager, defaultPromptManager, defaultSelectionManager, defaultScriptManager);

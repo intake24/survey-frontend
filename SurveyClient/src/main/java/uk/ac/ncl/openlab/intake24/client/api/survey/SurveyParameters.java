@@ -8,4 +8,5 @@ public class SurveyParameters {
     public String state;
     public Option<String> suspensionReason;
     public String supportEmail;
+    public Option<String> description;
 }

@@ -27,6 +27,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 import com.google.gwt.user.client.ui.Anchor;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 
 import java.util.List;
@@ -40,13 +41,13 @@ public interface SurveyScheme {
 
     List<Anchor> navBarLinks();
 
-    static SurveyScheme createScheme(String schemeId, final String locale, final SurveyInterfaceManager interfaceManager) {
+    static SurveyScheme createScheme(SurveyParameters surveyParameters, final String locale, final SurveyInterfaceManager interfaceManager) {
 
-        switch (schemeId) {
+        switch (surveyParameters.schemeId) {
             case DefaultScheme.ID:
-                return new DefaultScheme(locale, interfaceManager);
+                return new DefaultScheme(surveyParameters, locale, interfaceManager);
             default:
-                throw new RuntimeException("Unknown survey scheme: " + schemeId);
+                throw new RuntimeException("Unknown survey scheme: " + surveyParameters.schemeId);
         }
     }
 }

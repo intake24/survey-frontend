@@ -60,11 +60,8 @@ public class WelcomePage implements SurveyStage<Survey> {
             }
         });
 
-        HTMLPanel tutorialVideo = new HTMLPanel(SafeHtmlUtils.fromSafeConstant(TutorialVideo.embedHTML));
-
         FlowPanel contents = new FlowPanel();
         contents.getElement().addClassName("intake24-survey-content-container");
-        contents.add(tutorialVideo);
         HTMLPanel htmlPanel = new HTMLPanel(SafeHtmlUtils.fromSafeConstant(welcomeHtml));
 
         contents.add(htmlPanel);
