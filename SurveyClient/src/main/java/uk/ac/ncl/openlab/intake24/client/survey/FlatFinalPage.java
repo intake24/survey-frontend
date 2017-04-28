@@ -29,6 +29,7 @@ package uk.ac.ncl.openlab.intake24.client.survey;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.RequestTimeoutException;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -126,7 +127,17 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
                             @Override
                             public void visitNone() {
+                                UrlBuilder builder = Window.Location.createUrlBuilder();
 
+                                for (String paramName: Window.Location.getParameterMap().keySet()) {
+                                    builder.removeParameter(paramName);
+                                }
+
+                                builder.setHash("/thanks");
+
+                                builder.setPath(Window.Location.getPath() + "/feedback");
+
+                                Window.Location.replace(builder.buildString());
                             }
                         });
 
