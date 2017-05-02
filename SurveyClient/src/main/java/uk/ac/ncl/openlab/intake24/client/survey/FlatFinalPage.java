@@ -42,9 +42,7 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
-import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyFollowUp;
-import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
@@ -108,8 +106,8 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                     }
 
                     @Override
-                    public void onSuccess(Method method, SurveyFollowUp response) {
-                        response.url.accept(new Option.SideEffectVisitor<String>() {
+                    public void onSuccess(Method method, SurveyFollowUp surveyFollowUp) {
+                        surveyFollowUp.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
 
                             @Override
                             public void visitSome(String url) {
@@ -127,17 +125,19 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
                             @Override
                             public void visitNone() {
-                                UrlBuilder builder = Window.Location.createUrlBuilder();
+                                if (surveyFollowUp.showFeedback) {
+                                    UrlBuilder builder = Window.Location.createUrlBuilder();
 
-                                for (String paramName: Window.Location.getParameterMap().keySet()) {
-                                    builder.removeParameter(paramName);
+                                    for (String paramName : Window.Location.getParameterMap().keySet()) {
+                                        builder.removeParameter(paramName);
+                                    }
+
+                                    builder.setHash("/thanks");
+
+                                    builder.setPath(Window.Location.getPath() + "/feedback");
+
+                                    Window.Location.replace(builder.buildString());
                                 }
-
-                                builder.setHash("/thanks");
-
-                                builder.setPath(Window.Location.getPath() + "/feedback");
-
-                                Window.Location.replace(builder.buildString());
                             }
                         });
 
