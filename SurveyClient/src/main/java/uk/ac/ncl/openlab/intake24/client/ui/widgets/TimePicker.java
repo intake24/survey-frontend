@@ -10,6 +10,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.ui.widgets;
 
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -63,10 +64,18 @@ public class TimePicker extends Composite {
         HorizontalPanel panel = new HorizontalPanel();
         panel.setSpacing(5);
         panel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-        panel.add(hourCounter);
+
         Label label = new Label(":");
-        panel.add(label);
-        panel.add(minuteCounter);
+
+        if (LocaleInfo.getCurrentLocale().isRTL()) {
+            panel.add(minuteCounter);
+            panel.add(label);
+            panel.add(hourCounter);
+        } else {
+            panel.add(hourCounter);
+            panel.add(label);
+            panel.add(minuteCounter);
+        }
 
         //panel.add(ampm);
 
