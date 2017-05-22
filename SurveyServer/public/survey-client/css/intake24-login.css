@@ -140,6 +140,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 }
 
 [dir="rtl"] .intake24-login-video-label {
-    left: 
-    right:
+    left: inherit;
+    right: 10px;
 }
