@@ -36,15 +36,13 @@ import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
-import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
-import uk.ac.ncl.openlab.intake24.client.api.foods.FoodLookupService;
-import uk.ac.ncl.openlab.intake24.client.api.foods.LookupResult;
-import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
+import uk.ac.ncl.openlab.intake24.client.api.foods.*;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
@@ -55,34 +53,30 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
     private final static HelpMessages helpMessages = HelpMessages.Util.getInstance();
 
-    private static PortionSizeMethod weightPortionSizeMethod = null;
-
     private final FoodEntry food;
     private final Meal meal;
     private final RecipeManager recipeManager;
 
     private final String locale;
 
+    private static PortionSizeMethod cachedWeightPotionSizeMethod = null;
 
-    public static void preloadWeightPortionSizeMethod(final Callback onComplete, final Callback onFailure) {
-        AsyncRequestAuthHandler.execute(new AsyncRequest<PortionSizeMethod>() {
-            @Override
-            public void execute(AsyncCallback<PortionSizeMethod> callback) {
-                throw new RuntimeException("Not implemented");
-                // lookupService.getWeightPortionSizeMethod(callback);
-            }
-        }, new AsyncCallback<PortionSizeMethod>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                onFailure.call();
-            }
+    public static void getWeightPortionSizeMethod(final Callback1<PortionSizeMethod> onComplete) {
+        if (cachedWeightPotionSizeMethod != null)
+            onComplete.call(cachedWeightPotionSizeMethod);
+        else
+            FoodDataService.INSTANCE.getWeightPortionSizeMethod(new MethodCallback<PortionSizeMethod>() {
+                @Override
+                public void onFailure(Method method, Throwable exception) {
+                    throw new RuntimeException("Failed to get the weight portion size method", exception);
+                }
 
-            @Override
-            public void onSuccess(PortionSizeMethod result) {
-                weightPortionSizeMethod = result;
-                onComplete.call();
-            }
-        });
+                @Override
+                public void onSuccess(Method method, PortionSizeMethod response) {
+                    cachedWeightPotionSizeMethod = response;
+                    onComplete.call(cachedWeightPotionSizeMethod);
+                }
+            });
     }
 
     public FoodLookupPrompt(final String locale, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
@@ -210,26 +204,28 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             foodBrowser = new FoodBrowser(locale, new Callback1<FoodData>() {
                 @Override
                 public void call(final FoodData foodData) {
-                    // filter portion size methods if the food is an ingredient
 
-                    FoodData data = food.link.linkedTo.accept(new Option.Visitor<UUID, FoodData>() {
+                    food.link.linkedTo.accept(new Option.SideEffectVisitor<UUID>() {
                         @Override
-                        public FoodData visitSome(UUID id) {
+                        public void visitSome(UUID id) {
                             FoodEntry parentFood = meal.foods.get(meal.foodIndex(id));
 
                             if (parentFood.isCompound())
-                                return foodData.withRecipePortionSizeMethods(weightPortionSizeMethod);
+                                getWeightPortionSizeMethod(new Callback1<PortionSizeMethod>() {
+                                    @Override
+                                    public void call(PortionSizeMethod psm) {
+                                        onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData.withRecipePortionSizeMethods(psm), food.link, lastSearchTerm)));
+                                    }
+                                });
                             else
-                                return foodData;
+                                onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData, food.link, lastSearchTerm)));
                         }
-
                         @Override
-                        public FoodData visitNone() {
-                            return foodData;
+                        public void visitNone() {
+                            onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData, food.link, lastSearchTerm)));
                         }
                     });
 
-                    onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(data, food.link, lastSearchTerm)));
                 }
             }, new Callback1<String>() {
                 @Override
