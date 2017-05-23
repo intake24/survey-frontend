@@ -129,6 +129,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     display: inline-block;
 }
 
+
 .intake24-login-video-label {
     font-weight: bold;
     font-size: 16px;
@@ -136,4 +137,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     position: relative;
     top: -10px;
     left: 10px;
+}
+
+[dir="rtl"] .intake24-login-video-label {
+    left: 
+    right:
 }

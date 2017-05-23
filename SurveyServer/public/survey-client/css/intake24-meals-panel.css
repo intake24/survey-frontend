@@ -103,8 +103,16 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 		background-image: url('../images/show.png');
 	}
 
+	[dir="rtl"] #intake24-meals-panel .intake24-meals-panel-header-button {
+		transform: scaleX(-1);
+	}
+
 	#intake24-meals-panel.showing .intake24-meals-panel-header-button {
 		background-image: url('../images/hide.png');
+	}
+
+	[dir="rtl"] #intake24-meals-panel.showing .intake24-meals-panel-header-button {
+		transform: scaleX(-1);
 	}
 
 }

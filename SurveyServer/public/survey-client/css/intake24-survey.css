@@ -53,6 +53,11 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 		padding-left: 80px;
 	}
 
+	[dir="rtl"] .intake24-prompt-container {
+		padding-left: 20px;
+		padding-right: 80px;
+	}
+
 }
 
 .intake24-prompt-text {
