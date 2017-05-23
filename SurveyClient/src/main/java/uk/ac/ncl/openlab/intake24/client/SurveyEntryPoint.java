@@ -79,6 +79,10 @@ public class SurveyEntryPoint implements EntryPoint {
         if (Window.Location.getParameter(UrlParameterConstants.authTokenKey) != null)
             AuthCache.clear();
 
+        // Force the generation of new user if the page is accessed with the genUser param
+        if (Window.Location.getParameter(UrlParameterConstants.generateUserKey) != null)
+            AuthCache.clear();
+
         RootPanel.get("loading").getElement().removeFromParent();
 
         Defaults.setServiceRoot("/");
