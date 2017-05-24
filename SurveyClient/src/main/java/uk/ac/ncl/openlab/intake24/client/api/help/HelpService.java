@@ -16,6 +16,6 @@ public interface HelpService extends RestService {
     HelpService INSTANCE = GWT.create(HelpService.class);
 
     @POST
-    @Path("/user/surveys/{id}/request-callback")
+    @Path("/surveys/{id}/request-callback")
     void requestCallback(@PathParam("id") String surveyId, CallbackRequest callbackRequest, MethodCallback<Void> callback);
 }
