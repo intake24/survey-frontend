@@ -41,6 +41,10 @@ public interface FoodDataService extends RestService {
     @Path("/user/portion-size/drinkware/{id}")
     void getDrinkwareSet(@PathParam("id") String id, MethodCallback<DrinkwareSet> callback);
 
+    @GET
+    @Path("/user/portion-size/weight")
+    void getWeightPortionSizeMethod(MethodCallback<PortionSizeMethod> callback);
+
     @POST
     @Path("/user/portion-size/image-maps")
     void getImageMaps(List<String> ids, MethodCallback<List<SImageMap>> callback);
