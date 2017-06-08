@@ -44,6 +44,11 @@ body {
 	font-size: 14px;
 }
 
+a {
+	color: #428bca;
+	text-decoration: none;
+}
+
 #bg {
 	position: fixed;
 	top: 0;
@@ -468,6 +473,12 @@ input[type="radio"], input[type="checkbox"] {
 	height: 60px;
 	width: 120px;
 	display: inline-block;
+	margin: 10px;
+}
+
+.intake24-footer-privacy {
+	display: inline-block;
+	vertical-align: top;
 	margin: 10px;
 }
 

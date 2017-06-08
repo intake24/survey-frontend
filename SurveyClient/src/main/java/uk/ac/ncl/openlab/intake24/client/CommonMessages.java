@@ -126,4 +126,13 @@ public interface CommonMessages extends Messages {
   public String walkthroughYouTubeUrl();
 
   public String walkthroughYouTubeEmbedUrl();
+
+  public String privacyLinkLabel();
+
+  public String privacyLinkUrl();
+
+  public String tocLinkLabel();
+
+  public String tocLinkUrl();
+
 }

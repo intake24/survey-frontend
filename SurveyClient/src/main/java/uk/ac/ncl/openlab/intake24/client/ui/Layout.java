@@ -119,8 +119,29 @@ public class Layout {
         fssLogo.addStyleName("intake24-footer-fss-logo");
         fssLogo.setHref("http://www.foodstandards.gov.scot/");
 
+        FlowPanel privacyContainer = new FlowPanel();
+        privacyContainer.addStyleName("intake24-footer-privacy");
+
+        Anchor privacyLink = new Anchor(SafeHtmlUtils.fromSafeConstant(messages.privacyLinkLabel()));
+        privacyLink.setHref(messages.privacyLinkUrl());
+        privacyLink.setTarget("_blank");
+
+        Anchor tocLink = new Anchor(SafeHtmlUtils.fromSafeConstant(messages.tocLinkLabel()));
+        tocLink.setHref(messages.tocLinkUrl());
+        tocLink.setTarget("_blank");
+
+        HTMLPanel spacer = new HTMLPanel("span", "|");
+        spacer.getElement().getStyle().setMarginLeft(10, Style.Unit.PX);
+        spacer.getElement().getStyle().setMarginRight(10, Style.Unit.PX);
+
+        privacyContainer.add(privacyLink);
+        privacyContainer.add(spacer);
+        privacyContainer.add(tocLink);
+
+
         footer.add(nuLogo);
         footer.add(fssLogo);
+        footer.add(privacyContainer);
 
         UIRootPanel.clear();
         UIRootPanel.add(headerContainer);
