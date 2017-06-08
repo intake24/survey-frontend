@@ -23,3 +23,5 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.12")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0-M8")
+
+addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.2")

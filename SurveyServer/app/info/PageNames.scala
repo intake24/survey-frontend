@@ -11,4 +11,6 @@ object PageNames {
   val feedback = "Participant feedback"
   val publications = "Publications"
   val contacts = "Contact us"
+  val privacy = "Privacy policy"
+  val terms = "Terms and conditions"
 }
