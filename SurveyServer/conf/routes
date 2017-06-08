@@ -8,6 +8,8 @@ GET         /info/localisation                 controllers.Information.localisat
 GET         /info/feedback                     controllers.Information.feedback()
 GET         /info/publications                 controllers.Information.publications()
 GET         /info/contacts                     controllers.Information.contacts()
+GET         /info/privacy                      controllers.Information.privacy()
+GET         /info/terms                      controllers.Information.terms()
 
 
 GET         /demo                              controllers.Surveys.survey(surveyId="demo", genUser: Option[String])

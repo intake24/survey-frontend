@@ -45,4 +45,13 @@ class Information extends Controller {
   def contacts = Action {
     Ok(InfoPageLayout(PageNames.contacts, ContactsContent()))
   }
+
+  def privacy = Action {
+    Ok(InfoPageLayout(PageNames.privacy, PrivacyContent()))
+  }
+
+  def terms = Action {
+    Ok(InfoPageLayout(PageNames.terms, TermsContent()))
+  }
+
 }
