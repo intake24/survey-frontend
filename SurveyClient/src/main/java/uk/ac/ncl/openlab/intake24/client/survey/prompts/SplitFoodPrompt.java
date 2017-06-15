@@ -42,6 +42,7 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
+import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodLookupService;
 import uk.ac.ncl.openlab.intake24.client.api.foods.SplitSuggestion;
@@ -53,8 +54,6 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
 
     private final RawFood food;
     private final PromptMessages messages = PromptMessages.Util.getInstance();
-
-    private final static String currentLocale = LocaleInfo.getCurrentLocale().getLocaleName();
 
     public SplitFoodPrompt(final RawFood food) {
         this.food = food;
@@ -74,7 +73,7 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
             }
         });
 
-        FoodLookupService.INSTANCE.getSplitSuggestion(currentLocale, food.description, new MethodCallback<SplitSuggestion>() {
+        FoodLookupService.INSTANCE.getSplitSuggestion(EmbeddedData.localeId, food.description, new MethodCallback<SplitSuggestion>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 BrowserConsole.error("Split description failed with code " + method.getResponse().getStatusCode());
