@@ -59,7 +59,7 @@ public class SurveyEntryPoint implements EntryPoint {
     private void startSurvey(SurveyParameters params) {
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
 
-        SurveyScheme scheme = SurveyScheme.createScheme(params, LocaleInfo.getCurrentLocale().getLocaleName(), surveyInterfaceManager);
+        SurveyScheme scheme = SurveyScheme.createScheme(params, EmbeddedData.localeId, surveyInterfaceManager);
 
         ArrayList<Anchor> navbarLinks = new ArrayList<>();
 

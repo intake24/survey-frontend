@@ -59,7 +59,7 @@ public class PredefinedMeals {
     };
 
     public static PVector<Meal> getStartingMealsForCurrentLocale() {
-        switch (LocaleInfo.getCurrentLocale().getLocaleName()) {
+        switch (EmbeddedData.localeId) {
             case "pt_PT":
                 return portugueseStartingMeals;
             default:
@@ -68,7 +68,7 @@ public class PredefinedMeals {
     }
 
     public static String[] getSuggestedMealNamesForCurrentLocale() {
-        switch (LocaleInfo.getCurrentLocale().getLocaleName()) {
+        switch (EmbeddedData.localeId) {
             case "pt_PT":
                 return portugueseSuggestedMealNames;
             default:

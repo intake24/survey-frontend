@@ -12,7 +12,7 @@ import views.html.surveys.{Survey, SurveyFeedback}
 
 import scala.concurrent.duration._
 
-case class PublicSurveyParameters(localeId: String, supportEmail: String, originatingURL: Array[String])
+case class PublicSurveyParameters(localeId: String, respondentLanguageId: String, supportEmail: String, originatingURL: Array[String])
 
 class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller {
 

@@ -32,5 +32,7 @@ public class EmbeddedData {
 
     public static String apiBaseUrl = getMetaTagContent("intake24:apiBaseUrl").getOrDie();
 
+    public static String localeId = getMetaTagContent("intake24:localeId").getOrDie();
+
     public static Option<String> originatingUrl = getMetaTagContent("intake24:originatingUrl");
 }
