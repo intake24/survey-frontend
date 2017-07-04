@@ -17,6 +17,7 @@ case class PublicSurveyParameters(localeId: String, respondentLanguageId: String
 class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller {
 
   private val apiBaseUrl = config.getString("intake24.apiBaseUrl").get
+  private val gaTrackingCode = config.getString("intake24.ga.trackingCode")
 
   private implicit val surveyParamReads = Json.reads[PublicSurveyParameters]
 
@@ -27,7 +28,7 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
         response.status match {
           case 200 => {
             Json.fromJson[PublicSurveyParameters](Json.parse(response.body)) match {
-              case JsSuccess(params, _) => Ok(Survey(surveyId, params, apiBaseUrl))
+              case JsSuccess(params, _) => Ok(Survey(surveyId, params, apiBaseUrl, gaTrackingCode))
               case JsError(_) => InternalServerError
             }
           }
@@ -38,7 +39,7 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
   }
 
   def surveyFeedbackPage(surveyId: String) = Action {
-    Ok(SurveyFeedback(apiBaseUrl, surveyId))
+    Ok(SurveyFeedback(apiBaseUrl, surveyId, gaTrackingCode))
   }
 
 }
