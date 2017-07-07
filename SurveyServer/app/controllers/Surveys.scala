@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.libs.ws.WSClient
@@ -29,11 +29,17 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
           case 200 => {
             Json.fromJson[PublicSurveyParameters](Json.parse(response.body)) match {
               case JsSuccess(params, _) => Ok(Survey(surveyId, params, apiBaseUrl, gaTrackingCode))
-              case JsError(_) => InternalServerError
+              case JsError(p) =>
+                Logger.error("Could not parse API server public survey parameters response")
+                Logger.error("Response body: " + response.body)
+                Logger.error("Error: " + p.toString)
+                InternalServerError
             }
           }
-          case 404 => NotFound(Error404())
-          case _ => InternalServerError(Error500())
+          case x =>
+            Logger.error("API server responded with something other than 200")
+            Logger.error("Response code: " + x)
+            new Status(x)
         }
     }
   }
