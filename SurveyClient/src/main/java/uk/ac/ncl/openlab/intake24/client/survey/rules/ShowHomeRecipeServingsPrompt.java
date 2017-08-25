@@ -51,27 +51,18 @@ public class ShowHomeRecipeServingsPrompt implements PromptRule<Pair<FoodEntry, 
 
                                     Meal withUpdatedCompoundFood = meal.updateFood(compoundIndex, data.left.withCustomDataField(Recipe.SERVINGS_NUMBER_KEY, Double.toString(servings)));
 
-                                    // BrowserConsole.log("Updating " + data.left.description() + ", " + servings + " servings");
-
                                     return foldl(Meal.linkedFoods(meal.foods, data.left), withUpdatedCompoundFood, new Function2<Meal, FoodEntry, Meal>() {
                                         @Override
                                         public Meal apply(Meal meal, FoodEntry food) {
 
-                                           /* BrowserConsole.log("Updating portion size for " + food.description());
-
-                                            BrowserConsole.log("Original size: " + food.asEncoded().completedPortionSize().servingWeight() + "/"
-                                                    + food.asEncoded().completedPortionSize().leftoversWeight()); */
-
-                                            CompletedPortionSize updatedPs = food.asEncoded().completedPortionSize().multiply(1.0/servings);
-
-                                            /* BrowserConsole.log("Updated size: " + updatedPs.servingWeight() + "/"
-                                                    + updatedPs.leftoversWeight()); */
-
-                                            return meal.updateFood(meal.foodIndex(food), food.asEncoded().withPortionSize(new Either.Right(updatedPs)));
+                                           if (food.isEncoded()) {
+                                               CompletedPortionSize updatedPs = food.asEncoded().completedPortionSize().multiply(1.0 / servings);
+                                               return meal.updateFood(meal.foodIndex(food), food.asEncoded().withPortionSize(new Either.Right(updatedPs)));
+                                           } else {
+                                               return meal;
+                                           }
                                         }
                                     });
-
-
                                 }
                             });
                         }
