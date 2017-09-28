@@ -56,8 +56,9 @@ public class ShowHomeRecipeServingsPrompt implements PromptRule<Pair<FoodEntry, 
                                         public Meal apply(Meal meal, FoodEntry food) {
 
                                            if (food.isEncoded()) {
-                                               CompletedPortionSize updatedPs = food.asEncoded().completedPortionSize().multiply(1.0 / servings);
-                                               return meal.updateFood(meal.foodIndex(food), food.asEncoded().withPortionSize(new Either.Right(updatedPs)));
+                                               EncodedFood encodedFood = food.asEncoded();
+                                               CompletedPortionSize updatedPs = encodedFood.completedPortionSize().multiply(1.0 / servings);
+                                               return meal.updateFood(meal.foodIndex(food), encodedFood.withPortionSize(new Either.Right(updatedPs)));
                                            } else {
                                                return meal;
                                            }
