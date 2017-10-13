@@ -48,6 +48,8 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
+import java.util.ArrayList;
+
 public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOperation> {
     private final static int MAX_RESULTS = 50;
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
@@ -127,10 +129,18 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                 }
             };
 
+            ArrayList<String> existingFoods = new ArrayList<>();
+            for (FoodEntry fe: meal.foods) {
+                if (fe.isEncoded())
+                    existingFoods.add(fe.asEncoded().data.code);
+            }
+
             if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
-                FoodLookupService.INSTANCE.lookupInCategory(locale, description, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
-            else
-                FoodLookupService.INSTANCE.lookup(locale, description, MAX_RESULTS, lookupCallback);
+                FoodLookupService.INSTANCE.lookupInCategory(locale, description, existingFoods, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
+            else {
+
+                FoodLookupService.INSTANCE.lookup(locale, description, existingFoods, MAX_RESULTS, lookupCallback);
+            }
         }
 
         private void showWithSearchHeader(SafeHtml headerText, Widget stuff) {

@@ -13,14 +13,14 @@ package uk.ac.ncl.openlab.intake24.client.survey.rules;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PSet;
-import org.workcraft.gwt.shared.client.Function1;
-import org.workcraft.gwt.shared.client.Option;
-import org.workcraft.gwt.shared.client.Pair;
+import org.workcraft.gwt.shared.client.*;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.FractionalQuantityPrompt;
 
+import static org.workcraft.gwt.shared.client.CollectionUtils.foldl;
 import static org.workcraft.gwt.shared.client.CollectionUtils.forall;
 
 public class ShowHomeRecipeServingsPrompt implements PromptRule<Pair<FoodEntry, Meal>, MealOperation> {
@@ -42,13 +42,30 @@ public class ShowHomeRecipeServingsPrompt implements PromptRule<Pair<FoodEntry, 
                     return Option.some(PromptUtil.asExtendedFoodPrompt(quantityPrompt, new Function1<Double, MealOperation>() {
                         @Override
                         public MealOperation apply(final Double servings) {
-                            return MealOperation.updateFood(data.right.foodIndex(food), new Function1<FoodEntry, FoodEntry>() {
+
+                            return MealOperation.update(new Function1<Meal, Meal>() {
                                 @Override
-                                public FoodEntry apply(FoodEntry argument) {
-                                    return argument.withCustomDataField(Recipe.SERVINGS_NUMBER_KEY, Double.toString(servings));
+                                public Meal apply(Meal meal) {
+
+                                    int compoundIndex = meal.foodIndex(data.left);
+
+                                    Meal withUpdatedCompoundFood = meal.updateFood(compoundIndex, data.left.withCustomDataField(Recipe.SERVINGS_NUMBER_KEY, Double.toString(servings)));
+
+                                    return foldl(Meal.linkedFoods(meal.foods, data.left), withUpdatedCompoundFood, new Function2<Meal, FoodEntry, Meal>() {
+                                        @Override
+                                        public Meal apply(Meal meal, FoodEntry food) {
+
+                                           if (food.isEncoded()) {
+                                               EncodedFood encodedFood = food.asEncoded();
+                                               CompletedPortionSize updatedPs = encodedFood.completedPortionSize().multiply(1.0 / servings);
+                                               return meal.updateFood(meal.foodIndex(food), encodedFood.withPortionSize(new Either.Right(updatedPs)));
+                                           } else {
+                                               return meal;
+                                           }
+                                        }
+                                    });
                                 }
                             });
-
                         }
                     }));
                 } else {
