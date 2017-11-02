@@ -121,7 +121,6 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                                     List<FoodEntry> newFoodEntries = new ArrayList<>();
 
                                     for (CheckBox cb : checkBoxes) {
-                                        Window.alert(cb.getValue().toString());
                                         if (cb.getValue()) {
                                             newFoodEntries.add(foodMap.get(cb));
                                         }

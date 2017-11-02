@@ -316,7 +316,6 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
         String browseCategory = food.customData.get(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP);
 
         if (browseCategory != null) {
-            Window.alert(browseCategory);
             ui.browse(browseCategory, SafeHtmlUtils.htmlEscape(food.description()));
         } else
             ui.lookup(food.description());
