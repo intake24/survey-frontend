@@ -47,6 +47,7 @@ public class Meal {
     private static final String FLAG_CONFIRMED_NO_DRINKS = "confirmed-no-drinks";
     private static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
     private static final String FLAG_READY_MEALS_COMPLETE = "ready-meals-complete";
+    private static final String FLAG_ASSOCIATED_FOODS_COMPLETE = "associated-foods-complete";
 
     public final String name;
     public final PVector<FoodEntry> foods;
@@ -120,6 +121,8 @@ public class Meal {
     public boolean confirmedNoMealsAfter() {
         return flags.contains(FLAG_NO_MEALS_AFTER);
     }
+
+    public boolean associatedFoodsComplete() { return flags.contains(FLAG_ASSOCIATED_FOODS_COMPLETE); };
 
     public boolean hasDrinks() {
         return CollectionUtils.exists(foods, new Function1<FoodEntry, Boolean>() {
@@ -261,6 +264,8 @@ public class Meal {
     public Meal markReadyMealsComplete() {
         return withFlag(FLAG_READY_MEALS_COMPLETE);
     }
+
+    public Meal markAssociatedFoodsComplete() { return withFlag(FLAG_ASSOCIATED_FOODS_COMPLETE); }
 
     public String safeName() {
         return SafeHtmlUtils.htmlEscape(name.toLowerCase());

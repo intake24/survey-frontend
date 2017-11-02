@@ -29,6 +29,7 @@ package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
@@ -130,7 +131,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             };
 
             ArrayList<String> existingFoods = new ArrayList<>();
-            for (FoodEntry fe: meal.foods) {
+            for (FoodEntry fe : meal.foods) {
                 if (fe.isEncoded())
                     existingFoods.add(fe.asEncoded().data.code);
             }
@@ -141,6 +142,18 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
 
                 FoodLookupService.INSTANCE.lookup(locale, description, existingFoods, MAX_RESULTS, lookupCallback);
             }
+        }
+
+        private void browse(final String categoryCode, final String categoryName) {
+            content.clear();
+
+            final FlowPanel promptPanel = WidgetFactory.createPromptPanel(SafeHtmlUtils.fromSafeConstant(messages.foodLookup_browseHeader(SafeHtmlUtils.htmlEscape(categoryName), SafeHtmlUtils.htmlEscape(meal.name.toLowerCase()))));
+
+            content.add(promptPanel);
+
+            content.add(foodBrowser);
+
+            foodBrowser.browse(categoryCode, SafeHtmlUtils.htmlEscape(categoryName));
         }
 
         private void showWithSearchHeader(SafeHtml headerText, Widget stuff) {
@@ -230,6 +243,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                             else
                                 onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData, food.link, lastSearchTerm)));
                         }
+
                         @Override
                         public void visitNone() {
                             onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData, food.link, lastSearchTerm)));
@@ -298,7 +312,15 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
     public SurveyStageInterface getInterface(final Callback1<MealOperation> onComplete,
                                              Callback1<Function1<Pair<FoodEntry, Meal>, Pair<FoodEntry, Meal>>> updateIntermediateState) {
         LookupInterface ui = new LookupInterface(meal, food, onComplete);
-        ui.lookup(food.description());
+
+        String browseCategory = food.customData.get(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP);
+
+        if (browseCategory != null) {
+            Window.alert(browseCategory);
+            ui.browse(browseCategory, SafeHtmlUtils.htmlEscape(food.description()));
+        } else
+            ui.lookup(food.description());
+
         return ui;
     }
 

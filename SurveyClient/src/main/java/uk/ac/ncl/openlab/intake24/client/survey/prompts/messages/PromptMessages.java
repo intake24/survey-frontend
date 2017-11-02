@@ -78,6 +78,8 @@ public interface PromptMessages extends Messages {
 
     public String assocFoods_specificFoodPrompt();
 
+    public String assocFoods_automaticPrompt(String mealName);
+
     public String assocFoods_allFoodsDataSetName();
 
     public String choosePortionMethod_promptText(@Optional String foodDescription);
@@ -360,6 +362,8 @@ public interface PromptMessages extends Messages {
     public String foodLookup_loadingMessage(String searchTerm);
 
     public String foodLookup_searchResultsHeader(String htmlEscape);
+
+    public String foodLookup_browseHeader(String categoryName, String mealName);
 
     public String foodLookup_serverError();
 

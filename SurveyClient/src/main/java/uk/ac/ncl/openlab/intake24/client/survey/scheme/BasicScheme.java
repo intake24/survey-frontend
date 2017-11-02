@@ -91,9 +91,10 @@ public abstract class BasicScheme implements SurveyScheme {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
-                        .plus(AskForMealTime.withPriority(3))
-                        .plus(ShowEditMeal.withPriority(2))
-                        .plus(ShowDrinkReminderPrompt.withPriority(1))
+                        .plus(AskForMealTime.withPriority(4))
+                        .plus(ShowEditMeal.withPriority(3))
+                        .plus(ShowDrinkReminderPrompt.withPriority(2))
+                        .plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale))
                         .plus(ShowReadyMealsPrompt.withPriority(0)),
 
                 // food associatedFoods

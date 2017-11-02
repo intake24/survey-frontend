@@ -6,10 +6,7 @@ import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AccessDispatcher;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import java.util.List;
 
 @Options(dispatcher = AccessDispatcher.class, serviceRootKey = "intake24-api")
@@ -56,4 +53,8 @@ public interface FoodDataService extends RestService {
     @GET
     @Path("/user/categories/{locale}/{code}")
     void getCategoryContents(@PathParam("locale") String localeId, @PathParam("code") String categoryCode, MethodCallback<LookupResult> callback);
+
+    @GET
+    @Path("/user/foods/associated/{locale}")
+    void getAutomaticAssociatedFoods(@PathParam("locale") String localeId, @QueryParam("f") List<String> foodCodes, MethodCallback<AutomaticAssociatedFoods> callback);
 }
