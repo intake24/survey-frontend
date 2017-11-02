@@ -99,8 +99,12 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
             public void onSuccess(Method method, AutomaticAssociatedFoods response) {
                 content.remove(loading);
 
+                final List<CheckBox> checkBoxes = new ArrayList<>();
+
                 for (CategoryHeader category : response.categories) {
-                    content.add(new CheckBox(SafeHtmlUtils.htmlEscape(category.description())));
+                    CheckBox cb = new CheckBox(SafeHtmlUtils.htmlEscape(category.description()));
+                    cb.setFormValue(category.code);
+                    content.add(cb);
                 }
 
                 Button continueButton = WidgetFactory.createGreenButton("Continue", "continue-button", new ClickHandler() {
@@ -109,6 +113,20 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                         onComplete.call(MealOperation.update(new Function1<Meal, Meal>() {
                             @Override
                             public Meal apply(Meal m) {
+
+
+                                List<FoodEntry> newFoodEntries = new ArrayList<>();
+
+
+                                for (CheckBox cb: checkBoxes) {
+                                    if (cb.getValue()) {
+
+                                        //RawFood f = new RawFood(FoodLink.newUnlinked(), cb.getL)
+
+                                        newFoodEntries.add(new RawFood())
+                                    }
+                                }
+
                                 return m.foods.p
                             }
                         }));
