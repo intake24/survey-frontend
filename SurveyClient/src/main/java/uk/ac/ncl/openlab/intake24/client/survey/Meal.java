@@ -241,6 +241,11 @@ public class Meal {
         return new Meal(this.name, this.foods, this.time, this.flags.plus(flag), this.customData);
     }
 
+    public Meal withoutFlag(String flag) {
+        return new Meal(this.name, this.foods, this.time, this.flags.minus(flag), this.customData);
+    }
+
+
     public Meal withCustomDataField(String key, String value) {
         return new Meal(this.name, this.foods, this.time, this.flags, this.customData.plus(key, value));
     }
@@ -266,6 +271,8 @@ public class Meal {
     }
 
     public Meal markAssociatedFoodsComplete() { return withFlag(FLAG_ASSOCIATED_FOODS_COMPLETE); }
+
+    public Meal clearAssociatedFoodsComplete() { return withoutFlag(FLAG_ASSOCIATED_FOODS_COMPLETE);}
 
     public String safeName() {
         return SafeHtmlUtils.htmlEscape(name.toLowerCase());

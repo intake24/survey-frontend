@@ -29,9 +29,12 @@ package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
+import org.pcollections.HashTreePMap;
+import org.pcollections.HashTreePSet;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
@@ -44,17 +47,13 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperation> {
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
     private final static HelpMessages helpMessages = HelpMessages.Util.getInstance();
 
     private final Meal meal;
-    private FlowPanel interf;
-    private Panel buttonsPanel;
 
     private PVector<ShepherdTour.Step> tour;
 
@@ -100,36 +99,36 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                 content.remove(loading);
 
                 final List<CheckBox> checkBoxes = new ArrayList<>();
+                final Map<CheckBox, RawFood> foodMap = new LinkedHashMap<>();
 
                 for (CategoryHeader category : response.categories) {
                     CheckBox cb = new CheckBox(SafeHtmlUtils.htmlEscape(category.description()));
-                    cb.setFormValue(category.code);
+
+                    RawFood f = new RawFood(FoodLink.newUnlinked(), category.description(), HashTreePSet.<String>empty(),
+                            HashTreePMap.<String, String>empty().plus(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP, category.code));
+
                     content.add(cb);
+
+                    checkBoxes.add(cb);
+                    foodMap.put(cb, f);
                 }
 
                 Button continueButton = WidgetFactory.createGreenButton("Continue", "continue-button", new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent clickEvent) {
-                        onComplete.call(MealOperation.update(new Function1<Meal, Meal>() {
-                            @Override
-                            public Meal apply(Meal m) {
+                        onComplete.call(MealOperation.update(
+                                m -> {
+                                    List<FoodEntry> newFoodEntries = new ArrayList<>();
 
-
-                                List<FoodEntry> newFoodEntries = new ArrayList<>();
-
-
-                                for (CheckBox cb: checkBoxes) {
-                                    if (cb.getValue()) {
-
-                                        //RawFood f = new RawFood(FoodLink.newUnlinked(), cb.getL)
-
-                                        newFoodEntries.add(new RawFood())
+                                    for (CheckBox cb : checkBoxes) {
+                                        Window.alert(cb.getValue().toString());
+                                        if (cb.getValue()) {
+                                            newFoodEntries.add(foodMap.get(cb));
+                                        }
                                     }
-                                }
 
-                                return m.foods.p
-                            }
-                        }));
+                                    return m.withFoods(m.foods.plusAll(newFoodEntries)).markAssociatedFoodsComplete();
+                                }));
                     }
                 });
 

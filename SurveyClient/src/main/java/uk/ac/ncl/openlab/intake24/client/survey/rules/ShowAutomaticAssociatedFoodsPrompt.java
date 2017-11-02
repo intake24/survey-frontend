@@ -41,7 +41,6 @@ public class ShowAutomaticAssociatedFoodsPrompt implements PromptRule<Meal, Meal
         if (!meal.encodingComplete() || meal.associatedFoodsComplete())
             return Option.none();
         else
-
             return Option.<Prompt<Meal, MealOperation>>some(new AutomaticAssociatedFoodsPrompt(locale, meal));
     }
 

@@ -101,7 +101,8 @@ public class EditMealPrompt implements Prompt<Meal, MealOperation> {
                                         TreePVector.<FoodEntry>empty()
                                                 .plusAll(foodList.getEnteredItems())
                                                 .plusAll(drinkList.getEnteredItems()))
-                                        .markFreeEntryComplete();
+                                        .markFreeEntryComplete()
+                                        .clearAssociatedFoodsComplete();
 
                             }
                         });
