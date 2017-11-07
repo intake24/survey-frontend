@@ -26,6 +26,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -107,7 +108,12 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                     RawFood f = new RawFood(FoodLink.newUnlinked(), category.description(), HashTreePSet.<String>empty(),
                             HashTreePMap.<String, String>empty().plus(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP, category.code));
 
-                    content.add(cb);
+
+                    FlowPanel div = new FlowPanel();
+                    div.getElement().getStyle().setPaddingBottom(4, Style.Unit.PX);
+                    div.add(cb);
+                    cb.getElement().getFirstChildElement().getStyle().setMargin(0, Style.Unit.PX);
+                    content.add(div);
 
                     checkBoxes.add(cb);
                     foodMap.put(cb, f);
