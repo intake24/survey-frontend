@@ -26,17 +26,13 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.prompts.simple;
 
-import org.workcraft.gwt.shared.client.Callback;
-import org.workcraft.gwt.shared.client.Callback1;
-import org.workcraft.gwt.shared.client.Option;
-import org.workcraft.gwt.shared.client.Pair;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Panel;
+import org.workcraft.gwt.shared.client.*;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
@@ -62,9 +58,9 @@ public class OptionalFoodPrompt implements SimplePrompt<Option<String>> {
         final Panel promptPanel = WidgetFactory.createPromptPanel(def.promptHtml);
         content.add(promptPanel);
 
-        final FoodBrowser foodBrowser = new FoodBrowser(locale, new Callback1<FoodData>() {
+        final FoodBrowser foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
             @Override
-            public void call(FoodData result) {
+            public void call(FoodData result, Integer index) {
                 onComplete.call(Option.some(result.code));
             }
         }, new Callback1<String>() {

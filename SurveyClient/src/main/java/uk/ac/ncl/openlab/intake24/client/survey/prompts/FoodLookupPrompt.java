@@ -44,6 +44,10 @@ import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
 import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.ContainerPosition;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.SearchResultSelectionData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.Viewport;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
@@ -127,6 +131,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                     div.add(foodBrowser);
 
                     showWithSearchHeader(headerText, div);
+                    UxEventsHelper.postSearchResultsReceived(description, "123", result);
                 }
             };
 
@@ -200,8 +205,10 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             searchText.addKeyPressHandler(new KeyPressHandler() {
                 @Override
                 public void onKeyPress(KeyPressEvent event) {
-                    if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
+                    if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
                         lookup(searchText.getText());
+                        UxEventsHelper.postSearchButtonClicked(searchText.getText());
+                    }
                 }
             });
 
@@ -209,6 +216,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                 @Override
                 public void onClick(ClickEvent arg0) {
                     lookup(searchText.getText());
+                    UxEventsHelper.postSearchButtonClicked(searchText.getText());
                 }
             });
 
@@ -224,9 +232,9 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             else
                 limitToCategory = Option.none();
 
-            foodBrowser = new FoodBrowser(locale, new Callback1<FoodData>() {
+            foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
                 @Override
-                public void call(final FoodData foodData) {
+                public void call(final FoodData foodData, Integer index) {
 
                     food.link.linkedTo.accept(new Option.SideEffectVisitor<UUID>() {
                         @Override
@@ -249,6 +257,13 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                             onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData, food.link, lastSearchTerm)));
                         }
                     });
+
+                    UxEventsHelper.postSearchResultSelected(Viewport.getCurrent(),
+                            ContainerPosition.fromElement("intake24-food-browser-foods-container"),
+                            ContainerPosition.fromElement("intake24-food-browser-categories-container"),
+                            ContainerPosition.fromElement("intake24-food-browser-buttons-container").getOrDie(),
+                            new FoodHeader(foodData.code, foodData.localDescription),
+                            index);
 
                 }
             }, new Callback1<String>() {

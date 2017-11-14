@@ -42,8 +42,12 @@ import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.TestEvent;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsService;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.UUID;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.SurveyScheme;
 import uk.ac.ncl.openlab.intake24.client.ui.ErrorPage;
 import uk.ac.ncl.openlab.intake24.client.ui.Layout;
@@ -87,6 +91,8 @@ public class SurveyEntryPoint implements EntryPoint {
 
         Defaults.setServiceRoot("/");
         ServiceRoots.add("intake24-api", EmbeddedData.apiBaseUrl);
+
+        UxEventsHelper.postTestEvent(new TestEvent("Hi :D"));
 
         watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
 

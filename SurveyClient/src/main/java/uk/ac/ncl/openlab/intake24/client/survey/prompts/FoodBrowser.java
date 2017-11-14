@@ -39,15 +39,13 @@ import org.pcollections.ConsPStack;
 import org.pcollections.PStack;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
-import org.workcraft.gwt.shared.client.Callback;
-import org.workcraft.gwt.shared.client.Callback1;
-import org.workcraft.gwt.shared.client.Option;
-import org.workcraft.gwt.shared.client.Pair;
+import org.workcraft.gwt.shared.client.*;
 import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
 import uk.ac.ncl.openlab.intake24.client.survey.SpecialData;
@@ -79,7 +77,7 @@ public class FoodBrowser extends Composite {
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
     private final FlowPanel contents = new FlowPanel();
-    private final Callback1<FoodData> onFoodChosen;
+    private final Callback2<FoodData, Integer> onFoodChosen;
     private final Callback1<String> onSpecialFoodChosen;
     private final Callback onMissingFoodReported;
     private final Option<SkipFoodHandler> skipFoodHandler;
@@ -99,7 +97,7 @@ public class FoodBrowser extends Composite {
 
     private PStack<HistoryState> browseHistory = ConsPStack.<HistoryState>empty();
 
-    public FoodBrowser(final String locale, final Callback1<FoodData> onFoodChosen, final Callback1<String> onSpecialFoodChosen, final Callback onMissingFoodReported,
+    public FoodBrowser(final String locale, final Callback2<FoodData, Integer> onFoodChosen, final Callback1<String> onSpecialFoodChosen, final Callback onMissingFoodReported,
                        final Option<SkipFoodHandler> skipFoodHandler, boolean allowBrowsingAllFoods, Option<Pair<String, String>> limitBrowseAllCategory) {
 
         contents.addStyleName("intake24-food-browser");
@@ -119,7 +117,7 @@ public class FoodBrowser extends Composite {
         browseHistory = browseHistory.plus(new HistoryState(result, name, foodHeader, categoryHeader));
     }
 
-    private Widget createFoodButton(final FoodHeader foodHeader) {
+    private Widget createFoodButton(final FoodHeader foodHeader, final int index) {
         String description;
 
         if (foodHeader.code.equals(SpecialData.FOOD_CODE_SANDWICH))
@@ -153,7 +151,7 @@ public class FoodBrowser extends Composite {
 
                         @Override
                         public void onSuccess(Method method, FoodData foodData) {
-                            onFoodChosen.call(foodData);
+                            onFoodChosen.call(foodData, index);
                         }
                     });
                 }
@@ -197,16 +195,22 @@ public class FoodBrowser extends Composite {
             foodsContainer.addStyleName("intake24-food-browser-foods-container");
             foodsContainer.getElement().setId("intake24-food-browser-foods-container");
 
+            int index = 1;
+
             for (final FoodHeader food : result.foods)
-                if (food.code.equals(SpecialData.FOOD_CODE_SANDWICH) || food.code.equals(SpecialData.FOOD_CODE_SALAD))
-                    foodsContainer.add(createFoodButton(food));
+                if (food.code.equals(SpecialData.FOOD_CODE_SANDWICH) || food.code.equals(SpecialData.FOOD_CODE_SALAD)) {
+                    foodsContainer.add(createFoodButton(food, index));
+                    index++;
+                }
 
             HTMLPanel header = new HTMLPanel("h2", foodHeader);
             foodsContainer.add(header);
 
             for (final FoodHeader food : result.foods)
-                if (!(food.code.equals(SpecialData.FOOD_CODE_SANDWICH) || food.code.equals(SpecialData.FOOD_CODE_SALAD)))
-                    foodsContainer.add(createFoodButton(food));
+                if (!(food.code.equals(SpecialData.FOOD_CODE_SANDWICH) || food.code.equals(SpecialData.FOOD_CODE_SALAD))) {
+                    foodsContainer.add(createFoodButton(food, index));
+                    index++;
+                }
 
             ui.add(foodsContainer);
         } else {
@@ -247,6 +251,7 @@ public class FoodBrowser extends Composite {
 
         FlowPanel div = new FlowPanel();
         div.addStyleName("intake24-food-browser-browse-all-container");
+        div.getElement().setId("intake24-food-browser-buttons-container");
 
         final Panel buttonsPanel = WidgetFactory.createButtonsPanel();
         div.add(buttonsPanel);
@@ -291,6 +296,8 @@ public class FoodBrowser extends Composite {
 
             @Override
             public void onClick(ClickEvent arg0) {
+
+                UxEventsHelper.postCantFindButtonClicked(resultName);
 
                 cantFindButton.setEnabled(false);
 

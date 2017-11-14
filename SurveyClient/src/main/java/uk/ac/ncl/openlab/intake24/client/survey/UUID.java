@@ -13,6 +13,9 @@ package uk.ac.ncl.openlab.intake24.client.survey;
 
 public class UUID {
 	public final String value;
+
+	@Deprecated
+	public UUID() { this.value = randomUuidString(); }
 	
 	public UUID(String value) {
 		this.value = value;

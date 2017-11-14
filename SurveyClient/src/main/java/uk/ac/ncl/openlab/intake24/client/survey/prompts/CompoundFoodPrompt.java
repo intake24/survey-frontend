@@ -135,9 +135,9 @@ public class CompoundFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
             }
         })) : Option.<SkipFoodHandler>none();
 
-        foodBrowser = new FoodBrowser(locale, new Callback1<FoodData>() {
+        foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
             @Override
-            public void call(final FoodData result) {
+            public void call(final FoodData result, Integer index) {
                 onComplete.call(MealOperation.update(new Function1<Meal, Meal>() {
                     @Override
                     public Meal apply(Meal argument) {

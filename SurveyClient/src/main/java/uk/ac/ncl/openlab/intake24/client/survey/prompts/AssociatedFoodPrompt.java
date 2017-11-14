@@ -214,9 +214,9 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
             }
         };
 
-        foodBrowser = new FoodBrowser(locale, new Callback1<FoodData>() {
+        foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
             @Override
-            public void call(FoodData result) {
+            public void call(FoodData result, Integer index) {
                 addNewFood.call(result);
             }
         }, new Callback1<String>() {
