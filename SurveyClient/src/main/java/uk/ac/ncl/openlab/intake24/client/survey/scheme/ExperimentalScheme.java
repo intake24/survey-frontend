@@ -26,13 +26,13 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
+import org.pcollections.TreePVector;
+import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
-import uk.ac.ncl.openlab.intake24.client.survey.CompoundFoodTemplateManager;
-import uk.ac.ncl.openlab.intake24.client.survey.RecipeManager;
-import uk.ac.ncl.openlab.intake24.client.survey.Rules;
-import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
+import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
-import uk.ac.ncl.openlab.intake24.client.survey.rules.ShowAutomaticAssociatedFoodsPrompt;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
+import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 
 public class ExperimentalScheme extends DefaultScheme {
 
@@ -45,13 +45,57 @@ public class ExperimentalScheme extends DefaultScheme {
 
     @Override
     protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
-        Rules defaultRules = super.defaultRules(scriptManager, templateManager, recipeManager);
-
         return new Rules(
-                defaultRules.mealPromptRules.plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale)),
-                defaultRules.foodPromptRules,
-                defaultRules.extendedFoodPromptRules,
-                defaultRules.surveyPromptRules,
-                defaultRules.selectionRules);
+                // meal associatedFoods
+                TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
+                        .plus(AskForMealTime.withPriority(4))
+                        .plus(ShowEditMeal.withPriority(3))
+                        .plus(ShowDrinkReminderPrompt.withPriority(2))
+                        .plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale))
+                        .plus(ShowReadyMealsPrompt.withPriority(0)),
+
+                // food associatedFoods
+                TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
+                        .plus(ShowBrandNamePrompt.withPriority(-1))
+                        .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
+                        .plus(ChoosePortionSizeMethod.withPriority(1))
+                        .plus(AskForMissingFoodDescription.withPriority(2))
+                        .plus(ShowSimpleHomeRecipePrompt.withPriority(2))
+                        .plus(AskIfHomeRecipe.withPriority(3))
+                        .plus(SplitFood.withPriority(4))
+                        .plus(InformFoodComplete.withPriority(-100)),
+
+                // extended food propmts
+                TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
+                        .plus(ShowEditIngredientsPrompt.withPriority(3))
+                        .plus(AskToLookupFood.withPriority(3, locale, "popularity", recipeManager))
+                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
+                        .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
+                        .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
+                        .plus(ShowCompoundFoodPrompt.withPriority(0, locale))
+                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
+                        .plus(ShowBreadLinkedFoodAmountPrompt.withPriority(0))
+
+                ,
+                // global associatedFoods
+
+                TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>>empty()
+                        .plus(ConfirmCompletion.withPriority(0))
+                        .plus(ShowEnergyValidationPrompt.withPriority(1, 500.0))
+                        .plus(ShowEmptySurveyPrompt.withPriority(1))
+                        .plus(ShowTimeGapPrompt.withPriority(2, 180, new Time(9, 0), new Time(21, 0)))
+
+                ,
+
+                // selection rules
+                TreePVector.<WithPriority<SelectionRule>>empty()
+                        .plus(SelectForPortionSize.withPriority(3))
+                        .plus(SelectRawFood.withPriority(2))
+                        .plus(SelectFoodForAssociatedPrompts.withPriority(1))
+                        .plus(SelectIncompleteFreeEntryMeal.withPriority(1))
+                        .plus(SelectMealWithNoDrink.withPriority(1))
+                        .plus(SelectUnconfirmedMeal.withPriority(1))
+                        .plus(SelectMealForReadyMeals.withPriority(1)));
+
     }
 }

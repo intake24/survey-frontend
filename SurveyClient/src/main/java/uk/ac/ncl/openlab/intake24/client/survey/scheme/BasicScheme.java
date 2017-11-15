@@ -110,7 +110,7 @@ public abstract class BasicScheme implements SurveyScheme {
                 // extended food propmts
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
-                        .plus(AskToLookupFood.withPriority(3, locale, recipeManager))
+                        .plus(AskToLookupFood.withPriority(3, locale, "paRules", recipeManager))
                         .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))

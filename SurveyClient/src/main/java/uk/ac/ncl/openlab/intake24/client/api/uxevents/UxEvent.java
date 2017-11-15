@@ -1,11 +1,9 @@
 package uk.ac.ncl.openlab.intake24.client.api.uxevents;
 
-import uk.ac.ncl.openlab.intake24.client.survey.UUID;
-
 import java.util.Date;
 import java.util.List;
 
-public abstract class AbstractUxEvent<T> {
+public class UxEvent<T> {
 
     protected String eventType;
     protected List<String> eventCategories;
@@ -16,12 +14,12 @@ public abstract class AbstractUxEvent<T> {
     protected T data;
 
     @Deprecated
-    public AbstractUxEvent() {
+    public UxEvent() {
     }
 
-    public AbstractUxEvent(List<String> categories, T data) {
+    public UxEvent(String eventType, List<String> categories, T data) {
         this.sessionId = UxEventsHelper.sessionId.toString();
-        this.eventType = this.getClass().getSimpleName();
+        this.eventType = eventType;
         this.eventCategories = categories;
         this.data = data;
         this.localTime = new Date().getTime();

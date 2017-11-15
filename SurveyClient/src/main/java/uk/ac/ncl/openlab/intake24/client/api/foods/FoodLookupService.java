@@ -23,12 +23,12 @@ public interface FoodLookupService extends RestService {
 
     @GET
     @Path("/user/foods/{locale}/lookup")
-    void lookup(@PathParam("locale") String localeId, @QueryParam("desc") String description, @QueryParam("existing") List<String> existingFoods,
-                @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
+    void lookup(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("desc") String description,
+                @QueryParam("existing") List<String> existingFoods, @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
 
     @GET
     @Path("/user/foods/{locale}/lookup-in-category")
-    void lookupInCategory(@PathParam("locale") String localeId, @QueryParam("desc") String description,
+    void lookupInCategory(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("desc") String description,
                           @QueryParam("existing") List<String> existingFoods, @QueryParam("category") String category,
                           @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
 }

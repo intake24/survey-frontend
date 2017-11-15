@@ -25,15 +25,12 @@ public class Viewport {
         return $wnd.innerWidth;
     }-*/;
 
-    public static native int getMaxWindowPageYOffset() /*-{
-        return $wnd.pageYOffset;
-    }-*/;
 
     public static native int getBodyOffsetHeight() /*-{
         return $wnd.document.body.offsetHeight;
     }-*/;
 
     public static Viewport getCurrent() {
-        return new Viewport(getWindowInnerHeight(), getWindowInnerWidth(), getMaxWindowPageYOffset(), getBodyOffsetHeight());
+        return new Viewport(getWindowInnerHeight(), getWindowInnerWidth(), GlobalScrollTracker.INSTANCE.getCurrentMaxYOffset(), getBodyOffsetHeight());
     }
 }

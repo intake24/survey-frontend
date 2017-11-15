@@ -45,6 +45,7 @@ import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.GlobalScrollTracker;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
@@ -185,6 +186,9 @@ public class FoodBrowser extends Composite {
     }
 
     private void show(final LookupResult result, final String resultName, final String foodHeader, final String categoryHeader) {
+
+        GlobalScrollTracker.INSTANCE.resetMaxYOffset();
+
         final FlowPanel ui = new FlowPanel();
         ui.addStyleName("intake24-food-browser-ui");
 
@@ -297,7 +301,7 @@ public class FoodBrowser extends Composite {
             @Override
             public void onClick(ClickEvent arg0) {
 
-                UxEventsHelper.postCantFindButtonClicked(resultName);
+                UxEventsHelper.postCantFindButtonClicked();
 
                 cantFindButton.setEnabled(false);
 
@@ -398,10 +402,13 @@ public class FoodBrowser extends Composite {
     }
 
     public void showLookupResult(final LookupResult data, final String dataSetName) {
+        GlobalScrollTracker.INSTANCE.resetMaxYOffset();
         show(data, dataSetName, messages.foodBrowser_matchingFoodsHeader(), messages.foodBrowser_matchingCategoriesHeader());
     }
 
     public void browse(final String categoryCode, final String dataSetName, final String foodsHeader, final String categoryHeader) {
+        GlobalScrollTracker.INSTANCE.resetMaxYOffset();
+
         contents.clear();
         contents.add(new LoadingPanel(messages.foodBrowser_loadingMessage()));
 
@@ -430,6 +437,8 @@ public class FoodBrowser extends Composite {
     }
 
     private void browseAll() {
+        GlobalScrollTracker.INSTANCE.resetMaxYOffset();
+
         contents.clear();
         contents.add(new LoadingPanel(messages.foodBrowser_loadingMessage()));
 

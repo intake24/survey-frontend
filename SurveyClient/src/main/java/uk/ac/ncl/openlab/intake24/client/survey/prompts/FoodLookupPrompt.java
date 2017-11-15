@@ -29,25 +29,17 @@ package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
-import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
-import uk.ac.ncl.openlab.intake24.client.api.AsyncRequest;
-import uk.ac.ncl.openlab.intake24.client.api.AsyncRequestAuthHandler;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.ContainerPosition;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.SearchResultSelectionData;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.Viewport;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.*;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
@@ -60,6 +52,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
     private final static HelpMessages helpMessages = HelpMessages.Util.getInstance();
 
+    private final String algorithmId;
     private final FoodEntry food;
     private final Meal meal;
     private final RecipeManager recipeManager;
@@ -86,8 +79,9 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             });
     }
 
-    public FoodLookupPrompt(final String locale, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
+    public FoodLookupPrompt(final String locale, final String algorithmId, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
         this.locale = locale;
+        this.algorithmId = algorithmId;
         this.food = food;
         this.meal = meal;
         this.recipeManager = recipeManager;
@@ -131,7 +125,14 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                     div.add(foodBrowser);
 
                     showWithSearchHeader(headerText, div);
-                    UxEventsHelper.postSearchResultsReceived(description, "123", result);
+
+                    ArrayList<String> existing = new ArrayList<>();
+
+                    for (FoodEntry fe : meal.foods)
+                        if (fe.isEncoded())
+                            existing.add(fe.asEncoded().data.code);
+
+                    UxEventsHelper.postSearchResultsReceived(new SearchResult(description, existing, algorithmId, result));
                 }
             };
 
@@ -142,10 +143,10 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             }
 
             if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
-                FoodLookupService.INSTANCE.lookupInCategory(locale, description, existingFoods, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
+                FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, description, existingFoods, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
             else {
 
-                FoodLookupService.INSTANCE.lookup(locale, description, existingFoods, MAX_RESULTS, lookupCallback);
+                FoodLookupService.INSTANCE.lookup(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
             }
         }
 
@@ -207,7 +208,14 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                 public void onKeyPress(KeyPressEvent event) {
                     if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
                         lookup(searchText.getText());
-                        UxEventsHelper.postSearchButtonClicked(searchText.getText());
+
+                        UxEventsHelper.postSearchButtonClicked(
+                                new SearchButtonData(
+                                        searchText.getText(),
+                                        Viewport.getCurrent(),
+                                        ContainerPosition.fromElement("intake24-food-browser-foods-container"),
+                                        ContainerPosition.fromElement("intake24-food-browser-categories-container"),
+                                        ContainerPosition.fromElement("intake24-food-browser-buttons-container")));
                     }
                 }
             });
@@ -216,7 +224,14 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                 @Override
                 public void onClick(ClickEvent arg0) {
                     lookup(searchText.getText());
-                    UxEventsHelper.postSearchButtonClicked(searchText.getText());
+
+                    UxEventsHelper.postSearchButtonClicked(
+                            new SearchButtonData(
+                                    searchText.getText(),
+                                    Viewport.getCurrent(),
+                                    ContainerPosition.fromElement("intake24-food-browser-foods-container"),
+                                    ContainerPosition.fromElement("intake24-food-browser-categories-container"),
+                                    ContainerPosition.fromElement("intake24-food-browser-buttons-container")));
                 }
             });
 
@@ -258,12 +273,14 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                         }
                     });
 
-                    UxEventsHelper.postSearchResultSelected(Viewport.getCurrent(),
-                            ContainerPosition.fromElement("intake24-food-browser-foods-container"),
-                            ContainerPosition.fromElement("intake24-food-browser-categories-container"),
-                            ContainerPosition.fromElement("intake24-food-browser-buttons-container").getOrDie(),
-                            new FoodHeader(foodData.code, foodData.localDescription),
-                            index);
+                    UxEventsHelper.postSearchResultSelected(
+                            new SearchResultSelectionData(
+                                    Viewport.getCurrent(),
+                                    ContainerPosition.fromElement("intake24-food-browser-foods-container"),
+                                    ContainerPosition.fromElement("intake24-food-browser-categories-container"),
+                                    ContainerPosition.fromElement("intake24-food-browser-buttons-container").getOrDie(),
+                                    new FoodHeader(foodData.code, foodData.localDescription),
+                                    index));
 
                 }
             }, new Callback1<String>() {

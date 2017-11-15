@@ -13,22 +13,22 @@ public interface UxEventsService extends RestService {
 
     @POST
     @Path("/ux/event")
-    void postTestEvent(TestEvent event, MethodCallback<Void> callback);
+    void postSearchResultsReceived(UxEvent<SearchResult> event, MethodCallback<Void> callback);
 
     @POST
     @Path("/ux/event")
-    void postSearchResultsReceived(SearchResultsReceived event, MethodCallback<Void> callback);
+    void postSearchButtonClicked(UxEvent<SearchButtonData> event, MethodCallback<Void> callback);
 
     @POST
     @Path("/ux/event")
-    void postSearchButtonClicked(SearchButtonClicked event, MethodCallback<Void> callback);
+    void postCantFindButtonClicked(UxEvent<NoData> event, MethodCallback<Void> callback);
 
     @POST
     @Path("/ux/event")
-    void postCantFindButtonClicked(CantFindFoodButtonClicked event, MethodCallback<Void> callback);
+    void postBrowseAllFoodsButtonClicked(UxEvent<NoData> event, MethodCallback<Void> callback);
 
     @POST
     @Path("/ux/event")
-    void postSearchResultSelected(SearchResultSelected event, MethodCallback<Void> callback);
+    void postSearchResultSelected(UxEvent<SearchResultSelectionData> event, MethodCallback<Void> callback);
 
 }
