@@ -4,6 +4,10 @@ import com.google.gwt.core.client.GWT;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UxEventsSettings;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
 import uk.ac.ncl.openlab.intake24.client.survey.UUID;
 
 import java.util.Arrays;
@@ -13,6 +17,9 @@ public class UxEventsHelper {
 
     public static final UUID sessionId = UUID.randomUUID();
     public static final String SEARCH_CATEGORY = "search";
+    public static final String ASSOCIATED_FOODS_CATEGORY = "associatedFoods";
+
+    private static UxEventsSettings settings = UxEventsSettings.DEFAULT;
 
     private static final MethodCallback<Void> uxEventCallback = new MethodCallback<Void>() {
         @Override
@@ -26,23 +33,51 @@ public class UxEventsHelper {
         }
     };
 
+    public static void applySettings(UxEventsSettings settings) {
+        UxEventsHelper.settings = settings;
+    }
+
     public static void postSearchResultsReceived(SearchResult result) {
-        service.postSearchResultsReceived(new UxEvent<SearchResult>("SearchResultsReceived", Arrays.asList(SEARCH_CATEGORY), result), uxEventCallback);
+        if (settings.enableSearchEvents)
+            service.postSearchResultsReceived(new UxEvent<SearchResult>("SearchResultsReceived", Arrays.asList(SEARCH_CATEGORY), result), uxEventCallback);
     }
 
     public static void postSearchButtonClicked(SearchButtonData data) {
-        service.postSearchButtonClicked(new UxEvent<SearchButtonData>("SearchButtonClicked", Arrays.asList(SEARCH_CATEGORY), data), uxEventCallback);
+        if (settings.enableSearchEvents)
+            service.postSearchButtonClicked(new UxEvent<SearchButtonData>("SearchButtonClicked", Arrays.asList(SEARCH_CATEGORY), data), uxEventCallback);
     }
 
     public static void postCantFindButtonClicked() {
-        service.postCantFindButtonClicked(new UxEvent<NoData>("CantFindButtonClicked", Arrays.asList(SEARCH_CATEGORY), new NoData()), uxEventCallback);
+        if (settings.enableSearchEvents)
+            service.postCantFindButtonClicked(new UxEvent<NoData>("CantFindButtonClicked", Arrays.asList(SEARCH_CATEGORY), new NoData()), uxEventCallback);
     }
 
     public static void postBrowseAllFoodsButtonClicked() {
-        service.postBrowseAllFoodsButtonClicked(new UxEvent<NoData>("BrowseAllFoodsButtonClicked", Arrays.asList(SEARCH_CATEGORY), new NoData()), uxEventCallback);
+        if (settings.enableSearchEvents)
+            service.postBrowseAllFoodsButtonClicked(new UxEvent<NoData>("BrowseAllFoodsButtonClicked", Arrays.asList(SEARCH_CATEGORY), new NoData()), uxEventCallback);
     }
 
     public static void postSearchResultSelected(SearchResultSelectionData data) {
-        service.postSearchResultSelected(new UxEvent<SearchResultSelectionData>("SearchResultSelected", Arrays.asList(SEARCH_CATEGORY), data), uxEventCallback);
+        if (settings.enableSearchEvents)
+            service.postSearchResultSelected(new UxEvent<SearchResultSelectionData>("SearchResultSelected", Arrays.asList(SEARCH_CATEGORY), data), uxEventCallback);
     }
+
+    public static void postManualAssociatedFoodConfirmed(ManualConfirmedData data) {
+        if (settings.enableAssociatedFoodEvents)
+            service.postManualAssociatedFoodConfirmed(new UxEvent<ManualConfirmedData>("ManualAssociatedFoodConfirmed",
+                    Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
+    }
+
+    public static void postManualAssociatedFoodRejected(ManualRejectedData data) {
+        if (settings.enableAssociatedFoodEvents)
+            service.postManualAssociatedFoodRejected(new UxEvent<ManualRejectedData>("ManualAssociatedFoodRejected",
+                    Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
+    }
+
+    public static void postAutomaticAssociatedFoodsResponse(AutomaticData data) {
+        if (settings.enableAssociatedFoodEvents)
+            service.postAutomaticAssociatedFoodsResponse(new UxEvent<>("AutomaticAssociatedFoodsResponse",
+                    Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
+    }
+
 }

@@ -42,6 +42,8 @@ import org.workcraft.gwt.shared.client.*;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
@@ -62,6 +64,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
     private boolean isInBrowserMode = false;
     private final String locale;
 
+
     public AutomaticAssociatedFoodsPrompt(final String locale, final Meal meal) {
         this.locale = locale;
         this.meal = meal;
@@ -81,11 +84,17 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
 
         content.add(loading);
 
-        ArrayList<String> foodCodes = new ArrayList<>();
+        final ArrayList<FoodHeader> encodedFoods = new ArrayList<>();
+        final ArrayList<String> foodCodes = new ArrayList<>();
 
         for (FoodEntry e : meal.foods) {
-            if (e.isEncoded())
-                foodCodes.add(e.asEncoded().data.code);
+            if (e.isEncoded()) {
+
+                EncodedFood ef = e.asEncoded();
+
+                encodedFoods.add(new FoodHeader(ef.data.code, ef.data.localDescription));
+                foodCodes.add(ef.data.code);
+            }
         }
 
         FoodDataService.INSTANCE.getAutomaticAssociatedFoods(locale, foodCodes, new MethodCallback<AutomaticAssociatedFoods>() {
@@ -100,14 +109,10 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                 content.remove(loading);
 
                 final List<CheckBox> checkBoxes = new ArrayList<>();
-                final Map<CheckBox, RawFood> foodMap = new LinkedHashMap<>();
+                final Map<CheckBox, CategoryHeader> foodMap = new LinkedHashMap<>();
 
                 for (CategoryHeader category : response.categories) {
                     CheckBox cb = new CheckBox(SafeHtmlUtils.htmlEscape(category.description()));
-
-                    RawFood f = new RawFood(FoodLink.newUnlinked(), category.description(), HashTreePSet.<String>empty(),
-                            HashTreePMap.<String, String>empty().plus(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP, category.code));
-
 
                     FlowPanel div = new FlowPanel();
                     div.getElement().getStyle().setPaddingBottom(4, Style.Unit.PX);
@@ -116,19 +121,36 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                     content.add(div);
 
                     checkBoxes.add(cb);
-                    foodMap.put(cb, f);
+                    foodMap.put(cb, category);
                 }
 
                 Button continueButton = WidgetFactory.createGreenButton("Continue", "continue-button", new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent clickEvent) {
+
+                        ArrayList<String> selectedCategories = new ArrayList<>();
+
+                        for (CheckBox cb : checkBoxes) {
+                            if (cb.getValue()) {
+                                selectedCategories.add(foodMap.get(cb).code);
+                            }
+                        }
+
+                        UxEventsHelper.postAutomaticAssociatedFoodsResponse(new AutomaticData(encodedFoods, response.categories, selectedCategories));
+
                         onComplete.call(MealOperation.update(
                                 m -> {
                                     List<FoodEntry> newFoodEntries = new ArrayList<>();
 
                                     for (CheckBox cb : checkBoxes) {
                                         if (cb.getValue()) {
-                                            newFoodEntries.add(foodMap.get(cb));
+
+                                            CategoryHeader ch = foodMap.get(cb);
+
+                                            RawFood f = new RawFood(FoodLink.newUnlinked(), ch.description(), HashTreePSet.<String>empty(),
+                                                    HashTreePMap.<String, String>empty().plus(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP, ch.code));
+
+                                            newFoodEntries.add(f);
                                         }
                                     }
 

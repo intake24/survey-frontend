@@ -38,6 +38,7 @@ import uk.ac.ncl.openlab.intake24.client.LogRecorder;
 import uk.ac.ncl.openlab.intake24.client.PredefinedMeals;
 import uk.ac.ncl.openlab.intake24.client.ProcessMilkInHotDrinks;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.DefaultPortionSizeScripts;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
@@ -65,6 +66,7 @@ public abstract class BasicScheme implements SurveyScheme {
     final protected RecipeManager recipeManager;
     final protected LogRecorder log;
     final protected String locale;
+    final protected SurveyParameters surveyParameters;
 
     final protected TreePVector<Function1<Survey, Survey>> basicPostProcess = TreePVector
             .<Function1<Survey, Survey>>empty()
@@ -140,7 +142,8 @@ public abstract class BasicScheme implements SurveyScheme {
                         .plus(SelectMealForReadyMeals.withPriority(1)));
     }
 
-    public BasicScheme(String locale, final SurveyInterfaceManager interfaceManager) {
+    public BasicScheme(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
+        this.surveyParameters = surveyParameters;
         this.log = new LogRecorder();
         this.interfaceManager = interfaceManager;
         this.locale = locale;

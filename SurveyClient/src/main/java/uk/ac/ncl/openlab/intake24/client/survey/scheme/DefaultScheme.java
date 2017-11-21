@@ -33,11 +33,9 @@ import uk.ac.ncl.openlab.intake24.client.survey.*;
 public class DefaultScheme extends BasicScheme {
 
     public static final String ID = "default";
-    public SurveyParameters surveyParameters;
 
     public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
-        super(locale, interfaceManager);
-        this.surveyParameters = surveyParameters;
+        super(locale, surveyParameters, interfaceManager);
     }
 
     private IntakeSurvey cachedSurveyPage = null;

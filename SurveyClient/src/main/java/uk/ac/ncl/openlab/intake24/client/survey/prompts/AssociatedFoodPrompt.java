@@ -39,7 +39,11 @@ import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodHeader;
 import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
@@ -234,6 +238,9 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         Button no = WidgetFactory.createButton(messages.assocFoods_noButtonLabel(), new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+
+                UxEventsHelper.postManualAssociatedFoodRejected(new ManualRejectedData(new FoodHeader(food.data.code, food.data.localDescription), prompt));
+
                 onComplete.call(MealOperation.updateEncodedFood(foodIndex, new Function1<EncodedFood, EncodedFood>() {
                     @Override
                     public EncodedFood apply(EncodedFood argument) {
@@ -271,6 +278,10 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
 
                         @Override
                         public void onSuccess(Method method, FoodData response) {
+
+                            UxEventsHelper.postManualAssociatedFoodConfirmed(new ManualConfirmedData(new FoodHeader(food.data.code, food.data.localDescription), prompt,
+                                    new FoodHeader(response.code, response.localDescription)));
+
                             addNewFood.call(response);
                         }
                     });

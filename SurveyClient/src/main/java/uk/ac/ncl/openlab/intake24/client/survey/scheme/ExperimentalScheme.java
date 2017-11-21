@@ -40,7 +40,6 @@ public class ExperimentalScheme extends DefaultScheme {
 
     public ExperimentalScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
         super(surveyParameters, locale, interfaceManager);
-        this.surveyParameters = surveyParameters;
     }
 
     @Override

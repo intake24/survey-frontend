@@ -7,4 +7,5 @@ public class SurveyParameters {
     public String state;
     public Option<String> suspensionReason;
     public Option<String> description;
+    public UxEventsSettings uxEventsSettings;
 }

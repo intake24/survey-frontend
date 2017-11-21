@@ -41,6 +41,7 @@ import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.SurveyScheme;
@@ -123,6 +124,9 @@ public class SurveyEntryPoint implements EntryPoint {
 
             @Override
             public void onSuccess(Method method, SurveyParameters response) {
+
+                UxEventsHelper.applySettings(response.uxEventsSettings);
+
                 Layout.createMainPageLayout();
                 Layout.setNavBarLinks(watchTutorial, logOut);
 
