@@ -35,6 +35,7 @@ import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
@@ -221,6 +222,10 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
             @Override
             public void call(FoodData result, Integer index) {
+
+                UxEventsHelper.postManualAssociatedFoodConfirmed(new ManualConfirmedData(new FoodHeader(food.data.code, food.data.localDescription), prompt,
+                        new FoodHeader(result.code, result.localDescription)));
+
                 addNewFood.call(result);
             }
         }, new Callback1<String>() {

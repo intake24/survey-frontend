@@ -31,6 +31,7 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 
 public class SHeSJun15 extends BasicScheme {
@@ -102,8 +103,8 @@ public class SHeSJun15 extends BasicScheme {
             .plus("Weight Watchers");
 
 
-    public SHeSJun15(String locale, final SurveyInterfaceManager interfaceManager) {
-        super(locale, interfaceManager);
+    public SHeSJun15(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
+        super(locale, surveyParameters, interfaceManager);
     }
 
     private IntakeSurvey cachedSurveyPage = null;

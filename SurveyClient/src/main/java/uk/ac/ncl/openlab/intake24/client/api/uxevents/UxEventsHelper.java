@@ -63,19 +63,19 @@ public class UxEventsHelper {
     }
 
     public static void postManualAssociatedFoodConfirmed(ManualConfirmedData data) {
-        if (settings.enableAssociatedFoodEvents)
+        if (settings.enableAssociatedFoodsEvents)
             service.postManualAssociatedFoodConfirmed(new UxEvent<ManualConfirmedData>("ManualAssociatedFoodConfirmed",
                     Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
     }
 
     public static void postManualAssociatedFoodRejected(ManualRejectedData data) {
-        if (settings.enableAssociatedFoodEvents)
+        if (settings.enableAssociatedFoodsEvents)
             service.postManualAssociatedFoodRejected(new UxEvent<ManualRejectedData>("ManualAssociatedFoodRejected",
                     Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
     }
 
     public static void postAutomaticAssociatedFoodsResponse(AutomaticData data) {
-        if (settings.enableAssociatedFoodEvents)
+        if (settings.enableAssociatedFoodsEvents)
             service.postAutomaticAssociatedFoodsResponse(new UxEvent<>("AutomaticAssociatedFoodsResponse",
                     Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
     }

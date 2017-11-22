@@ -49,7 +49,7 @@ public interface SurveyScheme {
             case ExperimentalScheme.ID:
                 return new ExperimentalScheme(surveyParameters, locale, interfaceManager);
             case SHeSJun15.ID:
-                return new SHeSJun15(locale, interfaceManager);
+                return new SHeSJun15(locale, surveyParameters, interfaceManager);
             default:
                 throw new RuntimeException("Unknown survey scheme: " + surveyParameters.schemeId);
         }
