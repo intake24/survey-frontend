@@ -46,8 +46,10 @@ public interface SurveyScheme {
         switch (surveyParameters.schemeId) {
             case DefaultScheme.ID:
                 return new DefaultScheme(surveyParameters, locale, interfaceManager);
-            case ExperimentalScheme.ID:
-                return new ExperimentalScheme(surveyParameters, locale, interfaceManager);
+            case ExperimentalPARulesScheme.ID:
+                return new ExperimentalPARulesScheme(surveyParameters, locale, interfaceManager);
+            case ExperimentalPopularityScheme.ID:
+                return new ExperimentalPopularityScheme(surveyParameters, locale, interfaceManager);
             case SHeSJun15.ID:
                 return new SHeSJun15(locale, surveyParameters, interfaceManager);
             default:

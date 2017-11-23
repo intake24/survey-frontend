@@ -43,6 +43,7 @@ import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.Viewport;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
@@ -136,7 +137,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                             }
                         }
 
-                        UxEventsHelper.postAutomaticAssociatedFoodsResponse(new AutomaticData(encodedFoods, response.categories, selectedCategories));
+                        UxEventsHelper.postAutomaticAssociatedFoodsResponse(new AutomaticData(Viewport.getCurrent(), encodedFoods, response.categories, selectedCategories));
 
                         onComplete.call(MealOperation.update(
                                 m -> {

@@ -34,11 +34,11 @@ import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptMan
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 
-public class ExperimentalScheme extends DefaultScheme {
+public class ExperimentalPARulesScheme extends DefaultScheme {
 
-    public static final String ID = "experimental";
+    public static final String ID = "experimental-pa-rules";
 
-    public ExperimentalScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
+    public ExperimentalPARulesScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
         super(surveyParameters, locale, interfaceManager);
     }
 
@@ -67,12 +67,12 @@ public class ExperimentalScheme extends DefaultScheme {
                 // extended food propmts
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
-                        .plus(AskToLookupFood.withPriority(3, locale, "popularity", recipeManager))
+                        .plus(AskToLookupFood.withPriority(3, locale, "paRules", recipeManager))
                         .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
                         .plus(ShowCompoundFoodPrompt.withPriority(0, locale))
-                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
+//                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
                         .plus(ShowBreadLinkedFoodAmountPrompt.withPriority(0))
 
                 ,
