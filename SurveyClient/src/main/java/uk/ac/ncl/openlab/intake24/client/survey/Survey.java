@@ -50,6 +50,7 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.CollectionUtils.WithIndex;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 
 public class Survey {
     public static final String FLAG_ENERGY_VALUE_CONFIRMED = "energy-value-confirmed";
@@ -176,7 +177,7 @@ public class Survey {
             }
         });
 
-        return new CompletedSurvey(startTime, System.currentTimeMillis(), new ArrayList<CompletedMeal>(completedMeals), log, new HashMap<String, String>(customData));
+        return new CompletedSurvey(startTime, System.currentTimeMillis(), UxEventsHelper.sessionId, new ArrayList<CompletedMeal>(completedMeals), new HashMap<String, String>(customData));
     }
 
     public Survey withSelection(Selection selectedElement) {

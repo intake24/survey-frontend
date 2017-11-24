@@ -19,19 +19,19 @@ import java.util.Map;
 public class CompletedSurvey {
     public String startTime;
     public String endTime;
+    public String uxSessionId;
     public List<CompletedMeal> meals;
-    public List<String> log;
     public Map<String, String> customData;
 
     @Deprecated
     public CompletedSurvey() {
     }
 
-    public CompletedSurvey(long startTime, long endTime, List<CompletedMeal> meals, List<String> log, Map<String, String> customData) {
+    public CompletedSurvey(long startTime, long endTime, UUID uxSessionId, List<CompletedMeal> meals, Map<String, String> customData) {
         this.startTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601).format(new Date(startTime));
         this.endTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601).format(new Date(endTime));
         this.meals = meals;
-        this.log = log;
+        this.uxSessionId = uxSessionId.toString();
         this.customData = customData;
     }
 }
