@@ -6,6 +6,7 @@ import org.fusesource.restygwt.client.MethodCallback;
 import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UxEventsSettings;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualAlreadyReportedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
 import uk.ac.ncl.openlab.intake24.client.survey.UUID;
@@ -71,6 +72,12 @@ public class UxEventsHelper {
     public static void postManualAssociatedFoodRejected(ManualRejectedData data) {
         if (settings.enableAssociatedFoodsEvents)
             service.postManualAssociatedFoodRejected(new UxEvent<ManualRejectedData>("ManualAssociatedFoodRejected",
+                    Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
+    }
+
+    public static void postManualAssociatedFoodAlreadyReported(ManualAlreadyReportedData data) {
+        if (settings.enableAssociatedFoodsEvents)
+            service.postManualAssociatedFoodAlreadyReported(new UxEvent<ManualAlreadyReportedData>("ManualAssociatedFoodAlreadyReported",
                     Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
     }
 

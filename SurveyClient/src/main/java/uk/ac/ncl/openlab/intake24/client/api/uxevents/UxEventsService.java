@@ -5,6 +5,7 @@ import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AccessDispatcher;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualAlreadyReportedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
 
@@ -41,6 +42,10 @@ public interface UxEventsService extends RestService {
     @POST
     @Path("/ux/event")
     void postManualAssociatedFoodRejected(UxEvent<ManualRejectedData> event, MethodCallback<Void> callback);
+
+    @POST
+    @Path("/ux/event")
+    void postManualAssociatedFoodAlreadyReported(UxEvent<ManualAlreadyReportedData> event, MethodCallback<Void> callback);
 
     @POST
     @Path("/ux/event")

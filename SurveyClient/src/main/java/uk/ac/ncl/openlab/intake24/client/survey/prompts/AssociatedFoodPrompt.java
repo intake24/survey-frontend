@@ -43,6 +43,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodHeader;
 import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualAlreadyReportedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
@@ -354,6 +355,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
             Button yesExisting = WidgetFactory.createButton(messages.assocFoods_alreadyEntered(), new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
+                    UxEventsHelper.postManualAssociatedFoodAlreadyReported(new ManualAlreadyReportedData(new FoodHeader(food.data.code, food.data.localDescription), prompt));
                     addExistingFood.call(pair.right.foods.get(existingIndex));
                 }
             });
