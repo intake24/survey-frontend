@@ -113,7 +113,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                 final Map<CheckBox, CategoryHeader> foodMap = new LinkedHashMap<>();
 
                 for (CategoryHeader category : response.categories) {
-                    CheckBox cb = new CheckBox(SafeHtmlUtils.htmlEscape(category.description()));
+                    CheckBox cb = new CheckBox(SafeHtmlUtils.fromString(category.description()));
 
                     FlowPanel div = new FlowPanel();
                     div.getElement().getStyle().setPaddingBottom(4, Style.Unit.PX);
