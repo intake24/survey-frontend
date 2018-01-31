@@ -26,19 +26,23 @@ public class SPortionSize {
     @JsonProperty
     public final String scriptName;
     @JsonProperty
+    public final double conversionFactor;
+    @JsonProperty
     public final PMap<String, String> data;
 
     @JsonCreator
-    public SPortionSize(@JsonProperty("scriptName") String scriptName, @JsonProperty("data") Map<String, String> data) {
+    public SPortionSize(@JsonProperty("scriptName") String scriptName, @JsonProperty("conversionFactor") double conversionFactor,
+                        @JsonProperty("data") Map<String, String> data) {
         this.scriptName = scriptName;
+        this.conversionFactor = conversionFactor;
         this.data = HashTreePMap.from(data);
     }
 
     public SPortionSize(PortionSize portionSize) {
-        this(portionSize.scriptName, portionSize.data);
+        this(portionSize.scriptName, portionSize.conversionFactor, portionSize.data);
     }
 
     public PortionSize toPortionSize(PortionSizeScriptManager scriptManager) {
-        return new PortionSize(scriptName, data, scriptManager.getInstance(scriptName), Option.<PortionSizeScript>none());
+        return new PortionSize(scriptName, conversionFactor, data, scriptManager.getInstance(scriptName), Option.<PortionSizeScript>none());
     }
 }

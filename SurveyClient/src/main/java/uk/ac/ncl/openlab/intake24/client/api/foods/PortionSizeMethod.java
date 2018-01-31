@@ -18,15 +18,17 @@ public class PortionSizeMethod {
 	public String description;
 	public String imageUrl;
 	public boolean useForRecipes;
+	public double conversionFactor;
 	
 	@Deprecated
 	public PortionSizeMethod() { }
 	
-	public PortionSizeMethod(String method, String description, String imageUrl, boolean useForRecipes, Map<String, String> params) {
+	public PortionSizeMethod(String method, String description, String imageUrl, boolean useForRecipes, double conversionFactor, Map<String, String> params) {
 		this.method = method;
 		this.description = description;
 		this.imageUrl = imageUrl;
 		this.useForRecipes = useForRecipes;
+		this.conversionFactor = conversionFactor;
 		this.parameters = params;
 	}
 	@Override
@@ -60,6 +62,8 @@ public class PortionSizeMethod {
 			return false;
 		if (useForRecipes != other.useForRecipes)
 			return false;
+		if (conversionFactor != other.conversionFactor)
+		    return false;
 		return true;
 	}
 

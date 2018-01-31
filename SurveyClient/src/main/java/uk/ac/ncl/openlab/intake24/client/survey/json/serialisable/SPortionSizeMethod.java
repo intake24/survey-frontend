@@ -27,22 +27,25 @@ public class SPortionSizeMethod {
     public final String imageUrl;
     @JsonProperty
     public final boolean useForRecipes;
+    @JsonProperty
+    public final double conversionFactor;
 
     @JsonCreator
     public SPortionSizeMethod(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("imageUrl") String imageUrl,
-                              @JsonProperty("useForRecipes") boolean useForRecipes, @JsonProperty("params") Map<String, String> params) {
+                              @JsonProperty("useForRecipes") boolean useForRecipes, @JsonProperty("conversionFactor") double conversionFactor, @JsonProperty("params") Map<String, String> params) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.useForRecipes = useForRecipes;
         this.params = params;
+        this.conversionFactor = conversionFactor;
     }
 
     public SPortionSizeMethod(PortionSizeMethod method) {
-        this(method.method, method.description, method.imageUrl, method.useForRecipes, method.parameters);
+        this(method.method, method.description, method.imageUrl, method.useForRecipes, method.conversionFactor, method.parameters);
     }
 
     public PortionSizeMethod toPortionSizeMethod() {
-        return new PortionSizeMethod(name, description, imageUrl, useForRecipes, params);
+        return new PortionSizeMethod(name, description, imageUrl, useForRecipes, conversionFactor, params);
     }
 }

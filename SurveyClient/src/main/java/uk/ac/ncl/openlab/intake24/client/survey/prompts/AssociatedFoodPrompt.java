@@ -110,7 +110,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
             HashMap<String, String> parameters = new HashMap<String, String>();
             parameters.putAll(m.parameters);
             parameters.put(id, value);
-            result.add(new PortionSizeMethod(m.method, m.description, m.imageUrl, m.useForRecipes, parameters));
+            result.add(new PortionSizeMethod(m.method, m.description, m.imageUrl, m.useForRecipes, m.conversionFactor, parameters));
         }
         return result;
     }

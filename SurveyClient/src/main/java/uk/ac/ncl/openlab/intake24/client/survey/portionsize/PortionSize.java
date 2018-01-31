@@ -17,31 +17,33 @@ import uk.ac.ncl.openlab.intake24.client.survey.CompletedPortionSize;
 
 public class PortionSize {
     public final String scriptName;
+    public final double conversionFactor;
     public final PMap<String, String> data;
     public final PortionSizeScriptLoader script;
     public final Option<PortionSizeScript> loadedScript;
 
-    public PortionSize(String scriptName, PMap<String, String> data, PortionSizeScriptLoader script, Option<PortionSizeScript> loadedScript) {
+    public PortionSize(String scriptName, double conversionFactor, PMap<String, String> data, PortionSizeScriptLoader script, Option<PortionSizeScript> loadedScript) {
         this.scriptName = scriptName;
+        this.conversionFactor = conversionFactor;
         this.data = data;
         this.script = script;
         this.loadedScript = loadedScript;
     }
 
-    public PortionSize(String scriptName, PMap<String, String> data, PortionSizeScriptLoader script) {
-        this(scriptName, data, script, Option.<PortionSizeScript>none());
+    public PortionSize(String scriptName, double conversionFactor, PMap<String, String> data, PortionSizeScriptLoader script) {
+        this(scriptName, conversionFactor, data, script, Option.<PortionSizeScript>none());
     }
 
     public PortionSize updateData(UpdateFunc updateFunc) {
-        return new PortionSize(scriptName, updateFunc.apply(data), script, loadedScript);
+        return new PortionSize(scriptName, conversionFactor, updateFunc.apply(data), script, loadedScript);
     }
 
     public PortionSize withLoadedScript(PortionSizeScript loadedScript) {
-        return new PortionSize(scriptName, data, script, Option.some(loadedScript));
+        return new PortionSize(scriptName, conversionFactor, data, script, Option.some(loadedScript));
     }
 
     public PortionSize withData(PMap<String, String> data) {
-        return new PortionSize(scriptName, data, script, loadedScript);
+        return new PortionSize(scriptName, conversionFactor, data, script, loadedScript);
     }
 
     public static Either<PortionSize, CompletedPortionSize> incomplete(PortionSize size) {
