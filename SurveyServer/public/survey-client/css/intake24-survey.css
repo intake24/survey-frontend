@@ -45,6 +45,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 .intake24-prompt-container {
 	padding: 20px;
+	overflow-x: auto;
 }
 
 @media (max-width: 960px) {
