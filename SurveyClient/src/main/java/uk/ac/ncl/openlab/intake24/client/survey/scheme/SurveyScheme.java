@@ -50,6 +50,8 @@ public interface SurveyScheme {
                 return new ExperimentalPARulesScheme(surveyParameters, locale, interfaceManager);
             case ExperimentalPopularityScheme.ID:
                 return new ExperimentalPopularityScheme(surveyParameters, locale, interfaceManager);
+            case ExperimentalFlexibleRecallScheme.ID:
+                return new ExperimentalFlexibleRecallScheme(surveyParameters, locale, interfaceManager);
             case SHeSJun15.ID:
                 return new SHeSJun15(locale, surveyParameters, interfaceManager);
             default:

@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
 public class Counter extends Composite {
@@ -24,10 +25,19 @@ public class Counter extends Composite {
 
     private final Label box = new Label();
     private final String format;
+    private Option<Visitor> visitor = new Option.None<>();
+
+    public interface Visitor {
+        void onChange(int value);
+    }
 
     public void update() {
         NumberFormat nf = NumberFormat.getFormat(format);
         box.setText(nf.format(value));
+        this.visitor.map(lst -> {
+            lst.onChange(value);
+            return value;
+        });
     }
 
     public int getValue() {
@@ -76,4 +86,9 @@ public class Counter extends Composite {
 
         initWidget(panel);
     }
+
+    public void setListener(Visitor listener) {
+        this.visitor = new Option.Some<Visitor>(listener);
+    }
+
 }
