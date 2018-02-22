@@ -142,10 +142,9 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                     existingFoods.add(fe.asEncoded().data.code);
             }
 
-            if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
-                FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, description, existingFoods, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
+            if (food.flags.contains(RawFood.FLAG_RECIPE_INGREDIENT))
+                FoodLookupService.INSTANCE.lookupForRecipes(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
             else {
-
                 FoodLookupService.INSTANCE.lookup(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
             }
         }
@@ -242,7 +241,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
 
             Option<Pair<String, String>> limitToCategory;
 
-            if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
+            if (food.flags.contains(RawFood.FLAG_RECIPE_INGREDIENT))
                 limitToCategory = Option.some(Pair.create(SpecialData.CATEGORY_CODE_RECIPE_INGREDIENTS, "All recipe ingredients"));
             else
                 limitToCategory = Option.none();
