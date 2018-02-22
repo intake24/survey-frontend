@@ -55,7 +55,7 @@ public class ExperimentalPopularityScheme extends DefaultScheme {
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
-                        .plus(ShowBrandNamePrompt.withPriority(-1))
+//                        .plus(ShowBrandNamePrompt.withPriority(-1))
                         .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
                         .plus(ChoosePortionSizeMethod.withPriority(1))
                         .plus(AskForMissingFoodDescription.withPriority(2))

@@ -50,29 +50,28 @@ public class ExperimentalFlexibleRecallScheme extends DefaultScheme {
                         .plus(AskForMealTimeFlexibleRecall.withPriority(4))
                         .plus(ShowEditMeal.withPriority(3))
                         .plus(ShowDrinkReminderPrompt.withPriority(2))
-                        .plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale))
                         .plus(ShowReadyMealsPrompt.withPriority(0)),
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
-                        .plus(ShowBrandNamePrompt.withPriority(-1))
-                        .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
-                        .plus(ChoosePortionSizeMethod.withPriority(1))
-                        .plus(AskForMissingFoodDescription.withPriority(2))
-                        .plus(ShowSimpleHomeRecipePrompt.withPriority(2))
-                        .plus(AskIfHomeRecipe.withPriority(3))
-                        .plus(SplitFood.withPriority(4))
+//                        .plus(ShowBrandNamePromptFlexibleRecall.withPriority(-1))
+                        .plus(ShowNextPortionSizeStepFlexibleRecall.withPriority(scriptManager, 0))
+                        .plus(ChoosePortionSizeMethodFlexibleRecall.withPriority(1))
+                        .plus(AskForMissingFoodDescriptionFlexibleRecall.withPriority(2))
+                        .plus(ShowSimpleHomeRecipePromptFlexibleRecall.withPriority(2))
+                        .plus(AskIfHomeRecipeFlexibleRecall.withPriority(3))
+                        .plus(SplitFoodFlexibleRecall.withPriority(4))
                         .plus(InformFoodComplete.withPriority(-100)),
 
                 // extended food propmts
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
-                        .plus(AskToLookupFood.withPriority(3, locale, "paRules", recipeManager))
+                        .plus(AskToLookupFoodFlexibleRecall.withPriority(3, locale, "popularity", recipeManager))
                         .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
-                        .plus(ShowCompoundFoodPrompt.withPriority(0, locale))
-//                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
+                        .plus(ShowCompoundFoodPromptFlexibleRecall.withPriority(0, locale))
+                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
                         .plus(ShowBreadLinkedFoodAmountPrompt.withPriority(0))
 
                 ,
