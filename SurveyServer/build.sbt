@@ -54,4 +54,4 @@ javaOptions in Universal ++= Seq(
   s"-Dlogger.file=/usr/share/${packageName.value}/conf/production-logger.xml"
 )
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin, JDebPackaging)
