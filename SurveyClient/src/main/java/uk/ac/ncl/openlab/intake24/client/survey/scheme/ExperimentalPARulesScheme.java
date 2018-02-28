@@ -72,7 +72,7 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
                         .plus(AskForMissingFoodDescription.withPriority(2))
                         .plus(ShowSimpleHomeRecipePrompt.withPriority(2))
                         .plus(AskIfHomeRecipe.withPriority(3))
-//                        .plus(SplitFood.withPriority(4))
+                        .plus(SplitFood.withPriority(4))
                         .plus(InformFoodComplete.withPriority(-100)),
 
                 // extended food propmts

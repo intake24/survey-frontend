@@ -72,7 +72,7 @@ public class ExperimentalFlexibleRecallScheme extends DefaultScheme {
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
                         .plus(ShowCompoundFoodPromptFlexibleRecall.withPriority(0, locale))
-                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale, Option.some("paRules")))
+                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale, Option.none()))
                         .plus(ShowBreadLinkedFoodAmountPrompt.withPriority(0))
 
                 ,

@@ -443,7 +443,7 @@ public class FoodBrowser extends Composite {
             @Override
             public void onSuccess(Method method, LookupResult response) {
                 sortAlgorithmId.map(aId -> {
-                    UxEventsHelper.postBrowseResultsReceived(new BrowseCategoryResult(foodsHeader, existingFoods, aId, response));
+                    UxEventsHelper.postBrowseResultsReceived(new BrowseCategoryResult(categoryCode, existingFoods, aId, response));
                     return  aId;
                 });
                 show(response, dataSetName, foodsHeader, categoryHeader);

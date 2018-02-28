@@ -38,7 +38,7 @@ public class AskToLookupFoodFlexibleRecall implements PromptRule<Pair<FoodEntry,
         if (data.left.isTemplate() || data.left.isCompound() || data.left.isMissing())
             return Option.none();
         else if (!data.left.isEncoded())
-            return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new FoodLookupPrompt(locale, algorithmId, true, data.left, data.right, recipeManager));
+            return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new FoodLookupPrompt(locale, algorithmId, false, data.left, data.right, recipeManager));
         else
             return Option.none();
     }

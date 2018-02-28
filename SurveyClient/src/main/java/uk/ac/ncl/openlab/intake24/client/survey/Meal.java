@@ -27,6 +27,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey;
 
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import org.pcollections.*;
 import org.workcraft.gwt.shared.client.CollectionUtils;
 import org.workcraft.gwt.shared.client.Function1;
@@ -145,7 +146,7 @@ public class Meal {
             return new Time(16, 0);
         else if (lcn.contains(messages.predefMeal_Dinner().toLowerCase()) || lcn.contains(messages.predefMeal_EveningMeal().toLowerCase()))
             return new Time(19, 0);
-        else if (lcn.contains(messages.predefMeal_LateSnack()))
+        else if (lcn.contains(messages.predefMeal_LateSnack().toLowerCase()))
             return new Time(22, 0);
 
         return new Time(12, 0);

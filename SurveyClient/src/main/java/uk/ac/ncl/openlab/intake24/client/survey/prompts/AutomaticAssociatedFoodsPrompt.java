@@ -19,39 +19,43 @@ This file is based on Intake24 v1.0.
 
 © Crown copyright, 2012, 2013, 2014
 
-Licensed under the Open Government Licence 3.0: 
+Licensed under the Open Government Licence 3.0:
 
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
 package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 
+import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.HashTreePMap;
 import org.pcollections.HashTreePSet;
 import org.pcollections.PVector;
-import org.pcollections.TreePVector;
-import org.workcraft.gwt.shared.client.*;
-import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
+import org.workcraft.gwt.shared.client.Callback1;
+import org.workcraft.gwt.shared.client.Function1;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
-import uk.ac.ncl.openlab.intake24.client.api.foods.*;
+import uk.ac.ncl.openlab.intake24.client.api.foods.AutomaticAssociatedFoods;
+import uk.ac.ncl.openlab.intake24.client.api.foods.CategoryHeader;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
+import uk.ac.ncl.openlab.intake24.client.api.foods.FoodHeader;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.Viewport;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
-import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperation> {
     private final static PromptMessages messages = PromptMessages.Util.getInstance();
@@ -65,6 +69,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
     private boolean isInBrowserMode = false;
     private final String locale;
 
+    private final Logger logger = Logger.getLogger("AutomaticAssociatedFoodsPrompt");
 
     public AutomaticAssociatedFoodsPrompt(final String locale, final Meal meal) {
         this.locale = locale;
@@ -112,7 +117,19 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                 final List<CheckBox> checkBoxes = new ArrayList<>();
                 final Map<CheckBox, CategoryHeader> foodMap = new LinkedHashMap<>();
 
-                for (CategoryHeader category : response.categories) {
+                List<CategoryHeader> categories = response.categories.stream()
+                        .filter(c -> milkIsRerevant(c)).collect(Collectors.toList());
+
+                List<String> codes = categories.stream().map(c -> c.code).collect(Collectors.toList());
+
+                if (!cachedAssociatedFoodsChanged(codes)) {
+                    cacheAssociatedFoods(listToJsArray(new ArrayList<>()));
+                    onComplete.call(MealOperation.update(m -> m.markAssociatedFoodsComplete()));
+                } else {
+                    cacheAssociatedFoods(listToJsArray(codes));
+                }
+
+                for (CategoryHeader category : categories) {
                     CheckBox cb = new CheckBox(SafeHtmlUtils.fromString(category.description()));
 
                     FlowPanel div = new FlowPanel();
@@ -145,17 +162,36 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
 
                                     for (CheckBox cb : checkBoxes) {
                                         if (cb.getValue()) {
-
+                                            Optional<FoodEntry> assocFood;
                                             CategoryHeader ch = foodMap.get(cb);
+                                            switch (ch.code) {
+                                                case SpecialData.FOOD_CODE_MILK_ON_CEREAL:
+                                                    assocFood = meal.foods.stream().filter(f -> isCerealWithMilk(f)).findFirst();
+                                                    if (assocFood.isPresent()) {
+                                                        addFood(newFoodEntries, ch, assocFood);
+                                                    }
+                                                    break;
+                                                case SpecialData.FOOD_CODE_MILK_IN_HOT_DRINK:
+                                                    assocFood = meal.foods.stream().filter(f -> isHotDrinkWithMilk(f)).findFirst();
+                                                    if (assocFood.isPresent()) {
+                                                        addFood(newFoodEntries, ch, assocFood);
+                                                    }
+                                                    break;
+                                                default:
+                                                    addFood(newFoodEntries, ch, Optional.empty());
+                                                    break;
 
-                                            RawFood f = new RawFood(FoodLink.newUnlinked(), ch.description(), HashTreePSet.<String>empty(),
-                                                    HashTreePMap.<String, String>empty().plus(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP, ch.code));
-
-                                            newFoodEntries.add(f);
+                                            }
                                         }
                                     }
 
-                                    return m.withFoods(m.foods.plusAll(newFoodEntries)).markAssociatedFoodsComplete();
+                                    if (newFoodEntries.size() > 0) {
+                                        return m.withFoods(m.foods.plusAll(newFoodEntries));
+                                    } else {
+                                        cacheAssociatedFoods(listToJsArray(new ArrayList<>()));
+                                        return m.withFoods(m.foods.plusAll(newFoodEntries)).markAssociatedFoodsComplete();
+                                    }
+
                                 }));
                     }
                 });
@@ -180,4 +216,71 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
     public String toString() {
         return "Food reminder prompt";
     }
+
+    private void addFood(List<FoodEntry> foodEntries, CategoryHeader ch, Optional<FoodEntry> assocFood) {
+        FoodLink fl = assocFood.map(f -> FoodLink.newLinked(f.link.id)).orElse(FoodLink.newUnlinked());
+        foodEntries.add(
+                new RawFood(fl,
+                        ch.description(),
+                        HashTreePSet.<String>empty().plus(RawFood.FLAG_DISABLE_SPLIT),
+                        HashTreePMap.<String, String>empty().plus(RawFood.KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP,
+                                ch.code)
+                )
+        );
+    }
+
+    private boolean isHotDrinkWithMilk(FoodEntry f) {
+        EncodedFood enc = f.asEncoded();
+        return enc.data.code.equals(SpecialData.FOOD_CODE_COFFEE) ||
+                enc.isInCategory(SpecialData.CATEGORY_TEA_CODE);
+    }
+
+    private boolean isCerealWithMilk(FoodEntry f) {
+        EncodedFood enc = f.asEncoded();
+        return enc.isInCategory(SpecialData.CATEGORY_BREAKFAST_CEREALS) &&
+                SpecialData.CATEGORIES_CEREAL_NO_MILK.stream().anyMatch(c -> !enc.isInCategory(c));
+    }
+
+    private boolean hotDrinkIsPresent() {
+        return meal.foods.stream().anyMatch(this::isHotDrinkWithMilk);
+    }
+
+    private boolean cerealIsPresent() {
+        return meal.foods.stream().anyMatch(this::isCerealWithMilk);
+    }
+
+    private boolean milkIsRerevant(CategoryHeader categoryHeader) {
+        return (!categoryHeader.code.equals(SpecialData.FOOD_CODE_MILK_IN_HOT_DRINK) || hotDrinkIsPresent()) &&
+                (!categoryHeader.code.equals(SpecialData.FOOD_CODE_MILK_ON_CEREAL) || cerealIsPresent());
+    }
+
+    private final native void cacheAssociatedFoods(JsArrayString l)/*-{
+        return $wnd.lastAssociatedFoods = l;
+    }-*/;
+
+    private final boolean cachedAssociatedFoodsChanged(List<String> l) {
+        return cachedAssociatedFoodsChangedNative(listToJsArray(l));
+    }
+
+    private final JsArrayString listToJsArray(List<String> l) {
+        JsArrayString jsArray = (JsArrayString) JsArrayString.createArray();
+        for (String str : l) {
+            jsArray.push(str);
+        }
+        return jsArray;
+    }
+
+    private final native boolean cachedAssociatedFoodsChangedNative(JsArrayString l)/*-{
+        var cached = $wnd.lastAssociatedFoods || [];
+        if (l.length !== cached.length) {
+            return true;
+        }
+        for (var i = 0; i < l.length; i++) {
+            if (!cached.includes(l[i])) {
+                return true;
+            }
+        }
+        return false;
+    }-*/;
+
 }
