@@ -52,7 +52,9 @@ public interface FoodDataService extends RestService {
 
     @GET
     @Path("/user/categories/{locale}/{code}")
-    void getCategoryContents(@PathParam("locale") String localeId, @PathParam("code") String categoryCode, MethodCallback<LookupResult> callback);
+    void getCategoryContents(@PathParam("locale") String localeId, @PathParam("code") String categoryCode,
+                             @QueryParam("alg") String algorithmId, @QueryParam("existing") List<String> existingFoods,
+                             MethodCallback<LookupResult> callback);
 
     @GET
     @Path("/user/foods/associated/{locale}")

@@ -76,7 +76,7 @@ public class OptionalFoodPrompt implements SimplePrompt<Option<String>> {
                 // fix this if this is actually used!
                 onComplete.call(Option.<String>none());
             }
-        }, Option.<SkipFoodHandler>none(), true, Option.<Pair<String, String>>none());
+        }, Option.<SkipFoodHandler>none(), true, Option.<Pair<String, String>>none(), Option.none(), Option.none());
 
         Button no = WidgetFactory.createButton(def.noButtonText/* "No, I did not" */, new ClickHandler() {
             @Override

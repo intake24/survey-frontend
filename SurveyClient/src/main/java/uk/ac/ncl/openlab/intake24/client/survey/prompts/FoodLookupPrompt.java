@@ -53,6 +53,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
     private final static HelpMessages helpMessages = HelpMessages.Util.getInstance();
 
     private final String algorithmId;
+    private final Boolean categoryBrowseRanked;
     private final FoodEntry food;
     private final Meal meal;
     private final RecipeManager recipeManager;
@@ -79,9 +80,10 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             });
     }
 
-    public FoodLookupPrompt(final String locale, final String algorithmId, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
+    public FoodLookupPrompt(final String locale, final String algorithmId, final Boolean categoryBrowseRanked, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
         this.locale = locale;
         this.algorithmId = algorithmId;
+        this.categoryBrowseRanked = categoryBrowseRanked;
         this.food = food;
         this.meal = meal;
         this.recipeManager = recipeManager;
@@ -136,11 +138,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                 }
             };
 
-            ArrayList<String> existingFoods = new ArrayList<>();
-            for (FoodEntry fe : meal.foods) {
-                if (fe.isEncoded())
-                    existingFoods.add(fe.asEncoded().data.code);
-            }
+            ArrayList<String> existingFoods = this.getExistingFoods();
 
             if (food.customData.containsKey(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY))
                 FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, description, existingFoods, food.customData.get(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY), MAX_RESULTS, lookupCallback);
@@ -247,6 +245,8 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             else
                 limitToCategory = Option.none();
 
+            ArrayList<String> existingFoods = this.getExistingFoods();
+
             foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
                 @Override
                 public void call(final FoodData foodData, Integer index) {
@@ -279,7 +279,8 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                                     ContainerPosition.fromElement("intake24-food-browser-foods-container"),
                                     ContainerPosition.fromElement("intake24-food-browser-categories-container"),
                                     ContainerPosition.fromElement("intake24-food-browser-buttons-container").getOrDie(),
-                                    new FoodHeader(foodData.code, foodData.localDescription),
+                                    Option.some(new FoodHeader(foodData.code, foodData.localDescription)),
+                                    Option.none(),
                                     index));
 
                 }
@@ -302,7 +303,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                             food.link.linkedTo.isEmpty() ? missingFood : missingFood.withFlag(MissingFood.NOT_HOME_RECIPE_FLAG)));
                 }
 
-            }, Option.<SkipFoodHandler>none(), true, limitToCategory);
+            }, Option.<SkipFoodHandler>none(), true, limitToCategory, categoryBrowseRanked ? Option.some(algorithmId) : Option.none(), Option.some(existingFoods));
 
             recipeBrowser = new RecipeBrowser(new Callback1<Recipe>() {
                 @Override
@@ -337,6 +338,15 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             result = result.plusAll(recipeBrowser.getShepherdTourSteps()).plusAll(foodBrowser.getShepherdTourSteps());
 
             return result;
+        }
+
+        private ArrayList<String> getExistingFoods() {
+            ArrayList<String> existing = new ArrayList<>();
+
+            for (FoodEntry fe : meal.foods)
+                if (fe.isEncoded())
+                    existing.add(fe.asEncoded().data.code);
+            return existing;
         }
     }
 

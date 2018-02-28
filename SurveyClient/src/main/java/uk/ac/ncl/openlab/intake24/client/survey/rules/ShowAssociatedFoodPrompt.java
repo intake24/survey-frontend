@@ -29,9 +29,11 @@ public class ShowAssociatedFoodPrompt implements PromptRule<Pair<FoodEntry, Meal
     private final Logger log = Logger.getLogger("ShowAssociatedFoodPrompt");
 
     private final String locale;
+    private final Option<String> browseSortAlgorithmId;
 
-    public ShowAssociatedFoodPrompt(final String locale) {
+    public ShowAssociatedFoodPrompt(final String locale, final Option<String> browseSortAlgorithmId) {
         this.locale = locale;
+        this.browseSortAlgorithmId = browseSortAlgorithmId;
     }
 
     public static int applicablePromptIndex(final PVector<FoodEntry> foods, final EncodedFood food) {
@@ -94,7 +96,7 @@ public class ShowAssociatedFoodPrompt implements PromptRule<Pair<FoodEntry, Meal
         }
     }
 
-    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String locale) {
-        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new ShowAssociatedFoodPrompt(locale), priority);
+    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String locale, final Option<String> browseSortAlgorithmId) {
+        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new ShowAssociatedFoodPrompt(locale, browseSortAlgorithmId), priority);
     }
 }

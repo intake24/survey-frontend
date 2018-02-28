@@ -26,8 +26,11 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
+import org.pcollections.PVector;
 import org.pcollections.TreePVector;
+import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Pair;
+import uk.ac.ncl.openlab.intake24.client.ProcessMilkInHotDrinks;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
@@ -43,6 +46,14 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
     }
 
     @Override
+    protected Survey postProcess(Survey data, PVector<Function1<Survey, Survey>> functions) {
+        /**
+         * Fixme: Hack to ignore link "milk in a hot drink" category to a hot drink
+         */
+        return data;
+    }
+
+    @Override
     protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
         return new Rules(
                 // meal associatedFoods
@@ -50,8 +61,8 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
                         .plus(AskForMealTime.withPriority(4))
                         .plus(ShowEditMeal.withPriority(3))
 //                        .plus(ShowDrinkReminderPrompt.withPriority(2))
-                        .plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale))
-                        .plus(ShowReadyMealsPrompt.withPriority(0)),
+                        .plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale)),
+//                        .plus(ShowReadyMealsPrompt.withPriority(0)),
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
@@ -61,13 +72,13 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
                         .plus(AskForMissingFoodDescription.withPriority(2))
                         .plus(ShowSimpleHomeRecipePrompt.withPriority(2))
                         .plus(AskIfHomeRecipe.withPriority(3))
-                        .plus(SplitFood.withPriority(4))
+//                        .plus(SplitFood.withPriority(4))
                         .plus(InformFoodComplete.withPriority(-100)),
 
                 // extended food propmts
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
-                        .plus(AskToLookupFood.withPriority(3, locale, "paRules", recipeManager))
+                        .plus(AskToLookupFood.withPriority(3, locale, "paRules", true, recipeManager))
                         .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
@@ -93,8 +104,8 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
                         .plus(SelectFoodForAssociatedPrompts.withPriority(1))
                         .plus(SelectIncompleteFreeEntryMeal.withPriority(1))
                         .plus(SelectMealWithNoDrink.withPriority(1))
-                        .plus(SelectUnconfirmedMeal.withPriority(1))
-                        .plus(SelectMealForReadyMeals.withPriority(1)));
+                        .plus(SelectUnconfirmedMeal.withPriority(1)));
+//                        .plus(SelectMealForReadyMeals.withPriority(1)));
 
     }
 }

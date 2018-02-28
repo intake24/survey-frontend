@@ -21,6 +21,10 @@ public interface UxEventsService extends RestService {
 
     @POST
     @Path("/ux/event")
+    void postBrowseResultsReceived(UxEvent<BrowseCategoryResult> event, MethodCallback<Void> callback);
+
+    @POST
+    @Path("/ux/event")
     void postSearchButtonClicked(UxEvent<SearchButtonData> event, MethodCallback<Void> callback);
 
     @POST

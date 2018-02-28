@@ -239,7 +239,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
             public void call() {
                 addMissingFood.call();
             }
-        }, Option.<SkipFoodHandler>none(), false, Option.<Pair<String, String>>none());
+        }, Option.<SkipFoodHandler>none(), false, Option.<Pair<String, String>>none(), Option.none(), Option.none());
 
         Button no = WidgetFactory.createButton(messages.assocFoods_noButtonLabel(), new ClickHandler() {
             @Override

@@ -163,7 +163,7 @@ public class CompoundFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
                     }
                 }));
             }
-        }, skipHandler, false, Option.<Pair<String, String>>none());
+        }, skipHandler, false, Option.<Pair<String, String>>none(), Option.none(), Option.none());
 
         foodBrowser.browse(component.categoryCode, component.dataSetLabel, component.foodsLabel, component.categoriesLabel);
 

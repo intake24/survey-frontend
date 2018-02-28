@@ -27,6 +27,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 import org.pcollections.TreePVector;
+import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
@@ -49,9 +50,9 @@ public class ExperimentalPopularityScheme extends DefaultScheme {
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
                         .plus(AskForMealTime.withPriority(4))
                         .plus(ShowEditMeal.withPriority(3))
-                        .plus(ShowDrinkReminderPrompt.withPriority(2))
+                        .plus(ShowDrinkReminderPrompt.withPriority(2)),
 //                        .plus(ShowAutomaticAssociatedFoodsPrompt.withPriority(1, locale))
-                        .plus(ShowReadyMealsPrompt.withPriority(0)),
+//                        .plus(ShowReadyMealsPrompt.withPriority(0)),
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
@@ -67,12 +68,12 @@ public class ExperimentalPopularityScheme extends DefaultScheme {
                 // extended food propmts
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
-                        .plus(AskToLookupFood.withPriority(3, locale, "popularity", recipeManager))
+                        .plus(AskToLookupFood.withPriority(3, locale, "popularity", true, recipeManager))
                         .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
                         .plus(ShowCompoundFoodPrompt.withPriority(0, locale))
-                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale))
+                        .plus(ShowAssociatedFoodPrompt.withPriority(0, locale, Option.some("popularity")))
                         .plus(ShowBreadLinkedFoodAmountPrompt.withPriority(0))
 
                 ,
@@ -93,8 +94,8 @@ public class ExperimentalPopularityScheme extends DefaultScheme {
                         .plus(SelectFoodForAssociatedPrompts.withPriority(1))
                         .plus(SelectIncompleteFreeEntryMeal.withPriority(1))
                         .plus(SelectMealWithNoDrink.withPriority(1))
-                        .plus(SelectUnconfirmedMeal.withPriority(1))
-                        .plus(SelectMealForReadyMeals.withPriority(1)));
+                        .plus(SelectUnconfirmedMeal.withPriority(1)));
+//                        .plus(SelectMealForReadyMeals.withPriority(1)));
 
     }
 }

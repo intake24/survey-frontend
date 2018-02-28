@@ -43,6 +43,11 @@ public class UxEventsHelper {
             service.postSearchResultsReceived(new UxEvent<SearchResult>("SearchResultsReceived", Arrays.asList(SEARCH_CATEGORY), result), uxEventCallback);
     }
 
+    public static void postBrowseResultsReceived(BrowseCategoryResult result) {
+        if (settings.enableSearchEvents)
+            service.postBrowseResultsReceived(new UxEvent<BrowseCategoryResult>("BrowseCategoryResult", Arrays.asList(SEARCH_CATEGORY), result), uxEventCallback);
+    }
+
     public static void postSearchButtonClicked(SearchButtonData data) {
         if (settings.enableSearchEvents)
             service.postSearchButtonClicked(new UxEvent<SearchButtonData>("SearchButtonClicked", Arrays.asList(SEARCH_CATEGORY), data), uxEventCallback);

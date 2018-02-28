@@ -40,13 +40,11 @@ import org.pcollections.PStack;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.*;
-import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.foods.*;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.GlobalScrollTracker;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.*;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
 import uk.ac.ncl.openlab.intake24.client.survey.SpecialData;
@@ -96,10 +94,14 @@ public class FoodBrowser extends Composite {
 
     private final String locale;
 
+    private final Option<String> sortAlgorithmId;
+    private List<String> existingFoods = new ArrayList<>();
+
     private PStack<HistoryState> browseHistory = ConsPStack.<HistoryState>empty();
 
     public FoodBrowser(final String locale, final Callback2<FoodData, Integer> onFoodChosen, final Callback1<String> onSpecialFoodChosen, final Callback onMissingFoodReported,
-                       final Option<SkipFoodHandler> skipFoodHandler, boolean allowBrowsingAllFoods, Option<Pair<String, String>> limitBrowseAllCategory) {
+                       final Option<SkipFoodHandler> skipFoodHandler, boolean allowBrowsingAllFoods, Option<Pair<String, String>> limitBrowseAllCategory,
+                       final Option<String> sortAlgorithmId, Option<List<String>> existingFoods) {
 
         contents.addStyleName("intake24-food-browser");
 
@@ -110,6 +112,8 @@ public class FoodBrowser extends Composite {
         this.onMissingFoodReported = onMissingFoodReported;
         this.skipFoodHandler = skipFoodHandler;
         this.limitBrowseAllCategory = limitBrowseAllCategory;
+        this.sortAlgorithmId = sortAlgorithmId;
+        this.existingFoods = existingFoods.getOrElse(new ArrayList<>());
 
         initWidget(contents);
     }
@@ -234,6 +238,15 @@ public class FoodBrowser extends Composite {
                 item.addClickHandler(new ClickHandler() {
                     @Override
                     public void onClick(ClickEvent arg0) {
+                        UxEventsHelper.postSearchResultSelected(
+                                new SearchResultSelectionData(
+                                        Viewport.getCurrent(),
+                                        ContainerPosition.fromElement("intake24-food-browser-foods-container"),
+                                        ContainerPosition.fromElement("intake24-food-browser-categories-container"),
+                                        ContainerPosition.fromElement("intake24-food-browser-buttons-container").getOrDie(),
+                                        Option.none(),
+                                        Option.some(categoryData),
+                                        -1));
                         pushHistory(result, resultName, foodHeader, categoryHeader);
                         browse(categoryData.code, categoryData.description());
                     }
@@ -268,6 +281,8 @@ public class FoodBrowser extends Composite {
                 @Override
                 public void onClick(ClickEvent arg0) {
                     pushHistory(result, resultName, foodHeader, categoryHeader);
+
+                    UxEventsHelper.postBrowseAllFoodsButtonClicked();
 
                     limitBrowseAllCategory.accept(new Option.SideEffectVisitor<Pair<String, String>>() {
                         @Override
@@ -412,7 +427,7 @@ public class FoodBrowser extends Composite {
         contents.clear();
         contents.add(new LoadingPanel(messages.foodBrowser_loadingMessage()));
 
-        FoodDataService.INSTANCE.getCategoryContents(locale, categoryCode, new MethodCallback<LookupResult>() {
+        FoodDataService.INSTANCE.getCategoryContents(locale, categoryCode, sortAlgorithmId.getOrElse(""), existingFoods, new MethodCallback<LookupResult>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 contents.clear();
@@ -427,6 +442,10 @@ public class FoodBrowser extends Composite {
 
             @Override
             public void onSuccess(Method method, LookupResult response) {
+                sortAlgorithmId.map(aId -> {
+                    UxEventsHelper.postBrowseResultsReceived(new BrowseCategoryResult(foodsHeader, existingFoods, aId, response));
+                    return  aId;
+                });
                 show(response, dataSetName, foodsHeader, categoryHeader);
             }
         });
