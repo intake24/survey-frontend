@@ -5,10 +5,7 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UxEventsSettings;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.AutomaticData;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualAlreadyReportedData;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
-import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.*;
 import uk.ac.ncl.openlab.intake24.client.survey.UUID;
 
 import java.util.Arrays;
@@ -63,9 +60,20 @@ public class UxEventsHelper {
             service.postBrowseAllFoodsButtonClicked(new UxEvent<NoData>("BrowseAllFoodsButtonClicked", Arrays.asList(SEARCH_CATEGORY), new NoData()), uxEventCallback);
     }
 
+    public static void postBrowseBackButtonClicked() {
+        if (settings.enableSearchEvents)
+            service.postBrowseBackButtonClicked(new UxEvent<NoData>("BrowseBackButtonClicked", Arrays.asList(SEARCH_CATEGORY), new NoData()), uxEventCallback);
+    }
+
     public static void postSearchResultSelected(SearchResultSelectionData data) {
         if (settings.enableSearchEvents)
             service.postSearchResultSelected(new UxEvent<SearchResultSelectionData>("SearchResultSelected", Arrays.asList(SEARCH_CATEGORY), data), uxEventCallback);
+    }
+
+    public static void postManualAssociatedFoodReceived(ManualReceivedData data) {
+        if (settings.enableAssociatedFoodsEvents)
+            service.postManualAssociatedFoodReceived(new UxEvent<ManualReceivedData>("ManualAssociatedFoodReceived",
+                    Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
     }
 
     public static void postManualAssociatedFoodConfirmed(ManualConfirmedData data) {
@@ -89,6 +97,12 @@ public class UxEventsHelper {
     public static void postAutomaticAssociatedFoodsResponse(AutomaticData data) {
         if (settings.enableAssociatedFoodsEvents)
             service.postAutomaticAssociatedFoodsResponse(new UxEvent<>("AutomaticAssociatedFoodsResponse",
+                    Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
+    }
+
+    public static void postAutomaticAssociatedFoodsReceived(AutomaticData data) {
+        if (settings.enableAssociatedFoodsEvents)
+            service.postAutomaticAssociatedFoodsResponse(new UxEvent<>("AutomaticAssociatedFoodsReceived",
                     Arrays.asList(ASSOCIATED_FOODS_CATEGORY), data), uxEventCallback);
     }
 

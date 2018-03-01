@@ -45,6 +45,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualAlreadyReportedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualConfirmedData;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualReceivedData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.ManualRejectedData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
@@ -155,6 +156,8 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
                 }));
         content.add(promptPanel);
         ShepherdTour.makeShepherdTarget(promptPanel);
+
+        UxEventsHelper.postManualAssociatedFoodReceived(new ManualReceivedData(new FoodHeader(food.data.code, food.data.localDescription), prompt));
 
         final Callback1<FoodData> addNewFood = new Callback1<FoodData>() {
             @Override

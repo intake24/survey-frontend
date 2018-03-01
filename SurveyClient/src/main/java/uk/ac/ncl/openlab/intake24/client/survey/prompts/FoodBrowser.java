@@ -178,6 +178,7 @@ public class FoodBrowser extends Composite {
                 @Override
                 public void onClick(ClickEvent event) {
                     browseHistory = browseHistory.minus(0);
+                    UxEventsHelper.postBrowseBackButtonClicked();
                     show(parentResult.result, parentResult.dataSetName, parentResult.foodHeader, parentResult.categoryHeader);
                 }
             });

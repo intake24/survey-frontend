@@ -127,6 +127,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
                     onComplete.call(MealOperation.update(m -> m.markAssociatedFoodsComplete()));
                 } else {
                     cacheAssociatedFoods(listToJsArray(codes));
+                    UxEventsHelper.postAutomaticAssociatedFoodsReceived(new AutomaticData(Viewport.getCurrent(), encodedFoods, response.categories, new ArrayList<>()));
                 }
 
                 for (CategoryHeader category : categories) {
