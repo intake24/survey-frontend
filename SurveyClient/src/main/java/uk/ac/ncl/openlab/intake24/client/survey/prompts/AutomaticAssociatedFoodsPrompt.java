@@ -122,7 +122,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
 
                 List<String> codes = categories.stream().map(c -> c.code).collect(Collectors.toList());
 
-                if (!cachedAssociatedFoodsChanged(codes)) {
+                if (!cachedAssociatedFoodsChanged(codes) || codes.size() == 0) {
                     cacheAssociatedFoods(listToJsArray(new ArrayList<>()));
                     onComplete.call(MealOperation.update(m -> m.markAssociatedFoodsComplete()));
                 } else {

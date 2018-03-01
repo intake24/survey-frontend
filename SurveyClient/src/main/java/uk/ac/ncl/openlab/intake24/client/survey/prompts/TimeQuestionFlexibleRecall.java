@@ -102,9 +102,11 @@ public class TimeQuestionFlexibleRecall extends Composite {
         int minute = Integer.parseInt(DateTimeFormat.getFormat("m").format(new Date()));
         if (tpTime.hours > hour || tpTime.hours == hour && tpTime.minutes > minute) {
             this.alertPanel.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            this.skipButton.getElement().setAttribute("disabled", "disabled");
             this.confirmButton.getElement().setAttribute("disabled", "disabled");
         } else {
             this.alertPanel.getElement().getStyle().setDisplay(Style.Display.NONE);
+            this.skipButton.getElement().removeAttribute("disabled");
             this.confirmButton.getElement().removeAttribute("disabled");
         }
     }

@@ -32,6 +32,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -443,10 +444,7 @@ public class FoodBrowser extends Composite {
 
             @Override
             public void onSuccess(Method method, LookupResult response) {
-                sortAlgorithmId.map(aId -> {
-                    UxEventsHelper.postBrowseResultsReceived(new BrowseCategoryResult(categoryCode, existingFoods, aId, response));
-                    return  aId;
-                });
+                UxEventsHelper.postBrowseResultsReceived(new BrowseCategoryResult(categoryCode, existingFoods, sortAlgorithmId.getOrElse("None"), response));
                 show(response, dataSetName, foodsHeader, categoryHeader);
             }
         });
