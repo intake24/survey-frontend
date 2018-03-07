@@ -26,10 +26,12 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
+import com.google.gwt.user.client.Window;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;

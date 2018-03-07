@@ -34,7 +34,7 @@ public interface UxEventsService extends RestService {
 
     @POST
     @Path("/ux/event")
-    void postBrowseBackButtonClicked(UxEvent<NoData> event, MethodCallback<Void> callback);
+    void postBrowseBackButtonClicked(UxEvent<BackButtonData> event, MethodCallback<Void> callback);
 
     @POST
     @Path("/ux/event")

@@ -227,7 +227,9 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
             @Override
             public void call(FoodData result, Integer index) {
 
-                UxEventsHelper.postManualAssociatedFoodConfirmed(new ManualConfirmedData(new FoodHeader(food.data.code, food.data.localDescription), prompt,
+                UxEventsHelper.postManualAssociatedFoodConfirmed(new ManualConfirmedData(
+                        new FoodHeader(food.data.code, food.data.localDescription),
+                        getSelectedFoods(), prompt,
                         new FoodHeader(result.code, result.localDescription)));
 
                 addNewFood.call(result);
@@ -288,7 +290,9 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
                         @Override
                         public void onSuccess(Method method, FoodData response) {
 
-                            UxEventsHelper.postManualAssociatedFoodConfirmed(new ManualConfirmedData(new FoodHeader(food.data.code, food.data.localDescription), prompt,
+                            UxEventsHelper.postManualAssociatedFoodConfirmed(new ManualConfirmedData(
+                                    new FoodHeader(food.data.code, food.data.localDescription),
+                                    getSelectedFoods(), prompt,
                                     new FoodHeader(response.code, response.localDescription)));
 
                             addNewFood.call(response);
@@ -390,6 +394,18 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
             return foodBrowser.getShepherdTourSteps();
         else
             return tour;
+    }
+
+    private List<FoodHeader> getSelectedFoods() {
+        final ArrayList<FoodHeader> encodedFoods = new ArrayList<>();
+
+        for (FoodEntry e : pair.right.foods) {
+            if (e.isEncoded()) {
+                EncodedFood ef = e.asEncoded();
+                encodedFoods.add(new FoodHeader(ef.data.code, ef.data.localDescription));
+            }
+        }
+        return encodedFoods;
     }
 
     @Override

@@ -44,6 +44,7 @@ import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyFollowUp;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
@@ -146,6 +147,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
                 contents.add(new HTMLPanel(finalPageHtml));
 
+                UxEventsHelper.cleanSessionId();
                 StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
             }
         });

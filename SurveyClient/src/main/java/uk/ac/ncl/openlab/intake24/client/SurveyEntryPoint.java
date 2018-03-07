@@ -70,6 +70,10 @@ public class SurveyEntryPoint implements EntryPoint {
         Layout.setNavBarLinks(navbarLinks);
 
         scheme.showNextPage();
+
+
+        UxEventsHelper.postPageOpen();
+        Window.addCloseHandler((windowCloseEvent) -> UxEventsHelper.postPageClose());
     }
 
     public void onModuleLoad() {
@@ -95,6 +99,7 @@ public class SurveyEntryPoint implements EntryPoint {
         logOut.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
+                UxEventsHelper.postPageClose();
                 AuthCache.clear();
                 String logoutUrl = Window.Location.createUrlBuilder()
                         .removeParameter(UrlParameterConstants.authTokenKey)
