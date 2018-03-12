@@ -182,6 +182,7 @@
                     <deploy>${project.build.directory}/META-INF/gwt-deploy</deploy>
                     <failOnError>true</failOnError>
                     <runTarget>index.html</runTarget>
+                    <localWorkers>6</localWorkers>
                     <hostedWebapp>${project.build.directory}</hostedWebapp>
                     <i18nMessagesBundle>net.scran24.client.Messages</i18nMessagesBundle>
                 </configuration>

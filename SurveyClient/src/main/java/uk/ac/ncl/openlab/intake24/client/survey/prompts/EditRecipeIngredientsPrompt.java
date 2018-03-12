@@ -87,8 +87,8 @@ public class EditRecipeIngredientsPrompt implements Prompt<Pair<FoodEntry, Meal>
 					public Meal apply(Meal argument) {
 						ArrayList<FoodEntry> linkedFoods = new ArrayList<FoodEntry>();
 						for (FoodEntry e: ingredientList.getEnteredItems())
-							linkedFoods.add(e.relink(FoodLink.newLinked(compoundFoodId)).withCustomDataField(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY, SpecialData.CATEGORY_CODE_RECIPE_INGREDIENTS));
-				
+							linkedFoods.add(e.relink(FoodLink.newLinked(compoundFoodId)).withFlag(RawFood.FLAG_RECIPE_INGREDIENT));
+
 						return argument								
 								.withFoods(filter(argument.foods, noLinkedFoodsFilter))
 								.plusAllFoods(linkedFoods)
@@ -109,10 +109,10 @@ public class EditRecipeIngredientsPrompt implements Prompt<Pair<FoodEntry, Meal>
 						
 						ArrayList<FoodEntry> linkedFoods = new ArrayList<FoodEntry>();
 						for (FoodEntry e: ingredientList.getEnteredItems())
-							linkedFoods.add(e.relink(FoodLink.newLinked(compoundFoodId)).withCustomDataField(RawFood.KEY_LIMIT_LOOKUP_TO_CATEGORY, SpecialData.CATEGORY_CODE_RECIPE_INGREDIENTS));
+							linkedFoods.add(e.relink(FoodLink.newLinked(compoundFoodId)).withFlag(RawFood.FLAG_RECIPE_INGREDIENT));
 						
 						return Pair.create(null, argument.right.withFoods(filter(argument.right.foods, noLinkedFoodsFilter)).plusAllFoods(linkedFoods));				
-					}					
+					}
 				});
 			}
 		});
