@@ -73,7 +73,6 @@ public class SurveyEntryPoint implements EntryPoint {
 
 
         UxEventsHelper.postPageOpen();
-        Window.addCloseHandler((windowCloseEvent) -> UxEventsHelper.postPageClose());
     }
 
     public void onModuleLoad() {
@@ -154,4 +153,5 @@ public class SurveyEntryPoint implements EntryPoint {
             }
         });
     }
+
 }

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.Time;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 import uk.ac.ncl.openlab.intake24.client.ui.widgets.TimePicker;
@@ -104,6 +105,7 @@ public class TimeQuestionFlexibleRecall extends Composite {
             this.alertPanel.getElement().getStyle().setDisplay(Style.Display.BLOCK);
             this.skipButton.getElement().setAttribute("disabled", "disabled");
             this.confirmButton.getElement().setAttribute("disabled", "disabled");
+            UxEventsHelper.postTimeWidgetLimit();
         } else {
             this.alertPanel.getElement().getStyle().setDisplay(Style.Display.NONE);
             this.skipButton.getElement().removeAttribute("disabled");

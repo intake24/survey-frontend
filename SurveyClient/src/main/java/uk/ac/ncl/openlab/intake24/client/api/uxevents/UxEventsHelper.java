@@ -121,6 +121,11 @@ public class UxEventsHelper {
             service.postCantFindButtonClicked(new UxEvent<NoData>("PageClose", Arrays.asList(SESSION_CATEGORY), new NoData()), uxEventCallback);
     }
 
+    public static void postTimeWidgetLimit() {
+        if (settings.enableAssociatedFoodsEvents)
+            service.postCantFindButtonClicked(new UxEvent<NoData>("TimeWidgetLimit", Arrays.asList(SESSION_CATEGORY), new NoData()), uxEventCallback);
+    }
+
     public static void cleanSessionId() {
         Storage localStorage = Storage.getLocalStorageIfSupported();
         localStorage.removeItem(STORAGE_KEY);
