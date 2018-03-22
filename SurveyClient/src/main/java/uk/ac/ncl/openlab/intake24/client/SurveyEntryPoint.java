@@ -69,7 +69,7 @@ public class SurveyEntryPoint implements EntryPoint {
 
         Layout.setNavBarLinks(navbarLinks);
 
-        scheme.showNextPage();
+//        scheme.showNextPage();
 
 
         UxEventsHelper.postPageOpen();

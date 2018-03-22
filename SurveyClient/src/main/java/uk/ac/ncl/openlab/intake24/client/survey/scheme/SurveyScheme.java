@@ -28,12 +28,15 @@ package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 import com.google.gwt.user.client.ui.Anchor;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 
 import java.util.List;
 
 public interface SurveyScheme {
     String getSchemeId();
+
+    Long getIssueDate(Survey survey);
 
     String getDataVersion();
 

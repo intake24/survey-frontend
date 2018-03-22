@@ -99,4 +99,9 @@ public class ExperimentalFlexibleRecallScheme extends DefaultScheme {
 //                        .plus(SelectMealForReadyMeals.withPriority(1)));
 
     }
+
+    @Override
+    public Long getIssueDate(Survey survey) {
+        return survey.lastSaved;
+    }
 }

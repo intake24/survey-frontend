@@ -61,20 +61,22 @@ public class Survey {
     public static final String FLAG_SKIP_HISTORY = "skip-history";
 
     public final long startTime;
+    public final long lastSaved;
     public final PVector<Meal> meals;
     public final Selection selectedElement;
     public final PSet<String> flags;
     public final PMap<String, String> customData;
     public final PVector<WithIndex<Meal>> mealsSortedByTime;
 
-    public Survey(List<Meal> meals, Selection selectedElement, long startTime, Set<String> flags, Map<String, String> customData) {
-        this(TreePVector.<Meal>from(meals), selectedElement, startTime, HashTreePSet.<String>from(flags), HashTreePMap
+    public Survey(List<Meal> meals, Selection selectedElement, long startTime, long lastSaved, Set<String> flags, Map<String, String> customData) {
+        this(TreePVector.<Meal>from(meals), selectedElement, startTime, lastSaved, HashTreePSet.<String>from(flags), HashTreePMap
                 .<String, String>from(customData));
     }
 
-    public Survey(PVector<Meal> meals, Selection selectedElement, long startTime, PSet<String> flags, PMap<String, String> customData) {
+    public Survey(PVector<Meal> meals, Selection selectedElement, long startTime, long lastSaved, PSet<String> flags, PMap<String, String> customData) {
         this.meals = meals;
         this.startTime = startTime;
+        this.lastSaved = lastSaved;
         this.customData = customData;
 
         PVector<WithIndex<Meal>> mealsWithIndex = zipWithIndex(meals);
@@ -181,19 +183,19 @@ public class Survey {
     }
 
     public Survey withSelection(Selection selectedElement) {
-        return new Survey(meals, selectedElement, startTime, flags, customData);
+        return new Survey(meals, selectedElement, startTime, lastSaved, flags, customData);
     }
 
     public Survey plusMeal(Meal meal) {
-        return new Survey(meals.plus(meal), selectedElement, startTime, flags, customData);
+        return new Survey(meals.plus(meal), selectedElement, startTime, lastSaved, flags, customData);
     }
 
     public Survey minusMeal(int mealIndex) {
-        return new Survey(meals.minus(mealIndex), selectedElement, startTime, flags, customData);
+        return new Survey(meals.minus(mealIndex), selectedElement, startTime, lastSaved, flags, customData);
     }
 
     public Survey updateMeal(int mealIndex, Meal value) {
-        return new Survey(meals.with(mealIndex, value), selectedElement, startTime, flags, customData);
+        return new Survey(meals.with(mealIndex, value), selectedElement, startTime, lastSaved, flags, customData);
     }
 
     public Survey updateFood(int mealIndex, int foodIndex, FoodEntry value) {
@@ -201,7 +203,7 @@ public class Survey {
     }
 
     public Survey withMeals(PVector<Meal> newMeals) {
-        return new Survey(newMeals, selectedElement, startTime, flags, customData);
+        return new Survey(newMeals, selectedElement, startTime, System.currentTimeMillis(), flags, customData);
     }
 
     public static Function1<Survey, Survey> addMealFunc(final Meal meal) {
@@ -218,11 +220,15 @@ public class Survey {
     }
 
     public Survey withFlag(String flag) {
-        return new Survey(meals, selectedElement, startTime, flags.plus(flag), customData);
+        return new Survey(meals, selectedElement, startTime, lastSaved, flags.plus(flag), customData);
     }
 
     public Survey clearFlag(String flag) {
-        return new Survey(meals, selectedElement, startTime, flags.minus(flag), customData);
+        return new Survey(meals, selectedElement, startTime, lastSaved, flags.minus(flag), customData);
+    }
+
+    public Survey updateLastSaved() {
+        return new Survey(meals, selectedElement, startTime, System.currentTimeMillis(), flags, customData);
     }
 
     public Survey markCompletionConfirmed() {
@@ -258,7 +264,7 @@ public class Survey {
     }
 
     public Survey withData(PMap<String, String> newData) {
-        return new Survey(meals, selectedElement, startTime, flags, newData);
+        return new Survey(meals, selectedElement, startTime, lastSaved, flags, newData);
     }
 
     public Survey withData(String key, String value) {

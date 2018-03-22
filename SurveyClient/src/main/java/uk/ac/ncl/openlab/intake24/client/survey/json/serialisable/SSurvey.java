@@ -47,6 +47,8 @@ public class SSurvey {
     @JsonProperty
     public long startTime;
     @JsonProperty
+    public long lastSaved;
+    @JsonProperty
     public final PVector<SMeal> meals;
     @JsonProperty
     public final SSelection selectedElement;
@@ -62,10 +64,11 @@ public class SSurvey {
 
     @JsonCreator
     public SSurvey(@JsonProperty("meals") List<SMeal> meals, @JsonProperty("selectedElement") SSelection selectedElement,
-                   @JsonProperty("startTime") long startTime, @JsonProperty("flags") Set<String> flags,
-                   @JsonProperty("customData") Map<String, String> customData, @JsonProperty("schemeId") String schemeId,
-                   @JsonProperty("versionId") String versionId) {
+                   @JsonProperty("startTime") long startTime, @JsonProperty("lastSaved") long lastSaved,
+                   @JsonProperty("flags") Set<String> flags, @JsonProperty("customData") Map<String, String> customData,
+                   @JsonProperty("schemeId") String schemeId, @JsonProperty("versionId") String versionId) {
         this.startTime = startTime;
+        this.lastSaved = lastSaved;
         this.meals = TreePVector.from(meals);
         this.selectedElement = selectedElement;
         this.flags = HashTreePSet.from(flags);
@@ -76,6 +79,7 @@ public class SSurvey {
 
     public SSurvey(Survey survey, String scheme_id, String version_id) {
         this.startTime = survey.startTime;
+        this.lastSaved = survey.lastSaved;
         this.schemeId = scheme_id;
         this.versionId = version_id;
         this.meals = map(survey.meals, new Function1<Meal, SMeal>() {
@@ -132,6 +136,6 @@ public class SSurvey {
             }
         });
 
-        return new Survey(surveyMeals, surveySelectedElement, startTime, flags, customData);
+        return new Survey(surveyMeals, surveySelectedElement, startTime, lastSaved, flags, customData);
     }
 }

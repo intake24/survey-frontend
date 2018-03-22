@@ -42,7 +42,7 @@ public class DefaultScheme extends BasicScheme {
 
     @Override
     public void showNextPage() {
-        final Survey state = stateManager.getCurrentState();
+        final Survey state = getStateManager().getCurrentState();
         // Logger log = Logger.getLogger("showNextPage");
         // log.info(SurveyXmlSerialiser.toXml(state));
 
@@ -62,7 +62,7 @@ public class DefaultScheme extends BasicScheme {
 
         } else if (!state.completionConfirmed()) {
             if (cachedSurveyPage == null)
-                cachedSurveyPage = new IntakeSurvey(stateManager, defaultPromptManager, defaultSelectionManager, defaultScriptManager);
+                cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
             interfaceManager.show(cachedSurveyPage);
         } else {
             interfaceManager.show(new FlatFinalPage(SurveyMessages.INSTANCE.finalPage_text(), postProcess(state, basicPostProcess), log.log));
@@ -77,6 +77,11 @@ public class DefaultScheme extends BasicScheme {
     @Override
     public String getSchemeId() {
         return ID;
+    }
+
+    @Override
+    public Long getIssueDate(Survey survey) {
+        return survey.startTime;
     }
 
 }

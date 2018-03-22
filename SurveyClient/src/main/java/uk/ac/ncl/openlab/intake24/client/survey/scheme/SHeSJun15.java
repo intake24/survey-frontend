@@ -111,13 +111,13 @@ public class SHeSJun15 extends BasicScheme {
 
     @Override
     public void showNextPage() {
-        final Survey state = stateManager.getCurrentState();
+        final Survey state = getStateManager().getCurrentState();
 
         if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
             interfaceManager.show(new WelcomePage(surveyMessages.welcomePage_welcomeText(), state));
         } else if (!state.completionConfirmed()) {
             if (cachedSurveyPage == null)
-                cachedSurveyPage = new IntakeSurvey(stateManager, defaultPromptManager, defaultSelectionManager, defaultScriptManager);
+                cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
             interfaceManager.show(cachedSurveyPage);
         } else if (!state.customData.containsKey("dayOfWeek")) {
             interfaceManager.show(new MultipleChoiceRadioButtonQuestion(state, SafeHtmlUtils
@@ -152,4 +152,10 @@ public class SHeSJun15 extends BasicScheme {
     public String getSchemeId() {
         return ID;
     }
+
+    @Override
+    public Long getIssueDate(Survey survey) {
+        return survey.startTime;
+    }
+
 }

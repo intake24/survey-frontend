@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  * history.
  */
 public class StateManager {
+
     private Survey currentState;
     private int historyEventCounter = 0;
 
@@ -32,6 +33,7 @@ public class StateManager {
 
     public final String versionId;
     public final String schemeId;
+    public final Boolean storeOnServer;
 
     public Survey getCurrentState() {
         return currentState;
@@ -48,24 +50,24 @@ public class StateManager {
     }
 
     public void updateState(Survey newState, boolean makeHistoryEntry) {
-        currentState = newState;
+        currentState = newState.updateLastSaved();
 
         if (makeHistoryEntry) {
             log.fine("Making history entry");
             makeHistoryEntry();
         }
 
-        StateManagerUtil.setLatestState(AuthCache.getCurrentUserId(), currentState, schemeId, versionId);
+        StateManagerUtil.setLatestState(AuthCache.getCurrentUserId(), currentState, schemeId, versionId, storeOnServer);
         log.fine("Updated latest state");
-
         // updateUi.call(newState);
     }
 
-    public StateManager(Survey initialState, String schemeId, String versionId, final Callback showNextPage,
+    public StateManager(Survey initialState, String schemeId, String versionId, Boolean storeOnServer, final Callback showNextPage,
                         final PortionSizeScriptManager scriptManager) {
         this.schemeId = schemeId;
         this.versionId = versionId;
         this.currentState = initialState;
+        this.storeOnServer = storeOnServer;
 
         log.fine("Making initial history entry");
         makeHistoryEntry();
@@ -97,4 +99,5 @@ public class StateManager {
             }
         });
     }
+
 }

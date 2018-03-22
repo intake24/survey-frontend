@@ -29,6 +29,8 @@ package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 import com.google.gwt.user.client.ui.Anchor;
 
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.HashTreePMap;
 import org.pcollections.HashTreePSet;
 import org.pcollections.PVector;
@@ -58,7 +60,7 @@ public abstract class BasicScheme implements SurveyScheme {
     final static double MAX_AGE_HOURS = 18.0;
 
     final protected SurveyInterfaceManager interfaceManager;
-    final protected StateManager stateManager;
+    private StateManager stateManager;
     final protected PromptManager defaultPromptManager;
     final protected SelectionManager defaultSelectionManager;
     final protected PortionSizeScriptManager defaultScriptManager;
@@ -75,8 +77,8 @@ public abstract class BasicScheme implements SurveyScheme {
     private static Logger logger = Logger.getLogger("BasicScheme");
 
     protected Survey startingSurveyData() {
-        return new Survey(PredefinedMeals.getStartingMealsForCurrentLocale(), new Selection.EmptySelection(SelectionMode.AUTO_SELECTION), System.currentTimeMillis(),
-                HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
+        return new Survey(PredefinedMeals.getStartingMealsForCurrentLocale(), new Selection.EmptySelection(SelectionMode.AUTO_SELECTION),
+                System.currentTimeMillis(), System.currentTimeMillis(), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
     }
 
     protected Survey postProcess(Survey data, PVector<Function1<Survey, Survey>> functions) {
@@ -181,36 +183,64 @@ public abstract class BasicScheme implements SurveyScheme {
 
         defaultSelectionManager = new PromptAvailabilityBasedSelectionManager(defaultPromptManager);
 
-        Survey initialState = StateManagerUtil.getLatestState(AuthCache.getCurrentUserId(), getSchemeId(),
-                getDataVersion(), defaultScriptManager, defaultTemplateManager)
-                .accept(new Option.Visitor<Survey, Survey>() {
-                    @Override
-                    public Survey visitSome(Survey data) {
-                        double age = (System.currentTimeMillis() - data.startTime) / 3600000.0;
-                        logger.fine("Saved state is " + age + " hours old.");
+        if (surveyParameters.storeUserSessionOnServer) {
+            StateManagerUtil.getSavedStateFromServerOrStorage(AuthCache.getCurrentUserId(), getSchemeId(),
+                    getDataVersion(), defaultScriptManager, defaultTemplateManager,
+                    new MethodCallback<Option<Survey>>() {
+                        @Override
+                        public void onFailure(Method method, Throwable throwable) {
 
-                        if (age > MAX_AGE_HOURS) {
-                            logger.fine("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
-                            return startingSurveyData();
-                        } else {
-                            return data.clearCompletionConfirmed()
-                                    .clearEnergyValueConfirmed();
                         }
-                    }
 
-                    @Override
-                    public Survey visitNone() {
-                        // log.info("No saved state, starting new survey.");
-                        return startingSurveyData();
-                    }
-                });
+                        @Override
+                        public void onSuccess(Method method, Option<Survey> surveyOption) {
+                            setInitialState(surveyOption);
+                        }
+                    });
+        } else {
+            setInitialState(StateManagerUtil.getLatestState(AuthCache.getCurrentUserId(), getSchemeId(),
+                    getDataVersion(), defaultScriptManager, defaultTemplateManager));
+        }
+    }
 
-        stateManager = new StateManager(initialState, getSchemeId(), getDataVersion(), new Callback() {
+    private void setInitialState(Option<Survey> surveyOpt) {
+        Survey initialState = surveyOpt.accept(new Option.Visitor<Survey, Survey>() {
+            @Override
+            public Survey visitSome(Survey data) {
+                Long surveyDate = getIssueDate(data);
+                double age = (System.currentTimeMillis() - surveyDate) / 3600000.0;
+                logger.fine("Saved state is " + age + " hours old.");
+                logger.fine("Last saved " + data.lastSaved);
+
+                if (age > MAX_AGE_HOURS) {
+                    logger.fine("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
+                    return startingSurveyData();
+                } else {
+                    return data.clearCompletionConfirmed()
+                            .clearEnergyValueConfirmed();
+                }
+            }
+
+            @Override
+            public Survey visitNone() {
+                // log.info("No saved state, starting new survey.");
+                return startingSurveyData();
+            }
+        });
+
+        stateManager = new StateManager(initialState, getSchemeId(), getDataVersion(),
+                surveyParameters.storeUserSessionOnServer, new Callback() {
             @Override
             public void call() {
                 showNextPage();
             }
         }, defaultScriptManager);
+
+        showNextPage();
+    }
+
+    protected StateManager getStateManager() {
+        return stateManager;
     }
 
     @Override
@@ -221,6 +251,9 @@ public abstract class BasicScheme implements SurveyScheme {
 
     @Override
     public abstract String getSchemeId();
+
+    @Override
+    public abstract Long getIssueDate(Survey survey);
 
     @Override
     public List<Anchor> navBarLinks() {
