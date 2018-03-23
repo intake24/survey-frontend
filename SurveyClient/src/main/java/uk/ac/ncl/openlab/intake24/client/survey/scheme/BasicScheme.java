@@ -28,7 +28,6 @@ package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 
 import com.google.gwt.user.client.ui.Anchor;
-
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.HashTreePMap;
@@ -174,6 +173,14 @@ public abstract class BasicScheme implements SurveyScheme {
 
         recipeManager = new RecipeManager(getSchemeId(), getDataVersion(), defaultScriptManager, defaultTemplateManager);
 
+        stateManager = new StateManager(getSchemeId(), getDataVersion(),
+                surveyParameters.storeUserSessionOnServer, new Callback() {
+            @Override
+            public void call() {
+                showNextPage();
+            }
+        }, defaultScriptManager);
+
         final Rules rules = defaultRules(defaultScriptManager, defaultTemplateManager, recipeManager);
 
         defaultPromptManager = new RuleBasedPromptManager(rules);
@@ -228,13 +235,7 @@ public abstract class BasicScheme implements SurveyScheme {
             }
         });
 
-        stateManager = new StateManager(initialState, getSchemeId(), getDataVersion(),
-                surveyParameters.storeUserSessionOnServer, new Callback() {
-            @Override
-            public void call() {
-                showNextPage();
-            }
-        }, defaultScriptManager);
+        stateManager.updateState(initialState, false);
 
         showNextPage();
     }

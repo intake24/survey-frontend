@@ -30,7 +30,6 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Pair;
-import uk.ac.ncl.openlab.intake24.client.ProcessMilkInHotDrinks;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;

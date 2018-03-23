@@ -15,6 +15,7 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.ConfirmMealPromptFlexibleRecall;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.StateManagerGetter;
 
 public class AskForMealTimeFlexibleRecall implements PromptRule<Meal, MealOperation> {
 
@@ -22,10 +23,16 @@ public class AskForMealTimeFlexibleRecall implements PromptRule<Meal, MealOperat
      * Experimental. Flexible recall. Uses ConfirmMealPromptFlexibleRecall.
      */
 
+    private final StateManager stateManager;
+
+    public AskForMealTimeFlexibleRecall(StateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+
     @Override
     public Option<Prompt<Meal, MealOperation>> apply(Meal data, SelectionMode selectionType, PSet<String> surveyFlags) {
         if (data.time.isEmpty()) {
-            return new Option.Some<Prompt<Meal, MealOperation>>(new ConfirmMealPromptFlexibleRecall(data));
+            return new Option.Some<Prompt<Meal, MealOperation>>(new ConfirmMealPromptFlexibleRecall(data, stateManager));
         } else {
             return new Option.None<Prompt<Meal, MealOperation>>();
         }
@@ -36,7 +43,7 @@ public class AskForMealTimeFlexibleRecall implements PromptRule<Meal, MealOperat
         return "Ask for meal time";
     }
 
-    public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority) {
-        return new WithPriority<PromptRule<Meal, MealOperation>>(new AskForMealTimeFlexibleRecall(), priority);
+    public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority, StateManager stateManager) {
+        return new WithPriority<PromptRule<Meal, MealOperation>>(new AskForMealTimeFlexibleRecall(stateManager), priority);
     }
 }

@@ -39,6 +39,7 @@ import org.workcraft.gwt.shared.client.Function1;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.StateManagerGetter;
 
 import static uk.ac.ncl.openlab.intake24.client.LocaleUtil.*;
 
@@ -47,7 +48,6 @@ public class ConfirmMealPromptFlexibleRecall implements Prompt<Meal, MealOperati
     /***
      * Experimental. Flexible recall. Uses TimeQuestionFlexibleRecall.
      */
-
     private static final PromptMessages messages = PromptMessages.Util.getInstance();
     private static final HelpMessages helpMessages = HelpMessages.Util.getInstance();
 
@@ -59,9 +59,11 @@ public class ConfirmMealPromptFlexibleRecall implements Prompt<Meal, MealOperati
             .plus(new ShepherdTour.Step("confirmButton", "#intake24-time-question-confirm-button", helpMessages.timeQuestion_confirmButtonTitle(), helpMessages.timeQuestion_confirmButtonDescription(), "top right", "bottom right"));
 
     private final Meal meal;
+    private final StateManager stateManager;
 
-    public ConfirmMealPromptFlexibleRecall(Meal meal) {
+    public ConfirmMealPromptFlexibleRecall(Meal meal, StateManager stateManager) {
         this.meal = meal;
+        this.stateManager = stateManager;
     }
 
     public static String selectPromptMessage(String mealName) {
@@ -129,7 +131,7 @@ public class ConfirmMealPromptFlexibleRecall implements Prompt<Meal, MealOperati
             public void handleAccept(Time time) {
                 onComplete.call(MealOperation.update(Meal.updateTimeFunc(time)));
             }
-        }, false);
+        }, false, stateManager);
 
         Button helpButton = ShepherdTour.createTourButton(tour, ConfirmMealPromptFlexibleRecall.class.getSimpleName());
         helpButton.getElement().addClassName("intake24-prompt-float-widget");

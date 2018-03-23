@@ -15,17 +15,19 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+import uk.ac.ncl.openlab.intake24.client.survey.StateManager;
 import uk.ac.ncl.openlab.intake24.client.survey.Time;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.StateManagerGetter;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 import uk.ac.ncl.openlab.intake24.client.ui.widgets.TimePicker;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class TimeQuestionFlexibleRecall extends Composite {
 
@@ -33,11 +35,14 @@ public class TimeQuestionFlexibleRecall extends Composite {
      * Experimental. Flexible recall. Time question that notifies if selected time is earlier than current time.
      */
 
+    private static Logger logger = Logger.getLogger("TimeQuestionFlexibleRecall");
+
     public final FlowPanel promptPanel;
     public final FlowPanel alertPanel;
     public final TimePicker timePicker;
     public final Button confirmButton;
     public final Button skipButton;
+    private final StateManager stateManager;
 
     public interface ResultHandler {
         public void handleAccept(Time time);
@@ -46,7 +51,9 @@ public class TimeQuestionFlexibleRecall extends Composite {
     }
 
     public TimeQuestionFlexibleRecall(final SafeHtml questionText, final String acceptLabel, final String skipLabel,
-                                      final Time initialTime, final ResultHandler handler, boolean scarySkipButton) {
+                                      final Time initialTime, final ResultHandler handler, boolean scarySkipButton, StateManager stateManager) {
+
+        this.stateManager = stateManager;
 
         promptPanel = WidgetFactory.createPromptPanel(questionText);
         promptPanel.getElement().setId("intake24-time-question-prompt");
@@ -101,7 +108,10 @@ public class TimeQuestionFlexibleRecall extends Composite {
         Time tpTime = this.timePicker.getTime();
         int hour = Integer.parseInt(DateTimeFormat.getFormat("H").format(new Date()));
         int minute = Integer.parseInt(DateTimeFormat.getFormat("m").format(new Date()));
-        if (tpTime.hours > hour || tpTime.hours == hour && tpTime.minutes > minute) {
+        int todayDay = Integer.parseInt(DateTimeFormat.getFormat("d").format(new Date()));
+        Date surveyStartedDate = new Date(stateManager.getCurrentState().startTime);
+        int startedDateDay = Integer.parseInt(DateTimeFormat.getFormat("d").format(surveyStartedDate));
+        if (todayDay <= startedDateDay && (tpTime.hours > hour || tpTime.hours == hour && tpTime.minutes > minute)) {
             this.alertPanel.getElement().getStyle().setDisplay(Style.Display.BLOCK);
             this.skipButton.getElement().setAttribute("disabled", "disabled");
             this.confirmButton.getElement().setAttribute("disabled", "disabled");

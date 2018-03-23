@@ -31,7 +31,7 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class StateManagerUtil {
-    private static final Integer SERVER_SYNC_DELAY = 2000;
+    private static final Integer SERVER_SYNC_DELAY = 1500;
     private static Timer serverSyncTimer;
 
     final public static String LatestStateKeyPrefix = "survey-state-";

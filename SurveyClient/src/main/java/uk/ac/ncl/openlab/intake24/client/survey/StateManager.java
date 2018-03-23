@@ -62,11 +62,10 @@ public class StateManager {
         // updateUi.call(newState);
     }
 
-    public StateManager(Survey initialState, String schemeId, String versionId, Boolean storeOnServer, final Callback showNextPage,
+    public StateManager(String schemeId, String versionId, Boolean storeOnServer, final Callback showNextPage,
                         final PortionSizeScriptManager scriptManager) {
         this.schemeId = schemeId;
         this.versionId = versionId;
-        this.currentState = initialState;
         this.storeOnServer = storeOnServer;
 
         log.fine("Making initial history entry");
