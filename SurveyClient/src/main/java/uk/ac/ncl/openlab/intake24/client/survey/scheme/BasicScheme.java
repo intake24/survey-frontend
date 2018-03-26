@@ -73,7 +73,7 @@ public abstract class BasicScheme implements SurveyScheme {
             .<Function1<Survey, Survey>>empty()
             .plus(new ProcessMilkInHotDrinks());
 
-    private static Logger logger = Logger.getLogger("BasicScheme");
+    protected static Logger logger = Logger.getLogger("BasicScheme");
 
     protected Survey startingSurveyData() {
         return new Survey(PredefinedMeals.getStartingMealsForCurrentLocale(), new Selection.EmptySelection(SelectionMode.AUTO_SELECTION),
@@ -214,12 +214,7 @@ public abstract class BasicScheme implements SurveyScheme {
         Survey initialState = surveyOpt.accept(new Option.Visitor<Survey, Survey>() {
             @Override
             public Survey visitSome(Survey data) {
-                Long surveyDate = getIssueDate(data);
-                double age = (System.currentTimeMillis() - surveyDate) / 3600000.0;
-                logger.fine("Saved state is " + age + " hours old.");
-                logger.fine("Last saved " + data.lastSaved);
-
-                if (age > MAX_AGE_HOURS) {
+                if (getSurveyExpired(data)) {
                     logger.fine("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
                     return startingSurveyData();
                 } else {
@@ -254,7 +249,11 @@ public abstract class BasicScheme implements SurveyScheme {
     public abstract String getSchemeId();
 
     @Override
-    public abstract Long getIssueDate(Survey survey);
+    public Boolean getSurveyExpired(Survey survey) {
+        Double age = (System.currentTimeMillis() - survey.startTime) / 3600000.0;
+        logger.fine("Saved state is " + age + " hours old.");
+        return age > MAX_AGE_HOURS;
+    }
 
     @Override
     public List<Anchor> navBarLinks() {

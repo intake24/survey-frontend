@@ -79,9 +79,4 @@ public class DefaultScheme extends BasicScheme {
         return ID;
     }
 
-    @Override
-    public Long getIssueDate(Survey survey) {
-        return survey.startTime;
-    }
-
 }

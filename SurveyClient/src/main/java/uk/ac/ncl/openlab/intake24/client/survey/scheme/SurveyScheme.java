@@ -36,7 +36,7 @@ import java.util.List;
 public interface SurveyScheme {
     String getSchemeId();
 
-    Long getIssueDate(Survey survey);
+    Boolean getSurveyExpired(Survey survey);
 
     String getDataVersion();
 

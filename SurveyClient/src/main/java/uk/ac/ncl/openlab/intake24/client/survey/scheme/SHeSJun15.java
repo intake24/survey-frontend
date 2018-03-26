@@ -154,8 +154,10 @@ public class SHeSJun15 extends BasicScheme {
     }
 
     @Override
-    public Long getIssueDate(Survey survey) {
-        return survey.startTime;
+    public Boolean getSurveyExpired(Survey survey) {
+        Double age = (System.currentTimeMillis() - survey.startTime) / 3600000.0;
+        logger.fine("Saved state is " + age + " hours old.");
+        return age > MAX_AGE_HOURS;
     }
 
 }

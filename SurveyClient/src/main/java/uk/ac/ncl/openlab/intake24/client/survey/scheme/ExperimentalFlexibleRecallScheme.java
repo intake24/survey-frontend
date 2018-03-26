@@ -37,6 +37,8 @@ import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 
 public class ExperimentalFlexibleRecallScheme extends DefaultScheme {
 
+    private final static double MAX_FLEXIBLE_AGE_HOURS = 24.0;
+
     public static final String ID = "experimental-flexible-recall";
 
     public ExperimentalFlexibleRecallScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
@@ -99,7 +101,8 @@ public class ExperimentalFlexibleRecallScheme extends DefaultScheme {
     }
 
     @Override
-    public Long getIssueDate(Survey survey) {
-        return survey.lastSaved;
+    public Boolean getSurveyExpired(Survey survey) {
+        Double age = (System.currentTimeMillis() - survey.lastSaved) / 3600000.0;
+        return age > MAX_FLEXIBLE_AGE_HOURS;
     }
 }
