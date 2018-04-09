@@ -43,7 +43,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     <module>gwt-slider-bar</module>
     <module>ClientShared</module>
     <module>SlidingScale</module>
-    <module>ImageMap</module>
     <module>ImageChooser</module>
     <module>resty-gwt</module>
 	<module>pcollections</module>

@@ -10,6 +10,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.imagemap.client;
 
+import com.google.gwt.user.client.Window;
 import org.workcraft.gwt.imagemap.shared.ImageMapObject;
 import org.workcraft.gwt.imagemap.shared.Point;
 
@@ -95,6 +96,7 @@ public class ImageMap extends Composite {
   }
 
   public ImageMap(final org.workcraft.gwt.imagemap.shared.ImageMap definition, final ResultHandler handler) {
+
     this.definition = definition;
 
     imageDiv = new FlowPanel();
