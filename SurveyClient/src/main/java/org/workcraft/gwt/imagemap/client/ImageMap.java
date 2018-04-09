@@ -29,7 +29,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 
+import java.util.logging.Logger;
+
 public class ImageMap extends Composite {
+
   public static interface ResultHandler {
     public void handleResult(int choice);
   }
@@ -114,11 +117,12 @@ public class ImageMap extends Composite {
       public void onMouseMove(MouseMoveEvent event) {
 
         double mouseX = (double)event.getRelativeX(baseImage.getElement()) / baseImage.getOffsetWidth();
-        double mouseY = (double)event.getRelativeY(baseImage.getElement()) / baseImage.getOffsetWidth();
+        double mouseY = ((double)event.getRelativeY(baseImage.getElement()) - Window.getScrollTop()) / baseImage.getOffsetWidth();
 
         int mouseOverArea = -1;
 
         for (int i = 0; i < definition.objects.length; i++) {
+
           if (definition.objects[i].outline.isInside(new Point(mouseX, mouseY))) {
             mouseOverArea = i;
             break;
