@@ -14,7 +14,10 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Function2;
+import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;
+import uk.ac.ncl.openlab.intake24.client.api.errors.ErrorReport;
+import uk.ac.ncl.openlab.intake24.client.api.errors.ErrorReportingService;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.MilkInHotDrinkPortionSizeScript;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
@@ -41,8 +44,19 @@ public class ProcessMilkInHotDrinks implements Function1<Survey, Survey> {
                             @Override
                             public PVector<Pair<Integer, Integer>> visitEncoded(EncodedFood food) {
                                 if (food.isInCategory(SpecialData.FOOD_CODE_MILK_IN_HOT_DRINK)) {
-                                    UUID drink_id = food.link.linkedTo.getOrDie("Milk from this category must be linked to a hot drink!");
-                                    return pairs.plus(Pair.create(meal.foodIndex(next), meal.foodIndex(drink_id)));
+                                    return food.link.linkedTo.accept(new Option.Visitor<UUID, PVector<Pair<Integer, Integer>>>() {
+                                        @Override
+                                        public PVector<Pair<Integer, Integer>> visitSome(UUID drink_id) {
+                                            return pairs.plus(Pair.create(meal.foodIndex(next), meal.foodIndex(drink_id)));
+                                        }
+
+                                        @Override
+                                        public PVector<Pair<Integer, Integer>> visitNone() {
+                                            String details = "Milk from this category must be linked to a hot drink: \"" + food.description() + "\" in meal \"" + meal.name + "\"";
+                                            ErrorReportingService.reportError(new RuntimeException(details));
+                                            return pairs;
+                                        }
+                                    });
                                 } else
                                     return pairs;
                             }
