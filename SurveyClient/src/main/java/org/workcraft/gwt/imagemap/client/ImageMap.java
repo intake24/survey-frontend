@@ -10,26 +10,12 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.imagemap.client;
 
-import com.google.gwt.user.client.Window;
-import org.workcraft.gwt.imagemap.shared.ImageMapObject;
-import org.workcraft.gwt.imagemap.shared.Point;
-
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-
-import java.util.logging.Logger;
+import org.workcraft.gwt.imagemap.shared.ImageMapObject;
+import org.workcraft.gwt.imagemap.shared.Point;
 
 public class ImageMap extends Composite {
 
@@ -116,8 +102,8 @@ public class ImageMap extends Composite {
       @Override
       public void onMouseMove(MouseMoveEvent event) {
 
-        double mouseX = (double)event.getRelativeX(baseImage.getElement()) / baseImage.getOffsetWidth();
-        double mouseY = ((double)event.getRelativeY(baseImage.getElement()) - Window.getScrollTop()) / baseImage.getOffsetWidth();
+        double mouseX = (double) event.getRelativeX(baseImage.getElement()) / baseImage.getOffsetWidth();
+        double mouseY = (double) event.getRelativeY(baseImage.getElement()) / baseImage.getOffsetWidth();
 
         int mouseOverArea = -1;
 

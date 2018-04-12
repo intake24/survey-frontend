@@ -9,7 +9,6 @@ import uk.ac.ncl.openlab.intake24.client.api.survey.UxEventsSettings;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.associatedfoods.*;
 import uk.ac.ncl.openlab.intake24.client.survey.UUID;
 
-import java.awt.*;
 import java.util.Arrays;
 
 public class UxEventsHelper {
