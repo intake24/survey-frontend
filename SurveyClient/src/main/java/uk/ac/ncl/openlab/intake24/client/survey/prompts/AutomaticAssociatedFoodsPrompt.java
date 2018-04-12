@@ -243,11 +243,11 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
     }
 
     private boolean hotDrinkIsPresent() {
-        return meal.foods.stream().filter(FoodEntry::isEncoded).anyMatch(this::isHotDrinkWithMilk);
+        return meal.foods.stream().filter(f -> f.isEncoded()).anyMatch(this::isHotDrinkWithMilk);
     }
 
     private boolean cerealIsPresent() {
-        return meal.foods.stream().filter(FoodEntry::isEncoded).anyMatch(this::isCerealWithMilk);
+        return meal.foods.stream().filter(f -> f.isEncoded()).anyMatch(this::isCerealWithMilk);
     }
 
     private boolean milkIsRerevant(CategoryHeader categoryHeader) {
