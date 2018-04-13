@@ -53,7 +53,7 @@ public class ProcessMilkInHotDrinks implements Function1<Survey, Survey> {
                                         @Override
                                         public PVector<Pair<Integer, Integer>> visitNone() {
                                             String details = "Milk from this category must be linked to a hot drink: \"" + food.description() + "\" in meal \"" + meal.name + "\"";
-                                            ErrorReportingService.reportError(new RuntimeException(details));
+                                            UncaughtExceptionHandler.reportError(new RuntimeException(details));
                                             return pairs;
                                         }
                                     });
