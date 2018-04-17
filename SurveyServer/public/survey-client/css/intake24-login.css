@@ -102,6 +102,10 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     text-align: left;
 }
 
+[dir="rtl"] .intake24-login-prompt-text {
+    text-align: right;
+}
+
 .intake24-user-info-table {
     width: 200px;
     background: #f6f6f6;
