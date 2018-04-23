@@ -277,7 +277,7 @@ public class AutomaticAssociatedFoodsPrompt implements Prompt<Meal, MealOperatio
             return true;
         }
         for (var i = 0; i < l.length; i++) {
-            if (!cached.includes(l[i])) {
+            if (cached.indexOf(l[i]) === -1) {
                 return true;
             }
         }
