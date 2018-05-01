@@ -108,10 +108,12 @@ public class TimeQuestionFlexibleRecall extends Composite {
         Time tpTime = this.timePicker.getTime();
         int hour = Integer.parseInt(DateTimeFormat.getFormat("H").format(new Date()));
         int minute = Integer.parseInt(DateTimeFormat.getFormat("m").format(new Date()));
+        int todayMonth = Integer.parseInt(DateTimeFormat.getFormat("MM").format(new Date()));
         int todayDay = Integer.parseInt(DateTimeFormat.getFormat("d").format(new Date()));
         Date surveyStartedDate = new Date(stateManager.getCurrentState().startTime);
+        int startedDateMonth = Integer.parseInt(DateTimeFormat.getFormat("MM").format(surveyStartedDate));
         int startedDateDay = Integer.parseInt(DateTimeFormat.getFormat("d").format(surveyStartedDate));
-        if (todayDay <= startedDateDay && (tpTime.hours > hour || tpTime.hours == hour && tpTime.minutes > minute)) {
+        if (todayMonth <= startedDateMonth && todayDay <= startedDateDay && (tpTime.hours > hour || tpTime.hours == hour && tpTime.minutes > minute)) {
             this.alertPanel.getElement().getStyle().setDisplay(Style.Display.BLOCK);
             this.skipButton.getElement().setAttribute("disabled", "disabled");
             this.confirmButton.getElement().setAttribute("disabled", "disabled");
