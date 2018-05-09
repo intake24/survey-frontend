@@ -10,6 +10,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package org.workcraft.gwt.slidingscale.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocaleInfo;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.slidingscale.shared.SlidingScaleDef;
 
@@ -115,8 +117,15 @@ public class SlidingScale extends Composite {
 
     setValue(initialLevel);
 
-    p.add(imageDiv);
-    p.add(sliderBar);
+
+    if (LocaleInfo.getCurrentLocale().isRTL()) {
+      p.add(sliderBar);
+      p.add(imageDiv);
+    } else {
+      p.add(imageDiv);
+      p.add(sliderBar);
+    }
+
     initWidget(p);
 
     /*

@@ -5,6 +5,7 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.storage.client.Storage;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
+import uk.ac.ncl.openlab.intake24.client.UncaughtExceptionHandler;
 import uk.ac.ncl.openlab.intake24.client.api.errors.ErrorReportingService;
 
 import java.util.logging.Logger;
@@ -31,13 +32,13 @@ public class AccessCallback implements RequestCallback {
         if (code == Response.SC_UNAUTHORIZED) {
             if (refreshAttempted) {
                 Throwable exception = new RuntimeException("Refreshed access token not recognized");
-                ErrorReportingService.reportError(exception);
+                UncaughtExceptionHandler.reportError(exception);
                 serviceCallback.onError(request, exception);
             } else {
                 AuthenticationService.INSTANCE.refresh(new MethodCallback<RefreshResult>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
-                        ErrorReportingService.reportError(new RuntimeException("Access token refresh call failed", exception));
+                        UncaughtExceptionHandler.reportError(new RuntimeException("Access token refresh call failed", exception));
                         serviceCallback.onError(request, exception);
                     }
 
@@ -51,7 +52,7 @@ public class AccessCallback implements RequestCallback {
                         try {
                             serviceMethod.send(serviceCallback);
                         } catch (RequestException e) {
-                            ErrorReportingService.reportError(new RuntimeException("API call failed", e));
+                            UncaughtExceptionHandler.reportError(new RuntimeException("API call failed", e));
                             serviceCallback.onError(request, e);
                         }
                     }
@@ -59,7 +60,7 @@ public class AccessCallback implements RequestCallback {
             }
         } else {
             if (response.getStatusCode() != 200 && response.getStatusCode() != 429) {
-                ErrorReportingService.reportError(new RuntimeException("Unexpected API response: " + response.getStatusCode()));
+                UncaughtExceptionHandler.reportError(new RuntimeException("Unexpected API response: " + response.getStatusCode()));
             }
 
             serviceCallback.onResponseReceived(request, response);
@@ -68,7 +69,7 @@ public class AccessCallback implements RequestCallback {
 
     @Override
     public void onError(Request request, Throwable throwable) {
-        ErrorReportingService.reportError(new RuntimeException("API call failed", throwable));
+        UncaughtExceptionHandler.reportError(new RuntimeException("API call failed", throwable));
         serviceCallback.onError(request, throwable);
     }
 }
