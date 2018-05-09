@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.StateManager;
 import uk.ac.ncl.openlab.intake24.client.survey.Time;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.StateManagerGetter;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 import uk.ac.ncl.openlab.intake24.client.ui.widgets.TimePicker;
 
@@ -51,7 +50,7 @@ public class TimeQuestionFlexibleRecall extends Composite {
     }
 
     public TimeQuestionFlexibleRecall(final SafeHtml questionText, final String acceptLabel, final String skipLabel,
-                                      final Time initialTime, final ResultHandler handler, boolean scarySkipButton, StateManager stateManager) {
+                                      final Time initialTime, final ResultHandler handler, boolean scarySkipButton, final StateManager stateManager) {
 
         this.stateManager = stateManager;
 
