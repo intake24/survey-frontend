@@ -44,6 +44,7 @@ import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyFollowUp;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
+import uk.ac.ncl.openlab.intake24.client.api.survey.SurveySubmissionResponse;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
@@ -72,13 +73,13 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
         contents.add(new LoadingPanel(messages.submitPage_loadingMessage()));
 
-        SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, new MethodCallback<Void>() {
+        SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, new MethodCallback<SurveySubmissionResponse>() {
             @Override
             public void onFailure(Method method, Throwable exception) {
                 contents.clear();
 
                 if (exception instanceof RequestTimeoutException) {
-                    final MethodCallback<Void> outer = this;
+                    final MethodCallback<SurveySubmissionResponse> outer = this;
 
                     contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
 
@@ -96,52 +97,40 @@ public class FlatFinalPage implements SurveyStage<Survey> {
             }
 
             @Override
-            public void onSuccess(Method method, Void response) {
+            public void onSuccess(Method method, SurveySubmissionResponse response) {
                 contents.clear();
                 contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_success())));
 
-                SurveyService.INSTANCE.getFollowUpUrl(EmbeddedData.surveyId, new MethodCallback<SurveyFollowUp>() {
+                response.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
                     @Override
-                    public void onFailure(Method method, Throwable exception) {
-                        contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));
+                    public void visitSome(String url) {
+                        FlowPanel externalLinkDiv = new FlowPanel();
+
+                        externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), "finalPageExternalUrlButton", new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent clickEvent) {
+                                Window.Location.replace(url);
+                            }
+                        }));
+
+                        contents.add(externalLinkDiv);
                     }
 
                     @Override
-                    public void onSuccess(Method method, SurveyFollowUp surveyFollowUp) {
-                        surveyFollowUp.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
+                    public void visitNone() {
+                        if (response.redirectToFeedback) {
+                            UrlBuilder builder = Window.Location.createUrlBuilder();
 
-                            @Override
-                            public void visitSome(String url) {
-                                FlowPanel externalLinkDiv = new FlowPanel();
-
-                                externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_continueToSurveyMonkey(), "finalPageExternalUrlButton", new ClickHandler() {
-                                    @Override
-                                    public void onClick(ClickEvent clickEvent) {
-                                        Window.Location.replace(url);
-                                    }
-                                }));
-
-                                contents.add(externalLinkDiv);
+                            for (String paramName : Window.Location.getParameterMap().keySet()) {
+                                builder.removeParameter(paramName);
                             }
 
-                            @Override
-                            public void visitNone() {
-                                if (surveyFollowUp.showFeedback) {
-                                    UrlBuilder builder = Window.Location.createUrlBuilder();
+                            builder.setHash("/thanks");
 
-                                    for (String paramName : Window.Location.getParameterMap().keySet()) {
-                                        builder.removeParameter(paramName);
-                                    }
+                            builder.setPath(Window.Location.getPath() + "/feedback");
 
-                                    builder.setHash("/thanks");
-
-                                    builder.setPath(Window.Location.getPath() + "/feedback");
-
-                                    Window.Location.replace(builder.buildString());
-                                }
-                            }
-                        });
-
+                            Window.Location.replace(builder.buildString());
+                        }
                     }
                 });
 
