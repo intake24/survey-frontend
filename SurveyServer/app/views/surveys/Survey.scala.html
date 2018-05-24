@@ -67,6 +67,29 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
     <title>Intake24</title>
 
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#aa0000",
+      "text": "#ffdddd"
+    },
+    "button": {
+      "background": "#ff0000"
+    }
+  },
+  "position": "top",
+  "content": {
+    "message": "This website relies on cookies and similar technologies to function correctly.",
+    "link": "Privacy policy",
+    "href": "/info/privacy#content"
+  }
+})});
+</script>
+
       <!--[if IE]>
 
 	<link type="text/css" rel="stylesheet" href=@routes.Assets.at("lib/survey-client/css/intake24-ie.css") />
@@ -107,7 +130,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
     <div id="UIContainer"></div>
 
-    <!-- analytics -->
+      <!-- analytics -->
 
     @if(gaTrackingCode.isDefined) {
       <script>
@@ -116,7 +139,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-         ga('create', '@{gaTrackingCode.get}', 'auto');
+         ga('create', '@{
+        gaTrackingCode.get
+      }', 'auto');
          ga('set', 'anonymizeIp', true);
          ga('send', 'pageview', location.pathname);
       </script>
