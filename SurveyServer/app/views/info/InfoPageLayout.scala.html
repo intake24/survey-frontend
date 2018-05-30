@@ -96,7 +96,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
                     <div class="col-sm-8">
                         <p>
                             <span class="text-nowrap">&copy; 2012–2015 Food Standards Scotland</span> |
-                            <span class="text-nowrap">&copy; 2012–2017 Newcastle University</span>
+                            <span class="text-nowrap">&copy; 2012–2018 Newcastle University</span>
                         </p>
                         <p>
                             <a class="text-nowrap" href="@linkToContent(routes.Information.privacy())">@PageNames.privacy</a>
@@ -131,6 +131,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
          ga('create', '@{gaTrackingCode.get}', 'auto');
+         ga('set', 'anonymizeIp', true);
          ga('send', 'pageview', location.pathname);
       </script>
           }
