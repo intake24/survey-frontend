@@ -31,7 +31,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.http.client.UrlBuilder;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -45,7 +44,6 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
-import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyFollowUp;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveySubmissionResponse;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
@@ -125,7 +123,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
               builder.setPath(Window.Location.getPath() + "/feedback");
               builder.setHash("/");
 
-              Window.Location.replace(builder.buildString());
+              Window.open(builder.buildString(), "_blank", "");
             }
           });
 
@@ -151,7 +149,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
             externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_externalFollowUpButtonLabel(), "finalPageExternalUrlButton", new ClickHandler() {
               @Override
               public void onClick(ClickEvent clickEvent) {
-                Window.Location.replace(url);
+                Window.open(url, "_blank", "");
               }
             }));
 
