@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/maven-releases/"
+resolvers += "Typesafe repository" at "https://dl.bintray.com/typesafe/maven-releases/"
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.12")
 

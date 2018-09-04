@@ -17,7 +17,7 @@ import scala.concurrent.duration._
 
 class Errors @Inject()(config: Configuration, ws: WSClient) extends Controller with UpickleUtil {
 
-  private val apiBaseUrl = config.getString("intake24.apiBaseUrl").get
+  private val apiBaseUrl = config.getString("intake24.internalApiBaseUrl").get
 
   case class ClientStackTraceElement(className: String, fileName: String, lineNumber: Int, methodName: String) {
     def toStackTraceElement = new StackTraceElement(className, methodName, fileName, lineNumber)
