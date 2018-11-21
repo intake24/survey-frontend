@@ -8,5 +8,5 @@
 	branch = master
 [submodule "intake24feedback"]
 	path = intake24feedback
-	url = ssh://git@openlab.ncl.ac.uk:17150/b0915218/intake24feedback.git
+	url = https://github.com/intake24/survey-feedback
 	branch = master
