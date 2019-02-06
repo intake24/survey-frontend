@@ -69,8 +69,7 @@ public class SurveyEntryPoint implements EntryPoint {
 
         Layout.setNavBarLinks(navbarLinks);
 
-//        scheme.showNextPage();
-
+        // scheme.showNextPage() is called from history change handler set up in StateManager constructor
 
         UxEventsHelper.postPageOpen();
     }

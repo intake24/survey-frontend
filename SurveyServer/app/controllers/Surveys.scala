@@ -16,19 +16,21 @@ case class PublicSurveyParameters(localeId: String, respondentLanguageId: String
 
 class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller {
 
-  private val apiBaseUrl = config.getString("intake24.apiBaseUrl").get
+  private val internalApiBaseUrl = config.getString("intake24.internalApiBaseUrl").get
+  private val externalApiBaseUrl = config.getString("intake24.externalApiBaseUrl").get
+
   private val gaTrackingCode = config.getString("intake24.ga.trackingCode")
 
   private implicit val surveyParamReads = Json.reads[PublicSurveyParameters]
 
   def survey(surveyId: String, genUser: Option[String]) = Action.async {
 
-    ws.url(s"$apiBaseUrl/surveys/$surveyId/public-parameters").withRequestTimeout(30 seconds).get.map {
+    ws.url(s"$internalApiBaseUrl/surveys/$surveyId/public-parameters").withRequestTimeout(30 seconds).get.map {
       response =>
         response.status match {
           case 200 => {
             Json.fromJson[PublicSurveyParameters](Json.parse(response.body)) match {
-              case JsSuccess(params, _) => Ok(Survey(surveyId, params, apiBaseUrl, gaTrackingCode))
+              case JsSuccess(params, _) => Ok(Survey(surveyId, params, externalApiBaseUrl, gaTrackingCode))
               case JsError(p) =>
                 Logger.error("Could not parse API server public survey parameters response")
                 Logger.error("Response body: " + response.body)
@@ -45,7 +47,7 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
   }
 
   def surveyFeedbackPage(surveyId: String) = Action {
-    Ok(SurveyFeedback(apiBaseUrl, surveyId, gaTrackingCode))
+    Ok(SurveyFeedback(externalApiBaseUrl, surveyId, gaTrackingCode))
   }
 
 }

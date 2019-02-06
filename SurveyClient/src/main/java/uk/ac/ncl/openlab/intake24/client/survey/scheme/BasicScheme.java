@@ -56,7 +56,7 @@ import java.util.logging.Logger;
  * <b>defaultRules</b>), and starting meals (see <b>startingSurveyData</b>).
  */
 public abstract class BasicScheme implements SurveyScheme {
-    final static double MAX_AGE_HOURS = 18.0;
+    final static double MAX_AGE_HOURS = 12.0;
 
     final protected SurveyInterfaceManager interfaceManager;
     private StateManager stateManager;
