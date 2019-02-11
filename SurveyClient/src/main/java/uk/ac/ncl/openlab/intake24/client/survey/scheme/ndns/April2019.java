@@ -24,26 +24,37 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package uk.ac.ncl.openlab.intake24.client.survey.scheme;
+package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
-import uk.ac.ncl.openlab.intake24.client.survey.CompoundFoodTemplateManager;
-import uk.ac.ncl.openlab.intake24.client.survey.RecipeManager;
-import uk.ac.ncl.openlab.intake24.client.survey.Rules;
-import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
+import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
 
-public class DefaultScheme extends BasicScheme {
+public class April2019 extends BasicScheme {
+    final private static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
 
-    public static final String ID = "default";
+    public static final String ID = "ndns419";
+    public static final double MAX_AGE_HOURS = 12.0;
 
-    public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
+    public April2019(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
         super(locale, surveyParameters, interfaceManager);
     }
 
     @Override
     protected Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
-        return defaultRules(scriptManager, templateManager, recipeManager);
+        Rules baseRules = defaultRules(scriptManager, templateManager, recipeManager);
+
+        return new Rules(
+                baseRules.mealPromptRules
+                        .plus(AskForFoodSource.withPriority(1)),
+                baseRules.foodPromptRules,
+                baseRules.extendedFoodPromptRules,
+                baseRules.surveyPromptRules,
+                baseRules.selectionRules
+        );
     }
 
     @Override
@@ -55,4 +66,12 @@ public class DefaultScheme extends BasicScheme {
     public String getSchemeId() {
         return ID;
     }
+
+    @Override
+    public Boolean getSurveyExpired(Survey survey) {
+        Double age = (System.currentTimeMillis() - survey.startTime) / 3600000.0;
+        logger.fine("Saved state is " + age + " hours old.");
+        return age > MAX_AGE_HOURS;
+    }
+
 }

@@ -33,6 +33,7 @@ import org.workcraft.gwt.shared.client.Option;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
 public class SHeSJun15 extends BasicScheme {
     final private static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
@@ -141,6 +142,11 @@ public class SHeSJun15 extends BasicScheme {
         } else {
             interfaceManager.show(new FlatFinalPage(SurveyMessages.INSTANCE.finalPage_text(), postProcess(state, basicPostProcess), log.log));
         }
+    }
+
+    @Override
+    protected Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
+        return defaultRules(scriptManager, templateManager, recipeManager);
     }
 
     @Override

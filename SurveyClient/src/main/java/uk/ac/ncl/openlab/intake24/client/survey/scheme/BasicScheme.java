@@ -75,6 +75,8 @@ public abstract class BasicScheme implements SurveyScheme {
 
     protected static Logger logger = Logger.getLogger("BasicScheme");
 
+    protected IntakeSurvey cachedSurveyPage = null;
+
     protected Survey startingSurveyData() {
         return new Survey(PredefinedMeals.getStartingMealsForCurrentLocale(), new Selection.EmptySelection(SelectionMode.AUTO_SELECTION),
                 System.currentTimeMillis(), System.currentTimeMillis(), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
@@ -89,8 +91,8 @@ public abstract class BasicScheme implements SurveyScheme {
         return postProcessed;
     }
 
-    protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
-                                 RecipeManager recipeManager) {
+    final protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                RecipeManager recipeManager) {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
@@ -143,6 +145,8 @@ public abstract class BasicScheme implements SurveyScheme {
                         .plus(SelectMealForReadyMeals.withPriority(1)));
     }
 
+
+
     public BasicScheme(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
         this.surveyParameters = surveyParameters;
         this.log = new LogRecorder();
@@ -181,7 +185,7 @@ public abstract class BasicScheme implements SurveyScheme {
             }
         }, defaultScriptManager);
 
-        final Rules rules = defaultRules(defaultScriptManager, defaultTemplateManager, recipeManager);
+        final Rules rules = getRules(defaultScriptManager, defaultTemplateManager, recipeManager);
 
         defaultPromptManager = new RuleBasedPromptManager(rules);
 
@@ -239,8 +243,38 @@ public abstract class BasicScheme implements SurveyScheme {
         return stateManager;
     }
 
+
     @Override
-    public abstract void showNextPage();
+    public void showNextPage() {
+        final Survey state = getStateManager().getCurrentState();
+        // Logger log = Logger.getLogger("showNextPage");
+        // log.info(SurveyXmlSerialiser.toXml(state));
+
+        if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
+
+            this.surveyParameters.description.accept(new Option.SideEffectVisitor<String>() {
+                @Override
+                public void visitSome(String description) {
+                    interfaceManager.show(new WelcomePage(description, state));
+                }
+
+                @Override
+                public void visitNone() {
+                    interfaceManager.show(new WelcomePage(SurveyMessages.INSTANCE.welcomePage_welcomeText(), state));
+                }
+            });
+
+        } else if (!state.completionConfirmed()) {
+            if (cachedSurveyPage == null)
+                cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
+            interfaceManager.show(cachedSurveyPage);
+        } else {
+            interfaceManager.show(new FlatFinalPage(SurveyMessages.INSTANCE.finalPage_text(), postProcess(state, basicPostProcess), log.log));
+        }
+    }
+
+    protected abstract Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                      RecipeManager recipeManager);
 
     @Override
     public abstract String getDataVersion();
