@@ -195,6 +195,18 @@ public interface HelpMessages extends Messages {
 
     public String multipleChoice_continueButtonDescription();
 
+    public String checklist_questionTitle();
+
+    public String checklist_questionDescription();
+
+    public String checklist_choicesTitle();
+
+    public String checklist_choicesDescription();
+
+    public String checklist_continueButtonTitle();
+
+    public String checklist_continueButtonDescription();
+
     public String timeQuestion_hoursTitle();
 
     public String timeQuestion_hoursDescription();

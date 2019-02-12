@@ -11,40 +11,32 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
 
-public class AskForFoodSource implements PromptRule<Meal, MealOperation> {
+public class AskIfCookedAtHome implements PromptRule<Meal, MealOperation> {
 
-
-    public static final String FOOD_SOURCE_KEY = "foodSource";
-
-    private static final SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Where was <b>most</b> of the food for this meal purchased from?</p>");
+    public static final String COOKED_AT_HOME_KEY = "cookedAtHome";
 
     private static final PVector<String> options = TreePVector.<String>empty()
-            .plus("Large supermarket")
-            .plus("Convenience shop/corner shop/petrol station")
-            .plus("Fast food/take-away")
-            .plus("Café/coffee shop/sandwich bar/deli")
-            .plus("Sit-down restaurant or pub with a waiter/waitress")
-            .plus("Canteen at work or school/university/college")
-            .plus("Burger, chip or kebab van/’street food’")
-            .plus("Leisure centre/recreation or entertainment venue")
-            .plus("Vending machine in any location")
+            .plus("Yes")
+            .plus("No")
             .plus("Don't know");
 
     @Override
     public Option<Prompt<Meal, MealOperation>> apply(Meal state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.customData.containsKey(FOOD_SOURCE_KEY) && state.portionSizeComplete()) {
+        if (!state.customData.containsKey(COOKED_AT_HOME_KEY) && state.portionSizeComplete()) {
 
-            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskForFoodSource.class.getSimpleName(),
+            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Was your " + SafeHtmlUtils.htmlEscape(state.name.toLowerCase()) + " prepared and cooked at home?</p>");
+
+            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskIfCookedAtHome.class.getSimpleName(),
                     options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
-                    "foodSourceOption", Option.some("Other place (please specify)"));
+                    "cookedAtHomeOption", Option.none());
 
-            return Option.some(PromptUtil.asMealPrompt(prompt, foodSourceChoice -> MealOperation.setCustomDataField(FOOD_SOURCE_KEY, foodSourceChoice)));
+            return Option.some(PromptUtil.asMealPrompt(prompt, cookedAtHome -> MealOperation.setCustomDataField(COOKED_AT_HOME_KEY, cookedAtHome)));
         } else {
             return Option.none();
         }
     }
 
     public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority) {
-        return new WithPriority<>(new AskForFoodSource(), priority);
+        return new WithPriority<>(new AskIfCookedAtHome(), priority);
     }
 }

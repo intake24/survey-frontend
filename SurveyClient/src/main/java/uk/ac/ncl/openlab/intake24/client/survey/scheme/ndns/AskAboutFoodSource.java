@@ -11,7 +11,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
 
-public class AskForFoodSource implements PromptRule<Meal, MealOperation> {
+public class AskAboutFoodSource implements PromptRule<Meal, MealOperation> {
 
     public static final String FOOD_SOURCE_KEY = "foodSource";
 
@@ -37,7 +37,7 @@ public class AskForFoodSource implements PromptRule<Meal, MealOperation> {
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Where was <em>most</em> of the food for your " +
                     SafeHtmlUtils.htmlEscape(state.name.toLowerCase()) +  " purchased from?</p>");
 
-            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskForFoodSource.class.getSimpleName(),
+            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutFoodSource.class.getSimpleName(),
                     options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
                     "foodSourceOption", Option.some("Other place (please specify)"));
 
@@ -48,6 +48,6 @@ public class AskForFoodSource implements PromptRule<Meal, MealOperation> {
     }
 
     public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority) {
-        return new WithPriority<>(new AskForFoodSource(), priority);
+        return new WithPriority<>(new AskAboutFoodSource(), priority);
     }
 }

@@ -96,10 +96,10 @@ public abstract class BasicScheme implements SurveyScheme {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
-                        .plus(AskForMealTime.withPriority(4))
-                        .plus(ShowEditMeal.withPriority(3))
-                        .plus(ShowDrinkReminderPrompt.withPriority(2))
-                        .plus(ShowReadyMealsPrompt.withPriority(0)),
+                        .plus(AskForMealTime.withPriority(40))
+                        .plus(ShowEditMeal.withPriority(30))
+                        .plus(ShowDrinkReminderPrompt.withPriority(20))
+                        .plus(ShowReadyMealsPrompt.withPriority(10)),
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
@@ -128,9 +128,9 @@ public abstract class BasicScheme implements SurveyScheme {
 
                 TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>>empty()
                         .plus(ConfirmCompletion.withPriority(0))
-                        .plus(ShowEnergyValidationPrompt.withPriority(1, 500.0))
-                        .plus(ShowEmptySurveyPrompt.withPriority(1))
-                        .plus(ShowTimeGapPrompt.withPriority(2, 180, new Time(9, 0), new Time(21, 0)))
+                        .plus(ShowEnergyValidationPrompt.withPriority(10, 500.0))
+                        .plus(ShowEmptySurveyPrompt.withPriority(10))
+                        .plus(ShowTimeGapPrompt.withPriority(20, 180, new Time(9, 0), new Time(21, 0)))
 
                 ,
 

@@ -7,36 +7,67 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckBoxPrompt;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.MultipleChoiceCheckboxQuestion;
 
-public class AskAboutFoodSupplements implements PromptRule<Meal, MealOperation> {
+import java.util.List;
+
+public class AskAboutSupplements implements PromptRule<Survey, SurveyOperation> {
 
     public static final String SUPPLEMENTS_KEY = "supplements";
 
-    private static final PVector<String> options = TreePVector.<String>empty()
-            .plus("Yes")
-            .plus("No")
-            .plus("Don't know");
+    final private PVector<String> supplementOptions = TreePVector.<String>empty()
+            .plus("Multivitamin")
+            .plus("Multivitamin and mineral")
+            .plus("Vitamin A")
+            .plus("Vitamin B complex")
+            .plus("Vitamin C")
+            .plus("Vitamin D")
+            .plus("Vitamin E")
+            .plus("Calcium")
+            .plus("Iron")
+            .plus("Magnesium")
+            .plus("Selenium")
+            .plus("Zinc")
+            .plus("Cod liver/ Fish oil")
+            .plus("Evening Primrose oil")
+            .plus("Chondroitin")
+            .plus("Glucosamine");
+
+    private String concat(List<String> options) {
+        StringBuffer sb = new StringBuffer();
+
+        for (String s : options) {
+            if (sb.length() > 0)
+                sb.append(", ");
+            sb.append(s);
+        }
+
+        return sb.toString();
+    }
 
     @Override
-    public Option<Prompt<Meal, MealOperation>> apply(Meal state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.customData.containsKey(COOKED_AT_HOME_KEY) && state.portionSizeComplete()) {
+    public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
+        if (!state.customData.containsKey(SUPPLEMENTS_KEY) && state.portionSizeComplete()) {
 
-            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Was your " + SafeHtmlUtils.htmlEscape(state.name.toLowerCase()) + " prepared and cooked at home?</p>");
+            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Did you take any dietary supplements?</p>");
 
-            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutFoodSupplements.class.getSimpleName(),
-                    options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
-                    "cookedAtHomeOption", Option.none());
+            new MultipleChoiceCheckboxQuestion(state, SafeHtmlUtils
+                    .fromSafeConstant("<p>Do you take any dietary supplements e.g. Multivitamins?</p>"), "Continue", supplementOptions,
+                    "supplements", Option.some("Other"));
 
-            return Option.some(PromptUtil.asMealPrompt(prompt, cookedAtHome -> MealOperation.setCustomDataField(COOKED_AT_HOME_KEY, cookedAtHome)));
+            CheckBoxPrompt prompt = new CheckBoxPrompt(promptText, AskAboutSupplements.class.getSimpleName(),
+                    supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
+                    "cookedAtHomeOption", Option.some("Other (please specify)"));
+
+            return Option.some(PromptUtil.asSurveyPrompt(prompt, supplements -> SurveyOperation.update(survey -> survey.withData(SUPPLEMENTS_KEY, concat(supplements)))));
         } else {
             return Option.none();
         }
     }
 
-    public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority) {
-        return new WithPriority<>(new AskAboutFoodSupplements(), priority);
+    public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
+        return new WithPriority<>(new AskAboutSupplements(), priority);
     }
 }

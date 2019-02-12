@@ -117,7 +117,7 @@ public class Survey {
         this.flags = f;
     }
 
-    public boolean isPortionSizeComplete() {
+    public boolean portionSizeComplete() {
         return forall(meals, Meal.isPortionSizeComplete);
     }
 

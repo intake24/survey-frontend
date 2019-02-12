@@ -26,8 +26,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 
-import org.pcollections.PVector;
-import org.pcollections.TreePVector;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
@@ -49,10 +47,12 @@ public class April2019 extends BasicScheme {
 
         return new Rules(
                 baseRules.mealPromptRules
-                        .plus(AskForFoodSource.withPriority(1)),
+                        .plus(AskIfCookedAtHome.withPriority(9))
+                        .plus(AskAboutFoodSource.withPriority(9)),
                 baseRules.foodPromptRules,
                 baseRules.extendedFoodPromptRules,
-                baseRules.surveyPromptRules,
+                baseRules.surveyPromptRules
+                        .plus(AskAboutSupplements.withPriority(30)),
                 baseRules.selectionRules
         );
     }
