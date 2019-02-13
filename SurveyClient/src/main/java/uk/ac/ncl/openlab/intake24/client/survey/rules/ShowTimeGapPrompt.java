@@ -31,7 +31,7 @@ public class ShowTimeGapPrompt implements PromptRule<Survey, SurveyOperation> {
 	
 	@Override
 	public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
-		if (!state.isPortionSizeComplete() || state.meals.isEmpty())
+		if (!state.portionSizeComplete() || state.meals.isEmpty())
 			return Option.none();
 		else {
 			PVector<WithIndex<Meal>> meals = state.mealsSortedByTime;

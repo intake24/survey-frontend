@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.April2019;
 
 import java.util.List;
 
@@ -57,6 +58,8 @@ public interface SurveyScheme {
                 return new ExperimentalFlexibleRecallScheme(surveyParameters, locale, interfaceManager);
             case SHeSJun15.ID:
                 return new SHeSJun15(locale, surveyParameters, interfaceManager);
+            case April2019.ID:
+                return new April2019(locale, surveyParameters, interfaceManager);
             default:
                 throw new RuntimeException("Unknown survey scheme: " + surveyParameters.schemeId);
         }

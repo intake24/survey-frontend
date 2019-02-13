@@ -75,6 +75,8 @@ public abstract class BasicScheme implements SurveyScheme {
 
     protected static Logger logger = Logger.getLogger("BasicScheme");
 
+    protected IntakeSurvey cachedSurveyPage = null;
+
     protected Survey startingSurveyData() {
         return new Survey(PredefinedMeals.getStartingMealsForCurrentLocale(), new Selection.EmptySelection(SelectionMode.AUTO_SELECTION),
                 System.currentTimeMillis(), System.currentTimeMillis(), HashTreePSet.<String>empty(), HashTreePMap.<String, String>empty());
@@ -89,15 +91,15 @@ public abstract class BasicScheme implements SurveyScheme {
         return postProcessed;
     }
 
-    protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
-                                 RecipeManager recipeManager) {
+    final protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                RecipeManager recipeManager) {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
-                        .plus(AskForMealTime.withPriority(4))
-                        .plus(ShowEditMeal.withPriority(3))
-                        .plus(ShowDrinkReminderPrompt.withPriority(2))
-                        .plus(ShowReadyMealsPrompt.withPriority(0)),
+                        .plus(AskForMealTime.withPriority(40))
+                        .plus(ShowEditMeal.withPriority(30))
+                        .plus(ShowDrinkReminderPrompt.withPriority(20))
+                        .plus(ShowReadyMealsPrompt.withPriority(10)),
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
@@ -126,9 +128,9 @@ public abstract class BasicScheme implements SurveyScheme {
 
                 TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>>empty()
                         .plus(ConfirmCompletion.withPriority(0))
-                        .plus(ShowEnergyValidationPrompt.withPriority(1, 500.0))
-                        .plus(ShowEmptySurveyPrompt.withPriority(1))
-                        .plus(ShowTimeGapPrompt.withPriority(2, 180, new Time(9, 0), new Time(21, 0)))
+                        .plus(ShowEnergyValidationPrompt.withPriority(10, 500.0))
+                        .plus(ShowEmptySurveyPrompt.withPriority(10))
+                        .plus(ShowTimeGapPrompt.withPriority(20, 180, new Time(9, 0), new Time(21, 0)))
 
                 ,
 
@@ -142,6 +144,8 @@ public abstract class BasicScheme implements SurveyScheme {
                         .plus(SelectUnconfirmedMeal.withPriority(1))
                         .plus(SelectMealForReadyMeals.withPriority(1)));
     }
+
+
 
     public BasicScheme(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
         this.surveyParameters = surveyParameters;
@@ -181,7 +185,7 @@ public abstract class BasicScheme implements SurveyScheme {
             }
         }, defaultScriptManager);
 
-        final Rules rules = defaultRules(defaultScriptManager, defaultTemplateManager, recipeManager);
+        final Rules rules = getRules(defaultScriptManager, defaultTemplateManager, recipeManager);
 
         defaultPromptManager = new RuleBasedPromptManager(rules);
 
@@ -239,8 +243,38 @@ public abstract class BasicScheme implements SurveyScheme {
         return stateManager;
     }
 
+
     @Override
-    public abstract void showNextPage();
+    public void showNextPage() {
+        final Survey state = getStateManager().getCurrentState();
+        // Logger log = Logger.getLogger("showNextPage");
+        // log.info(SurveyXmlSerialiser.toXml(state));
+
+        if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
+
+            this.surveyParameters.description.accept(new Option.SideEffectVisitor<String>() {
+                @Override
+                public void visitSome(String description) {
+                    interfaceManager.show(new WelcomePage(description, state));
+                }
+
+                @Override
+                public void visitNone() {
+                    interfaceManager.show(new WelcomePage(SurveyMessages.INSTANCE.welcomePage_welcomeText(), state));
+                }
+            });
+
+        } else if (!state.completionConfirmed()) {
+            if (cachedSurveyPage == null)
+                cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
+            interfaceManager.show(cachedSurveyPage);
+        } else {
+            interfaceManager.show(new FlatFinalPage(SurveyMessages.INSTANCE.finalPage_text(), postProcess(state, basicPostProcess), log.log));
+        }
+    }
+
+    protected abstract Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                      RecipeManager recipeManager);
 
     @Override
     public abstract String getDataVersion();

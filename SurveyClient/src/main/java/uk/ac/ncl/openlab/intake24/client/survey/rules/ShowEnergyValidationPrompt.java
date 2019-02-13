@@ -66,7 +66,7 @@ public class ShowEnergyValidationPrompt implements PromptRule<Survey, SurveyOper
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.isPortionSizeComplete() || state.meals.isEmpty() || state.energyValueConfirmed())
+        if (!state.portionSizeComplete() || state.meals.isEmpty() || state.energyValueConfirmed())
             return Option.none();
         else if (totalEnergyValue(state) < energyValueThreshold)
             return Option.<Prompt<Survey, SurveyOperation>>some(new EnergyValidationPrompt());

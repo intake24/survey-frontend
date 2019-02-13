@@ -94,6 +94,21 @@ public class PromptUtil {
         };
     }
 
+    public static <T> Prompt<Survey, SurveyOperation> asSurveyPrompt(final SimplePrompt<T> prompt, final Function1<T, SurveyOperation> updateFunc) {
+        return new Prompt<Survey, SurveyOperation>() {
+            @Override
+            public SurveyStageInterface getInterface(final Callback1<SurveyOperation> onComplete,
+                                                     Callback1<Function1<Survey, Survey>> updateIntermediateState) {
+                return new SurveyStageInterface.Aligned(prompt.getInterface(new Callback1<T>() {
+                    @Override
+                    public void call(T result) {
+                        onComplete.call(updateFunc.apply(result));
+                    }
+                }), HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, prompt.getClassName());
+            }
+        };
+    }
+
     public static Prompt<FoodEntry, FoodOperation> loading(final String message, final AsyncRequest<PortionSizeScript> load,
                                                            final Function1<PortionSizeScript, FoodOperation> f) {
         return new Prompt<FoodEntry, FoodOperation>() {
