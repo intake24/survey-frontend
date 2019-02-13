@@ -7,45 +7,33 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckBoxPrompt;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.MultipleChoiceCheckboxQuestion;
-
-import java.util.List;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckListPrompt;
 
 public class AskAboutSupplements implements PromptRule<Survey, SurveyOperation> {
 
     public static final String SUPPLEMENTS_KEY = "supplements";
 
-    final private PVector<String> supplementOptions = TreePVector.<String>empty()
-            .plus("Multivitamin")
-            .plus("Multivitamin and mineral")
-            .plus("Vitamin A")
-            .plus("Vitamin B complex")
-            .plus("Vitamin C")
-            .plus("Vitamin D")
-            .plus("Vitamin E")
-            .plus("Calcium")
-            .plus("Iron")
-            .plus("Magnesium")
-            .plus("Selenium")
-            .plus("Zinc")
-            .plus("Cod liver/ Fish oil")
-            .plus("Evening Primrose oil")
-            .plus("Chondroitin")
-            .plus("Glucosamine");
+    final private PVector<MultipleChoiceQuestionOption> supplementOptions = TreePVector.<MultipleChoiceQuestionOption>empty()
+            .plus(new MultipleChoiceQuestionOption("Multivitamin"))
+            .plus(new MultipleChoiceQuestionOption("Multivitamin and mineral"))
+            .plus(new MultipleChoiceQuestionOption("Vitamin A"))
+            .plus(new MultipleChoiceQuestionOption("Vitamin B complex"))
+            .plus(new MultipleChoiceQuestionOption("Vitamin C"))
+            .plus(new MultipleChoiceQuestionOption("Vitamin D"))
+            .plus(new MultipleChoiceQuestionOption("Vitamin E"))
+            .plus(new MultipleChoiceQuestionOption("Calcium"))
+            .plus(new MultipleChoiceQuestionOption("Iron"))
+            .plus(new MultipleChoiceQuestionOption("Magnesium"))
+            .plus(new MultipleChoiceQuestionOption("Selenium"))
+            .plus(new MultipleChoiceQuestionOption("Zinc"))
+            .plus(new MultipleChoiceQuestionOption("Cod liver/ Fish oil"))
+            .plus(new MultipleChoiceQuestionOption("Evening Primrose oil"))
+            .plus(new MultipleChoiceQuestionOption("Chondroitin"))
+            .plus(new MultipleChoiceQuestionOption("Glucosamine"))
+            .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true));
 
-    private String concat(List<String> options) {
-        StringBuffer sb = new StringBuffer();
-
-        for (String s : options) {
-            if (sb.length() > 0)
-                sb.append(", ");
-            sb.append(s);
-        }
-
-        return sb.toString();
-    }
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
@@ -53,15 +41,18 @@ public class AskAboutSupplements implements PromptRule<Survey, SurveyOperation> 
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Did you take any dietary supplements?</p>");
 
-            new MultipleChoiceCheckboxQuestion(state, SafeHtmlUtils
-                    .fromSafeConstant("<p>Do you take any dietary supplements e.g. Multivitamins?</p>"), "Continue", supplementOptions,
-                    "supplements", Option.some("Other"));
+            CheckListPrompt prompt = new CheckListPrompt(promptText, AskAboutSupplements.class.getSimpleName(),
+                    supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel());
 
-            CheckBoxPrompt prompt = new CheckBoxPrompt(promptText, AskAboutSupplements.class.getSimpleName(),
-                    supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
-                    "cookedAtHomeOption", Option.some("Other (please specify)"));
 
-            return Option.some(PromptUtil.asSurveyPrompt(prompt, supplements -> SurveyOperation.update(survey -> survey.withData(SUPPLEMENTS_KEY, concat(supplements)))));
+            return Option.some(PromptUtil.asSurveyPrompt(prompt, answers -> {
+
+                String supplementsValue = answers.stream()
+                        .map(answer -> answer.details.map(s -> "Other: " + s).getOrElse(answer.value))
+                        .reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
+
+                return SurveyOperation.update(survey -> survey.withData(SUPPLEMENTS_KEY, supplementsValue));
+            }));
         } else {
             return Option.none();
         }

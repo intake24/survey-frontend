@@ -52,7 +52,8 @@ public class April2019 extends BasicScheme {
                 baseRules.foodPromptRules,
                 baseRules.extendedFoodPromptRules,
                 baseRules.surveyPromptRules
-                        .plus(AskAboutSupplements.withPriority(30)),
+                        .plus(AskAboutSupplements.withPriority(30))
+                        .plus(AskIfUsualAmount.withPriority(29)),
                 baseRules.selectionRules
         );
     }

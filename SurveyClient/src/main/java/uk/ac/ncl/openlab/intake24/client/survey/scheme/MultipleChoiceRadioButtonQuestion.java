@@ -11,8 +11,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -23,12 +21,16 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.SimpleSurveyStageInterface;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyStage;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionAnswer;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.RadioButtonQuestion;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
+import static org.workcraft.gwt.shared.client.CollectionUtils.map;
+
 public class MultipleChoiceRadioButtonQuestion implements SurveyStage<Survey> {
     final private SafeHtml questionText;
-    final private PVector<String> options;
+    final private PVector<MultipleChoiceQuestionOption> options;
     final private String acceptText;
     final private String dataField;
     final private Survey state;
@@ -39,7 +41,17 @@ public class MultipleChoiceRadioButtonQuestion implements SurveyStage<Survey> {
         this.state = state;
         this.questionText = questionText;
         this.acceptText = acceptText;
-        this.options = options;
+        this.options = otherOption.accept(new Option.Visitor<String, PVector<MultipleChoiceQuestionOption>>() {
+            @Override
+            public PVector<MultipleChoiceQuestionOption> visitSome(String otherLabel) {
+                return map(options, label -> new MultipleChoiceQuestionOption(label)).plus(new MultipleChoiceQuestionOption(otherLabel));
+            }
+
+            @Override
+            public PVector<MultipleChoiceQuestionOption> visitNone() {
+                return map(options, label -> new MultipleChoiceQuestionOption(label));
+            }
+        });
         this.dataField = dataField;
         this.otherOption = otherOption;
     }
@@ -50,22 +62,25 @@ public class MultipleChoiceRadioButtonQuestion implements SurveyStage<Survey> {
         content.addStyleName("intake24-multiple-choice-question");
         content.addStyleName("intake24-survey-content-container");
 
-        final RadioButtonQuestion choices = new RadioButtonQuestion(questionText, options, dataField, otherOption);
+        final RadioButtonQuestion question = new RadioButtonQuestion(questionText, options, dataField);
 
-        Button accept = WidgetFactory.createGreenButton(acceptText, "multipleChoiceAcceptButton", new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                Option<String> choice = choices.getChoice();
+        Button accept = WidgetFactory.createGreenButton(acceptText, "multipleChoiceAcceptButton", event -> {
+            Option<MultipleChoiceQuestionAnswer> maybeAnswer = question.getAnswer();
 
-                if (choice.isEmpty()) {
-                    choices.showWarning();
-                    return;
-                } else
-                    onComplete.call(state.withData(dataField, choice.getOrDie()));
-            }
+            maybeAnswer.accept(new Option.SideEffectVisitor<MultipleChoiceQuestionAnswer>() {
+                @Override
+                public void visitSome(MultipleChoiceQuestionAnswer answer) {
+                    onComplete.call(state.withData(dataField, answer.details.getOrElse(answer.value)));
+                }
+
+                @Override
+                public void visitNone() {
+
+                }
+            });
         });
 
-        content.add(choices);
+        content.add(question);
         content.add(accept);
 
         return new SimpleSurveyStageInterface(content, MultipleChoiceRadioButtonQuestion.class.getSimpleName());

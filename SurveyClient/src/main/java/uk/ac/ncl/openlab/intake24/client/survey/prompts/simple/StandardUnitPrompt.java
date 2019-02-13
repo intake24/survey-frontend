@@ -10,8 +10,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.prompts.simple;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -22,6 +20,8 @@ import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.StandardUnitDef;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionAnswer;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.RadioButtonQuestion;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
@@ -45,23 +45,30 @@ public class StandardUnitPrompt implements SimplePrompt<Integer> {
         final FlowPanel content = new FlowPanel();
         content.addStyleName("intake24-multiple-choice-question");
 
-        PVector<String> choices = TreePVector.<String>empty();
+        PVector<MultipleChoiceQuestionOption> choices = TreePVector.empty();
 
         for (StandardUnitDef def : units)
-            choices = choices.plus(label.apply(def));
+            choices = choices.plus(new MultipleChoiceQuestionOption(label.apply(def)));
 
-        final RadioButtonQuestion choice = new RadioButtonQuestion(promptText, choices, "standard-unit-choice", Option.<String>none());
+        final RadioButtonQuestion question = new RadioButtonQuestion(promptText, choices, "standard-unit-choice");
 
-        choice.selectFirst();
+        question.selectFirst();
 
-        Button accept = WidgetFactory.createGreenButton(acceptText, "standardUnitAcceptButton", new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                onComplete.call(choice.getChoiceIndex().getOrDie());
-            }
+        Button accept = WidgetFactory.createGreenButton(acceptText, "standardUnitAcceptButton", event -> {
+            question.getAnswer().accept(new Option.SideEffectVisitor<MultipleChoiceQuestionAnswer>() {
+                @Override
+                public void visitSome(MultipleChoiceQuestionAnswer answer) {
+                    onComplete.call(answer.index);
+                }
+
+                @Override
+                public void visitNone() {
+
+                }
+            });
         });
 
-        content.add(choice);
+        content.add(question);
         content.add(WidgetFactory.createButtonsPanel(accept));
 
         return content;

@@ -145,7 +145,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 }
 
 
-.intake24-radio-button-question ul {
+.intake24-multiple-choice-question ul {
 	list-style: none;
 	margin-left: 0px;
 	margin-top: 15px;
@@ -153,26 +153,25 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	padding: 0px;
 }
 
-.intake24-radio-button-question li {
+.intake24-multiple-choice-question li {
 	margin-bottom: 5px;
-}
-
-.intake24-radio-button-question input[type="text"] {
-	padding: 2px;
-	vertical-align: middle;
-}
-
-.intake24-radio-button-question input[type="checkbox"] {
-	vertical-align: middle;
-	margin-bottom: 1px;
 }
 
 .intake24-multiple-choice-question input[type="text"] {
 	padding: 2px;
 }
 
+.intake24-multiple-choice-question input[type="checkbox"] {
+	margin-bottom: 1px;
+}
 
-.intake24-radio-button-question-warning {
+.intake24-multiple-choice-question input[type="text"] {
+	padding: 2px;
+	margin-left: 10px;
+}
+
+
+.intake24-mcq-warning {
 	color: red;
 }
 

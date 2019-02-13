@@ -20,6 +20,8 @@ import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionAnswer;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
 
@@ -49,12 +51,14 @@ public class AskIfHomeRecipeFlexibleRecall implements PromptRule<FoodEntry, Food
     }
 
     private Prompt<FoodEntry, FoodOperation> buildPrompt(final String foodName, final boolean isDrink) {
-        PVector<String> options = TreePVector.<String>empty().plus(messages.homeRecipe_haveRecipeChoice()).plus(messages.homeRecipe_noRecipeChoice());
+        PVector<MultipleChoiceQuestionOption> options = TreePVector.<MultipleChoiceQuestionOption>empty()
+                .plus(new MultipleChoiceQuestionOption(messages.homeRecipe_haveRecipeChoice()))
+                .plus(new MultipleChoiceQuestionOption(messages.homeRecipe_noRecipeChoice()));
 
-        return PromptUtil.asFoodPrompt(new RadioButtonPrompt(SafeHtmlUtils.fromSafeConstant(messages.homeRecipe_promptText(SafeHtmlUtils.htmlEscape(foodName.toLowerCase()))), AskIfHomeRecipeFlexibleRecall.class.getSimpleName(), options, messages.homeRecipe_continueButtonLabel(), "homeRecipeOption", Option.<String>none()), new Function1<String, FoodOperation>() {
+        return PromptUtil.asFoodPrompt(new RadioButtonPrompt(SafeHtmlUtils.fromSafeConstant(messages.homeRecipe_promptText(SafeHtmlUtils.htmlEscape(foodName.toLowerCase()))), AskIfHomeRecipeFlexibleRecall.class.getSimpleName(), options, messages.homeRecipe_continueButtonLabel(), "homeRecipeOption"), new Function1<MultipleChoiceQuestionAnswer, FoodOperation>() {
             @Override
-            public FoodOperation apply(String argument) {
-                if (argument.equals(messages.homeRecipe_haveRecipeChoice())) {
+            public FoodOperation apply(MultipleChoiceQuestionAnswer argument) {
+                if (argument.index == 0) {
                     GoogleAnalytics.trackMissingFoodHomeRecipe();
                     return FoodOperation.replaceWith(new CompoundFood(FoodLink.newUnlinked(), foodName, isDrink));
                 } else {

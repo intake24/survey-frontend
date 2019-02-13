@@ -3,19 +3,29 @@ package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PSet;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckBoxPrompt;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.MultipleChoiceCheckboxQuestion;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
 
 public class AskIfUsualAmount implements PromptRule<Survey, SurveyOperation> {
 
-    public static final String AMOUNT_KEY = "amount";
-    public static final String AMOUNT_REASON_KEY = "amountReason";
-    public static final String USUAL = "usual";
-    public static final String LESS = "less";
-    public static final String MORE = "more";
+    public static final String AMOUNT_KEY = "foodAmount";
+    public static final String AMOUNT_REASON_KEY = "foodAmountReason";
+    public static final String USUAL_VALUE = "usual";
+    public static final String LESS_VALUE = "less";
+    public static final String MORE_VALUE = "more";
+
+
+    private static final PVector<MultipleChoiceQuestionOption> options =
+            TreePVector.<MultipleChoiceQuestionOption>empty()
+                    .plus(new MultipleChoiceQuestionOption("The usual amount", USUAL_VALUE))
+                    .plus(new MultipleChoiceQuestionOption("Less than usual (please specify why):", LESS_VALUE, true))
+                    .plus(new MultipleChoiceQuestionOption("More than usual (please specify why):", MORE_VALUE, true));
+
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey survey, SelectionMode selectionType, PSet<String> surveyFlags) {
@@ -23,15 +33,15 @@ public class AskIfUsualAmount implements PromptRule<Survey, SurveyOperation> {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Was the amount of food and drink you had today:</p>");
 
-            new MultipleChoiceCheckboxQuestion(survey, SafeHtmlUtils
-                    .fromSafeConstant("<p>Do you take any dietary supplements e.g. Multivitamins?</p>"), "Continue", supplementOptions,
-                    "supplements", Option.some("Other"));
+            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskIfUsualAmount.class.getSimpleName(),
+                    options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
+                    "usualAmountOptions");
 
-            CheckBoxPrompt prompt = new CheckBoxPrompt(promptText, AskIfUsualAmount.class.getSimpleName(),
-                    supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
-                    "cookedAtHomeOption", Option.some("Other (please specify)"));
+            return Option.some(PromptUtil.asSurveyPrompt(prompt, answer ->
+                    SurveyOperation.update(s -> s
+                            .withData(AMOUNT_KEY, answer.value)
+                            .withData(AMOUNT_REASON_KEY, answer.details.getOrElse("")))));
 
-            return Option.some(PromptUtil.asSurveyPrompt(prompt, supplements -> SurveyOperation.update(survey -> survey.withData(SUPPLEMENTS_KEY, concat(supplements)))));
         } else {
             return Option.none();
         }

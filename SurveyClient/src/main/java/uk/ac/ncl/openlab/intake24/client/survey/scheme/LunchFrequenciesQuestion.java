@@ -15,24 +15,33 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
 import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Callback2;
 import org.workcraft.gwt.shared.client.Option;
+import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.survey.SimpleSurveyStageInterface;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyStage;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionAnswer;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.RadioButtonQuestion;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.workcraft.gwt.shared.client.CollectionUtils.map;
+
 public class LunchFrequenciesQuestion implements SurveyStage<Survey> {
     final private Survey state;
-    final private PVector<String> frequencyOptions;
+    final private PVector<MultipleChoiceQuestionOption> frequencyOptions;
 
     public LunchFrequenciesQuestion(final Survey state, PVector<String> frequencyOptions) {
         this.state = state;
-        this.frequencyOptions = frequencyOptions;
+        this.frequencyOptions = map(frequencyOptions, option -> new MultipleChoiceQuestionOption(option));
     }
 
     @Override
@@ -42,22 +51,21 @@ public class LunchFrequenciesQuestion implements SurveyStage<Survey> {
 
         final RadioButtonQuestion shopFreq = new RadioButtonQuestion(
                 SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you go out to the shops for <strong>lunch</strong>?</p>"),
-                frequencyOptions, "shopFreq", Option.<String>none());
+                frequencyOptions, "shopFreq");
         final RadioButtonQuestion packFreq = new RadioButtonQuestion(
                 SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you bring in a packed <strong>lunch</strong> from home?</p>"),
-                frequencyOptions, "packFreq", Option.<String>none());
+                frequencyOptions, "packFreq");
         final RadioButtonQuestion schoolLunchFreq = new RadioButtonQuestion(
                 SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you have a school <strong>lunch</strong>?</p>"), frequencyOptions,
-                "schoolLunchFreq", Option.<String>none());
+                "schoolLunchFreq");
         final RadioButtonQuestion homeFreq = new RadioButtonQuestion(
                 SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you go home/to a friend's house for <strong>lunch</strong>?</p>"),
-                frequencyOptions, "homeFreq", Option.<String>none());
+                frequencyOptions, "homeFreq");
         final RadioButtonQuestion skipFreq = new RadioButtonQuestion(
-                SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you skip <strong>lunch</strong>?</p>"), frequencyOptions, "skipFreq",
-                Option.<String>none());
+                SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you skip <strong>lunch</strong>?</p>"), frequencyOptions, "skipFreq");
         final RadioButtonQuestion workFreq = new RadioButtonQuestion(
                 SafeHtmlUtils.fromSafeConstant("<p>In a normal school week how often do you work through <strong>lunch</strong>?</p>"),
-                frequencyOptions, "workFreq", Option.<String>none());
+                frequencyOptions, "workFreq");
 
         content.add(shopFreq);
         content.add(packFreq);
@@ -71,24 +79,26 @@ public class LunchFrequenciesQuestion implements SurveyStage<Survey> {
         accept.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                for (RadioButtonQuestion q : new RadioButtonQuestion[]{shopFreq, packFreq, schoolLunchFreq, homeFreq, skipFreq, workFreq})
-                    if (q.getChoice().isEmpty()) {
-                        q.showWarning();
-                        return;
-                    } else
-                        q.clearWarning();
 
+                Map<String, Option<MultipleChoiceQuestionAnswer>> answers = new HashMap<>();
 
-                PMap<String, String> data = state.customData;
-                data = data.plus("shopFreq", shopFreq.getChoice().getOrDie())
-                        .plus("packFreq", packFreq.getChoice().getOrDie())
-                        .plus("schoolLunchFreq", schoolLunchFreq.getChoice().getOrDie())
-                        .plus("homeFreq", homeFreq.getChoice().getOrDie())
-                        .plus("skipFreq", skipFreq.getChoice().getOrDie())
-                        .plus("workFreq", workFreq.getChoice().getOrDie());
+                answers.put("shopFreq", shopFreq.getAnswer());
+                answers.put("packFreq", packFreq.getAnswer());
+                answers.put("schoolLunchFreq", schoolLunchFreq.getAnswer());
+                answers.put("homeFreq", homeFreq.getAnswer());
+                answers.put("skipFreq", skipFreq.getAnswer());
+                answers.put("workFreq", workFreq.getAnswer());
+
+                if (answers.values().stream().anyMatch(answer -> answer.isEmpty()))
+                    return;
+
+                PMap<String, String> newData = answers.entrySet().stream()
+                        .map(e -> HashTreePMap.singleton(e.getKey(), e.getValue().getOrDie().value))
+                        .reduce(HashTreePMap.empty(), (m1, m2) -> m1.plusAll(m2));
+
 
                 accept.setEnabled(false);
-                onComplete.call(state.withData(data));
+                onComplete.call(state.withData(state.customData.plusAll(newData)));
             }
         });
 
