@@ -128,9 +128,9 @@ public abstract class BasicScheme implements SurveyScheme {
 
                 TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>>empty()
                         .plus(ConfirmCompletion.withPriority(0))
-                        .plus(ShowEnergyValidationPrompt.withPriority(50, 500.0))
+                        .plus(ShowEnergyValidationPrompt.withPriority(40, 500.0))
+                        .plus(ShowTimeGapPrompt.withPriority(50, 180, new Time(9, 0), new Time(21, 0)))
                         .plus(ShowEmptySurveyPrompt.withPriority(100))
-                        .plus(ShowTimeGapPrompt.withPriority(40, 180, new Time(9, 0), new Time(21, 0)))
 
                 ,
 
