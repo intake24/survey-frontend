@@ -92,7 +92,7 @@ public abstract class BasicScheme implements SurveyScheme {
     }
 
     final protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
-                                RecipeManager recipeManager) {
+                                       RecipeManager recipeManager) {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
@@ -144,7 +144,6 @@ public abstract class BasicScheme implements SurveyScheme {
                         .plus(SelectUnconfirmedMeal.withPriority(1))
                         .plus(SelectMealForReadyMeals.withPriority(1)));
     }
-
 
 
     public BasicScheme(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
@@ -251,25 +250,15 @@ public abstract class BasicScheme implements SurveyScheme {
         // log.info(SurveyXmlSerialiser.toXml(state));
 
         if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
-
-            this.surveyParameters.description.accept(new Option.SideEffectVisitor<String>() {
-                @Override
-                public void visitSome(String description) {
-                    interfaceManager.show(new WelcomePage(description, state));
-                }
-
-                @Override
-                public void visitNone() {
-                    interfaceManager.show(new WelcomePage(SurveyMessages.INSTANCE.welcomePage_welcomeText(), state));
-                }
-            });
-
+            String welcomePageHtml = surveyParameters.description.getOrElse(SurveyMessages.INSTANCE.welcomePage_welcomeText());
+            interfaceManager.show(new WelcomePage(welcomePageHtml, state));
         } else if (!state.completionConfirmed()) {
             if (cachedSurveyPage == null)
                 cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
             interfaceManager.show(cachedSurveyPage);
         } else {
-            interfaceManager.show(new FlatFinalPage(SurveyMessages.INSTANCE.finalPage_text(), postProcess(state, basicPostProcess), log.log));
+            String finalPageHtml = this.surveyParameters.finalPageHtml.getOrElse(SurveyMessages.INSTANCE.finalPage_text());
+            interfaceManager.show(new FlatFinalPage(finalPageHtml, postProcess(state, basicPostProcess), log.log));
         }
     }
 

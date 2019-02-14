@@ -93,14 +93,12 @@ public class FlatFinalPage implements SurveyStage<Survey> {
         } else {
           contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));
         }
-
-        contents.add(new HTMLPanel(finalPageHtml));
       }
 
       @Override
       public void onSuccess(Method method, SurveySubmissionResponse response) {
         contents.clear();
-        HTMLPanel p = new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_success()));
+        HTMLPanel p = new HTMLPanel(finalPageHtml);
         p.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
         contents.add(p);
 
@@ -161,7 +159,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
           }
         });
 
-        contents.add(new HTMLPanel(finalPageHtml));
+
 
         UxEventsHelper.cleanSessionId();
         StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
