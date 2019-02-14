@@ -9,6 +9,7 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckListPrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
 
 public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
@@ -33,12 +34,15 @@ public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
         if (!state.customData.containsKey(DIET_KEY) && state.portionSizeComplete()) {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Are you following any kind of special diet?</p>" +
-                    "<p>If yes, please tick one of the options below that best describes your diet.</p>");
+                    "<p>If yes, please tick the options below that best describe your diet.</p>");
 
-            RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutDiet.class.getSimpleName(),
-                    supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(), "dietOptions");
+            CheckListPrompt prompt = new CheckListPrompt(promptText, AskAboutDiet.class.getSimpleName(),
+                    supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel());
 
-            return Option.some(PromptUtil.asSurveyPrompt(prompt, answer -> SurveyOperation.update(survey -> survey.withData(DIET_KEY, answer.getValue()))));
+            return Option.some(PromptUtil.asSurveyPrompt(prompt, answers -> {
+                String dietValue = answers.stream().map(answer -> answer.getValue()).reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
+                return SurveyOperation.update(survey -> survey.withData(DIET_KEY, dietValue));
+            }));
         } else {
             return Option.none();
         }
