@@ -15,6 +15,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.*;
 import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.UnorderedList;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
@@ -47,6 +48,7 @@ public abstract class MultipleChoiceQuestion<T> extends Composite {
     }
 
     public void showWarning() {
+        BrowserConsole.warn("Z|ZZ?");
         warningDiv.clear();
         warningDiv.add(new Label("Please answer this question before continuing"));
         contents.getElement().scrollIntoView();
@@ -101,7 +103,7 @@ public abstract class MultipleChoiceQuestion<T> extends Composite {
         promptPanel = WidgetFactory.createPromptPanel(promptText);
         promptPanel.getElement().setId("intake24-mcq-prompt");
         contents.add(promptPanel);
-
+        contents.add(warningDiv);
         contents.add(optionList);
 
         initWidget(contents);

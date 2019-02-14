@@ -12,4 +12,8 @@ public class MultipleChoiceQuestionAnswer {
         this.index = index;
         this.details = details;
     }
+
+    public String getValue() {
+        return details.map(s -> value + ": " + s).getOrElse(value);
+    }
 }
