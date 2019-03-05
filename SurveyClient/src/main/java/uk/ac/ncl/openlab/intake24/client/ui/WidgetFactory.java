@@ -47,9 +47,14 @@ public class WidgetFactory {
     }
 
     public static Button createButton(String label, ClickHandler handler) {
-        Button result = new Button(label);
-        result.addStyleName("intake24-button");
+        Button result = createButton(label);
         result.addClickHandler(handler);
+        return result;
+    }
+
+    public static Button createButton(String label, String id, ClickHandler handler) {
+        Button result = createButton(label, handler);
+        result.getElement().setId(id);
         return result;
     }
 

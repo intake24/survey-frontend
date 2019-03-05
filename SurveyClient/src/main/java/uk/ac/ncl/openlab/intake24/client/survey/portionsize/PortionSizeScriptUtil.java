@@ -27,16 +27,13 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
 
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Panel;
-import org.workcraft.gwt.imagechooser.shared.ImageDef;
 import org.workcraft.gwt.imagemap.shared.ImageMap;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedImage;
 import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
 import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkScale;
@@ -139,29 +136,27 @@ public class PortionSizeScriptUtil {
         });
     }
 
-    public static SimplePrompt<UpdateFunc> asServedPrompt(final AsServedSet set, final String lessText, final String moreText,
-                                                          final String confirmText, final String indexField, final String imageUrlField, final String weightField, SafeHtml promptText) {
+    public static SimplePrompt<UpdateFunc> asServedPrompt(final AsServedSet set,
+                                                          final String lessButtonLabel,
+                                                          final String moreButtonLabel,
+                                                          final String confirmButtonLabel,
+                                                          final String indexField,
+                                                          final String imageUrlField,
+                                                          final String weightField,
+                                                          final Option<String> weightFactorField,
+                                                          SafeHtml promptText) {
 
-        final ImageDef[] defs = new ImageDef[set.images.size()];
 
-        final NumberFormat nf = NumberFormat.getDecimalFormat();
+        return map(new AsServedPrompt2(set.images.toArray(new AsServedImage[set.images.size()]), promptText, lessButtonLabel,
+                        moreButtonLabel, confirmButtonLabel, weightFactorField.isDefined()),
+                result -> {
+                    final UpdateFunc f = new UpdateFunc()
+                            .setField(indexField, Integer.toString(result.imageIndex))
+                            .setField(weightField, Double.toString(result.imageWeight))
+                            .setField(imageUrlField, result.imageUrl);
 
-        int k = 0;
-
-        for (AsServedImage image: set.images) {
-            defs[k] = new ImageDef(image.mainImageUrl, image.thumbnailUrl, nf.format(Math.round(image.weight)) + " " + messages.asServed_weightUnitLabel());
-            k++;
-        }
-
-        AsServedPromptDef def = new AsServedPromptDef(promptText, defs, moreText, lessText, confirmText);
-        
-        return map(new AsServedPrompt(def), new Function1<Integer, UpdateFunc>() {
-            @Override
-            public UpdateFunc apply(Integer choice) {
-                return new UpdateFunc().setField(indexField, choice.toString())
-                        .setField(weightField, Double.toString(set.images.get(choice).weight)).setField(imageUrlField, defs[choice].url);
-            }
-        });
+                    return weightFactorField.accept(Option.makeVisitor(field -> f.setField(field, Double.toString(result.weightFactor)), () -> f));
+                });
     }
 
     public static SimplePrompt<UpdateFunc> guidePromptEx(final SafeHtml promptText, final ImageMap imageMap, final String indexField,

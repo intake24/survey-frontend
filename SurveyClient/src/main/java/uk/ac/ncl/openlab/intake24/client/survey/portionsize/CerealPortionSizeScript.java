@@ -85,7 +85,10 @@ public class CerealPortionSizeScript implements PortionSizeScript {
 
             SimplePrompt<UpdateFunc> portionSizePrompt =
                     withBackLink(
-                            asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(), messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight", defaultServingSizePrompt(foodData.description()))
+                            asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(),
+                                    messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
+                                    Option.some("servingWeightFactor"),
+                                    defaultServingSizePrompt(foodData.description()))
                     );
             return Option.some(portionSizePrompt);
         } else if (!data.containsKey("leftoversWeight")) {
@@ -96,7 +99,10 @@ public class CerealPortionSizeScript implements PortionSizeScript {
                 String leftoversSetId = "cereal_" + data.get("type") + data.get("bowl") + "_leftovers";
 
                 return Option.some(withBackLink(asServedPrompt(asServedDefs.get(leftoversSetId),
-                        messages.asServed_leftLessButtonLabel(), messages.asServed_leftMoreButtonLabel(), messages.asServed_leftContinueButtonLabel(), "leftoversChoiceIndex", "leftoversImage", "leftoversWeight", defaultLeftoversPrompt(foodData.description()))));
+                        messages.asServed_leftLessButtonLabel(), messages.asServed_leftMoreButtonLabel(), messages.asServed_leftContinueButtonLabel(),
+                        "leftoversChoiceIndex", "leftoversImage", "leftoversWeight",
+                        Option.none(),
+                        defaultLeftoversPrompt(foodData.description()))));
             }
         } else
             return done();
