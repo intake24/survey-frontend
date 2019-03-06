@@ -14,13 +14,12 @@ import com.google.gwt.animation.client.Animation;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.*;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
+import org.workcraft.gwt.shared.client.Function0;
+import org.workcraft.gwt.shared.client.Function1;
 import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedImage;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
@@ -30,6 +29,59 @@ import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
 
 public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
+
+    private interface SelectionState {
+        <R> R match(Function0<R> less, Function0<R> more, Function1<Integer, R> asShown);
+        boolean equals(SelectionState other);
+    }
+
+    private static class Less implements SelectionState {
+        @Override
+        public <R> R match(Function0<R> less, Function0<R> more, Function1<Integer, R> asShown) {
+            return less.apply();
+        }
+
+        @Override
+        public boolean equals(SelectionState other) {
+            return other.match(() -> true, () -> false, i -> false);
+        }
+    }
+
+    private static class More implements SelectionState {
+        @Override
+        public <R> R match(Function0<R> less, Function0<R> more, Function1<Integer, R> asShown) {
+            return more.apply();
+        }
+
+        @Override
+        public boolean equals(SelectionState other) {
+            return other.match(() -> false, () -> true, i -> false);
+        }
+    }
+
+    private static class AsShown implements SelectionState {
+        public final int selectedIndex;
+
+        public AsShown(int selectedIndex) {
+            this.selectedIndex = selectedIndex;
+        }
+
+        @Override
+        public <R> R match(Function0<R> less, Function0<R> more, Function1<Integer, R> asShown) {
+            return asShown.apply(selectedIndex);
+        }
+
+        @Override
+        public boolean equals(SelectionState other) {
+            return other.match(() -> false, () -> false, i -> i == selectedIndex);
+        }
+    }
+
+    private static final Less LESS = new Less();
+    private static final More MORE = new More();
+
+    private static final String STYLE_THUMBNAIL_SELECTED = "intake24-as-served-thumbnail-selected";
+
     private static final HelpMessages helpMessages = HelpMessages.INSTANCE;
 
     private final AsServedImage[] images;
@@ -40,15 +92,19 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
     private final boolean moreThanOptionEnabled;
 
     private FlowPanel[] imageDivs;
-    private Image[] thumbs;
+    private Image[] imageThumbnails;
+    private FlowPanel lessThumbnail;
+    private FlowPanel moreThumbnail;
     private Button nextButton;
     private Button prevButton;
     private Button confirmButton;
     private FlowPanel imageContainer;
     private FlowPanel thumbsContainer;
 
-    private int index;
-    private boolean animation = false;
+
+    private SelectionState selectionState;
+    private int mainImageIndex;
+    private boolean mainImageSwitching = false;
 
     public AsServedPrompt2(AsServedImage[] images, SafeHtml promptText, String prevButtonLabel, String nextButtonLabel,
                            String confirmButtonLabel, boolean moreThanOptionEnabled) {
@@ -75,32 +131,20 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
             .plus(new ShepherdTour.Step("hadThisMuch", "#intake24-as-served-confirm-button", helpMessages.asServed_confirmButtonTitle(), helpMessages
                     .asServed_confirmButtonDescription(), "bottom right", "top right"));
 
-    private void transition(final int newIndex) {
-        if (animation || index == newIndex)
+
+    private void switchMainImage(int newIndex) {
+
+        if (mainImageIndex == newIndex)
             return;
-
-        animation = true;
-
-        if (newIndex == 0)
-            prevButton.setEnabled(false);
-        else
-            prevButton.setEnabled(true);
-
-        if (newIndex == imageDivs.length - 1)
-            nextButton.setEnabled(false);
-        else
-            nextButton.setEnabled(true);
 
         imageDivs[newIndex].getElement().getStyle().clearDisplay();
         imageDivs[newIndex].getElement().getStyle().setOpacity(0);
         imageDivs[newIndex].getElement().getStyle().setZIndex(400);
         imageDivs[newIndex].addStyleName("intake24-as-served-image-overlay");
 
-        thumbs[newIndex].addStyleName("intake24-as-served-thumbnail-selected");
+        imageDivs[mainImageIndex].getElement().getStyle().setZIndex(399);
 
-        imageDivs[index].getElement().getStyle().setZIndex(399);
-
-        thumbs[index].removeStyleName("intake24-as-served-thumbnail-selected");
+        mainImageSwitching = true;
 
         Animation fadeIn = new Animation() {
             @Override
@@ -113,30 +157,68 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
                 imageDivs[newIndex].getElement().getStyle().setOpacity(1);
                 imageDivs[newIndex].removeStyleName("intake24-as-served-image-overlay");
 
-                imageDivs[index].getElement().getStyle().setDisplay(Display.NONE);
-                imageDivs[index].getElement().getStyle().setZIndex(0);
+                imageDivs[mainImageIndex].getElement().getStyle().setDisplay(Display.NONE);
+                imageDivs[mainImageIndex].getElement().getStyle().setZIndex(0);
 
-                index = newIndex;
-                animation = false;
+                mainImageIndex = newIndex;
+                mainImageSwitching = false;
             }
         };
 
         fadeIn.run(400);
     }
 
+    private void setSelectionState(final SelectionState newState) {
+        if (mainImageSwitching || selectionState.equals(newState))
+            return;
+
+        newState.match(
+                () -> {
+                    prevButton.setEnabled(false);
+                    lessThumbnail.addStyleName(STYLE_THUMBNAIL_SELECTED);
+
+                    selectionState.match(
+                            () -> (),
+                            () -> {
+                                moreThumbnail.removeStyleName(STYLE_THUMBNAIL_SELECTED);
+                            },
+                            i -> {
+                                imageThumbnails[i].removeStyleName(STYLE_THUMBNAIL_SELECTED);
+                            }
+
+                    );
+                },
+                () -> {},
+                i -> {}
+        )
+
+        if (selectionState.equals(LESS))
+            prevButton.setEnabled(false);
+        else
+            prevButton.setEnabled(true);
+
+        if (selectionState.equals(MORE))
+            nextButton.setEnabled(false);
+        else
+            nextButton.setEnabled(true);
+
+        imageThumbnails[newIndex].addStyleName("intake24-as-served-thumbnail-selected");
+        imageThumbnails[selectedIndex].removeStyleName("intake24-as-served-thumbnail-selected");
+    }
+
     private void prev() {
-        int newIndex = index;
+        int newIndex = selectedIndex;
         if (newIndex > 0) {
             newIndex--;
-            transition(newIndex);
+            setSelectionState(newIndex);
         }
     }
 
     private void next() {
-        int newIndex = index;
+        int newIndex = selectedIndex;
         if (newIndex < imageDivs.length - 1) {
             newIndex++;
-            transition(newIndex);
+            setSelectionState(newIndex);
         }
     }
 
@@ -164,7 +246,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         prevButton = WidgetFactory.createButton(prevButtonLabel, "intake24-as-served-prev-button", e -> prev());
         nextButton = WidgetFactory.createButton(nextButtonLabel, "intake24-as-served-next-button", e -> next());
         confirmButton = WidgetFactory.createGreenButton(confirmButtonLabel, "intake24-as-served-confirm-button", e -> {
-            //onComplete.call(new AsServed2Result(index, def.));
+            //onComplete.call(new AsServed2Result(selectedIndex, def.));
         });
 
         asServedContainer.add(imageContainer);
@@ -172,8 +254,22 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         asServedContainer.add(WidgetFactory.createButtonsPanel(prevButton, nextButton, confirmButton));
 
         imageDivs = new FlowPanel[images.length];
-        thumbs = new Image[images.length];
+        imageThumbnails = new Image[images.length];
         final NumberFormat nf = NumberFormat.getDecimalFormat();
+
+
+        lessThumbnail = new FlowPanel();
+        lessThumbnail.addStyleName("intake24-as-served-thumbnail");
+        lessThumbnail.addStyleName("intake24-as-served-more");
+
+        Image lessThumbnailImage = new Image(images[0].thumbnailUrl);
+
+        HTMLPanel lessThumbnailIcon = new HTMLPanel("p", "-");
+
+        lessThumbnail.add(lessThumbnailImage);
+        lessThumbnail.add(lessThumbnailIcon);
+
+        thumbsContainer.add(lessThumbnail);
 
         for (int i = 0; i < images.length; i++) {
             imageDivs[i] = new FlowPanel();
@@ -192,22 +288,36 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
 
             imageContainer.add(imageDivs[i]);
 
-            thumbs[i] = new Image(images[i].thumbnailUrl);
+            imageThumbnails[i] = new Image(images[i].thumbnailUrl);
 
             final int k = i;
 
-            thumbs[i].addClickHandler(e -> transition(k));
+            imageThumbnails[i].addClickHandler(e -> setSelectionState(k));
 
-            thumbs[i].addStyleName("intake24-as-served-thumbnail");
-            thumbsContainer.add(thumbs[i]);
+            imageThumbnails[i].addStyleName("intake24-as-served-thumbnail");
+            thumbsContainer.add(imageThumbnails[i]);
         }
 
-        int startIndex = images.length / 2;
 
-        imageDivs[startIndex].getElement().getStyle().clearDisplay();
-        thumbs[startIndex].addStyleName("intake24-as-served-thumbnail-selected");
+        moreThumbnail = new FlowPanel();
+        moreThumbnail.addStyleName("intake24-as-served-thumbnail");
+        moreThumbnail.addStyleName("intake24-as-served-more");
 
-        index = startIndex;
+        Image moreThumbnailImage = new Image(images[images.length - 1].thumbnailUrl);
+
+        HTMLPanel moreThumbnailIcon = new HTMLPanel("p", "+");
+
+        moreThumbnail.add(moreThumbnailImage);
+        moreThumbnail.add(moreThumbnailIcon);
+
+        thumbsContainer.add(moreThumbnail);
+
+        int startingIndex = images.length / 2;
+
+        imageDivs[startingIndex].getElement().getStyle().clearDisplay();
+        imageThumbnails[startingIndex].addStyleName("intake24-as-served-thumbnail-selected");
+
+        selectionState = new AsShown(startingIndex);
 
         content.add(asServedContainer);
 
