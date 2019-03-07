@@ -148,7 +148,7 @@ public class PortionSizeScriptUtil {
 
 
         return map(new AsServedPrompt2(set.images.toArray(new AsServedImage[set.images.size()]), promptText, lessButtonLabel,
-                        moreButtonLabel, confirmButtonLabel, weightFactorField.isDefined()),
+                        moreButtonLabel, confirmButtonLabel, weightFactorField.isDefined(), false),
                 result -> {
                     final UpdateFunc f = new UpdateFunc()
                             .setField(indexField, Integer.toString(result.imageIndex))
