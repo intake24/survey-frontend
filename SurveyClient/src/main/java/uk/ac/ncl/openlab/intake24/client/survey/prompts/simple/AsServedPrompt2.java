@@ -129,11 +129,14 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
     private Button confirmButton;
     private FlowPanel imageContainer;
     private FlowPanel thumbsContainer;
+    private FlowPanel weightFactorInterface = null;
+    private Label weightFactorLabel;
 
 
     private SelectionState selectionState;
     private int mainImageIndex;
     private boolean mainImageSwitching = false;
+    private double weightFactor = 1.0;
 
     public AsServedPrompt2(AsServedImage[] images, SafeHtml promptText, String prevButtonLabel, String nextButtonLabel,
                            String confirmButtonLabel, boolean moreOptionEnabled, boolean lessOptionEnabled) {
@@ -204,6 +207,50 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         fadeIn.run(400);
     }
 
+    private void setWeightFactor(double factor) {
+        weightFactor = factor;
+
+        if (weightFactorLabel != null) {
+
+            
+
+
+            weightFactorLabel.setText("I had 1 3/4 of the largest portion");
+
+        }
+
+    }
+
+    private void showWeightFactorInterface(double min, double max, double step) {
+        if (weightFactorInterface == null) {
+            weightFactorInterface = new FlowPanel();
+            weightFactorInterface.addStyleName("intake24-as-served-weight-factor-container");
+
+            HTMLPanel more = new HTMLPanel("<i>");
+            more.addStyleName("fas fa-chevron-up intake24-as-served-weight-factor-button");
+            more.sinkEvents(Event.ONCLICK);
+            more.addHandler(e -> setWeightFactor(Math.min(max, weightFactor + step)), ClickEvent.getType());
+
+            HTMLPanel less = new HTMLPanel("<i>");
+            less.addStyleName("fas fa-chevron-down intake24-as-served-weight-factor-button");
+            less.sinkEvents(Event.ONCLICK);
+            less.addHandler(e -> setWeightFactor(Math.max(min, weightFactor - step)), ClickEvent.getType());
+
+            Label text = new Label();
+
+            weightFactorInterface.add(more);
+            weightFactorInterface.add(text);
+            weightFactorInterface.add(less);
+        }
+
+        imageContainer.add(weightFactorInterface);
+    }
+
+    private void hideWeightFactorInterface() {
+        if (weightFactorInterface != null)
+            imageContainer.remove(weightFactorInterface);
+    }
+
     private void deselectThumbnail(final SelectionState state) {
         state.match(
                 () -> lessThumbnail.removeStyleName(STYLE_THUMBNAIL_SELECTED),
@@ -216,18 +263,6 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         if (mainImageSwitching || selectionState.equals(newState))
             return;
 
-        selectionState.match(
-                () -> BrowserConsole.log("Old: less"),
-                () -> BrowserConsole.log("Old: More"),
-                i -> BrowserConsole.log("Old: AsShown: " + i)
-        );
-
-        newState.match(
-                () -> BrowserConsole.log("New: less"),
-                () -> BrowserConsole.log("New: more"),
-                i -> BrowserConsole.log("New: AsShown: " + i)
-        );
-
         deselectThumbnail(selectionState);
 
         newState.match(
@@ -238,6 +273,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
                         prevButton.setEnabled(false);
                         nextButton.setEnabled(true);
                         lessThumbnail.addStyleName(STYLE_THUMBNAIL_SELECTED);
+                        showWeightFactorInterface(0.1, 1.0, 0.125);
                     }
                 },
                 () -> {
@@ -247,12 +283,14 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
                         prevButton.setEnabled(true);
                         nextButton.setEnabled(false);
                         moreThumbnail.addStyleName(STYLE_THUMBNAIL_SELECTED);
+                        showWeightFactorInterface(1.0, 5.0, 0.125);
                     }
                 },
                 i -> {
                     prevButton.setEnabled(i > 0 || lessOptionEnabled);
                     nextButton.setEnabled(i < (images.length - 1) || moreOptionEnabled);
                     imageThumbnails[i].addStyleName(STYLE_THUMBNAIL_SELECTED);
+                    hideWeightFactorInterface();
                 }
         );
 
@@ -318,7 +356,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
                     i -> images[i].weight
             );
 
-            onComplete.call(new AsServed2Result(images[mainImageIndex].mainImageUrl, mainImageIndex, ));
+            onComplete.call(new AsServed2Result(images[mainImageIndex].mainImageUrl, mainImageIndex, weight, 1.0));
         });
 
         asServedContainer.add(imageContainer);
