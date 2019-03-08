@@ -78,3 +78,25 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	width: 80px;
 	line-height: 61px;
 }
+
+.intake24-as-served-weight-factor-container {
+	position: absolute;
+	text-align: center;
+	bottom: 80px;
+	left: 50%;
+	transform: translate(-50%);
+	background: rgba(255, 255, 255, 0.6);
+	padding: 20px;
+	border-radius: 5px;
+	font-size: 125%;
+}
+
+.intake24-as-served-weight-factor-button {
+	background: rgba(255,255,255,0.7);
+	padding: 5px 10px;
+	margin: 3px;
+}
+
+.intake24-as-served-weight-factor-button:hover {
+	background: rgba(255,255,255,1.0);
+}
