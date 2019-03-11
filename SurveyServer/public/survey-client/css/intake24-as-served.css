@@ -85,18 +85,68 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	bottom: 80px;
 	left: 50%;
 	transform: translate(-50%);
-	background: rgba(255, 255, 255, 0.6);
+	background: rgba(255, 255, 255, 0.8);
 	padding: 20px;
 	border-radius: 5px;
+	z-index: 500;
 	font-size: 125%;
 }
 
-.intake24-as-served-weight-factor-button {
-	background: rgba(255,255,255,0.7);
-	padding: 5px 10px;
-	margin: 3px;
+.intake24-as-served-weight-factor-container .ui {
+    line-height: 2;
 }
 
-.intake24-as-served-weight-factor-button:hover {
-	background: rgba(255,255,255,1.0);
+.intake24-as-served-weight-factor-container svg {
+	height: 2em;
+	width: 2em;
+}
+
+.intake24-as-served-weight-factor-container svg.circled-text {
+    position: relative;
+    top: 0.6em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+.intake24-as-served-weight-factor-container text.circled-text-text {
+    font-size: 1px;
+    font-family: Verdana, sans-serif;
+    fill: black;
+}
+
+.intake24-as-served-weight-factor-container svg.radial-fraction {
+    position: relative;
+    top: 0.6em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+.intake24-as-served-weight-factor-container circle.circled-text-circle {
+    fill: white;
+    stroke-width: 0.1;
+    stroke: black;
+}
+
+.intake24-as-served-weight-factor-container circle.radial-fraction-empty {
+    fill: black;
+    stroke-width: 0.1;
+    stroke: black;
+}
+
+.intake24-as-served-weight-factor-container path.radial-fraction-full {
+    fill: white;
+    stroke: none;
+}
+
+
+.intake24-as-served-weight-factor-container button {
+    color: black;
+	background: rgba(255,255,255,0.6);
+	padding: 5px 10px;
+	margin: 3px;
+    border: 1px solid gray;
+}
+
+.intake24-as-served-weight-factor button:hover {
+	background: white;
 }

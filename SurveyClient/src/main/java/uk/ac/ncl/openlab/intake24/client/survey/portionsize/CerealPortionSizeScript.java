@@ -87,7 +87,7 @@ public class CerealPortionSizeScript implements PortionSizeScript {
                     withBackLink(
                             asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(),
                                     messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
-                                    Option.some("servingWeightFactor"),
+                                    Option.none(),
                                     defaultServingSizePrompt(foodData.description()))
                     );
             return Option.some(portionSizePrompt);

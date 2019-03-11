@@ -143,19 +143,21 @@ public class PortionSizeScriptUtil {
                                                           final String indexField,
                                                           final String imageUrlField,
                                                           final String weightField,
-                                                          final Option<String> weightFactorField,
+                                                          final Option<WeightFactorSettings> weightFactorSettings,
                                                           SafeHtml promptText) {
 
+        boolean showMore = weightFactorSettings.map(s -> s.showMoreOption).getOrElse(false);
+        boolean showLess = weightFactorSettings.map(s -> s.showLessOption).getOrElse(false);
 
         return map(new AsServedPrompt2(set.images.toArray(new AsServedImage[set.images.size()]), promptText, lessButtonLabel,
-                        moreButtonLabel, confirmButtonLabel, weightFactorField.isDefined(), false),
+                        moreButtonLabel, confirmButtonLabel, showMore, showLess),
                 result -> {
                     final UpdateFunc f = new UpdateFunc()
                             .setField(indexField, Integer.toString(result.imageIndex))
                             .setField(weightField, Double.toString(result.imageWeight))
                             .setField(imageUrlField, result.imageUrl);
 
-                    return weightFactorField.accept(Option.makeVisitor(field -> f.setField(field, Double.toString(result.weightFactor)), () -> f));
+                    return weightFactorSettings.accept(Option.makeVisitor(settings -> f.setField(settings.fieldName, Double.toString(result.weightFactor)), () -> f));
                 });
     }
 

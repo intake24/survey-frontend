@@ -33,6 +33,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.AsServedSet;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.WeightFactorSettings;
 
 import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.setAdditionalField;
 import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.withBackLink;
@@ -65,7 +66,7 @@ public class AsServedScript implements PortionSizeScript {
                     withBackLink(
                             asServedPrompt(servingImages, PromptMessages.INSTANCE.asServed_servedLessButtonLabel(), PromptMessages.INSTANCE.asServed_servedMoreButtonLabel(),
                                     PromptMessages.INSTANCE.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
-                                    Option.some("servingWeightFactor"),
+                                    Option.some(new WeightFactorSettings("servingWeightFactor", false, true)),
                                     defaultServingSizePrompt(foodData.description()))
                     );
 
