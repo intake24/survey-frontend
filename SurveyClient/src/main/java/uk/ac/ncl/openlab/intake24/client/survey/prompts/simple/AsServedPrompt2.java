@@ -378,15 +378,18 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         nextButton = WidgetFactory.createButton(nextButtonLabel, "intake24-as-served-next-button", e -> next());
         confirmButton = WidgetFactory.createGreenButton(confirmButtonLabel, "intake24-as-served-confirm-button", e -> {
 
-            double weight = selectionState.match(
-                    () -> 0.0,
-                    () -> 0.0,
+            double baseWeight = selectionState.match(
+                    () -> images[0].weight,
+                    () -> images[images.length - 1].weight,
                     i -> images[i].weight
             );
 
-            double weightFactor = (double) weightFactorNumerator / WEIGHT_FACTOR_DENOMINATOR;
+            double weightFactor = selectionState.match(
+                    () -> (double) weightFactorNumerator / WEIGHT_FACTOR_DENOMINATOR,
+                    () -> (double) weightFactorNumerator / WEIGHT_FACTOR_DENOMINATOR,
+                    i -> 1.0);
 
-            onComplete.call(new AsServed2Result(images[mainImageIndex].mainImageUrl, mainImageIndex, weight * weightFactor, weightFactor));
+            onComplete.call(new AsServed2Result(images[mainImageIndex].mainImageUrl, mainImageIndex, baseWeight * weightFactor, weightFactor));
         });
 
         asServedContainer.add(imageContainer);

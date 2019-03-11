@@ -47,15 +47,15 @@ public class April2019 extends BasicScheme {
 
         return new Rules(
                 baseRules.mealPromptRules
-                        .plus(AskIfCookedAtHome.withPriority(9))
                         .plus(AskAboutFoodSource.withPriority(9)),
                 baseRules.foodPromptRules,
                 baseRules.extendedFoodPromptRules,
                 baseRules.surveyPromptRules
-                        .plus(AskAboutSupplements.withPriority(30))
+                        .plus(RemindFrequentlyForgottenFoods.withPriority(31))
+                        .plus(AskIfUsualAmount.withPriority(30))
+                        .plus(AskAboutDiet.withPriority(29))
                         .plus(AskAboutCookingOil.withPriority(29))
-                        .plus(AskIfUsualAmount.withPriority(28))
-                        .plus(AskAboutDiet.withPriority(27)),
+                        .plus(AskAboutSupplements.withPriority(30)),
                 baseRules.selectionRules
         );
     }

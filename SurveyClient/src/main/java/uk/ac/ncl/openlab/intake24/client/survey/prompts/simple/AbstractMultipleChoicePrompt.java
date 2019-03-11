@@ -54,7 +54,7 @@ public abstract class AbstractMultipleChoicePrompt<T> implements SimplePrompt<T>
 
         content.add(question);
 
-        Button continueButton = WidgetFactory.createButton(continueLabel, event -> {
+        Button continueButton = WidgetFactory.createGreenButton(continueLabel, "continueButton", event -> {
             question.getAnswer().accept(new Option.SideEffectVisitor<T>() {
                 @Override
                 public void visitSome(T answer) {

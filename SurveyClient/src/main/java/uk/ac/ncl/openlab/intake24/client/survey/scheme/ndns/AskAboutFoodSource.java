@@ -19,7 +19,6 @@ public class AskAboutFoodSource implements PromptRule<Meal, MealOperation> {
     private static final PVector<MultipleChoiceQuestionOption> options = TreePVector.<MultipleChoiceQuestionOption>empty()
             .plus(new MultipleChoiceQuestionOption("Large supermarket"))
             .plus(new MultipleChoiceQuestionOption("Convenience shop/corner shop/petrol station"))
-            .plus(new MultipleChoiceQuestionOption("Convenience shop/corner shop/petrol station"))
             .plus(new MultipleChoiceQuestionOption("Fast food/take-away"))
             .plus(new MultipleChoiceQuestionOption("Café/coffee shop/sandwich bar/deli"))
             .plus(new MultipleChoiceQuestionOption("Sit-down restaurant or pub with a waiter/waitress"))
@@ -32,12 +31,9 @@ public class AskAboutFoodSource implements PromptRule<Meal, MealOperation> {
 
     @Override
     public Option<Prompt<Meal, MealOperation>> apply(Meal state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (state.customData.containsKey(AskIfCookedAtHome.COOKED_AT_HOME_KEY) &&
-                state.customData.get(AskIfCookedAtHome.COOKED_AT_HOME_KEY).equals("No") &&
-                !state.customData.containsKey(FOOD_SOURCE_KEY) &&
-                state.portionSizeComplete()) {
+        if (!state.customData.containsKey(FOOD_SOURCE_KEY) && state.portionSizeComplete()) {
 
-            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Where was <em>most</em> of the food for your " +
+            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Where was <strong><u>most</u></strong> of the food for your " +
                     SafeHtmlUtils.htmlEscape(state.name.toLowerCase()) + " purchased from?</p>");
 
             RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutFoodSource.class.getSimpleName(),

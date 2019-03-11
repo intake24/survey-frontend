@@ -48,7 +48,6 @@ public abstract class MultipleChoiceQuestion<T> extends Composite {
     }
 
     public void showWarning() {
-        BrowserConsole.warn("Z|ZZ?");
         warningDiv.clear();
         warningDiv.add(new Label("Please answer this question before continuing"));
         contents.getElement().scrollIntoView();
