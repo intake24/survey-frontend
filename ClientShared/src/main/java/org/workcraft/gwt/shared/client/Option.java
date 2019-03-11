@@ -11,7 +11,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package org.workcraft.gwt.shared.client;
 
 import java.util.NoSuchElementException;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -45,6 +45,11 @@ public abstract class Option<T> implements IsSerializable {
     }
 
     @Override
+    public <R> R match(Function1<T, R> some, Supplier<R> none) {
+      return some.apply(item);
+    }
+
+    @Override
     public void accept(SideEffectVisitor<T> visitor) {
       visitor.visitSome(item);
     }
@@ -62,6 +67,11 @@ public abstract class Option<T> implements IsSerializable {
     }
 
     @Override
+    public <R> R match(Function1<T, R> some, Supplier<R> none) {
+      return none.get();
+    }
+
+    @Override
     public void accept(SideEffectVisitor<T> visitor) {
       visitor.visitNone();
     }
@@ -73,6 +83,8 @@ public abstract class Option<T> implements IsSerializable {
   }
 
   public abstract <R> R accept(Visitor<T, R> visitor);
+
+  public abstract <R> R match(Function1<T, R> some, Supplier<R> none);
 
   public abstract void accept(SideEffectVisitor<T> visitor);
 
