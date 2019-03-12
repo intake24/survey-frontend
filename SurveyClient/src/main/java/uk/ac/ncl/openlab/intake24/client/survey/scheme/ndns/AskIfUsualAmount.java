@@ -38,9 +38,9 @@ public class AskIfUsualAmount implements PromptRule<Survey, SurveyOperation> {
                     "usualAmountOptions");
 
             return Option.some(PromptUtil.asSurveyPrompt(prompt, answer ->
-                    SurveyOperation.update(s -> s
-                            .withData(AMOUNT_KEY, answer.value)
-                            .withData(AMOUNT_REASON_KEY, answer.details.getOrElse("")))));
+                    SurveyOperation.update(s -> answer.details.match(
+                            reason -> s.withData(AMOUNT_KEY, answer.value).withData(AMOUNT_REASON_KEY, reason),
+                            () -> s.withData(AMOUNT_KEY, answer.value)))));
 
         } else {
             return Option.none();

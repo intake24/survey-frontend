@@ -13,6 +13,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckListPrompt;
 
 public class AskAboutSupplements implements PromptRule<Survey, SurveyOperation> {
 
+    public static final String SUPPLEMENTS_COMPLETE = "supplementsComplete";
     public static final String SUPPLEMENTS_KEY = "supplements";
 
     final private PVector<MultipleChoiceQuestionOption> supplementOptions = TreePVector.<MultipleChoiceQuestionOption>empty()
@@ -37,7 +38,7 @@ public class AskAboutSupplements implements PromptRule<Survey, SurveyOperation> 
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.customData.containsKey(SUPPLEMENTS_KEY) && state.portionSizeComplete()) {
+        if (!state.flags.contains(SUPPLEMENTS_COMPLETE) && state.portionSizeComplete()) {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Did you take any dietary supplements?</p>");
 
@@ -46,12 +47,14 @@ public class AskAboutSupplements implements PromptRule<Survey, SurveyOperation> 
 
 
             return Option.some(PromptUtil.asSurveyPrompt(prompt, answers -> {
+                if (!answers.isEmpty()) {
+                    String supplementsValue = answers.stream()
+                            .map(answer -> answer.details.map(s -> "Other: " + s).getOrElse(answer.value))
+                            .reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
 
-                String supplementsValue = answers.stream()
-                        .map(answer -> answer.details.map(s -> "Other: " + s).getOrElse(answer.value))
-                        .reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
-
-                return SurveyOperation.update(survey -> survey.withData(SUPPLEMENTS_KEY, supplementsValue));
+                    return SurveyOperation.update(survey -> survey.withData(SUPPLEMENTS_KEY, supplementsValue).withFlag(SUPPLEMENTS_COMPLETE));
+                } else
+                    return SurveyOperation.update(survey -> survey.withFlag(SUPPLEMENTS_COMPLETE));
             }));
         } else {
             return Option.none();

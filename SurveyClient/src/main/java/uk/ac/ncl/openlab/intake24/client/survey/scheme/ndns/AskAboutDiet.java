@@ -14,6 +14,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt
 
 public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
 
+    public static final String DIET_COMPLETE = "dietComplete";
     public static final String DIET_KEY = "diet";
 
 
@@ -31,7 +32,7 @@ public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.customData.containsKey(DIET_KEY) && state.portionSizeComplete()) {
+        if (!state.flags.contains(DIET_COMPLETE) && state.portionSizeComplete()) {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Are you following any kind of special diet?</p>" +
                     "<p>If yes, please tick the options below that best describe your diet.</p>");
@@ -40,8 +41,11 @@ public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
                     supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel());
 
             return Option.some(PromptUtil.asSurveyPrompt(prompt, answers -> {
-                String dietValue = answers.stream().map(answer -> answer.getValue()).reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
-                return SurveyOperation.update(survey -> survey.withData(DIET_KEY, dietValue));
+                if (!answers.isEmpty()) {
+                    String dietValue = answers.stream().map(answer -> answer.getValue()).reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
+                    return SurveyOperation.update(survey -> survey.withData(DIET_KEY, dietValue).withFlag(DIET_COMPLETE));
+                } else
+                    return SurveyOperation.update(survey -> survey.withFlag(DIET_COMPLETE));
             }));
         } else {
             return Option.none();
