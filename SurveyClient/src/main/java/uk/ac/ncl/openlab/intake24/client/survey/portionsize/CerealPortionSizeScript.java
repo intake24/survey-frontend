@@ -38,6 +38,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.WeightFactorSettings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +88,7 @@ public class CerealPortionSizeScript implements PortionSizeScript {
                     withBackLink(
                             asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(),
                                     messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
-                                    Option.none(),
+                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)),
                                     defaultServingSizePrompt(foodData.description()))
                     );
             return Option.some(portionSizePrompt);

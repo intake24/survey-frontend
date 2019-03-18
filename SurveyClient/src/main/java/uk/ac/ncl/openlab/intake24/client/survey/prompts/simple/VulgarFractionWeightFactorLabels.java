@@ -6,6 +6,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.widgets.CircledText;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.widgets.RadialFraction;
 
 public class VulgarFractionWeightFactorLabels implements WeightFactorLabels {
+    private final boolean reduceFractions;
     private HTMLPanel wholeLabel;
     private HTMLPanel fractionLabel;
 
@@ -38,10 +39,15 @@ public class VulgarFractionWeightFactorLabels implements WeightFactorLabels {
     @Override
     public void updateFractionLabel(int numerator, int denominator) {
         int gcd = gcd(numerator, denominator);
-        fractionLabel.getElement().setInnerHTML("<sup>" + (numerator / gcd) + "</sup>/" + "<sub>" + (denominator / gcd) + "</sub>");
+
+        int num = reduceFractions ? numerator / gcd : numerator;
+        int den = reduceFractions ? denominator / gcd : denominator;
+
+        fractionLabel.getElement().setInnerHTML("<sup>" + num + "</sup>/" + "<sub>" + den + "</sub>");
     }
 
-    public VulgarFractionWeightFactorLabels() {
+    public VulgarFractionWeightFactorLabels(boolean reduceFractions) {
+        this.reduceFractions = reduceFractions;
         wholeLabel = new HTMLPanel("span", "");
         wholeLabel.getElement().addClassName("whole");
 

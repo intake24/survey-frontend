@@ -425,11 +425,11 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
 
         weightFactorLessUI = new WeightFactorUI(1,
                 WEIGHT_FACTOR_DENOMINATOR - 1, WEIGHT_FACTOR_DENOMINATOR, images[0].weight, "smallest portion",
-                new VulgarFractionWeightFactorLabels());
+                new VulgarFractionWeightFactorLabels(false));
 
         weightFactorMoreUI = new WeightFactorUI(WEIGHT_FACTOR_DENOMINATOR + 1, WEIGHT_FACTOR_DENOMINATOR * 5,
                 WEIGHT_FACTOR_DENOMINATOR, images[images.length - 1].weight, "largest portion",
-                new VulgarFractionWeightFactorLabels());
+                new VulgarFractionWeightFactorLabels(false));
 
         ShepherdTour.makeShepherdTarget(promptPanel, imageContainer, thumbsContainer, nextButton, prevButton, confirmButton);
 
