@@ -54,8 +54,8 @@ public class April2019 extends BasicScheme {
                         .plus(RemindFrequentlyForgottenFoods.withPriority(31))
                         .plus(AskIfUsualAmount.withPriority(30))
                         .plus(AskAboutDiet.withPriority(29))
-                        .plus(AskAboutCookingOil.withPriority(29))
-                        .plus(AskAboutSupplements.withPriority(30)),
+                        .plus(AskAboutCookingOil.withPriority(28))
+                        .plus(AskAboutSupplements.withPriority(27)),
                 baseRules.selectionRules
         );
     }
