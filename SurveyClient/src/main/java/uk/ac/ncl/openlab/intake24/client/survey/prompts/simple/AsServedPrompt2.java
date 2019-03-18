@@ -11,7 +11,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.prompts.simple;
 
 import com.google.gwt.animation.client.Animation;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -29,8 +28,6 @@ import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.widgets.CircledText;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.widgets.RadialFraction;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
 import java.util.function.Consumer;
@@ -129,16 +126,13 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
     private Button confirmButton;
     private FlowPanel imageContainer;
     private FlowPanel thumbsContainer;
-    private FlowPanel weightFactorInterface = null;
-    private FlowPanel weightFactorLabel;
-    private CircledText wholeAmountLabel;
-    private RadialFraction radialFraction;
 
+    private WeightFactorUI weightFactorLessUI;
+    private WeightFactorUI weightFactorMoreUI;
 
     private SelectionState selectionState;
     private int mainImageIndex;
     private boolean mainImageSwitching = false;
-    private int weightFactorNumerator;
 
     public AsServedPrompt2(AsServedImage[] images, SafeHtml promptText, String prevButtonLabel, String nextButtonLabel,
                            String confirmButtonLabel, boolean moreOptionEnabled, boolean lessOptionEnabled) {
@@ -209,69 +203,21 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         fadeIn.run(400);
     }
 
-    private void setWeightFactor(int numerator) {
-        weightFactorNumerator = numerator;
-
-        if (weightFactorLabel != null) {
-
-            boolean hasWhole = numerator >= WEIGHT_FACTOR_DENOMINATOR;
-            boolean hasFraction = numerator % WEIGHT_FACTOR_DENOMINATOR > 0;
-
-            weightFactorLabel.clear();
-
-            weightFactorLabel.add(new HTMLPanel("span", "I had "));
-
-            if (hasWhole) {
-                weightFactorLabel.add(wholeAmountLabel);
-                wholeAmountLabel.setText(Integer.toString(numerator / WEIGHT_FACTOR_DENOMINATOR));
-            }
-
-            weightFactorLabel.add(new HTMLPanel("span", " and "));
-
-            weightFactorLabel.add(radialFraction);
-            radialFraction.setValue((double) (numerator % WEIGHT_FACTOR_DENOMINATOR) / WEIGHT_FACTOR_DENOMINATOR);
-
-            weightFactorLabel.add(new HTMLPanel("span", " of the largest portion <br/> <strong>" + Math.round(images[images.length - 1].weight * numerator / WEIGHT_FACTOR_DENOMINATOR) + " g </strong>"));
-        }
+    private void hideWeightFactorUI() {
+        if (weightFactorLessUI != null)
+            imageContainer.remove(weightFactorLessUI);
+        if (weightFactorMoreUI != null)
+            imageContainer.remove(weightFactorMoreUI);
     }
 
-    private void showWeightFactorInterface(int minNumerator, int maxNumerator) {
-        if (weightFactorInterface == null) {
-            weightFactorInterface = new FlowPanel();
-            weightFactorInterface.addStyleName("intake24-as-served-weight-factor-container");
-
-            Button more = new Button();
-
-            HTMLPanel moreLabel = new HTMLPanel("i", "");
-            moreLabel.addStyleName("fas fa-chevron-up intake24-as-served-weight-factor-button");
-            more.getElement().appendChild(moreLabel.getElement());
-            more.addClickHandler(e -> setWeightFactor(Math.min(maxNumerator, weightFactorNumerator + 1)));
-
-            Button less = new Button();
-            HTMLPanel lessLabel = new HTMLPanel("i", "");
-            lessLabel.addStyleName("fas fa-chevron-down intake24-as-served-weight-factor-button");
-            less.getElement().appendChild(lessLabel.getElement());
-            less.addClickHandler(e -> setWeightFactor(Math.max(minNumerator, weightFactorNumerator - 1)));
-
-            radialFraction = new RadialFraction(.5f);
-
-            weightFactorLabel = new FlowPanel();
-            weightFactorLabel.addStyleName("ui");
-            wholeAmountLabel = new CircledText("1");
-
-            setWeightFactor(weightFactorNumerator);
-
-            weightFactorInterface.add(more);
-            weightFactorInterface.add(weightFactorLabel);
-            weightFactorInterface.add(less);
-        }
-
-        imageContainer.add(weightFactorInterface);
+    private void showWeightFactorLessUI() {
+        hideWeightFactorUI();
+        imageContainer.add(weightFactorLessUI);
     }
 
-    private void hideWeightFactorInterface() {
-        if (weightFactorInterface != null)
-            imageContainer.remove(weightFactorInterface);
+    private void showWeightFactorMoreUI() {
+        hideWeightFactorUI();
+        imageContainer.add(weightFactorMoreUI);
     }
 
     private void deselectThumbnail(final SelectionState state) {
@@ -297,8 +243,8 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
                         nextButton.setEnabled(true);
                         lessThumbnail.addStyleName(STYLE_THUMBNAIL_SELECTED);
 
-                        weightFactorNumerator = 1;
-                        showWeightFactorInterface(1, WEIGHT_FACTOR_DENOMINATOR - 1);
+                        weightFactorLessUI.setWeightFactor(WEIGHT_FACTOR_DENOMINATOR - 1);
+                        showWeightFactorLessUI();
                     }
                 },
                 () -> {
@@ -309,15 +255,15 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
                         nextButton.setEnabled(false);
                         moreThumbnail.addStyleName(STYLE_THUMBNAIL_SELECTED);
 
-                        weightFactorNumerator = WEIGHT_FACTOR_DENOMINATOR + 1;
-                        showWeightFactorInterface(WEIGHT_FACTOR_DENOMINATOR, WEIGHT_FACTOR_DENOMINATOR * 5);
+                        weightFactorMoreUI.setWeightFactor(WEIGHT_FACTOR_DENOMINATOR + 1);
+                        showWeightFactorMoreUI();
                     }
                 },
                 i -> {
                     prevButton.setEnabled(i > 0 || lessOptionEnabled);
                     nextButton.setEnabled(i < (images.length - 1) || moreOptionEnabled);
                     imageThumbnails[i].addStyleName(STYLE_THUMBNAIL_SELECTED);
-                    hideWeightFactorInterface();
+                    hideWeightFactorUI();
                 }
         );
 
@@ -385,8 +331,8 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
             );
 
             double weightFactor = selectionState.match(
-                    () -> (double) weightFactorNumerator / WEIGHT_FACTOR_DENOMINATOR,
-                    () -> (double) weightFactorNumerator / WEIGHT_FACTOR_DENOMINATOR,
+                    () -> (double) weightFactorLessUI.getWeightFactor() / WEIGHT_FACTOR_DENOMINATOR,
+                    () -> (double) weightFactorMoreUI.getWeightFactor() / WEIGHT_FACTOR_DENOMINATOR,
                     i -> 1.0);
 
             onComplete.call(new AsServed2Result(images[mainImageIndex].mainImageUrl, mainImageIndex, baseWeight * weightFactor, weightFactor));
@@ -403,7 +349,8 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
 
         lessThumbnail = new FlowPanel();
         lessThumbnail.addStyleName("intake24-as-served-thumbnail");
-        lessThumbnail.addStyleName("intake24-as-served-more");
+        lessThumbnail.addStyleName("weight-factor");
+        lessThumbnail.addStyleName("less");
         lessThumbnail.sinkEvents(Event.ONCLICK);
         lessThumbnail.addHandler(e -> {
             setSelectionState(LESS);
@@ -411,7 +358,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         }, ClickEvent.getType());
 
         Image lessThumbnailImage = new Image(images[0].thumbnailUrl);
-        HTMLPanel lessThumbnailIcon = new HTMLPanel("p", "-");
+        HTMLPanel lessThumbnailIcon = new HTMLPanel("p", "–");
 
         lessThumbnail.add(lessThumbnailImage);
         lessThumbnail.add(lessThumbnailIcon);
@@ -449,7 +396,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
 
         moreThumbnail = new FlowPanel();
         moreThumbnail.addStyleName("intake24-as-served-thumbnail");
-        moreThumbnail.addStyleName("intake24-as-served-more");
+        moreThumbnail.addStyleName("weight-factor");
         moreThumbnail.sinkEvents(Event.ONCLICK);
         moreThumbnail.addHandler(e -> {
             setSelectionState(MORE);
@@ -475,6 +422,14 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         selectionState = new AsShown(mainImageIndex);
 
         content.add(asServedContainer);
+
+        weightFactorLessUI = new WeightFactorUI(1,
+                WEIGHT_FACTOR_DENOMINATOR - 1, WEIGHT_FACTOR_DENOMINATOR, images[0].weight, "smallest portion",
+                new VulgarFractionWeightFactorLabels());
+
+        weightFactorMoreUI = new WeightFactorUI(WEIGHT_FACTOR_DENOMINATOR + 1, WEIGHT_FACTOR_DENOMINATOR * 5,
+                WEIGHT_FACTOR_DENOMINATOR, images[images.length - 1].weight, "largest portion",
+                new VulgarFractionWeightFactorLabels());
 
         ShepherdTour.makeShepherdTarget(promptPanel, imageContainer, thumbsContainer, nextButton, prevButton, confirmButton);
 
