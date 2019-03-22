@@ -96,6 +96,18 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	font-size: 125%;
 }
 
+@media (max-width: 768px) {
+
+	.intake24-as-served-weight-factor-container {
+		transform: none;
+		font-size: 110%;
+		left: 20px;
+		right: 20px;
+		bottom: 40px;
+	}
+}
+
+
 .intake24-as-served-weight-factor-container .ui {
     line-height: 2;
 }
@@ -161,3 +173,4 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 .intake24-as-served-weight-factor button:hover {
 	background: white;
 }
+
