@@ -66,7 +66,7 @@ public class AsServedScript implements PortionSizeScript {
                     withBackLink(
                             asServedPrompt(servingImages, PromptMessages.INSTANCE.asServed_servedLessButtonLabel(), PromptMessages.INSTANCE.asServed_servedMoreButtonLabel(),
                                     PromptMessages.INSTANCE.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
-                                    Option.some(new WeightFactorSettings("servingWeightFactor", false, true)),
+                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)),
                                     defaultServingSizePrompt(foodData.description()))
                     );
 
