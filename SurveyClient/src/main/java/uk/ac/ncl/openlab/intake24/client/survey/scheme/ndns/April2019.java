@@ -26,15 +26,12 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 
-import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class April2019 extends BasicScheme {
     final private static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
