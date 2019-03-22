@@ -26,10 +26,15 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class April2019 extends BasicScheme {
     final private static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
@@ -72,9 +77,12 @@ public class April2019 extends BasicScheme {
 
     @Override
     public Boolean getSurveyExpired(Survey survey) {
-        Double age = (System.currentTimeMillis() - survey.startTime) / 3600000.0;
-        logger.fine("Saved state is " + age + " hours old.");
-        return age > MAX_AGE_HOURS;
-    }
+        long currentTime = System.currentTimeMillis();
+        Date startDate = new Date(survey.startTime);
 
+        long msToMidnight = ((23 - startDate.getHours()) * 3600 + (59 - startDate.getMinutes()) * 60 + (59 - startDate.getSeconds() + 1)) * 1000;
+        long midnight = survey.startTime + msToMidnight;
+
+        return (((currentTime - survey.startTime) / 3600000.0) > MAX_AGE_HOURS || currentTime > midnight);
+    }
 }
