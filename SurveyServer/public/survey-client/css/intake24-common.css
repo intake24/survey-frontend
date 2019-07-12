@@ -194,6 +194,12 @@ input[type="radio"], input[type="checkbox"] {
 	text-shadow: none !important;
 }
 
+.intake24-button-lg {
+	padding: 1.5rem 2em;
+	font-size: 1.3rem;
+	white-space: unset !important;
+}
+
 /* Colored buttons styles */
 
 .intake24-green-button {
@@ -261,6 +267,11 @@ input[type="radio"], input[type="checkbox"] {
 .intake24-buttons-panel {
 	margin-top: 15px;
 	margin-bottom: 15px;	
+}
+
+.intake24-flex-center {
+	display: flex;
+	justify-content: center;
 }
 
 /* Header */

@@ -41,7 +41,7 @@ public class ConfirmCompletionPrompt implements Prompt<Survey, SurveyOperation> 
 
         content.add(WidgetFactory.createPromptPanel(promptText));
 
-        Button confirm = WidgetFactory.createGreenButton(messages.completion_submitButtonLabel(), "confirmCompletionButton", new ClickHandler() {
+        Button confirm = WidgetFactory.createLargeGreenButton(messages.completion_submitButtonLabel(), "confirmCompletionButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(SurveyOperation.update(new Function1<Survey, Survey>() {
@@ -53,7 +53,7 @@ public class ConfirmCompletionPrompt implements Prompt<Survey, SurveyOperation> 
             }
         });
 
-        content.add(WidgetFactory.createButtonsPanel(confirm));
+        content.add(WidgetFactory.createCenteredButtonsPanel(confirm));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, ConfirmCompletionPrompt.class.getSimpleName());
     }

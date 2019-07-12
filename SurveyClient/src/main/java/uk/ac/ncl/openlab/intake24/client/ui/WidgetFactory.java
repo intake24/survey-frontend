@@ -71,6 +71,12 @@ public class WidgetFactory {
         return result;
     }
 
+    public static Button createLargeGreenButton(String label, String id, ClickHandler handler) {
+        Button result = createGreenButton(label, id, handler);
+        result.addStyleName("intake24-button-lg");
+        return result;
+    }
+
     public static Button createRedButton(String label, String id, ClickHandler handler) {
         Button result = createButton(label, handler);
         result.addStyleName("intake24-button");
@@ -84,6 +90,12 @@ public class WidgetFactory {
         result.addStyleName("intake24-buttons-panel");
         for (Button b : buttons)
             result.add(b);
+        return result;
+    }
+
+    public static Panel createCenteredButtonsPanel(Button... buttons) {
+        Panel result = createButtonsPanel(buttons);
+        result.addStyleName("intake24-flex-center");
         return result;
     }
 
