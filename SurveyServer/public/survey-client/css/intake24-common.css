@@ -359,7 +359,9 @@ input[type="radio"], input[type="checkbox"] {
 	max-width: 1040px;
 	padding: 0;
 	position: relative;
-	text-align: right;	
+	text-align: right;
+	display: flex;
+	justify-content: space-between;
 }
 
 [dir="rtl"] .intake24-navbar {

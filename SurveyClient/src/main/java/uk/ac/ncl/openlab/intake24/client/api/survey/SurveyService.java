@@ -28,4 +28,8 @@ public interface SurveyService extends RestService {
     @POST
     @Path("/surveys/{id}/submissions")
     void submitSurvey(@PathParam("id") String surveyId, CompletedSurvey survey, MethodCallback<SurveySubmissionResponse> callback);
+
+    @GET
+    @Path("/surveys/{id}/user-info")
+    void getUserData(@PathParam("id") String surveyId, MethodCallback<UserData> callback);
 }

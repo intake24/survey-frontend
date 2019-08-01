@@ -44,6 +44,7 @@ public interface SurveyScheme {
     void showNextPage();
 
     List<Anchor> navBarLinks();
+    List<Anchor> navBarUserInfo();
 
     static SurveyScheme createScheme(SurveyParameters surveyParameters, final String locale, final SurveyInterfaceManager interfaceManager) {
 

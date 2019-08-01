@@ -282,4 +282,9 @@ public abstract class BasicScheme implements SurveyScheme {
     public List<Anchor> navBarLinks() {
         return Collections.emptyList();
     }
+
+    @Override
+    public List<Anchor> navBarUserInfo() {
+        return Collections.emptyList();
+    }
 }

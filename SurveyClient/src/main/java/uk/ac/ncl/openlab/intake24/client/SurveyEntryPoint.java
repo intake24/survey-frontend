@@ -41,6 +41,7 @@ import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
@@ -55,19 +56,23 @@ public class SurveyEntryPoint implements EntryPoint {
 
     Anchor watchTutorial;
     Anchor logOut;
+    Anchor recallNumber;
 
     private void startSurvey(SurveyParameters params) {
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
 
         SurveyScheme scheme = SurveyScheme.createScheme(params, EmbeddedData.localeId, surveyInterfaceManager);
 
-        ArrayList<Anchor> navbarLinks = new ArrayList<>();
+        ArrayList<Anchor> navbarUserInfo = new ArrayList<>();
+        navbarUserInfo.addAll(scheme.navBarUserInfo());
+        navbarUserInfo.add(recallNumber);
 
+        ArrayList<Anchor> navbarLinks = new ArrayList<>();
         navbarLinks.addAll(scheme.navBarLinks());
         navbarLinks.add(watchTutorial);
         navbarLinks.add(logOut);
 
-        Layout.setNavBarLinks(navbarLinks);
+        Layout.setNavBar(navbarUserInfo, navbarLinks);
 
         // scheme.showNextPage() is called from history change handler set up in StateManager constructor
 
@@ -91,6 +96,8 @@ public class SurveyEntryPoint implements EntryPoint {
         ServiceRoots.add("intake24-api", EmbeddedData.apiBaseUrl);
 
         watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
+
+        recallNumber = new Anchor();
 
         logOut = new Anchor(SurveyMessages.INSTANCE.navBar_logOut());
 
@@ -128,29 +135,50 @@ public class SurveyEntryPoint implements EntryPoint {
             @Override
             public void onSuccess(Method method, SurveyParameters response) {
 
-                UxEventsHelper.applySettings(response.uxEventsSettings);
+                SurveyService.INSTANCE.getUserData(EmbeddedData.surveyId, new MethodCallback<UserData>() {
+                    @Override
+                    public void onFailure(Method method, Throwable exception) {
 
-                Layout.createMainPageLayout();
-                Layout.setNavBarLinks(watchTutorial, logOut);
+                        Layout.createMainPageLayout();
+                        Layout.setNavBarLinks(logOut);
 
-                switch (response.state) {
-                    case "running":
-                        startSurvey(response);
-                        break;
-                    case "pending":
-                        ErrorPage.showSurveyPendingPage();
-                        break;
-                    case "finished":
-                        ErrorPage.showSurveyFinishedPage();
-                        break;
-                    case "suspended":
-                        ErrorPage.showSurveySuspendedPage(response.suspensionReason);
-                        break;
-                    default:
-                        ErrorPage.showInternalServerErrorPage();
-                }
+                        switch (method.getResponse().getStatusCode()) {
+                            case 403:
+                                ErrorPage.showForbiddenErrorPage();
+                                break;
+                            default:
+                                ErrorPage.showInternalServerErrorPage();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(Method method, UserData userResponse) {
+                        recallNumber = new Anchor("Current Recall Number: "  + userResponse.recallNumber);
+
+                        UxEventsHelper.applySettings(response.uxEventsSettings);
+                        Layout.createMainPageLayout();
+                        Layout.setNavBarLinks(watchTutorial, logOut);
+
+                        switch (response.state) {
+                            case "running":
+                                startSurvey(response);
+                                break;
+                            case "pending":
+                                ErrorPage.showSurveyPendingPage();
+                                break;
+                            case "finished":
+                                ErrorPage.showSurveyFinishedPage();
+                                break;
+                            case "suspended":
+                                ErrorPage.showSurveySuspendedPage(response.suspensionReason);
+                                break;
+                            default:
+                                ErrorPage.showInternalServerErrorPage();
+                        }
+                    }
+                });
             }
         });
     }
-
 }
