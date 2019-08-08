@@ -27,6 +27,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.CompoundFoodTemplateManager;
 import uk.ac.ncl.openlab.intake24.client.survey.RecipeManager;
 import uk.ac.ncl.openlab.intake24.client.survey.Rules;
@@ -37,8 +38,8 @@ public class DefaultScheme extends BasicScheme {
 
     public static final String ID = "default";
 
-    public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
-        super(locale, surveyParameters, interfaceManager);
+    public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager, UserData userData) {
+        super(locale, surveyParameters, interfaceManager, userData);
     }
 
     @Override

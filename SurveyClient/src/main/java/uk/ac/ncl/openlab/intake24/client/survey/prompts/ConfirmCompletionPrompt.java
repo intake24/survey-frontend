@@ -41,7 +41,7 @@ public class ConfirmCompletionPrompt implements Prompt<Survey, SurveyOperation> 
 
         content.add(WidgetFactory.createPromptPanel(promptText));
 
-        Button confirm = WidgetFactory.createLargeGreenButton(messages.completion_submitButtonLabel(), "confirmCompletionButton", new ClickHandler() {
+        Button confirm = WidgetFactory.createGreenButton(messages.completion_submitButtonLabel(), "confirmCompletionButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onComplete.call(SurveyOperation.update(new Function1<Survey, Survey>() {
@@ -51,7 +51,7 @@ public class ConfirmCompletionPrompt implements Prompt<Survey, SurveyOperation> 
                     }
                 }));
             }
-        });
+        }, "intake24-button-lg");
 
         content.add(WidgetFactory.createCenteredButtonsPanel(confirm));
 

@@ -32,6 +32,7 @@ import org.workcraft.gwt.shared.client.Option;
 
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
@@ -104,8 +105,8 @@ public class SHeSJun15 extends BasicScheme {
             .plus("Weight Watchers");
 
 
-    public SHeSJun15(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
-        super(locale, surveyParameters, interfaceManager);
+    public SHeSJun15(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
+        super(locale, surveyParameters, interfaceManager, userData);
     }
 
     private IntakeSurvey cachedSurveyPage = null;

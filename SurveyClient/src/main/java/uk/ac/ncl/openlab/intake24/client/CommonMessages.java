@@ -89,6 +89,12 @@ public interface CommonMessages extends Messages {
 
   public String loginForm_watchVideo();
 
+  public String logoutPage_title();
+
+  public String logoutPage_close();
+
+  public String logoutPage_closeWithHelp(String supportEmail);
+
   public String authToken_invalid(String supportEmail);
 
   public String callbackRequestForm_promptText();

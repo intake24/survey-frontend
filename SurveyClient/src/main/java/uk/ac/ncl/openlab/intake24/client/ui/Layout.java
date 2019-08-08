@@ -43,11 +43,6 @@ public class Layout {
     public static final Anchor watchTutorial = WidgetFactory.createTutorialVideoLink();
     public static final Anchor logOut = new Anchor(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_success()));
 
-
-    public static void setNavBarLinks(Anchor... links) {
-        setNavBarLinks(Arrays.asList(links));
-    }
-
     public static void setNavBar(List<Anchor> left, List<Anchor> right) {
         navbar.clear();
 
@@ -69,6 +64,10 @@ public class Layout {
 
         navbar.add(navbarUserInfo);
         navbar.add(navbarLinks);
+    }
+
+    public static void setNavBarLinks(Anchor... links) {
+        setNavBarLinks(Arrays.asList(links));
     }
 
     public static void setNavBarLinks(List<Anchor> links) {

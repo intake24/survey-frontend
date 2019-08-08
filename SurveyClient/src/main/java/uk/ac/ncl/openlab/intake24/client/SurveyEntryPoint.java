@@ -28,6 +28,7 @@ package uk.ac.ncl.openlab.intake24.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -54,14 +55,14 @@ import java.util.ArrayList;
 
 public class SurveyEntryPoint implements EntryPoint {
 
-    Anchor watchTutorial;
-    Anchor logOut;
-    Anchor recallNumber;
+    private Anchor watchTutorial;
+    private Anchor logOut;
+    private Anchor recallNumber;
 
-    private void startSurvey(SurveyParameters params) {
+    private void startSurvey(SurveyParameters params, UserData userData) {
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
 
-        SurveyScheme scheme = SurveyScheme.createScheme(params, EmbeddedData.localeId, surveyInterfaceManager);
+        SurveyScheme scheme = SurveyScheme.createScheme(params, EmbeddedData.localeId, surveyInterfaceManager, userData);
 
         ArrayList<Anchor> navbarUserInfo = new ArrayList<>();
         navbarUserInfo.addAll(scheme.navBarUserInfo());
@@ -154,7 +155,8 @@ public class SurveyEntryPoint implements EntryPoint {
 
                     @Override
                     public void onSuccess(Method method, UserData userResponse) {
-                        recallNumber = new Anchor("Current Recall Number: "  + userResponse.recallNumber);
+                        recallNumber = new Anchor("Current recall number: "  + userResponse.recallNumber);
+                        recallNumber.getElement().setId("intake24-recall-number");
 
                         UxEventsHelper.applySettings(response.uxEventsSettings);
                         Layout.createMainPageLayout();
@@ -162,7 +164,7 @@ public class SurveyEntryPoint implements EntryPoint {
 
                         switch (response.state) {
                             case "running":
-                                startSurvey(response);
+                                startSurvey(response, userResponse);
                                 break;
                             case "pending":
                                 ErrorPage.showSurveyPendingPage();

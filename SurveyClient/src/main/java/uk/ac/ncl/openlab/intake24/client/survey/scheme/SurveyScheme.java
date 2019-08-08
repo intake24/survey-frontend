@@ -28,9 +28,11 @@ package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 import com.google.gwt.user.client.ui.Anchor;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.April2019;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
 
 import java.util.List;
 
@@ -46,21 +48,23 @@ public interface SurveyScheme {
     List<Anchor> navBarLinks();
     List<Anchor> navBarUserInfo();
 
-    static SurveyScheme createScheme(SurveyParameters surveyParameters, final String locale, final SurveyInterfaceManager interfaceManager) {
+    static SurveyScheme createScheme(SurveyParameters surveyParameters, final String locale, final SurveyInterfaceManager interfaceManager, UserData userData) {
 
         switch (surveyParameters.schemeId) {
             case DefaultScheme.ID:
-                return new DefaultScheme(surveyParameters, locale, interfaceManager);
+                return new DefaultScheme(surveyParameters, locale, interfaceManager, userData);
             case ExperimentalPARulesScheme.ID:
-                return new ExperimentalPARulesScheme(surveyParameters, locale, interfaceManager);
+                return new ExperimentalPARulesScheme(surveyParameters, locale, interfaceManager, userData);
             case ExperimentalPopularityScheme.ID:
-                return new ExperimentalPopularityScheme(surveyParameters, locale, interfaceManager);
+                return new ExperimentalPopularityScheme(surveyParameters, locale, interfaceManager, userData);
             case ExperimentalFlexibleRecallScheme.ID:
-                return new ExperimentalFlexibleRecallScheme(surveyParameters, locale, interfaceManager);
+                return new ExperimentalFlexibleRecallScheme(surveyParameters, locale, interfaceManager, userData);
             case SHeSJun15.ID:
-                return new SHeSJun15(locale, surveyParameters, interfaceManager);
+                return new SHeSJun15(locale, surveyParameters, interfaceManager, userData);
             case April2019.ID:
-                return new April2019(locale, surveyParameters, interfaceManager);
+                return new April2019(locale, surveyParameters, interfaceManager, userData);
+            case October2019.ID:
+                return new October2019(locale, surveyParameters, interfaceManager, userData);
             default:
                 throw new RuntimeException("Unknown survey scheme: " + surveyParameters.schemeId);
         }

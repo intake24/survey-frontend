@@ -59,6 +59,14 @@ public interface SurveyMessages extends Messages {
 
 	public String navBar_logOut();
 
+	public String nameCheckPage_header();
+
+	public String nameCheckPage_content(String name);
+
+	public String nameCheckPage_button_yes(String name);
+
+	public String nameCheckPage_button_no(String name);
+
 	public String welcomePage_ready();
 
 	public String welcomePage_welcomeText();
