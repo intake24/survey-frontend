@@ -17,11 +17,11 @@ public class AskAboutFoodSource implements PromptRule<Meal, MealOperation> {
     public static final String FOOD_SOURCE_KEY = "foodSource";
 
     private static final PVector<MultipleChoiceQuestionOption> options = TreePVector.<MultipleChoiceQuestionOption>empty()
-            .plus(new MultipleChoiceQuestionOption("Large supermarket"))
+            .plus(new MultipleChoiceQuestionOption("Supermarket"))
             .plus(new MultipleChoiceQuestionOption("Convenience shop/corner shop/petrol station"))
             .plus(new MultipleChoiceQuestionOption("Fast food/take-away"))
             .plus(new MultipleChoiceQuestionOption("Café/coffee shop/sandwich bar/deli"))
-            .plus(new MultipleChoiceQuestionOption("Sit-down restaurant or pub with a waiter/waitress"))
+            .plus(new MultipleChoiceQuestionOption("Sit-down restaurant or pub"))
             .plus(new MultipleChoiceQuestionOption("Canteen at work or school/university/college"))
             .plus(new MultipleChoiceQuestionOption("Burger, chip or kebab van/’street food’"))
             .plus(new MultipleChoiceQuestionOption("Leisure centre/recreation or entertainment venue"))
