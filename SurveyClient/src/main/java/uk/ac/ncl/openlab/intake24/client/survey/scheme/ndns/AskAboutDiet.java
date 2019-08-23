@@ -27,7 +27,8 @@ public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
             .plus(new MultipleChoiceQuestionOption("Dairy free"))
             .plus(new MultipleChoiceQuestionOption("Vegetarian"))
             .plus(new MultipleChoiceQuestionOption("Vegan"))
-            .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true));
+            .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
+            .plus(new MultipleChoiceQuestionOption("Not on a special diet"));
 
 
     @Override
@@ -35,7 +36,8 @@ public class AskAboutDiet implements PromptRule<Survey, SurveyOperation> {
         if (!state.flags.contains(DIET_COMPLETE) && state.portionSizeComplete()) {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Are you following any kind of special diet?</p>" +
-                    "<p>If yes, please tick the options below that best describe your diet.</p>");
+                    "<p><small>If yes, please tick the options below that best describes your diet " +
+                    "(you can tick more than one e.g. vegetarian and gluten free)</small></p>");
 
             CheckListPrompt prompt = new CheckListPrompt(promptText, AskAboutDiet.class.getSimpleName(),
                     supplementOptions, PromptMessages.INSTANCE.mealComplete_continueButtonLabel());

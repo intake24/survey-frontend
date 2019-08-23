@@ -49,6 +49,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.SurveyScheme;
 import uk.ac.ncl.openlab.intake24.client.ui.ErrorPage;
 import uk.ac.ncl.openlab.intake24.client.ui.Layout;
+import uk.ac.ncl.openlab.intake24.client.ui.LogoutPage;
 import uk.ac.ncl.openlab.intake24.client.ui.TutorialVideo;
 
 import java.util.ArrayList;
@@ -107,12 +108,7 @@ public class SurveyEntryPoint implements EntryPoint {
             public void onClick(ClickEvent clickEvent) {
                 UxEventsHelper.postPageClose();
                 AuthCache.clear();
-                String logoutUrl = Window.Location.createUrlBuilder()
-                        .removeParameter(UrlParameterConstants.authTokenKey)
-                        .removeParameter(UrlParameterConstants.generateUserKey)
-                        .setHash(null)
-                        .buildString();
-                Window.Location.replace(logoutUrl);
+                LogoutPage.logout();
             }
         });
 

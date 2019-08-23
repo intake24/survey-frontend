@@ -31,7 +31,7 @@ public class AskIfUsualAmount implements PromptRule<Survey, SurveyOperation> {
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey survey, SelectionMode selectionType, PSet<String> surveyFlags) {
         if (!survey.customData.containsKey(AMOUNT_KEY) && survey.portionSizeComplete()) {
 
-            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Was the amount of food and drink you had today:</p>");
+            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Was the amount of food and drink you had yesterday:</p>");
 
             RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskIfUsualAmount.class.getSimpleName(),
                     options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(),
