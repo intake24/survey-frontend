@@ -207,6 +207,10 @@ public interface HelpMessages extends Messages {
 
     public String checklist_continueButtonDescription();
 
+    public String textarea_questionTitle();
+
+    public String textarea_continueButtonTitle();
+
     public String timeQuestion_hoursTitle();
 
     public String timeQuestion_hoursDescription();
