@@ -66,9 +66,12 @@ public class October2019 extends BasicScheme {
                 baseRules.surveyPromptRules
                         .plus(RemindFrequentlyForgottenFoods.withPriority(31))
                         .plus(AskIfUsualAmount.withPriority(30))
-                        .plus(AskAboutDiet.withPriority(29))
-                        .plus(AskAboutCookingOil.withPriority(28))
-                        .plus(AskAboutSupplements.withPriority(27)),
+                        .plus(AskIfUsualAmountReason.withPriority(29))
+                        .plus(AskAboutDiet.withPriority(28))
+                        .plus(AskAboutCookingOil.withPriority(27))
+                        .plus(AskAboutSupplements.withPriority(26))
+                        .plus(AskAboutProxy.withPriority(25))
+                        .plus(AskAboutProxyIssues.withPriority(24)),
                 baseRules.selectionRules
         );
     }
