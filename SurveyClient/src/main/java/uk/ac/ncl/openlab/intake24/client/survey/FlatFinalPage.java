@@ -98,6 +98,13 @@ public class FlatFinalPage implements SurveyStage<Survey> {
       @Override
       public void onSuccess(Method method, SurveySubmissionResponse response) {
         contents.clear();
+
+        if (response.redirectToFeedback) {
+          HTMLPanel gotoFeedback = new HTMLPanel("h2", surveyMessages.finalPage_goToFeedback());
+          gotoFeedback.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
+          contents.add(gotoFeedback);
+        }
+
         HTMLPanel p = new HTMLPanel(finalPageHtml);
         p.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
         contents.add(p);
@@ -123,7 +130,7 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
               Window.open(builder.buildString(), "_blank", "");
             }
-          });
+          }, "intake24-button-md");
 
           contents.add(feedbackButton);
         }

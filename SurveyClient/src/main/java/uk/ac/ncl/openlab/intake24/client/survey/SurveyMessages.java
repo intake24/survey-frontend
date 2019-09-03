@@ -71,6 +71,8 @@ public interface SurveyMessages extends Messages {
 
 	public String welcomePage_welcomeText();
 
+	public String finalPage_goToFeedback();
+
 	public String finalPage_feedbackLabel();
 
 	public String finalPage_feedbackButtonLabel();
