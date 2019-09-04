@@ -30,6 +30,7 @@ public class AskAboutFoodSource extends FoodSource {
                         .plus(new MultipleChoiceQuestionOption("Restaurant"))
                         .plus(new MultipleChoiceQuestionOption("Informal abattoir or slaughterhouse"))
                         .plus(new MultipleChoiceQuestionOption("From friends or neighbours"))
+                        .plus(new MultipleChoiceQuestionOption("Home-grown"))
                         .plus(new MultipleChoiceQuestionOption("Canteen or tuck shop at work/school/college/university"))
                         .plus(new MultipleChoiceQuestionOption("Recreation or entertainment venue / Cinema or multiplex"))
                         .plus(new MultipleChoiceQuestionOption("Other place (please specify):", "Other", true))
