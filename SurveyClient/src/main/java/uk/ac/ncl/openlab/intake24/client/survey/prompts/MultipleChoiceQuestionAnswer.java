@@ -14,6 +14,6 @@ public class MultipleChoiceQuestionAnswer {
     }
 
     public String getValue() {
-        return details.map(s -> value + ": " + s).getOrElse(value);
+        return details.map(s -> s.isEmpty() ? value : value + ": " + s).getOrElse(value);
     }
 }

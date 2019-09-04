@@ -82,6 +82,7 @@ public abstract class MultipleChoiceQuestion<T> extends Composite {
                 TextBox textBox = new TextBox();
                 textBox.setMaxLength(80);
                 textBox.addFocusHandler(event -> checkBox.setValue(true));
+                textBox.addKeyUpHandler(event -> clearWarning());
 
                 FlowPanel optionDiv = new FlowPanel();
                 optionDiv.add(checkBox);

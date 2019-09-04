@@ -28,15 +28,27 @@ public class CheckListQuestion extends MultipleChoiceQuestion<List<MultipleChoic
         ArrayList<MultipleChoiceQuestionAnswer> result = new ArrayList<>();
 
         for (OptionElements elements : optionElements) {
-            if (elements.checkBox.getValue())
-                result.add(new MultipleChoiceQuestionAnswer(elements.index, elements.checkBox.getFormValue(), elements.textBox.map(tb -> tb.getText())));
+            if (elements.checkBox.getValue()) {
+                String details = elements.textBox.map(tb -> tb.getText()).getOrElse("");
+                if (!elements.textBox.isEmpty() && details.length() == 0) {
+                    showWarning();
+                    return Option.none();
+                } else
+                    result.add(new MultipleChoiceQuestionAnswer(elements.index, elements.checkBox.getFormValue(), elements.textBox.map(tb -> tb.getText())));
+            }
         }
 
-        return Option.some(result);
+        if (result.isEmpty()) {
+            showWarning();
+            return Option.none();
+        } else
+            return Option.some(result);
     }
 
     @Override
     protected CheckBox createCheckBox(SafeHtml label, String value) {
-        return new CheckBox(label);
+        CheckBox input = new CheckBox(label);
+        input.addClickHandler(event -> clearWarning());
+        return input;
     }
 }

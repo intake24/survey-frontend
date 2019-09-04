@@ -26,7 +26,9 @@ public class RadioButtonQuestion extends MultipleChoiceQuestion<MultipleChoiceQu
 
     public Option<MultipleChoiceQuestionAnswer> getAnswer() {
         for (OptionElements elements : optionElements) {
-            if (elements.checkBox.getValue())
+            String details = elements.textBox.map(tb -> tb.getText()).getOrElse("");
+
+            if (elements.checkBox.getValue() && (elements.textBox.isEmpty() || details.length() != 0))
                 return Option.some(new MultipleChoiceQuestionAnswer(elements.index, elements.checkBox.getFormValue(), elements.textBox.map(tb -> tb.getText())));
         }
 
