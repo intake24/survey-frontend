@@ -15,8 +15,8 @@ public class AskAboutProxy implements PromptRule<Survey, SurveyOperation> {
 
     private static final String PROXY_KEY = "proxy";
     static final String PROXY_COMPLETE = "proxyComplete";
-    static final String PROXY_YES_VALUE = "yes";
-    static final String PROXY_NO_VALUE = "no";
+    static final String PROXY_YES_VALUE = "Yes";
+    static final String PROXY_NO_VALUE = "No";
 
     final private PVector<MultipleChoiceQuestionOption> options = TreePVector.<MultipleChoiceQuestionOption>empty()
             .plus(new MultipleChoiceQuestionOption("No", PROXY_NO_VALUE))

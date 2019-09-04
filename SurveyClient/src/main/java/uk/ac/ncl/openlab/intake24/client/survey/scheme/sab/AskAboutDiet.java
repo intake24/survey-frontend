@@ -1,4 +1,4 @@
-package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
+package uk.ac.ncl.openlab.intake24.client.survey.scheme.sab;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -20,19 +20,19 @@ public class AskAboutDiet extends Diet {
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutDiet(SafeHtmlUtils.fromSafeConstant(
                 "<p>Are you following any kind of special diet?</p>" +
-                        "<p><small>If yes, please tick the options below that best describes your diet " +
-                        "(you can tick more than one e.g. vegetarian and gluten free).</small></p>"),
+                        "<p><small>You can specify more than one, e.g. vegetarian and gluten free.</small></p>"),
                 TreePVector.<MultipleChoiceQuestionOption>empty()
+                        .plus(new MultipleChoiceQuestionOption("Not on a special diet"))
+                        .plus(new MultipleChoiceQuestionOption("Vegetarian (does not eat meat or fish)", "Vegetarian"))
+                        .plus(new MultipleChoiceQuestionOption("Pescatarian (consumes fish, but not meat)", "Pescatarian"))
+                        .plus(new MultipleChoiceQuestionOption("Vegan (does not eat meat or fish or animal products)", "Vegan"))
+                        .plus(new MultipleChoiceQuestionOption("For medical reasons e.g. to manage diabetes", "For medical reasons"))
                         .plus(new MultipleChoiceQuestionOption("To lose weight"))
                         .plus(new MultipleChoiceQuestionOption("To gain weight"))
-                        .plus(new MultipleChoiceQuestionOption("For medical reasons e.g. to lower cholesterol", "For medical reasons"))
                         .plus(new MultipleChoiceQuestionOption("Gluten free"))
                         .plus(new MultipleChoiceQuestionOption("Wheat free"))
                         .plus(new MultipleChoiceQuestionOption("Dairy free"))
-                        .plus(new MultipleChoiceQuestionOption("Vegetarian"))
-                        .plus(new MultipleChoiceQuestionOption("Vegan"))
                         .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
-                        .plus(new MultipleChoiceQuestionOption("Not on a special diet"))
         ), priority);
     }
 }

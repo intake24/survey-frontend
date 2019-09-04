@@ -1,4 +1,4 @@
-package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
+package uk.ac.ncl.openlab.intake24.client.survey.scheme.sab;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -19,17 +19,24 @@ public class AskAboutCookingOil extends CookingOil {
 
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutCookingOil(SafeHtmlUtils.fromSafeConstant(
-                "<p>Which type of cooking fat/oil did you use most often when you completed this recall?</p>"),
+                "<p>Which type of <strong>cooking</strong> fat or oil did you " +
+                        "use most often when you completed this recall?</p>"),
                 TreePVector.<MultipleChoiceQuestionOption>empty()
-                        .plus(new MultipleChoiceQuestionOption("Sunflower oil"))
-                        .plus(new MultipleChoiceQuestionOption("Vegetable oil (rapeseed)"))
-                        .plus(new MultipleChoiceQuestionOption("Corn oil"))
-                        .plus(new MultipleChoiceQuestionOption("Palm oil"))
-                        .plus(new MultipleChoiceQuestionOption("Coconut oil"))
-                        .plus(new MultipleChoiceQuestionOption("Olive oil"))
-                        .plus(new MultipleChoiceQuestionOption("Butter"))
-                        .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
                         .plus(new MultipleChoiceQuestionOption("Did not use"))
+                        .plus(new MultipleChoiceQuestionOption("Butter, salted"))
+                        .plus(new MultipleChoiceQuestionOption("Coconut oil"))
+                        .plus(new MultipleChoiceQuestionOption("Canola oil"))
+                        .plus(new MultipleChoiceQuestionOption("Corn oil"))
+                        .plus(new MultipleChoiceQuestionOption("Ghee"))
+                        .plus(new MultipleChoiceQuestionOption("Mustard seed oil"))
+                        .plus(new MultipleChoiceQuestionOption("Nut oil e.g. peanut/ groundnut oil"))
+                        .plus(new MultipleChoiceQuestionOption("Olive oil"))
+                        .plus(new MultipleChoiceQuestionOption("Palm oil"))
+                        .plus(new MultipleChoiceQuestionOption("Rice bran oil"))
+                        .plus(new MultipleChoiceQuestionOption("Safflower oil"))
+                        .plus(new MultipleChoiceQuestionOption("Sunflower oil"))
+                        .plus(new MultipleChoiceQuestionOption("Vegetable oil (rapeseed / colza)"))
+                        .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
         ), priority);
     }
 }

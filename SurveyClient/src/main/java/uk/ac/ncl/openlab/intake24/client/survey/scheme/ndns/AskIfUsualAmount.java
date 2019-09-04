@@ -15,9 +15,9 @@ public class AskIfUsualAmount implements PromptRule<Survey, SurveyOperation> {
 
     static final String AMOUNT_KEY = "foodAmount";
     static final String AMOUNT_COMPLETE = "foodAmountComplete";
-    static final String USUAL_VALUE = "usual";
-    static final String LESS_VALUE = "less";
-    static final String MORE_VALUE = "more";
+    static final String USUAL_VALUE = "Usual";
+    static final String LESS_VALUE = "Less";
+    static final String MORE_VALUE = "More";
 
 
     private static final PVector<MultipleChoiceQuestionOption> options =

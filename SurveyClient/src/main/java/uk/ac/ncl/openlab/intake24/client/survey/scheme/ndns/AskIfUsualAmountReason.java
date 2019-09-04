@@ -29,7 +29,7 @@ public class AskIfUsualAmountReason implements PromptRule<Survey, SurveyOperatio
             .plus(new MultipleChoiceQuestionOption("Change of routine"))
             .plus(new MultipleChoiceQuestionOption("Busy/active"))
             .plus(new MultipleChoiceQuestionOption("Don’t know"))
-            .plus(new MultipleChoiceQuestionOption("Other"));
+            .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true));
 
     final private PVector<MultipleChoiceQuestionOption> lessOptions = TreePVector.<MultipleChoiceQuestionOption>empty()
             .plus(new MultipleChoiceQuestionOption("Sickness/tiredness"))
@@ -45,7 +45,7 @@ public class AskIfUsualAmountReason implements PromptRule<Survey, SurveyOperatio
             .plus(new MultipleChoiceQuestionOption("Bored / stressed"))
             .plus(new MultipleChoiceQuestionOption("Change of routine"))
             .plus(new MultipleChoiceQuestionOption("Don’t know"))
-            .plus(new MultipleChoiceQuestionOption("Other"));
+            .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true));
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
@@ -67,7 +67,8 @@ public class AskIfUsualAmountReason implements PromptRule<Survey, SurveyOperatio
 
             return Option.some(PromptUtil.asSurveyPrompt(prompt, answers -> {
                 if (!answers.isEmpty()) {
-                    String reasonValue = answers.stream().map(answer -> answer.value).reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
+                    String reasonValue = answers.stream().map(answer ->
+                            answer.getValue()).reduce("", (s1, s2) -> s1 + (s1.isEmpty() ? "" : ", ") + s2);
                     return SurveyOperation.update(survey ->
                             survey.withData(AMOUNT_REASON_KEY, reasonValue).withFlag(AskIfUsualAmount.AMOUNT_COMPLETE));
                 } else

@@ -1,4 +1,4 @@
-package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
+package uk.ac.ncl.openlab.intake24.client.survey.scheme.sab;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -19,8 +19,9 @@ public class AskAboutSupplements extends Supplements {
 
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutSupplements(SafeHtmlUtils.fromSafeConstant(
-                "<p>Did you take any dietary supplements?</p>"),
+                "<p>Did you take any dietary or herbal supplements <strong>yesterday</strong>?</p>"),
                 TreePVector.<MultipleChoiceQuestionOption>empty()
+                        .plus(new MultipleChoiceQuestionOption("Did not take"))
                         .plus(new MultipleChoiceQuestionOption("Multivitamin"))
                         .plus(new MultipleChoiceQuestionOption("Multivitamin and mineral"))
                         .plus(new MultipleChoiceQuestionOption("Vitamin A"))
@@ -34,9 +35,9 @@ public class AskAboutSupplements extends Supplements {
                         .plus(new MultipleChoiceQuestionOption("Selenium"))
                         .plus(new MultipleChoiceQuestionOption("Zinc"))
                         .plus(new MultipleChoiceQuestionOption("Cod liver/ Fish oil"))
-                        .plus(new MultipleChoiceQuestionOption("Evening Primrose oil"))
-                        .plus(new MultipleChoiceQuestionOption("Chondroitin"))
-                        .plus(new MultipleChoiceQuestionOption("Glucosamine"))
+                        .plus(new MultipleChoiceQuestionOption("Herbal or ayurvedic supplements " +
+                                "e.g. echinacea, garlic, ginger, chamomile, ginseng, amalaki, ashwagandha, " +
+                                "tulsi, neem, bael, tumeric (please specify):", "Herbal", true))
                         .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
         ), priority);
     }
