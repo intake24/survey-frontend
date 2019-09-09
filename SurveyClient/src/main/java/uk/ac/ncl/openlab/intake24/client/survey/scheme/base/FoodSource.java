@@ -25,7 +25,7 @@ public abstract class FoodSource implements PromptRule<Meal, MealOperation> {
 
     @Override
     public Option<Prompt<Meal, MealOperation>> apply(Meal state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.customData.containsKey(FOOD_SOURCE_KEY) && state.portionSizeComplete()) {
+        if (!state.customData.containsKey(FOOD_SOURCE_KEY) && !state.isEmpty() && state.portionSizeComplete()) {
             SafeHtml promptSafeText = SafeHtmlUtils.fromSafeConstant(
                     promptText.replace("%s", SafeHtmlUtils.htmlEscape(state.name.toLowerCase()))
             );
