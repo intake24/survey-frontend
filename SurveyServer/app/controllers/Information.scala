@@ -11,9 +11,10 @@ import views.html.info._
 class Information @Inject()(config: Configuration) extends Controller {
 
   private val gaTrackingCode = config.getString("intake24.ga.trackingCode")
+  private val supportEmail = config.getString("intake24.supportEmail").get
 
   def landing = Action {
-    Ok(InfoPageLayout(PageNames.landing, LandingContent(), gaTrackingCode))
+    Ok(InfoPageLayout(PageNames.landing, LandingContent(supportEmail), gaTrackingCode))
   }
 
   def recall = Action {
@@ -25,7 +26,7 @@ class Information @Inject()(config: Configuration) extends Controller {
   }
 
   def openSource = Action {
-    Ok(InfoPageLayout(PageNames.openSource, OpenSourceContent(), gaTrackingCode))
+    Ok(InfoPageLayout(PageNames.openSource, OpenSourceContent(supportEmail), gaTrackingCode))
   }
 
   def output = Action {
@@ -49,7 +50,7 @@ class Information @Inject()(config: Configuration) extends Controller {
   }
 
   def contacts = Action {
-    Ok(InfoPageLayout(PageNames.contacts, ContactsContent(), gaTrackingCode))
+    Ok(InfoPageLayout(PageNames.contacts, ContactsContent(supportEmail), gaTrackingCode))
   }
 
   def privacy = Action {
@@ -57,7 +58,7 @@ class Information @Inject()(config: Configuration) extends Controller {
   }
 
   def terms = Action {
-    Ok(InfoPageLayout(PageNames.terms, TermsContent(), gaTrackingCode))
+    Ok(InfoPageLayout(PageNames.terms, TermsContent(supportEmail), gaTrackingCode))
   }
 
 }

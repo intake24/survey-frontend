@@ -1,4 +1,4 @@
-@()
+@(supportEmail: String)
 
 <!--
 This file is part of Intake24.
@@ -38,7 +38,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     </div>
     <div class="col-md-4">
       <h2>Food database</h2>
-      <p>Over 1500 foods with carefully selected automated portion size estimation methods. More than 2500 portion
+      <p>Over 2800 foods with carefully selected automated portion size estimation methods. More than 2500 portion
         size images which have been extensively validated in a feeding study and against 4-day weighed diaries.</p>
     </div>
   </div>
@@ -55,9 +55,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
     </div>
     <div class="col-md-4">
       <h2>Validation</h2>
-      <p>A comparison of Intake24 with interviewer-led recalls was conducted in 180 people. Intake24 was found to
-        under-estimate energy intake by just 1% on average. Mean intakes of all macronutrients and micronutrients (except
-        non-milk extrinsic sugars) were within 4% of the interviewer-led recall.</p>
+      <p>Newcastle University conducted a comparison of Intake24 with interviewer-led recalls was conducted in 180 people.
+        Intake24 was found to under-estimate energy intake by just 1% on average. Mean intakes of all macronutrients
+        and micronutrients (except non-milk extrinsic sugars) were within 4% of the interviewer-led recall.</p>
       <p>
         <a class="btn btn-default" href="@linkToContent(routes.Information.validation())" role="button">Read more &raquo;</a>
       </p>
@@ -109,7 +109,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
       <p>If you have any questions or if you would like to use Intake24 to run a survey please contact us using the
         following e-mail:</p>
       <p>
-        <a href="mailto:support@@intake24.co.uk">support@@intake24.co.uk</a>
+        <a href="mailto:@supportEmail">@supportEmail</a>
       </p>
     </div>
   </div>
