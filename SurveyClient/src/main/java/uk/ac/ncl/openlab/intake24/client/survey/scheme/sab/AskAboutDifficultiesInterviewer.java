@@ -28,8 +28,8 @@ public class AskAboutDifficultiesInterviewer implements PromptRule<Survey, Surve
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(
                     "<p><strong>For interviewer</strong></p>" +
-                            "<p>Did you have any difficulties in recording foods or amounts eaten for this " +
-                            "participant?</p>" +
+                            "<p>Did you have any difficulties in recording the foods or drinks consumed" +
+                            "by this participant?</p>" +
                             "<p><small>For example, participant did not cook or prepare food themselves; " +
                             "participant was away from home; participant had difficulties remembering, foods " +
                             "not be found on food list, etc. Please provide as much information as possible." +
