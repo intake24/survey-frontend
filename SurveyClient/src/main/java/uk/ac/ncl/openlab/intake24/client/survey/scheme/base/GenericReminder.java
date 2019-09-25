@@ -6,21 +6,21 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.ReminderPrompt;
 
-public abstract class FrequentlyForgottenFoods implements PromptRule<Survey, SurveyOperation> {
+public abstract class GenericReminder implements PromptRule<Survey, SurveyOperation> {
 
-    private static final String REMINDER_KEY = "foodsReminderShown";
-
+    private String reminderKey;
     private SafeHtml promptText;
 
-    public FrequentlyForgottenFoods(SafeHtml promptText) {
+    public GenericReminder(SafeHtml promptText, String reminderKey) {
         this.promptText = promptText;
+        this.reminderKey = reminderKey;
     }
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.flags.contains(REMINDER_KEY) && state.portionSizeComplete()) {
+        if (!state.flags.contains(reminderKey) && state.portionSizeComplete()) {
             return Option.some(PromptUtil.asSurveyPrompt(new ReminderPrompt(promptText),
-                    answers -> SurveyOperation.update(survey -> survey.withFlag(REMINDER_KEY))));
+                    answers -> SurveyOperation.update(survey -> survey.withFlag(reminderKey))));
         } else {
             return Option.none();
         }

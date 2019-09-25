@@ -69,7 +69,7 @@ public class October2019 extends BasicScheme {
                         .plus(AskIfUsualAmountReason.withPriority(29))
                         .plus(AskAboutDiet.withPriority(28))
                         .plus(AskAboutCookingOil.withPriority(27))
-                        .plus(AskAboutSupplements.withPriority(26))
+                        .plus(RemindSupplements.withPriority(26))
                         .plus(AskAboutProxy.withPriority(25))
                         .plus(AskAboutProxyIssues.withPriority(24)),
                 baseRules.selectionRules
