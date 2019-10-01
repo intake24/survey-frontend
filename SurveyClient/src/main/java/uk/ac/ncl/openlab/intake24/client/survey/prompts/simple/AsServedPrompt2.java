@@ -105,7 +105,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
     private static final More MORE = new More();
 
     private static final String STYLE_THUMBNAIL_SELECTED = "intake24-as-served-thumbnail-selected";
-    private static final int WEIGHT_FACTOR_DENOMINATOR = 8;
+    private static final int WEIGHT_FACTOR_DENOMINATOR = 4;
 
     private static final HelpMessages helpMessages = HelpMessages.INSTANCE;
 
