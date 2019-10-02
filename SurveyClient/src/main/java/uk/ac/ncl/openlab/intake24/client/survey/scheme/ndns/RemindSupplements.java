@@ -18,7 +18,8 @@ public class RemindSupplements extends GenericReminder {
         return new WithPriority<>(new RemindFrequentlyForgottenFoods(SafeHtmlUtils.fromSafeConstant(
                 "<p>Did you take any dietary supplements?</p>" +
                         "<p>If yes, please go back by selecting  <strong>'+ Add another meal'</strong>, " +
-                        "search and enter your supplement.</p>"),
+                        "search and enter your supplement.</p>" +
+                        "<p>If no, please press continue.</p>"),
                 "supplementsReminderShown"), priority);
     }
 }
