@@ -57,6 +57,8 @@ public interface SurveyMessages extends Messages {
 	
 	public String navBar_tutorialVideo();
 
+	public String navBar_currentRecallNumber(String number);
+
 	public String navBar_logOut();
 
 	public String nameCheckPage_header();

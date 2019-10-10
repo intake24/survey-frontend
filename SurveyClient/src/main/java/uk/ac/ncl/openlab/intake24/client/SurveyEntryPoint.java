@@ -31,8 +31,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
@@ -99,8 +101,6 @@ public class SurveyEntryPoint implements EntryPoint {
 
         watchTutorial = new Anchor(SurveyMessages.INSTANCE.navBar_tutorialVideo(), TutorialVideo.url, "_blank");
 
-        recallNumber = new Anchor();
-
         logOut = new Anchor(SurveyMessages.INSTANCE.navBar_logOut());
 
         logOut.addClickHandler(new ClickHandler() {
@@ -151,7 +151,10 @@ public class SurveyEntryPoint implements EntryPoint {
 
                     @Override
                     public void onSuccess(Method method, UserData userResponse) {
-                        recallNumber = new Anchor("Current recall number: "  + userResponse.recallNumber);
+
+                        NumberFormat nf = NumberFormat.getDecimalFormat();
+
+                        recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
                         recallNumber.getElement().setId("intake24-recall-number");
 
                         UxEventsHelper.applySettings(response.uxEventsSettings);

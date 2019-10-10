@@ -5,5 +5,5 @@ import org.workcraft.gwt.shared.client.Option;
 public class UserData {
     public String id;
     public Option<String> name;
-    public String recallNumber;
+    public int recallNumber;
 }
