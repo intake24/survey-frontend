@@ -36,6 +36,7 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
+import org.workcraft.gwt.slidingscale.client.CanvasSlidingScale;
 import org.workcraft.gwt.slidingscale.client.SlidingScale;
 import org.workcraft.gwt.slidingscale.shared.SlidingScaleDef;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
@@ -85,14 +86,14 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
             }
         };
 
-        final SlidingScale scale = new SlidingScale(ssd, def.limit, def.initialLevel, label);
+        final CanvasSlidingScale scale = new CanvasSlidingScale(ssd, def.limit, def.initialLevel, label);
 
         content.add(scale);
 
         final Button less = WidgetFactory.createButton(def.lessLabel, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                scale.sliderBar.setValue(scale.sliderBar.getValue() + scale.sliderBar.getStep());
+               /* scale.sliderBar.setValue(scale.sliderBar.getValue() + scale.sliderBar.getStep());
                 /*if (scale.sliderBar.getValue() > 0.99)
 					less.setEnabled(false);
 				else
@@ -105,7 +106,7 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
         final Button more = WidgetFactory.createButton(def.moreLabel, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                scale.sliderBar.setValue(scale.sliderBar.getValue() - scale.sliderBar.getStep());
+                /*scale.sliderBar.setValue(scale.sliderBar.getValue() - scale.sliderBar.getStep());
 				/*if (scale.sliderBar.getValue() < 0.01)
 					more.setEnabled(false);
 				else
@@ -126,7 +127,8 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
 
         content.add(WidgetFactory.createButtonsPanel(less, more, finish));
 
-        ShepherdTour.makeShepherdTarget(promptPanel, scale.image, scale.overlayDiv, scale.sliderBar, less, more, finish);
+        ShepherdTour.makeShepherdTarget(promptPanel, less, more, finish);
+        //ShepherdTour.makeShepherdTarget(promptPanel, scale.image, scale.overlayDiv, scale.sliderBar, less, more, finish);
 
         return content;
     }
