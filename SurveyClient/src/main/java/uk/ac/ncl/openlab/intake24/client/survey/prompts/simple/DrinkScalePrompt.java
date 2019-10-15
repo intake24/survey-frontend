@@ -52,9 +52,9 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
     private final static PVector<ShepherdTour.Step> tour = TreePVector
             .<ShepherdTour.Step>empty()
             .plus(new ShepherdTour.Step("image", "#intake24-sliding-scale-image", helpMessages.drinkScale_imageTitle(), helpMessages.drinkScale_imageDescription()))
-            .plus(new ShepherdTour.Step("overlay", "#intake24-sliding-scale-overlay", helpMessages.drinkScale_overlayTitle(), helpMessages.drinkScale_overlayDescription()))
-            .plus(new ShepherdTour.Step("label", "#intake24-sliding-scale-overlay", helpMessages.drinkScale_volumeLabelTitle(), helpMessages.drinkScale_volumeLabelDescription(), "top right", "bottom right"))
-            .plus(new ShepherdTour.Step("slider", "#intake24-sliding-scale-slider", helpMessages.drinkScale_sliderTitle(), helpMessages.drinkScale_sliderDescription(), "middle right", "middle left"))
+            .plus(new ShepherdTour.Step("overlay", "#intake24-sliding-scale-image", helpMessages.drinkScale_overlayTitle(), helpMessages.drinkScale_overlayDescription()))
+            .plus(new ShepherdTour.Step("label", "#intake24-sliding-scale-label", helpMessages.drinkScale_volumeLabelTitle(), helpMessages.drinkScale_volumeLabelDescription(), "top right", "bottom right"))
+            .plus(new ShepherdTour.Step("slider", "#intake24-sliding-scale-image", helpMessages.drinkScale_sliderTitle(), helpMessages.drinkScale_sliderDescription(), "middle right", "middle left"))
             .plus(new ShepherdTour.Step("lessButton", "#intake24-sliding-scale-less-button", helpMessages.drinkScale_lessButtonTitle(), helpMessages.drinkScale_lessButtonDescription()))
             .plus(new ShepherdTour.Step("moreButton", "#intake24-sliding-scale-more-button", helpMessages.drinkScale_moreButtonTitle(), helpMessages.drinkScale_moreButtonDescription()))
             .plus(new ShepherdTour.Step("continueButton", "#intake24-sliding-scale-continue-button", helpMessages.drinkScale_continueButtonTitle(), helpMessages.drinkScale_continueButtonDescription(), "top right", "bottom right"));
@@ -93,11 +93,7 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
         final Button less = WidgetFactory.createButton(def.lessLabel, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-               /* scale.sliderBar.setValue(scale.sliderBar.getValue() + scale.sliderBar.getStep());
-                /*if (scale.sliderBar.getValue() > 0.99)
-					less.setEnabled(false);
-				else
-					less.setEnabled(true);*/
+                scale.setValue(scale.getValue() - 0.1);
             }
         });
 
@@ -106,11 +102,7 @@ public class DrinkScalePrompt implements SimplePrompt<Double> {
         final Button more = WidgetFactory.createButton(def.moreLabel, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                /*scale.sliderBar.setValue(scale.sliderBar.getValue() - scale.sliderBar.getStep());
-				/*if (scale.sliderBar.getValue() < 0.01)
-					more.setEnabled(false);
-				else
-					more.setEnabled(true);*/
+                scale.setValue(scale.getValue() + 0.1);
             }
         });
 

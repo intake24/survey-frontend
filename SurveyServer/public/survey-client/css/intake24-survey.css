@@ -242,6 +242,10 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	margin-top: 3em;
 }
 
+.intake24-sliding-scale-container {
+	position: relative;
+}
+
 .intake24-sliding-scale-canvas {
 	width: 100%;
 }
