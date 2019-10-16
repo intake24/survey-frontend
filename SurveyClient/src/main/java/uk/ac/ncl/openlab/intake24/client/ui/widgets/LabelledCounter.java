@@ -11,92 +11,52 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.ui.widgets;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import org.workcraft.gwt.shared.client.Function1;
-import org.workcraft.gwt.shared.client.Pair;
+import org.workcraft.gwt.shared.client.Callback;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
-import java.util.ArrayList;
 
 public class LabelledCounter extends Composite {
     public int index;
 
-    public final Label box = new Label();
+    public final Label label = new Label();
 
-    private ArrayList<Pair<String, Double>> values;
-
-    public void update() {
-        box.setText(values.get(index).left);
-    }
-
-    public double getValue() {
-        return values.get(index).right;
-    }
-
-    public LabelledCounter(final ArrayList<Pair<String, Double>> values, int startIndex) {
-        this(values, startIndex, new Function1<Double, Boolean>() {
-            @Override
-            public Boolean apply(Double argument) {
-                return true;
-            }
-        });
-    }
-
-    public LabelledCounter(final ArrayList<Pair<String, Double>> values, int startIndex, final Function1<Double, Boolean> validate) {
-        this.values = values;
-        index = startIndex;
-
+    public LabelledCounter(final String initialLabel, final Callback onIncreaseClicked, final Callback onDecreaseClicked) {
         VerticalPanel panel = new VerticalPanel();
 
         panel.setStyleName("counterPanel");
 
         panel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 
-        Button inc = WidgetFactory.createButton("▲", new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (index < (LabelledCounter.this.values.size() - 1)) {
-                    index++;
-                    if (validate.apply(getValue()))
-                        update();
-                    else
-                        index--;
-                }
-            }
+        Button inc = WidgetFactory.createButton("▲", event -> {
+            onIncreaseClicked.call();
         });
 
         inc.setStyleName("counterIncButton");
 
-        Button dec = WidgetFactory.createButton("▼", new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (index > 0) {
-                    index--;
-                    if (validate.apply(getValue()))
-                        update();
-                    else
-                        index++;
-                }
-            }
+        Button dec = WidgetFactory.createButton("▼", event -> {
+            onDecreaseClicked.call();
         });
 
         dec.setStyleName("counterDecButton");
 
-        box.setStyleName("counterTextBox");
-        box.getElement().getStyle().setFontSize(100, Unit.PCT);
-        box.getElement().getStyle().setHeight(1.2, Unit.EM);
+        label.setStyleName("counterTextBox");
+        label.getElement().getStyle().setFontSize(100, Unit.PCT);
+        label.getElement().getStyle().setHeight(1.2, Unit.EM);
+
+        label.setText(initialLabel);
 
         panel.add(inc);
-        panel.add(box);
+        panel.add(label);
         panel.add(dec);
 
-        update();
-
         initWidget(panel);
+    }
+
+    public void setLabel(String label) {
+        this.label.setText(label);
     }
 }
