@@ -41,6 +41,7 @@ import org.workcraft.gwt.shared.client.Callback;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.IEHack;
 
 import java.util.Iterator;
@@ -59,15 +60,15 @@ public class PromptInterfaceManager {
     }
 
     public static void scrollPromptIntoView() {
-
         if (Storage.getSessionStorageIfSupported().getItem("intake24-disable-auto-scroll") == null)
             Scheduler.get().scheduleDeferred(new ScheduledCommand() {
                 public native void scrollIntoView() /*-{
 
                     var e = $wnd.$("#intake24-prompt-scroll-target");
+                    var html = $wnd.$('html');
 
-                    if (e.offset().top < $wnd.$('body').scrollTop()) {
-                        $wnd.$('html, body').animate({
+                    if (e.offset().top < html.scrollTop()) {
+                        html.animate({
                             scrollTop: e.offset().top
                         }, 500);
                     }
