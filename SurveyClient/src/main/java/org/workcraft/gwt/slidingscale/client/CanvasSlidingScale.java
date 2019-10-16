@@ -13,8 +13,10 @@ package org.workcraft.gwt.slidingscale.client;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Composite;
@@ -83,7 +85,8 @@ public class CanvasSlidingScale extends Composite {
 
         canvas = Canvas.createIfSupported();
 
-        canvas.getElement().setId("intake24-sliding-scale-image");;
+        canvas.getElement().setId("intake24-sliding-scale-image");
+        ;
 
         double aspect = (double) definition.imageHeight / (double) definition.imageWidth;
         imageScale = (double) CANVAS_WIDTH / (double) definition.imageWidth;
@@ -113,31 +116,39 @@ public class CanvasSlidingScale extends Composite {
         });
 
         canvas.addMouseDownHandler(mouseDownEvent -> {
-            if (mouseDownEvent.getNativeButton() == 1)
+            if (mouseDownEvent.getNativeButton() == 1) {
+                mouseDownEvent.preventDefault();
+                onPointerMoved(mouseDownEvent.getClientX(), mouseDownEvent.getClientY());
                 pointerMoving = true;
+            }
         });
 
         canvas.addMouseUpHandler(mouseUpEvent -> {
-            if (mouseUpEvent.getNativeButton() == 1)
+            if (mouseUpEvent.getNativeButton() == 1) {
+                mouseUpEvent.preventDefault();
                 pointerMoving = false;
-        });
-
-        canvas.addMouseOutHandler(mouseOutEvent -> {
-            pointerMoving = false;
+            }
         });
 
         canvas.addMouseMoveHandler(mouseMoveEvent -> {
             if (pointerMoving) {
-                JavaScriptObject rect = getBoundingClientRect(canvas.getCanvasElement());
+                onPointerMoved(mouseMoveEvent.getClientX(), mouseMoveEvent.getClientY());
+            }
+        });
 
-                double canvasY = mouseMoveEvent.getClientY() - getPropertyAsNumber(rect, "top");
-                double canvasHeight = getPropertyAsNumber(rect, "height");
-                double relativePosition = 1.0 - Math.min(1, Math.max(canvasY / canvasHeight, 0));
+        canvas.addTouchStartHandler(touchStartEvent -> {
+            JsArray<Touch> touches = touchStartEvent.getTouches();
+            if (touches.length() == 1) {
+                touchStartEvent.preventDefault();
+                onPointerMoved(touches.get(0).getClientX(), touches.get(0).getClientY());
+            }
+        });
 
-                double relativeMin = (double) definition.emptyLevel / definition.imageHeight;
-                double relativeMax = (double) definition.fullLevel / definition.imageHeight;
-
-                setValue((relativePosition - relativeMin) / (relativeMax - relativeMin));
+        canvas.addTouchMoveHandler(touchMoveEvent -> {
+            JsArray<Touch> touches = touchMoveEvent.getTouches();
+            if (touches.length() == 1) {
+                touchMoveEvent.preventDefault();
+                onPointerMoved(touches.get(0).getClientX(), touches.get(0).getClientY());
             }
         });
 
@@ -153,6 +164,19 @@ public class CanvasSlidingScale extends Composite {
         container.add(overlayImage);
 
         initWidget(container);
+    }
+
+    private void onPointerMoved(int clientX, int clientY) {
+        JavaScriptObject rect = getBoundingClientRect(canvas.getCanvasElement());
+
+        double canvasY = clientY - getPropertyAsNumber(rect, "top");
+        double canvasHeight = getPropertyAsNumber(rect, "height");
+        double relativePosition = 1.0 - Math.min(1, Math.max(canvasY / canvasHeight, 0));
+
+        double relativeMin = (double) definition.emptyLevel / definition.imageHeight;
+        double relativeMax = (double) definition.fullLevel / definition.imageHeight;
+
+        setValue((relativePosition - relativeMin) / (relativeMax - relativeMin));
     }
 
 

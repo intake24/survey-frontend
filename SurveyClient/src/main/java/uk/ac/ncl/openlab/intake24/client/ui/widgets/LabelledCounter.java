@@ -32,12 +32,14 @@ public class LabelledCounter extends Composite {
         panel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 
         Button inc = WidgetFactory.createButton("▲", event -> {
+            event.preventDefault();
             onIncreaseClicked.call();
         });
 
         inc.setStyleName("counterIncButton");
 
         Button dec = WidgetFactory.createButton("▼", event -> {
+            event.preventDefault();
             onDecreaseClicked.call();
         });
 
