@@ -9,4 +9,4 @@
 [submodule "intake24feedback"]
 	path = intake24feedback
 	url = https://github.com/intake24/survey-feedback
-	branch = master
+	branch = ndns-october
