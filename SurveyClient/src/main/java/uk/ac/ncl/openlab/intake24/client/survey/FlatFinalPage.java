@@ -166,10 +166,10 @@ public class FlatFinalPage implements SurveyStage<Survey> {
           }
         });
 
-
-
         UxEventsHelper.cleanSessionId();
+
         StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
+        StateManagerUtil.clearHistory();
       }
     });
 
