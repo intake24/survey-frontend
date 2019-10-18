@@ -134,13 +134,13 @@ public class Layout {
         footer.addStyleName("intake24-footer");
         footerContainer.add(footer);
 
-        Anchor nuLogo = new Anchor();
+        /*Anchor nuLogo = new Anchor();
         nuLogo.addStyleName("intake24-footer-nu-logo");
         nuLogo.setHref("https://openlab.ncl.ac.uk/");
 
         Anchor fssLogo = new Anchor();
         fssLogo.addStyleName("intake24-footer-fss-logo");
-        fssLogo.setHref("http://www.foodstandards.gov.scot/");
+        fssLogo.setHref("http://www.foodstandards.gov.scot/");*/
 
         FlowPanel privacyContainer = new FlowPanel();
         privacyContainer.addStyleName("intake24-footer-privacy");
@@ -162,8 +162,8 @@ public class Layout {
         privacyContainer.add(tocLink);
 
 
-        footer.add(nuLogo);
-        footer.add(fssLogo);
+        //footer.add(nuLogo);
+        //footer.add(fssLogo);
         footer.add(privacyContainer);
 
         UIRootPanel.clear();

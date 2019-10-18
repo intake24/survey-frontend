@@ -6,12 +6,12 @@ import uk.ac.ncl.openlab.intake24.client.survey.PromptRule;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.WithPriority;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.base.FrequentlyForgottenFoods;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.base.GenericReminder;
 
-public class RemindFrequentlyForgottenFoods extends FrequentlyForgottenFoods {
+public class RemindFrequentlyForgottenFoods extends GenericReminder {
 
-    public RemindFrequentlyForgottenFoods(SafeHtml promptText) {
-        super(promptText);
+    public RemindFrequentlyForgottenFoods(SafeHtml promptText, String key) {
+        super(promptText, key);
     }
 
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
@@ -32,6 +32,6 @@ public class RemindFrequentlyForgottenFoods extends FrequentlyForgottenFoods {
                         "<li>Sauces, dressings</li>" +
                         "<li>Bread</li>" +
                         "<li>Cheese</li>" +
-                        "</ul></p>")), priority);
+                        "</ul></p>"), "foodsReminderShown"), priority);
     }
 }

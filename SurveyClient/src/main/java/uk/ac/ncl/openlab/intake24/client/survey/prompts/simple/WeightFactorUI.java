@@ -17,6 +17,10 @@ public class WeightFactorUI extends Composite {
 
     private int numerator;
 
+    private static int gcm(int a, int b) {
+        return b == 0 ? a : gcm(b, a % b);
+    }
+
     public int getWeightFactor() {
         return numerator;
     }
@@ -42,7 +46,8 @@ public class WeightFactorUI extends Composite {
 
         if (displayFraction) {
             weightFactorLabel.add(labelsImpl.getFractionLabelWidget());
-            labelsImpl.updateFractionLabel(numerator % denominator, denominator);
+            int gcm = gcm(numerator % denominator, denominator);
+            labelsImpl.updateFractionLabel((numerator % denominator) / gcm, denominator/ gcm);
         }
 
         weightFactorLabel.add(new HTMLPanel("span", "<br/> of the " + portionDescription + "<br/> <strong>" + Math.round(baseWeight * numerator / denominator) + " g </strong>"));

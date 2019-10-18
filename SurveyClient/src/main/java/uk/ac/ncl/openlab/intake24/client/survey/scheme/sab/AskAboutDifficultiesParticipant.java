@@ -27,7 +27,7 @@ public class AskAboutDifficultiesParticipant implements PromptRule<Survey, Surve
         if (!survey.customData.containsKey(DIFFICULTIES_PARTICIPANT_KEY) && survey.portionSizeComplete()) {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(
-                    "<p>Did you have any difficulties in telling me about the foods or amounts " +
+                    "<p>Did you have any difficulties in telling me about the foods or drinks " +
                             "that you consumed yesterday?</p>"
             );
 
