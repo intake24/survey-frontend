@@ -29,7 +29,6 @@ public class ResetSelectionOnFreeEntryComplete implements Function2<Survey, Surv
         // meal and only then the first meal.
 
         if (!s0.freeEntryComplete() && s1.freeEntryComplete() && s1.meals.size() > 0) {
-            BrowserConsole.log("YAHOO");
             return s1.withSelection(new Selection.SelectedMeal(0, SelectionMode.AUTO_SELECTION));
         }
         else
