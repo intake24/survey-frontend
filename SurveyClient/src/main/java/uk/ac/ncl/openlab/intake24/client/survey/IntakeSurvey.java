@@ -189,19 +189,7 @@ public class IntakeSurvey implements SurveyStage<Survey> {
 
                         @Override
                         public void visitUpdate(SurveyOperation.Update update) {
-                            boolean wasFreeEntryComplete = stateManager.getCurrentState().freeEntryComplete();
                             Survey newState = update.update.apply(stateManager.getCurrentState());
-
-                            // When free entry is complete, force selection to go back to the first meal so that
-							// question order make sense.
-
-							// Otherwise, the last entered food will remain selected, then foods in the last entered meal and
-							// then the first meal.
-
-                            if (!wasFreeEntryComplete && newState.freeEntryComplete()) {
-                                if (newState.meals.size() > 0)
-                                    newState = newState.withSelection(new Selection.SelectedMeal(0, SelectionMode.AUTO_SELECTION));
-                            }
                             stateManager.updateState(newState, update.makeHistoryEntry);
                             showNextPrompt();
                         }
