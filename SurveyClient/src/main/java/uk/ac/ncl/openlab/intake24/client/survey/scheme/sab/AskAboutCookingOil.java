@@ -34,6 +34,7 @@ public class AskAboutCookingOil extends CookingOil {
                         .plus(new MultipleChoiceQuestionOption("Palm oil"))
                         .plus(new MultipleChoiceQuestionOption("Rice bran oil"))
                         .plus(new MultipleChoiceQuestionOption("Safflower oil"))
+                        .plus(new MultipleChoiceQuestionOption("Sesame / gingelly oil"))
                         .plus(new MultipleChoiceQuestionOption("Sunflower oil"))
                         .plus(new MultipleChoiceQuestionOption("Vegetable oil (rapeseed / colza)"))
                         .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
