@@ -31,6 +31,7 @@ import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.birmingham.BirminghamNovember2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.April2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.sab.SAB;
@@ -47,6 +48,7 @@ public interface SurveyScheme {
     void showNextPage();
 
     List<Anchor> navBarLinks();
+
     List<Anchor> navBarUserInfo();
 
     static SurveyScheme createScheme(SurveyParameters surveyParameters, final String locale, final SurveyInterfaceManager interfaceManager, UserData userData) {
@@ -68,6 +70,8 @@ public interface SurveyScheme {
                 return new October2019(locale, surveyParameters, interfaceManager, userData);
             case SAB.ID:
                 return new SAB(locale, surveyParameters, interfaceManager, userData);
+            case BirminghamNovember2019.ID:
+                return new BirminghamNovember2019(locale, surveyParameters, interfaceManager, userData);
             default:
                 throw new RuntimeException("Unknown survey scheme: " + surveyParameters.schemeId);
         }
