@@ -145,7 +145,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 }
 
 
-.intake24-radio-button-question ul {
+.intake24-multiple-choice-question ul {
 	list-style: none;
 	margin-left: 0px;
 	margin-top: 15px;
@@ -153,20 +153,25 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	padding: 0px;
 }
 
-.intake24-radio-button-question li {
+.intake24-multiple-choice-question li {
 	margin-bottom: 5px;
-}
-
-.intake24-radio-button-question input[type="text"] {
-	padding: 2px;
 }
 
 .intake24-multiple-choice-question input[type="text"] {
 	padding: 2px;
 }
 
+.intake24-multiple-choice-question input[type="checkbox"] {
+	margin-bottom: 1px;
+}
 
-.intake24-radio-button-question-warning {
+.intake24-multiple-choice-question input[type="text"] {
+	padding: 2px;
+	margin-left: 10px;
+}
+
+
+.intake24-mcq-warning {
 	color: red;
 }
 
@@ -205,4 +210,42 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	margin-bottom: 1rem;
 	border: 1px solid transparent;
 	border-radius: .25rem;
+}
+
+#intake24-recall-number {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.intake24-survey-container {
+	margin: 80px auto;
+	max-width: 600px;
+}
+
+.intake24-survey-header {
+	text-align: center;
+}
+
+.intake24-survey-header h1 {
+	color: #db3100;
+	font-size: 24px;
+	font-weight: 100;
+	height: 24px;
+	letter-spacing: 2px;
+	line-height: 24px;
+	margin: 0;
+	padding: 0;
+}
+
+.intake24-survey-content {
+	text-align: center;
+	margin-top: 3em;
+}
+
+.intake24-sliding-scale-container {
+	position: relative;
+}
+
+.intake24-sliding-scale-canvas {
+	width: 100%;
 }

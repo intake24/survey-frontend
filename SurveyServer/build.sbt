@@ -32,6 +32,7 @@ resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
   ws,
+  "org.webjars" % "font-awesome" % "5.7.2",
   "org.webjars" %% "webjars-play" % "2.5.0-4",
   "org.webjars" % "bootstrap" % "3.1.1-2",
   "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT",

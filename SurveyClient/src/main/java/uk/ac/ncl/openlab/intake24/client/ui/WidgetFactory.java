@@ -47,9 +47,20 @@ public class WidgetFactory {
     }
 
     public static Button createButton(String label, ClickHandler handler) {
-        Button result = new Button(label);
-        result.addStyleName("intake24-button");
+        Button result = createButton(label);
         result.addClickHandler(handler);
+        return result;
+    }
+
+    public static Button createButton(String label, String id, ClickHandler handler) {
+        Button result = createButton(label, handler);
+        result.getElement().setId(id);
+        return result;
+    }
+
+    public static Button createStyledButton(String label, String id, ClickHandler handler) {
+        Button result = createButton(label, id, handler);
+        result.addStyleName("intake24-button");
         return result;
     }
 
@@ -59,18 +70,26 @@ public class WidgetFactory {
     }
 
     public static Button createGreenButton(String label, String id, ClickHandler handler) {
-        Button result = createButton(label, handler);
-        result.addStyleName("intake24-button");
+        Button result = createStyledButton(label, id, handler);
         result.addStyleName("intake24-green-button");
-        result.getElement().setId(id);
+        return result;
+    }
+
+    public static Button createGreenButton(String label, String id, ClickHandler handler, String style) {
+        Button result = createGreenButton(label, id, handler);
+        result.addStyleName(style);
         return result;
     }
 
     public static Button createRedButton(String label, String id, ClickHandler handler) {
-        Button result = createButton(label, handler);
-        result.addStyleName("intake24-button");
+        Button result = createStyledButton(label, id, handler);
         result.addStyleName("intake24-red-button");
-        result.getElement().setId(id);
+        return result;
+    }
+
+    public static Button createRedButton(String label, String id, ClickHandler handler, String style) {
+        Button result = createRedButton(label, id, handler);
+        result.addStyleName(style);
         return result;
     }
 
@@ -79,6 +98,12 @@ public class WidgetFactory {
         result.addStyleName("intake24-buttons-panel");
         for (Button b : buttons)
             result.add(b);
+        return result;
+    }
+
+    public static Panel createCenteredButtonsPanel(Button... buttons) {
+        Panel result = createButtonsPanel(buttons);
+        result.addStyleName("intake24-flex-center");
         return result;
     }
 

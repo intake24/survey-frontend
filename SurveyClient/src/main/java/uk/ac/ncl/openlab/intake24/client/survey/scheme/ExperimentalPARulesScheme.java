@@ -31,6 +31,7 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
@@ -40,8 +41,8 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
 
     public static final String ID = "experimental-pa-rules";
 
-    public ExperimentalPARulesScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
-        super(surveyParameters, locale, interfaceManager);
+    public ExperimentalPARulesScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager, UserData userData) {
+        super(surveyParameters, locale, interfaceManager, userData);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
     }
 
     @Override
-    protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
+    protected Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()

@@ -4,12 +4,8 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import org.workcraft.gwt.shared.client.Function1;
-import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.widgets.LabelledCounter;
-
-import java.util.ArrayList;
 
 public class QuantityCounter extends Composite {
 
@@ -22,59 +18,50 @@ public class QuantityCounter extends Composite {
     public final double min;
     public final double max;
 
+    private double value;
+
     public double getValue() {
-        return wholeCounter.getValue() + fractionalCounter.getValue();
+        return value;
     }
 
-    private final Function1<Double, Boolean> validate = new Function1<Double, Boolean>() {
-        @Override
-        public Boolean apply(Double argument) {
-            double v = getValue();
-            return v >= min && v <= max;
-        }
-    };
+    private String getWholeLabel() {
+        double whole = (int) Math.floor(value);
+        return NumberFormat.getDecimalFormat().format(whole);
+    }
+
+    private String getFractionLabel() {
+        double frac = value - Math.floor(value);
+
+        if (frac < 0.25)
+            return messages.quantity_noFraction();
+        else if (frac < 0.5)
+            return messages.quantity_oneFourth();
+        else if (frac < 0.75)
+            return messages.quantity_oneHalf();
+        else
+            return messages.quantity_threeFourths();
+    }
+
+    private void updateValue(double newValue) {
+        value = Math.min(max, Math.max(min, newValue));
+
+        wholeCounter.setLabel(getWholeLabel());
+        fractionalCounter.setLabel(getFractionLabel());
+    }
 
     public QuantityCounter(double min, double max, double init) {
         this.min = min;
         this.max = max;
+        this.value = Math.min(max, Math.max(min, init));
 
         final FlowPanel panel = new FlowPanel();
 
-        ArrayList<Pair<String, Double>> wholeLabels = new ArrayList<Pair<String, Double>>();
-
-        NumberFormat nf = NumberFormat.getDecimalFormat();
-
-        for (int i = 0; i < 31; i++) {
-            wholeLabels.add(Pair.create(nf.format(i), (double) i));
-        }
-
-        ArrayList<Pair<String, Double>> fracLabels = new ArrayList<Pair<String, Double>>();
-
-        fracLabels.add(Pair.create(messages.quantity_noFraction(), 0.0));
-        fracLabels.add(Pair.create(messages.quantity_oneFourth(), 0.25));
-        fracLabels.add(Pair.create(messages.quantity_oneHalf(), 0.5));
-        fracLabels.add(Pair.create(messages.quantity_threeFourths(), 0.75));
-
-        int startWholeIndex = (int) Math.floor(init);
-
-        double frac = init - Math.floor(init);
-        int startFractionalIndex = 0;
-
-        if (frac < 0.25)
-            startFractionalIndex = 0;
-        else if (frac < 0.5)
-            startFractionalIndex = 1;
-        else if (frac < 0.75)
-            startFractionalIndex = 2;
-        else
-            startFractionalIndex = 3;
-
-        wholeCounter = new LabelledCounter(wholeLabels, startWholeIndex, validate);
+        wholeCounter = new LabelledCounter(getWholeLabel(), () -> updateValue(value + 1.0), () -> updateValue(value - 1.0));
 
         wholeCounter.addStyleName("intake24-quantity-prompt-whole-counter");
         wholeCounter.getElement().setId("intake24-quantity-prompt-whole-counter");
 
-        fractionalCounter = new LabelledCounter(fracLabels, startFractionalIndex, validate);
+        fractionalCounter = new LabelledCounter(getFractionLabel(), () -> updateValue(value + 0.25), () -> updateValue(value - 0.25));
         fractionalCounter.addStyleName("intake24-quantity-prompt-frac-counter");
         fractionalCounter.getElement().setId("intake24-quantity-prompt-frac-counter");
 

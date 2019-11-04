@@ -1,0 +1,14 @@
+play.crypto.secret = "aNF<@vv@3p<Y7aZWvA0VGUa^vy`Hq?c5t9]8/sKV3a0yzm6E7duB<Rdt7sy>J`xl"
+application.langs = "en"
+
+play.http.parser.maxDiskBuffer = 10MB
+play.http.errorHandler = "app.ErrorHandler"
+
+intake24.internalApiBaseUrl = "http://192.168.56.2:9001"
+intake24.externalApiBaseUrl = "http://192.168.56.2:9001"
+
+intake24.supportEmail = "support@intake24.co.uk"
+
+intake24.videoURL = "https://www.youtube.com/watch?v=70Wm_kyxpvg"
+
+play.modules.enabled += "guice.NewcastleContentModule"

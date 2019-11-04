@@ -29,6 +29,8 @@ public class Layout {
 
     private static FlowPanel navbarContainer;
     private static FlowPanel navbar;
+    private static HTMLPanel navbarUserInfo;
+    private static HTMLPanel navbarLinks;
 
     private static FlowPanel mainContentContainer;
     private static FlowPanel mainContent;
@@ -41,6 +43,28 @@ public class Layout {
     public static final Anchor watchTutorial = WidgetFactory.createTutorialVideoLink();
     public static final Anchor logOut = new Anchor(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_success()));
 
+    public static void setNavBar(List<Anchor> left, List<Anchor> right) {
+        navbar.clear();
+
+        navbarUserInfo = new HTMLPanel("ul", "");
+
+        for (Anchor a : left) {
+            HTMLPanel li = new HTMLPanel("li", "");
+            li.add(a);
+            navbarUserInfo.add(li);
+        }
+
+        navbarLinks = new HTMLPanel("ul", "");
+
+        for (Anchor a : right) {
+            HTMLPanel li = new HTMLPanel("li", "");
+            li.add(a);
+            navbarLinks.add(li);
+        }
+
+        navbar.add(navbarUserInfo);
+        navbar.add(navbarLinks);
+    }
 
     public static void setNavBarLinks(Anchor... links) {
         setNavBarLinks(Arrays.asList(links));
@@ -49,17 +73,16 @@ public class Layout {
     public static void setNavBarLinks(List<Anchor> links) {
         navbar.clear();
 
-        HTMLPanel ul = new HTMLPanel("ul", "");
+        navbarLinks = new HTMLPanel("ul", "");
 
         for (Anchor a : links) {
             HTMLPanel li = new HTMLPanel("li", "");
             li.add(a);
-            ul.add(li);
+            navbarLinks.add(li);
         }
 
-        navbar.add(ul);
+        navbar.add(navbarLinks);
     }
-
 
     public static void setMainContent(Widget content) {
         mainContent.add(content);
@@ -111,13 +134,13 @@ public class Layout {
         footer.addStyleName("intake24-footer");
         footerContainer.add(footer);
 
-        Anchor nuLogo = new Anchor();
+        /*Anchor nuLogo = new Anchor();
         nuLogo.addStyleName("intake24-footer-nu-logo");
         nuLogo.setHref("https://openlab.ncl.ac.uk/");
 
         Anchor fssLogo = new Anchor();
         fssLogo.addStyleName("intake24-footer-fss-logo");
-        fssLogo.setHref("http://www.foodstandards.gov.scot/");
+        fssLogo.setHref("http://www.foodstandards.gov.scot/");*/
 
         FlowPanel privacyContainer = new FlowPanel();
         privacyContainer.addStyleName("intake24-footer-privacy");
@@ -139,8 +162,8 @@ public class Layout {
         privacyContainer.add(tocLink);
 
 
-        footer.add(nuLogo);
-        footer.add(fssLogo);
+        //footer.add(nuLogo);
+        //footer.add(fssLogo);
         footer.add(privacyContainer);
 
         UIRootPanel.clear();

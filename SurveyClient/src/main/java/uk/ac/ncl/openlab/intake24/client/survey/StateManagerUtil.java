@@ -12,6 +12,7 @@ package uk.ac.ncl.openlab.intake24.client.survey;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.storage.client.Storage;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -26,6 +27,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.S
 import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.SerialisableSameAsBeforeCodec;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -35,7 +37,6 @@ public class StateManagerUtil {
     private static Timer serverSyncTimer;
 
     final public static String LatestStateKeyPrefix = "survey-state-";
-    final public static String HistoryStateKeyPrefix = "history-";
     final public static String SameAsBeforePrefix = "sab-";
 
     final public static Storage localStorage = Storage.getLocalStorageIfSupported();
@@ -65,13 +66,13 @@ public class StateManagerUtil {
         return LatestStateKeyPrefix + userName;
     }
 
-    public static String historyKey(String userName, int event) {
-        return HistoryStateKeyPrefix + userName + "-" + Integer.toString(event);
-    }
-
     public static void clearLatestState(String userName) {
         localStorage.removeItem(latestStateKey(userName));
         cleanStateOnServer();
+    }
+
+    public static void clearHistory() {
+        history.clear();
     }
 
     public static void setLatestState(String userName, Survey survey, String scheme_id, String version_id, Boolean storeOnServer) {

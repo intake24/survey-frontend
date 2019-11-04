@@ -38,6 +38,7 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.WeightFactorSettings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,7 +86,10 @@ public class CerealPortionSizeScript implements PortionSizeScript {
 
             SimplePrompt<UpdateFunc> portionSizePrompt =
                     withBackLink(
-                            asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(), messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight", defaultServingSizePrompt(foodData.description()))
+                            asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(),
+                                    messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
+                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)),
+                                    defaultServingSizePrompt(foodData.description()))
                     );
             return Option.some(portionSizePrompt);
         } else if (!data.containsKey("leftoversWeight")) {
@@ -96,7 +100,10 @@ public class CerealPortionSizeScript implements PortionSizeScript {
                 String leftoversSetId = "cereal_" + data.get("type") + data.get("bowl") + "_leftovers";
 
                 return Option.some(withBackLink(asServedPrompt(asServedDefs.get(leftoversSetId),
-                        messages.asServed_leftLessButtonLabel(), messages.asServed_leftMoreButtonLabel(), messages.asServed_leftContinueButtonLabel(), "leftoversChoiceIndex", "leftoversImage", "leftoversWeight", defaultLeftoversPrompt(foodData.description()))));
+                        messages.asServed_leftLessButtonLabel(), messages.asServed_leftMoreButtonLabel(), messages.asServed_leftContinueButtonLabel(),
+                        "leftoversChoiceIndex", "leftoversImage", "leftoversWeight",
+                        Option.none(),
+                        defaultLeftoversPrompt(foodData.description()))));
             }
         } else
             return done();

@@ -11,18 +11,20 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.rules;
 
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PSet;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import uk.ac.ncl.openlab.intake24.client.GoogleAnalytics;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionAnswer;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
+
 
 public class AskIfHomeRecipe implements PromptRule<FoodEntry, FoodOperation> {
     private final PromptMessages messages = GWT.create(PromptMessages.class);
@@ -47,12 +49,14 @@ public class AskIfHomeRecipe implements PromptRule<FoodEntry, FoodOperation> {
     }
 
     private Prompt<FoodEntry, FoodOperation> buildPrompt(final String foodName, final boolean isDrink) {
-        PVector<String> options = TreePVector.<String>empty().plus(messages.homeRecipe_haveRecipeChoice()).plus(messages.homeRecipe_noRecipeChoice());
+        PVector<MultipleChoiceQuestionOption> options = TreePVector.<MultipleChoiceQuestionOption>empty()
+                .plus(new MultipleChoiceQuestionOption(messages.homeRecipe_haveRecipeChoice(), "true"))
+                .plus(new MultipleChoiceQuestionOption(messages.homeRecipe_noRecipeChoice(), "false"));
 
-        return PromptUtil.asFoodPrompt(new RadioButtonPrompt(SafeHtmlUtils.fromSafeConstant(messages.homeRecipe_promptText(SafeHtmlUtils.htmlEscape(foodName.toLowerCase()))), AskIfHomeRecipe.class.getSimpleName(), options, messages.homeRecipe_continueButtonLabel(), "homeRecipeOption", Option.<String>none()), new Function1<String, FoodOperation>() {
+        return PromptUtil.asFoodPrompt(new RadioButtonPrompt(SafeHtmlUtils.fromSafeConstant(messages.homeRecipe_promptText(SafeHtmlUtils.htmlEscape(foodName.toLowerCase()))), AskIfHomeRecipe.class.getSimpleName(), options, messages.homeRecipe_continueButtonLabel(), "homeRecipeOption"), new Function1<MultipleChoiceQuestionAnswer, FoodOperation>() {
             @Override
-            public FoodOperation apply(String argument) {
-                if (argument.equals(messages.homeRecipe_haveRecipeChoice())) {
+            public FoodOperation apply(MultipleChoiceQuestionAnswer answer) {
+                if (answer.index == 0) {
                     GoogleAnalytics.trackMissingFoodHomeRecipe();
                     return FoodOperation.replaceWith(new CompoundFood(FoodLink.newUnlinked(), foodName, isDrink));
                 } else {

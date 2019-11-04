@@ -10,113 +10,36 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Option;
 
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
-import uk.ac.ncl.openlab.intake24.client.UnorderedList;
-import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
+public class RadioButtonQuestion extends MultipleChoiceQuestion<MultipleChoiceQuestionAnswer> {
+    private final String radioGroupId;
 
-public class RadioButtonQuestion extends Composite {
-    final public PVector<String> choices;
+    public RadioButtonQuestion(SafeHtml promptText, PVector<MultipleChoiceQuestionOption> options, String radioGroupId) {
+        super(promptText, options);
+        this.radioGroupId = radioGroupId;
+    }
 
-    final private RadioButton[] optionButtons;
-    final private Option<String> otherOptionName;
-    final private FlowPanel warningDiv;
-    final private FlowPanel contents;
+    public Option<MultipleChoiceQuestionAnswer> getAnswer() {
+        for (OptionElements elements : optionElements) {
+            String details = elements.textBox.map(tb -> tb.getText()).getOrElse("");
 
-    private RadioButton otherOption;
-    private TextBox otherBox;
+            if (elements.checkBox.getValue() && (elements.textBox.isEmpty() || details.length() != 0))
+                return Option.some(new MultipleChoiceQuestionAnswer(elements.index, elements.checkBox.getFormValue(), elements.textBox.map(tb -> tb.getText())));
+        }
 
-    public final FlowPanel promptPanel;
-    public final Widget radioButtons;
-
-    public Option<String> getChoice() {
-        for (int i = 0; i < choices.size(); i++)
-            if (optionButtons[i].getValue())
-                return Option.some(choices.get(i));
-
-        if (!otherOptionName.isEmpty() && otherOption.getValue())
-            return Option.some(otherBox.getText());
-
+        showWarning();
         return Option.none();
     }
 
-    public void selectFirst() {
-        optionButtons[0].setValue(true);
-    }
-
-    public Option<Integer> getChoiceIndex() {
-        for (int i = 0; i < choices.size(); i++)
-            if (optionButtons[i].getValue())
-                return Option.some(i);
-        return Option.none();
-    }
-
-    public void clearWarning() {
-        warningDiv.clear();
-    }
-
-    public void showWarning() {
-        warningDiv.clear();
-        warningDiv.add(new Label("Please answer this question before continuing"));
-        contents.getElement().scrollIntoView();
-    }
-
-    public RadioButtonQuestion(SafeHtml promptText, PVector<String> choices, String groupId, Option<String> otherOptionName) {
-        this.choices = choices;
-        this.otherOptionName = otherOptionName;
-
-        UnorderedList<Widget> choiceList = new UnorderedList<Widget>();
-        choiceList.getElement().setId("intake24-radio-button-choices");
-
-        optionButtons = new RadioButton[choices.size()];
-
-        for (int i = 0; i < choices.size(); i++) {
-            optionButtons[i] = new RadioButton(groupId, SafeHtmlUtils.fromString(choices.get(i)));
-            choiceList.addItem(optionButtons[i]);
-        }
-
-        radioButtons = choiceList;
-
-        if (!otherOptionName.isEmpty()) {
-            FlowPanel otherPanel = new FlowPanel();
-            otherOption = new RadioButton(groupId, otherOptionName.getOrDie() + ": ");
-            otherPanel.add(otherOption);
-            otherBox = new TextBox();
-            otherPanel.add(otherBox);
-            choiceList.addItem(otherPanel);
-
-            otherBox.addFocusHandler(new FocusHandler() {
-                @Override
-                public void onFocus(FocusEvent event) {
-                    otherOption.setValue(true);
-                }
-            });
-        }
-
-        contents = new FlowPanel();
-        contents.addStyleName("intake24-radio-button-question");
-
-        promptPanel = WidgetFactory.createPromptPanel(promptText);
-        promptPanel.getElement().setId("intake24-radio-button-question");
-        contents.add(promptPanel);
-
-        warningDiv = new FlowPanel();
-        warningDiv.addStyleName("intake24-radio-button-question-warning");
-
-        contents.add(warningDiv);
-        contents.add(choiceList);
-
-        initWidget(contents);
+    @Override
+    protected CheckBox createCheckBox(SafeHtml label, String value) {
+        RadioButton button = new RadioButton(radioGroupId, label);
+        button.addClickHandler(event -> clearWarning());
+        return button;
     }
 }

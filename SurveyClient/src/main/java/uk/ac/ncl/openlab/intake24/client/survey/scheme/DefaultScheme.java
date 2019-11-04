@@ -26,47 +26,25 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
-import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
-import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
+import uk.ac.ncl.openlab.intake24.client.survey.CompoundFoodTemplateManager;
+import uk.ac.ncl.openlab.intake24.client.survey.RecipeManager;
+import uk.ac.ncl.openlab.intake24.client.survey.Rules;
+import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
 
 public class DefaultScheme extends BasicScheme {
 
     public static final String ID = "default";
 
-    public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager) {
-        super(locale, surveyParameters, interfaceManager);
+    public DefaultScheme(SurveyParameters surveyParameters, String locale, final SurveyInterfaceManager interfaceManager, UserData userData) {
+        super(locale, surveyParameters, interfaceManager, userData);
     }
 
-    private IntakeSurvey cachedSurveyPage = null;
-
     @Override
-    public void showNextPage() {
-        final Survey state = getStateManager().getCurrentState();
-        // Logger log = Logger.getLogger("showNextPage");
-        // log.info(SurveyXmlSerialiser.toXml(state));
-
-        if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
-
-            this.surveyParameters.description.accept(new Option.SideEffectVisitor<String>() {
-                @Override
-                public void visitSome(String description) {
-                    interfaceManager.show(new WelcomePage(description, state));
-                }
-
-                @Override
-                public void visitNone() {
-                    interfaceManager.show(new WelcomePage(SurveyMessages.INSTANCE.welcomePage_welcomeText(), state));
-                }
-            });
-
-        } else if (!state.completionConfirmed()) {
-            if (cachedSurveyPage == null)
-                cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
-            interfaceManager.show(cachedSurveyPage);
-        } else {
-            interfaceManager.show(new FlatFinalPage(SurveyMessages.INSTANCE.finalPage_text(), postProcess(state, basicPostProcess), log.log));
-        }
+    protected Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
+        return defaultRules(scriptManager, templateManager, recipeManager);
     }
 
     @Override
@@ -78,5 +56,4 @@ public class DefaultScheme extends BasicScheme {
     public String getSchemeId() {
         return ID;
     }
-
 }

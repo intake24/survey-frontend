@@ -46,7 +46,7 @@ public class CallbackRequestForm extends Composite {
         }
 
         if (EmbeddedData.surveyId.equals("demo")) {
-            errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_disabledForDemo("support@intake24.co.uk"))));
+            errorMessage.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.callbackRequestForm_disabledForDemo(EmbeddedData.surveySupportEmail))));
             errorMessage.getElement().addClassName("intake24-login-error-message");
             requestCallbackButton.setEnabled(true);
             return;

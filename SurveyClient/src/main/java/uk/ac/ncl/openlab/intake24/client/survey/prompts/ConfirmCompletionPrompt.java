@@ -51,9 +51,9 @@ public class ConfirmCompletionPrompt implements Prompt<Survey, SurveyOperation> 
                     }
                 }));
             }
-        });
+        }, "intake24-button-lg");
 
-        content.add(WidgetFactory.createButtonsPanel(confirm));
+        content.add(WidgetFactory.createCenteredButtonsPanel(confirm));
 
         return new SurveyStageInterface.Aligned(content, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP, SurveyStageInterface.DEFAULT_OPTIONS, ConfirmCompletionPrompt.class.getSimpleName());
     }

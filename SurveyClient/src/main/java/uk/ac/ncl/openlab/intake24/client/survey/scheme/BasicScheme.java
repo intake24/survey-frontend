@@ -40,6 +40,7 @@ import uk.ac.ncl.openlab.intake24.client.PredefinedMeals;
 import uk.ac.ncl.openlab.intake24.client.ProcessMilkInHotDrinks;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
+import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.DefaultPortionSizeScripts;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
@@ -68,12 +69,15 @@ public abstract class BasicScheme implements SurveyScheme {
     final protected LogRecorder log;
     final protected String locale;
     final protected SurveyParameters surveyParameters;
+    final protected UserData userData;
 
     final protected TreePVector<Function1<Survey, Survey>> basicPostProcess = TreePVector
             .<Function1<Survey, Survey>>empty()
             .plus(new ProcessMilkInHotDrinks());
 
     protected static Logger logger = Logger.getLogger("BasicScheme");
+
+    protected IntakeSurvey cachedSurveyPage = null;
 
     protected Survey startingSurveyData() {
         return new Survey(PredefinedMeals.getStartingMealsForCurrentLocale(), new Selection.EmptySelection(SelectionMode.AUTO_SELECTION),
@@ -89,15 +93,15 @@ public abstract class BasicScheme implements SurveyScheme {
         return postProcessed;
     }
 
-    protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
-                                 RecipeManager recipeManager) {
+    final protected Rules defaultRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                       RecipeManager recipeManager) {
         return new Rules(
                 // meal associatedFoods
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
-                        .plus(AskForMealTime.withPriority(4))
-                        .plus(ShowEditMeal.withPriority(3))
-                        .plus(ShowDrinkReminderPrompt.withPriority(2))
-                        .plus(ShowReadyMealsPrompt.withPriority(0)),
+                        .plus(AskForMealTime.withPriority(40))
+                        .plus(ShowEditMeal.withPriority(30))
+                        .plus(ShowDrinkReminderPrompt.withPriority(20))
+                        .plus(ShowReadyMealsPrompt.withPriority(10)),
 
                 // food associatedFoods
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
@@ -126,9 +130,9 @@ public abstract class BasicScheme implements SurveyScheme {
 
                 TreePVector.<WithPriority<PromptRule<Survey, SurveyOperation>>>empty()
                         .plus(ConfirmCompletion.withPriority(0))
-                        .plus(ShowEnergyValidationPrompt.withPriority(1, 500.0))
-                        .plus(ShowEmptySurveyPrompt.withPriority(1))
-                        .plus(ShowTimeGapPrompt.withPriority(2, 180, new Time(9, 0), new Time(21, 0)))
+                        .plus(ShowEnergyValidationPrompt.withPriority(40, 500.0))
+                        .plus(ShowTimeGapPrompt.withPriority(50, 180, new Time(9, 0), new Time(21, 0)))
+                        .plus(ShowEmptySurveyPrompt.withPriority(100))
 
                 ,
 
@@ -143,8 +147,9 @@ public abstract class BasicScheme implements SurveyScheme {
                         .plus(SelectMealForReadyMeals.withPriority(1)));
     }
 
-    public BasicScheme(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager) {
+    public BasicScheme(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
         this.surveyParameters = surveyParameters;
+        this.userData = userData;
         this.log = new LogRecorder();
         this.interfaceManager = interfaceManager;
         this.locale = locale;
@@ -181,7 +186,7 @@ public abstract class BasicScheme implements SurveyScheme {
             }
         }, defaultScriptManager);
 
-        final Rules rules = defaultRules(defaultScriptManager, defaultTemplateManager, recipeManager);
+        final Rules rules = getRules(defaultScriptManager, defaultTemplateManager, recipeManager);
 
         defaultPromptManager = new RuleBasedPromptManager(rules);
 
@@ -239,8 +244,28 @@ public abstract class BasicScheme implements SurveyScheme {
         return stateManager;
     }
 
+
     @Override
-    public abstract void showNextPage();
+    public void showNextPage() {
+        final Survey state = getStateManager().getCurrentState();
+        // Logger log = Logger.getLogger("showNextPage");
+        // log.info(SurveyXmlSerialiser.toXml(state));
+
+        if (!state.flags.contains(WelcomePage.FLAG_WELCOME_PAGE_SHOWN)) {
+            String welcomePageHtml = surveyParameters.description.getOrElse(SurveyMessages.INSTANCE.welcomePage_welcomeText());
+            interfaceManager.show(new WelcomePage(welcomePageHtml, state));
+        } else if (!state.completionConfirmed()) {
+            if (cachedSurveyPage == null)
+                cachedSurveyPage = new IntakeSurvey(getStateManager(), defaultPromptManager, defaultSelectionManager, defaultScriptManager);
+            interfaceManager.show(cachedSurveyPage);
+        } else {
+            String finalPageHtml = this.surveyParameters.finalPageHtml.getOrElse(SurveyMessages.INSTANCE.finalPage_text());
+            interfaceManager.show(new FlatFinalPage(finalPageHtml, postProcess(state, basicPostProcess), log.log));
+        }
+    }
+
+    protected abstract Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                      RecipeManager recipeManager);
 
     @Override
     public abstract String getDataVersion();
@@ -257,6 +282,11 @@ public abstract class BasicScheme implements SurveyScheme {
 
     @Override
     public List<Anchor> navBarLinks() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Anchor> navBarUserInfo() {
         return Collections.emptyList();
     }
 }

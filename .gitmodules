@@ -8,5 +8,5 @@
 	branch = master
 [submodule "intake24feedback"]
 	path = intake24feedback
-	url = https://github.com/intake24/survey-feedback
+	url = https://github.com/MRC-Epid-it24/survey-feedback.git
 	branch = master

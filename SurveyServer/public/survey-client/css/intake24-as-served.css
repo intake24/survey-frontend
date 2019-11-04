@@ -56,3 +56,121 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 .intake24-as-served-thumbnail-selected {
 	border: 2px solid black;
 }
+
+.intake24-as-served-thumbnail.weight-factor {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+}
+
+.intake24-as-served-thumbnail.weight-factor img {
+	filter: brightness(70%);
+	display: block;
+}
+
+.intake24-as-served-thumbnail.weight-factor p {
+	font-size: 400%;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	color: #fff;
+	text-shadow: 2px 2px 0px #000;
+	width: 80px;
+	line-height: 61px;
+}
+
+.intake24-as-served-thumbnail.weight-factor.less p {
+	top: -5px;
+}
+
+.intake24-as-served-weight-factor-container {
+	position: absolute;
+	text-align: center;
+	bottom: 80px;
+	left: 50%;
+	transform: translate(-50%);
+	background: rgba(255, 255, 255, 0.8);
+	padding: 20px;
+	border-radius: 5px;
+	z-index: 500;
+	font-size: 125%;
+}
+
+@media (max-width: 768px) {
+
+	.intake24-as-served-weight-factor-container {
+		transform: none;
+		font-size: 110%;
+		left: 20px;
+		right: 20px;
+		bottom: 40px;
+	}
+}
+
+
+.intake24-as-served-weight-factor-container .ui {
+    line-height: 2;
+}
+
+.intake24-as-served-weight-factor-container svg {
+	height: 2em;
+	width: 2em;
+}
+
+.intake24-as-served-weight-factor-container svg.circled-text {
+    position: relative;
+    top: 0.6em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+.intake24-as-served-weight-factor-container text.circled-text-text {
+    font-size: 1px;
+    font-family: Verdana, sans-serif;
+    fill: black;
+}
+
+.intake24-as-served-weight-factor-container svg.radial-fraction {
+    position: relative;
+    top: 0.6em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+.intake24-as-served-weight-factor-container circle.circled-text-circle {
+    fill: white;
+    stroke-width: 0.1;
+    stroke: black;
+}
+
+.intake24-as-served-weight-factor-container circle.radial-fraction-empty {
+    fill: #6e6e6e;
+    stroke-width: 0.1;
+    stroke: black;
+}
+
+.intake24-as-served-weight-factor-container path.radial-fraction-full {
+    fill: white;
+    stroke: none;
+}
+
+.intake24-as-served-weight-factor-container span.whole {
+	font-weight: bold;
+}
+
+.intake24-as-served-weight-factor-container span.fraction {
+	font-weight: bold;
+}
+
+.intake24-as-served-weight-factor-container button {
+    color: black;
+	background: rgba(255,255,255,0.6);
+	padding: 5px 10px;
+	margin: 3px;
+    border: 1px solid gray;
+}
+
+.intake24-as-served-weight-factor button:hover {
+	background: white;
+}
+

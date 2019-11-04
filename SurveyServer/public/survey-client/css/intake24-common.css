@@ -194,6 +194,12 @@ input[type="radio"], input[type="checkbox"] {
 	text-shadow: none !important;
 }
 
+.intake24-button-lg {
+	padding: 1.5rem 2em;
+	font-size: 1.3rem;
+	white-space: unset !important;
+}
+
 /* Colored buttons styles */
 
 .intake24-green-button {
@@ -261,6 +267,11 @@ input[type="radio"], input[type="checkbox"] {
 .intake24-buttons-panel {
 	margin-top: 15px;
 	margin-bottom: 15px;	
+}
+
+.intake24-flex-center {
+	display: flex;
+	justify-content: center;
 }
 
 /* Header */
@@ -348,7 +359,9 @@ input[type="radio"], input[type="checkbox"] {
 	max-width: 1040px;
 	padding: 0;
 	position: relative;
-	text-align: right;	
+	text-align: right;
+	display: flex;
+	justify-content: space-between;
 }
 
 [dir="rtl"] .intake24-navbar {
@@ -477,7 +490,8 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .intake24-footer-privacy {
-	display: inline-block;
+	display: block;
+	text-align: center;
 	vertical-align: top;
 	margin: 10px;
 }
