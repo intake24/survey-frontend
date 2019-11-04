@@ -2,10 +2,6 @@
 
 @()
 
-@linkToContent(url: Call) = @{
-    url.withFragment("content")
-}
-
 <div class="row">
     <div class="col-sm-8">
         <p>
@@ -14,9 +10,9 @@
             <span class="text-nowrap">&copy; 2019 Cambridge University</span>
         </p>
         <p>
-            <a class="text-nowrap" href="@linkToContent(routes.Information.privacy())">@PageNames.privacy</a>
+            <a class="text-nowrap" href="https://www.cam.ac.uk/about-this-site/privacy-policy" target="_blank">@PageNames.privacy</a>
             |
-            <a class="text-nowrap" href="@linkToContent(routes.Information.terms())">@PageNames.terms</a>
+            <a class="text-nowrap" href="https://www.cam.ac.uk/about-this-site/terms-and-conditions" target="_blank">@PageNames.terms</a>
         </p>
     </div>
     <div class="col-sm-4 text-justify">
