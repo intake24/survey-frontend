@@ -1,51 +1,5 @@
-# This is the main configuration file for the application.
-# ~~~~~
-
-# Secret key
-# ~~~~~
-# The secret key is used to secure cryptographics functions.
-#
-# This must be changed for production, but we recommend not changing it in this file.
-#
-# See http://www.playframework.com/documentation/latest/ApplicationSecret for more details.
 play.crypto.secret = "aNF<@vv@3p<Y7aZWvA0VGUa^vy`Hq?c5t9]8/sKV3a0yzm6E7duB<Rdt7sy>J`xl"
-
-# The application languages
-# ~~~~~
 application.langs = "en"
-
-# Global object class
-# ~~~~~
-# Define the Global object class for this application.
-# Default to Global in the root package.
-# application.global=Global
-
-# Router
-# ~~~~~
-# Define the Router object to use for this application.
-# This router will be looked up first when the application is starting up,
-# so make sure this is the entry point.
-# Furthermore, it's assumed your route file is named properly.
-# So for an application router like `my.application.Router`,
-# you may need to define a router file `conf/my.application.routes`.
-# Default to Routes in the root package (and conf/routes)
-# application.router=my.application.Routes
-
-# Database configuration
-# ~~~~~
-# You can declare as many datasources as you want.
-# By convention, the default datasource is named `default`
-
-# Evolutions
-# ~~~~~
-# You can disable evolutions if needed
-# evolutionplugin=disabled
-
-# Logger
-# ~~~~~
-# You can also configure logback (http://logback.qos.ch/),
-# by providing an application-logger.xml file in the conf directory.
-
 
 play.http.parser.maxDiskBuffer = 10MB
 play.http.errorHandler = "app.ErrorHandler"
@@ -54,3 +8,7 @@ intake24.internalApiBaseUrl = "http://192.168.56.2:9001"
 intake24.externalApiBaseUrl = "http://192.168.56.2:9001"
 
 intake24.supportEmail = "support@intake24.co.uk"
+
+intake24.videoURL = "https://www.youtube.com/watch?v=70Wm_kyxpvg"
+
+play.modules.enabled += "guice.NewcastleContentModule"
