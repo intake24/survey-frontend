@@ -1,64 +1,71 @@
 package controllers
 
 import javax.inject.Inject
-
 import _root_.info.PageNames
+import guice.CustomContent
 import play.api.Configuration
 import play.api.mvc.{Action, Controller}
+import play.twirl.api.Html
 import views.html.info._
 
 
-class Information @Inject()(config: Configuration) extends Controller {
+class Information @Inject()(customContent: CustomContent, config: Configuration) extends Controller {
 
   private val gaTrackingCode = config.getString("intake24.ga.trackingCode")
   private val supportEmail = config.getString("intake24.supportEmail").get
+  private val videoURL = config.getString("intake24.videoURL").get
+
+
+  private def renderInfoPage(title: String, content: Html): Html = {
+    InfoPageLayout(title, content, customContent.footer(), videoURL, gaTrackingCode)
+  }
 
   def landing = Action {
-    Ok(InfoPageLayout(PageNames.landing, LandingContent(supportEmail), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.landing, LandingContent(supportEmail)))
   }
 
   def recall = Action {
-    Ok(InfoPageLayout(PageNames.recall, RecallContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.recall, RecallContent()))
   }
 
   def features = Action {
-    Ok(InfoPageLayout(PageNames.features, FeaturesContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.features, FeaturesContent()))
   }
 
   def openSource = Action {
-    Ok(InfoPageLayout(PageNames.openSource, OpenSourceContent(supportEmail), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.openSource, OpenSourceContent(supportEmail)))
   }
 
   def output = Action {
-    Ok(InfoPageLayout(PageNames.output, OutputContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.output, OutputContent()))
   }
 
   def validation = Action {
-    Ok(InfoPageLayout(PageNames.validation, ValidationContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.validation, ValidationContent()))
   }
 
   def localisation = Action {
-    Ok(InfoPageLayout(PageNames.localisation, LocalisationContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.localisation, LocalisationContent()))
   }
 
   def feedback = Action {
-    Ok(InfoPageLayout(PageNames.feedback, FeedbackContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.feedback, FeedbackContent()))
   }
 
   def publications = Action {
-    Ok(InfoPageLayout(PageNames.publications, PublicationsContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.publications, PublicationsContent()))
   }
 
   def contacts = Action {
-    Ok(InfoPageLayout(PageNames.contacts, ContactsContent(supportEmail), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.contacts, ContactsContent(supportEmail)))
   }
 
   def privacy = Action {
-    Ok(InfoPageLayout(PageNames.privacy, PrivacyContent(), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.privacy, customContent.privacy()))
   }
 
   def terms = Action {
-    Ok(InfoPageLayout(PageNames.terms, TermsContent(supportEmail), gaTrackingCode))
+    Ok(renderInfoPage(PageNames.terms, customContent.termsAndConditions()))
   }
 
 }

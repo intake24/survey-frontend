@@ -1,0 +1,34 @@
+@import _root_.info.PageNames
+
+@()
+
+@linkToContent(url: Call) = @{
+    url.withFragment("content")
+}
+
+<footer>
+    <div class="row">
+        <div class="col-sm-8">
+            <p>
+                <span class="text-nowrap">&copy; 2012–2015 Food Standards Scotland</span> |
+                <span class="text-nowrap">&copy; 2012–2018 Newcastle University</span> |
+                <span class="text-nowrap">&copy; 2019 Cambridge University</span>
+            </p>
+            <p>
+                <a class="text-nowrap" href="@linkToContent(routes.Information.privacy())">@PageNames.privacy</a>
+                |
+                <a class="text-nowrap" href="@linkToContent(routes.Information.terms())">@PageNames.terms</a>
+            </p>
+        </div>
+        <div class="col-sm-4 text-right">
+            <div class="logo">
+                <a href="https://openlab.ncl.ac.uk/"><img src="@routes.Assets.at("images/nu_logo.png")" title="Newcastle University"></a>
+            </div>
+            <div class="logo">
+                <a href="http://www.foodstandards.gov.scot/"><img src="@routes.Assets.at("images/fss-logo-small.png")"
+                title="Food Standards Scotland">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
