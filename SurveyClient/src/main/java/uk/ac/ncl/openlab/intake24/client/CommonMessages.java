@@ -135,10 +135,6 @@ public interface CommonMessages extends Messages {
 
   public String privacyLinkLabel();
 
-  public String privacyLinkUrl();
-
   public String tocLinkLabel();
-
-  public String tocLinkUrl();
 
 }
