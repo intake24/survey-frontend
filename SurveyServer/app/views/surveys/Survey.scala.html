@@ -1,4 +1,10 @@
-@(surveyId: String, parameters: PublicSurveyParameters, apiBaseUrl: String, gaTrackingCode: Option[String])
+@(surveyId: String,
+        parameters: PublicSurveyParameters,
+        apiBaseUrl: String,
+        privacyPolicyURL: String,
+        termsAndConditionsURL: String,
+        displayLogos: Boolean,
+        gaTrackingCode: Option[String])
 
 <!--
 This file is part of Intake24.
@@ -41,6 +47,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
         <meta name="intake24:localeId" content="@parameters.localeId"/>
         <meta name="intake24:surveySupportEmail" content="@parameters.supportEmail"/>
         <meta name="intake24:apiBaseUrl" content="@apiBaseUrl"/>
+        <meta name="intake24:privacyPolicyURL" content="@privacyPolicyURL"/>
+        <meta name="intake24:termsAndConditionsURL" content="@termsAndConditionsURL"/>
+        <meta name="intake24:displayLogos" content="@displayLogos"/>
 
         @if(parameters.originatingURL.nonEmpty) {
             <meta name="intake24:originatingUrl" content="@parameters.originatingURL.head"/>
@@ -89,7 +98,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
                             "content": {
                                 "message": "This website relies on cookies and similar technologies to function correctly.",
                                 "link": "Privacy policy",
-                                "href": "/info/privacy#content"
+                                "href": "@privacyPolicyURL"
                             }
                         })
                     });

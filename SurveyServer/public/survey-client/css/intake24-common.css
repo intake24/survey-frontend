@@ -490,10 +490,14 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .intake24-footer-privacy {
-	display: block;
-	text-align: center;
+	display: inline-block;
 	vertical-align: top;
 	margin: 10px;
+}
+
+.intake24-footer-privacy-no-logos {
+	display: block;
+	text-align: center;
 }
 
 /* Other Elements */

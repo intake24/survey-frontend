@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
 import uk.ac.ncl.openlab.intake24.client.CommonMessages;
+import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -134,23 +135,16 @@ public class Layout {
         footer.addStyleName("intake24-footer");
         footerContainer.add(footer);
 
-        /*Anchor nuLogo = new Anchor();
-        nuLogo.addStyleName("intake24-footer-nu-logo");
-        nuLogo.setHref("https://openlab.ncl.ac.uk/");
-
-        Anchor fssLogo = new Anchor();
-        fssLogo.addStyleName("intake24-footer-fss-logo");
-        fssLogo.setHref("http://www.foodstandards.gov.scot/");*/
 
         FlowPanel privacyContainer = new FlowPanel();
         privacyContainer.addStyleName("intake24-footer-privacy");
 
         Anchor privacyLink = new Anchor(SafeHtmlUtils.fromSafeConstant(messages.privacyLinkLabel()));
-        privacyLink.setHref(messages.privacyLinkUrl());
+        privacyLink.setHref(EmbeddedData.privacyPolicyUrl);
         privacyLink.setTarget("_blank");
 
         Anchor tocLink = new Anchor(SafeHtmlUtils.fromSafeConstant(messages.tocLinkLabel()));
-        tocLink.setHref(messages.tocLinkUrl());
+        tocLink.setHref(EmbeddedData.termsAndConditionsUrl);
         tocLink.setTarget("_blank");
 
         HTMLPanel spacer = new HTMLPanel("span", "|");
@@ -161,9 +155,21 @@ public class Layout {
         privacyContainer.add(spacer);
         privacyContainer.add(tocLink);
 
+        if (EmbeddedData.displayLogos) {
+            Anchor nuLogo = new Anchor();
+            nuLogo.addStyleName("intake24-footer-nu-logo");
+            nuLogo.setHref("https://openlab.ncl.ac.uk/");
 
-        //footer.add(nuLogo);
-        //footer.add(fssLogo);
+            Anchor fssLogo = new Anchor();
+            fssLogo.addStyleName("intake24-footer-fss-logo");
+            fssLogo.setHref("http://www.foodstandards.gov.scot/");
+
+            footer.add(nuLogo);
+            footer.add(fssLogo);
+        } else {
+            privacyContainer.addStyleName("intake24-footer-privacy-no-logos");
+        }
+
         footer.add(privacyContainer);
 
         UIRootPanel.clear();

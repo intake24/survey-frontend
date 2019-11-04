@@ -4,11 +4,18 @@ application.langs = "en"
 play.http.parser.maxDiskBuffer = 10MB
 play.http.errorHandler = "app.ErrorHandler"
 
-intake24.internalApiBaseUrl = "http://192.168.56.2:9001"
-intake24.externalApiBaseUrl = "http://192.168.56.2:9001"
-
-intake24.supportEmail = "support@intake24.co.uk"
-
-intake24.videoURL = "https://www.youtube.com/watch?v=70Wm_kyxpvg"
-
 play.modules.enabled += "guice.NewcastleContentModule"
+
+intake24 {
+  internalApiBaseUrl = "http://192.168.0.20:9001"
+  externalApiBaseUrl = "http://192.168.0.20:9001"
+
+  supportEmail = "support@intake24.co.uk"
+  videoURL = "https://www.youtube.com/watch?v=70Wm_kyxpvg"
+
+  survey {
+    termsAndConditionsURL = "/info/terms#content"
+    privacyPolicyURL = "/info/privacy#content"
+    showLogos = true
+  }
+}

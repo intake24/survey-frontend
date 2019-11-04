@@ -34,5 +34,11 @@ public class EmbeddedData {
 
     public static String localeId = getMetaTagContent("intake24:localeId").getOrDie();
 
+    public static String privacyPolicyUrl = getMetaTagContent("intake24:privacyPolicyURL").getOrDie();
+
+    public static String termsAndConditionsUrl = getMetaTagContent("intake24:termsAndConditionsURL").getOrDie();
+
+    public static boolean displayLogos = Boolean.parseBoolean(getMetaTagContent("intake24:displayLogos").getOrDie());
+
     public static Option<String> originatingUrl = getMetaTagContent("intake24:originatingUrl");
 }
