@@ -63,10 +63,12 @@ public class ConfirmMealPrompt implements Prompt<Meal, MealOperation> {
 	}
 	
 	public static String selectPromptMessage(String mealName) {
-		if (compareCaseInsensitive(mealName, messages.predefMeal_Breakfast()))
-			return messages.confirmMeal_promptText_breakfast();
-		else if (compareCaseInsensitive(mealName, messages.predefMeal_EarlySnack()))
+		if (compareCaseInsensitive(mealName, messages.predefMeal_EarlySnack()))
 			return messages.confirmMeal_promptText_earlySnack();
+		else if (compareCaseInsensitive(mealName, messages.predefMeal_Breakfast()))
+			return messages.confirmMeal_promptText_breakfast();
+		else if (compareCaseInsensitive(mealName, messages.predefMeal_MorningSnack()))
+			return messages.confirmMeal_promptText_morningSnack();
 		else if (compareCaseInsensitive(mealName, messages.predefMeal_Lunch()))
 			return messages.confirmMeal_promptText_lunch();
 		else if (compareCaseInsensitive(mealName, messages.predefMeal_MidDaySnack()))
@@ -85,10 +87,12 @@ public class ConfirmMealPrompt implements Prompt<Meal, MealOperation> {
 	}
 	
 	private String selectDeleteButtonMessage(String mealName) {
-		if (compareCaseInsensitive(mealName, messages.predefMeal_Breakfast()))
-			return messages.confirmMeal_skipButtonLabel_breakfast();
-		else if (compareCaseInsensitive(mealName, messages.predefMeal_EarlySnack()))
+		if (compareCaseInsensitive(mealName, messages.predefMeal_EarlySnack()))
 			return messages.confirmMeal_skipButtonLabel_earlySnack();
+		else if (compareCaseInsensitive(mealName, messages.predefMeal_Breakfast()))
+			return messages.confirmMeal_skipButtonLabel_breakfast();
+		else if (compareCaseInsensitive(mealName, messages.predefMeal_MorningSnack()))
+			return messages.confirmMeal_skipButtonLabel_morningSnack();
 		else if (compareCaseInsensitive(mealName, messages.predefMeal_Lunch()))
 			return messages.confirmMeal_skipButtonLabel_lunch();
 		else if (compareCaseInsensitive(mealName, messages.predefMeal_MidDaySnack()))
