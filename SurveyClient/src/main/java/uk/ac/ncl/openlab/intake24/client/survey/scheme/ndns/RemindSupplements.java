@@ -16,7 +16,7 @@ public class RemindSupplements extends GenericReminder {
 
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
         return new WithPriority<>(new RemindFrequentlyForgottenFoods(SafeHtmlUtils.fromSafeConstant(
-                "<p>Did you take any dietary supplements?</p>" +
+                "<p>Did you take any dietary supplements (e.g. vitamins)?</p>" +
                         "<p>If yes, please go back by selecting  <strong>'+ Add another meal'</strong>, " +
                         "search and enter your supplement.</p>" +
                         "<p>If no, please press continue.</p>"),
