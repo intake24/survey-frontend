@@ -66,6 +66,8 @@ public interface PromptMessages extends Messages {
 
     public String predefMeal_Snack();
 
+    public String predefMeal_MorningSnack();
+
     public String predefMeal_Breakfast();
 
     public String predefMeal_EarlySnack();
@@ -229,9 +231,11 @@ public interface PromptMessages extends Messages {
 
     public String timeGap_confirmTimeGapButtonLabel();
 
+    public String confirmMeal_promptText_earlySnack();
+
     public String confirmMeal_promptText_breakfast();
 
-    public String confirmMeal_promptText_earlySnack();
+    public String confirmMeal_promptText_morningSnack();
 
     public String confirmMeal_promptText_snack();
 
@@ -247,9 +251,11 @@ public interface PromptMessages extends Messages {
 
     public String confirmMeal_promptText_generic(@Optional String mealNameLowercase, @Optional String mealNameCapitalised);
 
+    public String confirmMeal_skipButtonLabel_earlySnack();
+
     public String confirmMeal_skipButtonLabel_breakfast();
 
-    public String confirmMeal_skipButtonLabel_earlySnack();
+    public String confirmMeal_skipButtonLabel_morningSnack();
 
     public String confirmMeal_skipButtonLabel_snack();
 

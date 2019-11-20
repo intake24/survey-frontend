@@ -19,7 +19,7 @@ public class AskAboutSupplements extends Supplements {
 
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutSupplements(SafeHtmlUtils.fromSafeConstant(
-                "<p>Did you take any dietary supplements?</p>"),
+                "<p>Did you take any dietary supplements (e.g. vitamins)?</p>"),
                 TreePVector.<MultipleChoiceQuestionOption>empty()
                         .plus(new MultipleChoiceQuestionOption("Multivitamin"))
                         .plus(new MultipleChoiceQuestionOption("Multivitamin and mineral"))

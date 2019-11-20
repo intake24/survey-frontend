@@ -31,6 +31,7 @@ import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.AskIfUsualAmount;
@@ -53,8 +54,10 @@ public class SAB extends BasicScheme {
         Rules baseRules = defaultRules(scriptManager, templateManager, recipeManager);
 
         return new Rules(
-                baseRules.mealPromptRules
-                        .plus(AskAboutFoodSource.withPriority(9)),
+                TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
+                        .plus(AskForMealTime.withPriority(40))
+                        .plus(ShowEditMeal.withPriority(30))
+                        .plus(ShowDrinkReminderPrompt.withPriority(20)),
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
                         .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
                         .plus(ChoosePortionSizeMethod.withPriority(1))

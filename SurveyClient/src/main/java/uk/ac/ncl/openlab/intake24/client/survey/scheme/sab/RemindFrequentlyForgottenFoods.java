@@ -24,12 +24,11 @@ public class RemindFrequentlyForgottenFoods extends GenericReminder {
                         "<li>Water, including tap, filtered, fountain, bottled</li>" +
                         "<li>Alcoholic drinks</li>" +
                         "<li>Milk, yoghurt, cheese, curd</li>" +
-                        "<li>Chutneys or pickles</li>" +
-                        "<li>Savoury snacks, such as poppadum, crisps, sev, fritters, samosa, nuts</li>" +
-                        "<li>Sweet snacks, such as sweet biscuits, sweet fried flour or bean snacks</li>" +
-                        "<li>Sweets, cakes, desserts, sweet deep fried pastries, halwa</li>" +
-                        "<li>Sauces, dressings, raita</li>" +
+                        "<li>Savoury snacks, poppadum, crisps, sev, fritters, samosa, nuts</li>" +
+                        "<li>Sweet snacks, sweet biscuits, sweets, chocolate, cakes, desserts, pastries, halwa, " +
+                        "sweet flour or bean snacks</li>" +
                         "<li>Bread, flatbread, paratha, roti, chapatti, roll</li>" +
+                        "<li>Sauces, dressings, chutneys, pickles, raita</li>" +
                         "<li>Paan, sauf, or other mouth fresheners</li>" +
                         "</ul></p>" +
                         "<p>Interviewer – you can either select a meal from the menu on the left to add foods " +

@@ -136,9 +136,11 @@ public class Meal {
 
     public Time guessTime() {
         String lcn = name.toLowerCase();
+        if (lcn.contains(messages.predefMeal_EarlySnack().toLowerCase()))
+            return new Time(6, 0);
         if (lcn.contains(messages.predefMeal_Breakfast().toLowerCase()))
             return new Time(8, 0);
-        else if (lcn.contains(messages.predefMeal_EarlySnack().toLowerCase()))
+        else if (lcn.contains(messages.predefMeal_MorningSnack().toLowerCase()))
             return new Time(10, 30);
         else if (lcn.contains(messages.predefMeal_Lunch().toLowerCase()))
             return new Time(13, 0);
