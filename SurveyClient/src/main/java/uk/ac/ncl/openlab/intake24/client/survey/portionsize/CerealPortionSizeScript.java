@@ -88,7 +88,7 @@ public class CerealPortionSizeScript implements PortionSizeScript {
                     withBackLink(
                             asServedPrompt(asServedDefs.get(asServedSetId), messages.asServed_servedLessButtonLabel(), messages.asServed_servedMoreButtonLabel(),
                                     messages.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
-                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)),
+                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)), false,
                                     defaultServingSizePrompt(foodData.description()))
                     );
             return Option.some(portionSizePrompt);
@@ -102,7 +102,7 @@ public class CerealPortionSizeScript implements PortionSizeScript {
                 return Option.some(withBackLink(asServedPrompt(asServedDefs.get(leftoversSetId),
                         messages.asServed_leftLessButtonLabel(), messages.asServed_leftMoreButtonLabel(), messages.asServed_leftContinueButtonLabel(),
                         "leftoversChoiceIndex", "leftoversImage", "leftoversWeight",
-                        Option.none(),
+                        Option.some(new WeightFactorSettings("leftoversWeightFactor", true, true)), true,
                         defaultLeftoversPrompt(foodData.description()))));
             }
         } else

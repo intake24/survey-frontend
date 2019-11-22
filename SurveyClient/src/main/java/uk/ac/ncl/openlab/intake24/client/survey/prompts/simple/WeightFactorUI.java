@@ -1,11 +1,14 @@
 package uk.ac.ncl.openlab.intake24.client.survey.prompts.simple;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 
 public class WeightFactorUI extends Composite {
+
     private final FlowPanel weightFactorLabel;
     private final WeightFactorLabels labelsImpl;
 
@@ -13,7 +16,8 @@ public class WeightFactorUI extends Composite {
     public final int maxNumerator;
     public final int denominator;
     public final double baseWeight;
-    public final String portionDescription;
+    public final boolean useLeftoversLabel;
+    public final boolean useSmallestPortionLabel;
 
     private int numerator;
 
@@ -34,33 +38,43 @@ public class WeightFactorUI extends Composite {
 
         weightFactorLabel.clear();
 
-        weightFactorLabel.add(new HTMLPanel("span", "I had "));
+        if (useLeftoversLabel)
+            weightFactorLabel.add(new HTMLPanel("span", PromptMessages.INSTANCE.asServed_weightFactor_I_left() + " "));
+        else
+            weightFactorLabel.add(new HTMLPanel("span", PromptMessages.INSTANCE.asServed_weightFactor_I_had() + " "));
 
         if (hasWhole) {
             weightFactorLabel.add(labelsImpl.getWholeLabelWidget());
             labelsImpl.updateWholeLabel(numerator / denominator);
 
             if (displayFraction)
-                weightFactorLabel.add(new HTMLPanel("span", " and "));
+                weightFactorLabel.add(new HTMLPanel("span", " " + PromptMessages.INSTANCE.asServed_weightFactor_and() + " "));
         }
 
         if (displayFraction) {
             weightFactorLabel.add(labelsImpl.getFractionLabelWidget());
             int gcm = gcm(numerator % denominator, denominator);
-            labelsImpl.updateFractionLabel((numerator % denominator) / gcm, denominator/ gcm);
+            labelsImpl.updateFractionLabel((numerator % denominator) / gcm, denominator / gcm);
         }
 
-        weightFactorLabel.add(new HTMLPanel("span", "<br/> of the " + portionDescription + "<br/> <strong>" + Math.round(baseWeight * numerator / denominator) + " g </strong>"));
+        if (useSmallestPortionLabel)
+            weightFactorLabel.add(new HTMLPanel("span",
+                    "<br/>" + PromptMessages.INSTANCE.asServed_weightFactor_smallestPortion() + "</br>" +
+                            PromptMessages.INSTANCE.asServed_weightFactor_weight(NumberFormat.getDecimalFormat().format(Math.round(baseWeight * numerator / denominator)))));
+        else
+            weightFactorLabel.add(new HTMLPanel("span", "<br/>" + PromptMessages.INSTANCE.asServed_weightFactor_largestPortion() + "</br>" +
+                    PromptMessages.INSTANCE.asServed_weightFactor_weight(NumberFormat.getDecimalFormat().format(Math.round(baseWeight * numerator / denominator)))));
     }
 
-    public WeightFactorUI(int minNumerator, int maxNumerator, int denominator, double baseWeight, String portionDescription,
-                          WeightFactorLabels labelsImpl) {
+    public WeightFactorUI(int minNumerator, int maxNumerator, int denominator, double baseWeight, boolean useSmallestPortionLabel,
+                          boolean useLeftoversLabel, WeightFactorLabels labelsImpl) {
 
         this.denominator = denominator;
         this.minNumerator = minNumerator;
         this.maxNumerator = maxNumerator;
         this.baseWeight = baseWeight;
-        this.portionDescription = portionDescription;
+        this.useLeftoversLabel = useLeftoversLabel;
+        this.useSmallestPortionLabel = useSmallestPortionLabel;
         this.labelsImpl = labelsImpl;
 
         numerator = minNumerator;

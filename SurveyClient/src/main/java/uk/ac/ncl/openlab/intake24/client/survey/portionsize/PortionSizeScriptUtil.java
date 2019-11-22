@@ -144,13 +144,14 @@ public class PortionSizeScriptUtil {
                                                           final String imageUrlField,
                                                           final String weightField,
                                                           final Option<WeightFactorSettings> weightFactorSettings,
+                                                          boolean isLeftovers,
                                                           SafeHtml promptText) {
 
         boolean showMore = weightFactorSettings.map(s -> s.showMoreOption).getOrElse(false);
         boolean showLess = weightFactorSettings.map(s -> s.showLessOption).getOrElse(false);
 
         return map(new AsServedPrompt2(set.images.toArray(new AsServedImage[set.images.size()]), promptText, lessButtonLabel,
-                        moreButtonLabel, confirmButtonLabel, showMore, showLess),
+                        moreButtonLabel, confirmButtonLabel, showMore, showLess, isLeftovers),
                 result -> {
                     final UpdateFunc f = new UpdateFunc()
                             .setField(indexField, Integer.toString(result.imageIndex))

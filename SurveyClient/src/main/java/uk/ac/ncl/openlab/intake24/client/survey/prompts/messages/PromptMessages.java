@@ -34,6 +34,8 @@ public interface PromptMessages extends Messages {
 
     PromptMessages INSTANCE = GWT.create(PromptMessages.class);
 
+
+
     public static class Util {
         private static PromptMessages instance = null;
 
@@ -472,6 +474,18 @@ public interface PromptMessages extends Messages {
     public String asServed_leftoversPromptText(String foodDescription);
 
     public String asServed_leftoversQuestionPromptText(String foodDescription);
+
+    String asServed_weightFactor_I_left();
+
+    String asServed_weightFactor_I_had();
+
+    String asServed_weightFactor_and();
+
+    String asServed_weightFactor_smallestPortion();
+
+    String asServed_weightFactor_largestPortion();
+
+    String asServed_weightFactor_weight(String weight);
 
     public String cereal_bowlPromptText();
 

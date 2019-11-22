@@ -66,7 +66,7 @@ public class AsServedScript implements PortionSizeScript {
                     withBackLink(
                             asServedPrompt(servingImages, PromptMessages.INSTANCE.asServed_servedLessButtonLabel(), PromptMessages.INSTANCE.asServed_servedMoreButtonLabel(),
                                     PromptMessages.INSTANCE.asServed_servedContinueButtonLabel(), "servingChoiceIndex", "servingImage", "servingWeight",
-                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)),
+                                    Option.some(new WeightFactorSettings("servingWeightFactor", true, true)), false,
                                     defaultServingSizePrompt(foodData.description()))
                     );
 
@@ -82,7 +82,8 @@ public class AsServedScript implements PortionSizeScript {
             else
                 return Option.some(withBackLink(asServedPrompt(leftoversImages.getOrDie(),
                         PromptMessages.INSTANCE.asServed_leftLessButtonLabel(), PromptMessages.INSTANCE.asServed_leftMoreButtonLabel(), PromptMessages.INSTANCE.asServed_leftContinueButtonLabel(), "leftoversChoiceIndex",
-                        "leftoversImage", "leftoversWeight", Option.none(), defaultLeftoversPrompt(foodData.description()))));
+                        "leftoversImage", "leftoversWeight", Option.some(new WeightFactorSettings("leftoversWeightFactor", true, true)), true,
+                        defaultLeftoversPrompt(foodData.description()))));
         } else
             return done();
     }

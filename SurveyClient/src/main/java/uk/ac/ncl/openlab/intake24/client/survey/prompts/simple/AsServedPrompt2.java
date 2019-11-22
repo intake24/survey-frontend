@@ -114,6 +114,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
     private final String prevButtonLabel;
     private final String nextButtonLabel;
     private final String confirmButtonLabel;
+    private final boolean isLeftovers;
     private final boolean lessOptionEnabled;
     private final boolean moreOptionEnabled;
 
@@ -135,7 +136,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
     private boolean mainImageSwitching = false;
 
     public AsServedPrompt2(AsServedImage[] images, SafeHtml promptText, String prevButtonLabel, String nextButtonLabel,
-                           String confirmButtonLabel, boolean moreOptionEnabled, boolean lessOptionEnabled) {
+                           String confirmButtonLabel, boolean moreOptionEnabled, boolean lessOptionEnabled, boolean isLeftovers) {
         this.images = images;
         this.promptText = promptText;
         this.prevButtonLabel = prevButtonLabel;
@@ -143,6 +144,7 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         this.confirmButtonLabel = confirmButtonLabel;
         this.moreOptionEnabled = moreOptionEnabled;
         this.lessOptionEnabled = lessOptionEnabled;
+        this.isLeftovers = isLeftovers;
     }
 
     private final static PVector<ShepherdTour.Step> tour = TreePVector
@@ -424,11 +426,11 @@ public class AsServedPrompt2 implements SimplePrompt<AsServed2Result> {
         content.add(asServedContainer);
 
         weightFactorLessUI = new WeightFactorUI(1,
-                WEIGHT_FACTOR_DENOMINATOR - 1, WEIGHT_FACTOR_DENOMINATOR, images[0].weight, "smallest portion",
-                new VulgarFractionWeightFactorLabels(false));
+                WEIGHT_FACTOR_DENOMINATOR - 1, WEIGHT_FACTOR_DENOMINATOR, images[0].weight, true,
+                isLeftovers, new VulgarFractionWeightFactorLabels(false));
 
         weightFactorMoreUI = new WeightFactorUI(WEIGHT_FACTOR_DENOMINATOR + 1, WEIGHT_FACTOR_DENOMINATOR * 5,
-                WEIGHT_FACTOR_DENOMINATOR, images[images.length - 1].weight, "largest portion",
+                WEIGHT_FACTOR_DENOMINATOR, images[images.length - 1].weight,false, isLeftovers,
                 new VulgarFractionWeightFactorLabels(false));
 
         ShepherdTour.makeShepherdTarget(promptPanel, imageContainer, thumbsContainer, nextButton, prevButton, confirmButton);
