@@ -34,7 +34,7 @@ public class CompoundFood extends FoodEntry {
 	}
 
 	@Override
-	public CompoundFood relink(FoodLink link) {
+	public CompoundFood withLink(FoodLink link) {
 		return new CompoundFood(link, description, isDrink, flags, customData);
 	}
 

@@ -83,6 +83,14 @@ public abstract class PromptAdapter<T, Op> implements Prompt<Survey, SurveyOpera
                         }
                     }, true);
                 }
+
+                @Override
+                public SurveyOperation visitUpdateAndSelect(Function1<Meal, Pair<Meal, Integer>> update) {
+                    return SurveyOperation.update( survey -> {
+                        Pair<Meal, Integer> updated = update.apply(survey.meals.get(mealIndex));
+                        return survey.updateMeal(mealIndex, updated.left).withSelection(new Selection.SelectedFood(mealIndex, updated.right, SelectionMode.AUTO_SELECTION));
+                    });
+                }
             });
         }
 
@@ -136,6 +144,14 @@ public abstract class PromptAdapter<T, Op> implements Prompt<Survey, SurveyOpera
                             return argument.updateMeal(mealIndex, update.apply(argument.meals.get(mealIndex)));
                         }
                     }, true);
+                }
+
+                @Override
+                public SurveyOperation visitUpdateAndSelect(Function1<Meal, Pair<Meal, Integer>> update) {
+                    return SurveyOperation.update( survey -> {
+                        Pair<Meal, Integer> updated = update.apply(survey.meals.get(mealIndex));
+                        return survey.updateMeal(mealIndex, updated.left).withSelection(new Selection.SelectedFood(mealIndex, updated.right, SelectionMode.AUTO_SELECTION));
+                    });
                 }
             });
         }

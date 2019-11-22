@@ -148,7 +148,7 @@ public class TemplateFood extends FoodEntry {
     }
 
     @Override
-    public TemplateFood relink(FoodLink link) {
+    public TemplateFood withLink(FoodLink link) {
         return new TemplateFood(link, description, isDrink, data, markedAsComplete, components, flags, customData);
     }
 
@@ -185,7 +185,7 @@ public class TemplateFood extends FoodEntry {
             public FoodEntry apply(FoodEntry argument) {
                 FoodLink newLink = FoodLink.newLinked(newCompoundLink.id);
                 rename.put(argument.link.id, newLink.id);
-                return argument.relink(newLink);
+                return argument.withLink(newLink);
             }
         });
 

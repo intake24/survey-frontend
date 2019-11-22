@@ -134,7 +134,7 @@ public class SameAsBeforePrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
 								.plusAll(map(assocFoodsAsBefore, new Function1<FoodEntry, FoodEntry>() {
 									@Override
 									public FoodEntry apply(FoodEntry assocFood) {
-										return assocFood.relink(FoodLink.newLinked(food.link.id));
+										return assocFood.withLink(FoodLink.newLinked(food.link.id));
 									}
 								}));
 						

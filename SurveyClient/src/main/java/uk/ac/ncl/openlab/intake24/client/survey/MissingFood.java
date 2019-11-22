@@ -60,7 +60,7 @@ public class MissingFood extends FoodEntry {
 	}
 
 	@Override
-	public FoodEntry relink(FoodLink link) {
+	public FoodEntry withLink(FoodLink link) {
 		return new MissingFood(link, name, isDrink, description, flags, customData);
 	}
 

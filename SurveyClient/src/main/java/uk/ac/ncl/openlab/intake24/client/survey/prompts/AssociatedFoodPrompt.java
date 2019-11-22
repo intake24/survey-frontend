@@ -126,13 +126,13 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
 
             for (FoodEntry e : foodsToRelink) {
                 int index = result.foodIndex(e);
-                result = result.minusFood(index).plusFood(e.relink(FoodLink.newLinked(assocFood.link.id)));
+                result = result.minusFood(index).plusFood(e.withLink(assocFood.link.relink(assocFood.link.id)));
             }
 
             return result;
         } else {
             final int index = meal.foodIndex(assocFood);
-            return meal.minusFood(index).plusFood(assocFood.relink(FoodLink.newLinked(forFood.link.id)));
+            return meal.minusFood(index).plusFood(assocFood.withLink(assocFood.link.relink(forFood.link.id)));
         }
     }
 
@@ -162,9 +162,7 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         final Callback1<FoodData> addNewFood = new Callback1<FoodData>() {
             @Override
             public void call(final FoodData result) {
-                onComplete.call(MealOperation.update(new Function1<Meal, Meal>() {
-                    @Override
-                    public Meal apply(final Meal meal) {
+                onComplete.call(MealOperation.updateAndSelect( meal -> {
                         // Special case for cereal:
                         // if a "milk on cereal" food is linked to a cereal food
                         // copy bowl type from the parent food
@@ -184,11 +182,11 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
 
                         EncodedFood assocFood = new EncodedFood(foodData, FoodLink.newUnlinked(), "associated food prompt");
 
-                        return linkAssociatedFood(meal.plusFood(assocFood), food, assocFood, prompt.linkAsMain);
-                    }
+                        Meal updatedMeal = linkAssociatedFood(meal.plusFood(assocFood), food, assocFood, prompt.linkAsMain);
+                        int updatedSelection = updatedMeal.foodIndex(assocFood);
 
-                    ;
-                }));
+                        return Pair.create(updatedMeal, updatedSelection);
+                    }));
             }
         };
 

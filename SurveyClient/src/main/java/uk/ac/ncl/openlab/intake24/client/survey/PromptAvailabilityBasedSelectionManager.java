@@ -47,6 +47,28 @@ public class PromptAvailabilityBasedSelectionManager implements SelectionManager
         return Option.none();
     }
 
+    private Option<Selection> tryParentFood(final Survey state, final int mealIndex, final int currentFoodIndex) {
+        FoodEntry selected = state.meals.get(mealIndex).foods.get(currentFoodIndex);
+
+        return selected.link.linkedTo.accept(new Option.Visitor<UUID, Option<Selection>>() {
+            @Override
+            public Option<Selection> visitSome(UUID item) {
+                
+                int parentIndex = Meal.foodIndex(state.meals.get(mealIndex).foods, item);
+
+                if (hasPrompts(state, mealIndex, parentIndex))
+                    return Option.some(new Selection.SelectedFood(mealIndex, parentIndex, SelectionMode.AUTO_SELECTION));
+                else
+                    return Option.none();
+            }
+
+            @Override
+            public Option<Selection> visitNone() {
+                return Option.none();
+            }
+        });
+    }
+
     private Option<Selection> tryFollowUpFood(final Survey state, final int mealIndex, final int currentFoodIndex) {
         for (int foodIndex = currentFoodIndex + 1; foodIndex < state.meals.get(mealIndex).foods.size(); foodIndex++)
             if (hasPrompts(state, mealIndex, foodIndex))
@@ -105,6 +127,7 @@ public class PromptAvailabilityBasedSelectionManager implements SelectionManager
                 return chooseFirst(
                         TreePVector.<Option<Selection>>empty()
                                 .plus(tryFollowUpFood(state, selection.mealIndex, selection.foodIndex))
+                                .plus(tryParentFood(state, selection.mealIndex, selection.foodIndex))
                                 .plus(tryAnyFood(state, selection.mealIndex))
                                 .plus(tryMeal(state, selection.mealIndex))
                                 .plus(tryFoodInFollowUpMeal(state, selection.mealIndex))

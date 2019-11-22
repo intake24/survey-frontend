@@ -33,6 +33,10 @@ public class FoodLink {
 		return new FoodLink(UUID.randomUUID(), Option.some(linkedTo));
 	}
 
+	public FoodLink relink(UUID to) {
+		return new FoodLink(id, Option.some(to));
+	}
+
 	@Override
 	public String toString() {
 		return "FoodLink [id=" + id + ", linkedTo=" + linkedTo + "]";

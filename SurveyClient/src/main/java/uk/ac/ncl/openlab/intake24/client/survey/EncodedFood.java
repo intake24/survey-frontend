@@ -157,7 +157,7 @@ public class EncodedFood extends FoodEntry {
     }
 
     @Override
-    public FoodEntry relink(FoodLink link) {
+    public FoodEntry withLink(FoodLink link) {
         return new EncodedFood(data, link, portionSizeMethodIndex, portionSize, brand, searchTerm, enabledPrompts, flags, customData);
     }
 

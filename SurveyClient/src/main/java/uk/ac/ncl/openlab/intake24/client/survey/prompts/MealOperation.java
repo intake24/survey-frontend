@@ -11,10 +11,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 
 import org.workcraft.gwt.shared.client.Function1;
-import uk.ac.ncl.openlab.intake24.client.survey.EncodedFood;
-import uk.ac.ncl.openlab.intake24.client.survey.FoodEntry;
-import uk.ac.ncl.openlab.intake24.client.survey.Meal;
-import uk.ac.ncl.openlab.intake24.client.survey.TemplateFood;
+import org.workcraft.gwt.shared.client.Pair;
+import uk.ac.ncl.openlab.intake24.client.survey.*;
 
 public abstract class MealOperation {
     public static interface Visitor<R> {
@@ -27,6 +25,8 @@ public abstract class MealOperation {
         R visitEditTimeRequest();
 
         R visitUpdate(Function1<Meal, Meal> update);
+
+        R visitUpdateAndSelect(Function1<Meal, Pair<Meal, Integer>> update);
     }
 
     public static class NoChange extends MealOperation {
@@ -85,6 +85,18 @@ public abstract class MealOperation {
         }
     }
 
+    public static class UpdateAndSelect extends MealOperation {
+        private final Function1<Meal, Pair<Meal, Integer>> update;
+
+        public UpdateAndSelect(Function1<Meal, Pair<Meal, Integer>> f) {
+            this.update = f;
+        }
+
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitUpdateAndSelect(update);
+        }
+    }
 
     public abstract <R> R accept(Visitor<R> visitor);
 
@@ -102,6 +114,10 @@ public abstract class MealOperation {
 
     public static MealOperation update(Function1<Meal, Meal> update) {
         return new Update(update);
+    }
+
+    public static MealOperation updateAndSelect(Function1<Meal, Pair<Meal, Integer>> update) {
+        return new UpdateAndSelect(update);
     }
 
     public static MealOperation replaceFood(final int foodIndex, final FoodEntry newEntry) {

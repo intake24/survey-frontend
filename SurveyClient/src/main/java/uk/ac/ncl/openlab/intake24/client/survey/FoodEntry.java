@@ -65,7 +65,7 @@ public abstract class FoodEntry {
 		this.customData = customData;
 	}
 
-	public abstract FoodEntry relink(FoodLink link);
+	public abstract FoodEntry withLink(FoodLink link);
 
 	public abstract String description();
 

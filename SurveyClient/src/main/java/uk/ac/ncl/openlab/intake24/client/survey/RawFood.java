@@ -46,7 +46,7 @@ public class RawFood extends FoodEntry {
 	}
 
 	@Override
-	public FoodEntry relink(FoodLink link) {
+	public FoodEntry withLink(FoodLink link) {
 		return new RawFood(link, description, flags, customData);
 	}
 

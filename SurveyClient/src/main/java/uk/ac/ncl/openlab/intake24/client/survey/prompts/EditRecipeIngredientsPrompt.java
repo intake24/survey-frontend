@@ -87,7 +87,7 @@ public class EditRecipeIngredientsPrompt implements Prompt<Pair<FoodEntry, Meal>
 					public Meal apply(Meal argument) {
 						ArrayList<FoodEntry> linkedFoods = new ArrayList<FoodEntry>();
 						for (FoodEntry e: ingredientList.getEnteredItems())
-							linkedFoods.add(e.relink(FoodLink.newLinked(compoundFoodId)).withFlag(RawFood.FLAG_RECIPE_INGREDIENT));
+							linkedFoods.add(e.withLink(FoodLink.newLinked(compoundFoodId)).withFlag(RawFood.FLAG_RECIPE_INGREDIENT));
 
 						return argument								
 								.withFoods(filter(argument.foods, noLinkedFoodsFilter))
@@ -109,7 +109,7 @@ public class EditRecipeIngredientsPrompt implements Prompt<Pair<FoodEntry, Meal>
 						
 						ArrayList<FoodEntry> linkedFoods = new ArrayList<FoodEntry>();
 						for (FoodEntry e: ingredientList.getEnteredItems())
-							linkedFoods.add(e.relink(FoodLink.newLinked(compoundFoodId)).withFlag(RawFood.FLAG_RECIPE_INGREDIENT));
+							linkedFoods.add(e.withLink(FoodLink.newLinked(compoundFoodId)).withFlag(RawFood.FLAG_RECIPE_INGREDIENT));
 						
 						return Pair.create(null, argument.right.withFoods(filter(argument.right.foods, noLinkedFoodsFilter)).plusAllFoods(linkedFoods));				
 					}
