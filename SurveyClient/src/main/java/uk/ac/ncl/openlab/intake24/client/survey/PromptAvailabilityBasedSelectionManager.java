@@ -53,7 +53,7 @@ public class PromptAvailabilityBasedSelectionManager implements SelectionManager
         return selected.link.linkedTo.accept(new Option.Visitor<UUID, Option<Selection>>() {
             @Override
             public Option<Selection> visitSome(UUID item) {
-                
+
                 int parentIndex = Meal.foodIndex(state.meals.get(mealIndex).foods, item);
 
                 if (hasPrompts(state, mealIndex, parentIndex))

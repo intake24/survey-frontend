@@ -40,6 +40,7 @@ public class IntakeStateManager {
         this.stateTransitionFilters = TreePVector.<Function2<Survey, Survey, Survey>>empty()
                 .plus(new HandleDeleted())
                 .plus(new SaveSameAsBefore(baseManager.schemeId, baseManager.versionId))
-                .plus(new ResetSelectionOnFreeEntryComplete());
+                .plus(new ResetSelectionOnFreeEntryComplete())
+                .plus(new ResetSelectionOnPortionSizeComplete());
     }
 }

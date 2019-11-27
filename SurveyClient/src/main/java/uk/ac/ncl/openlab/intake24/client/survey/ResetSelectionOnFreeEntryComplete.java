@@ -10,13 +10,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey;
 
-import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Function2;
-import org.workcraft.gwt.shared.client.Option;
-import uk.ac.ncl.openlab.intake24.client.BrowserConsole;
-
-import static org.workcraft.gwt.shared.client.CollectionUtils.filter;
-import static org.workcraft.gwt.shared.client.CollectionUtils.map;
 
 public class ResetSelectionOnFreeEntryComplete implements Function2<Survey, Survey, Survey> {
 
