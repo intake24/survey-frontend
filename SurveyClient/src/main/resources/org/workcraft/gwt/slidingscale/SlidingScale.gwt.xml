@@ -13,7 +13,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 <module>
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name='org.workcraft.gwt.shared.ClientShared'/>
-	<inherits name="com.kiouri.sliderbar.SliderBarMVP" />
+
 	<source path="client"/>
 	<source path="shared"/>
 </module>

@@ -40,7 +40,6 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
   <name>Intake24</name>
 
   <modules>
-    <module>gwt-slider-bar</module>
     <module>ClientShared</module>
     <module>ImageChooser</module>
     <module>resty-gwt</module>

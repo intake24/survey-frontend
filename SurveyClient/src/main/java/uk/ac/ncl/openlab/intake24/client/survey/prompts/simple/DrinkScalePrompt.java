@@ -37,7 +37,6 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.Callback1;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.slidingscale.client.CanvasSlidingScale;
-import org.workcraft.gwt.slidingscale.client.SlidingScale;
 import org.workcraft.gwt.slidingscale.shared.SlidingScaleDef;
 import uk.ac.ncl.openlab.intake24.client.survey.ShepherdTour;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;

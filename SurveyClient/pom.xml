@@ -49,32 +49,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.kiouri.sliderbar</groupId>
-            <artifactId>sliderbar</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.kiouri.sliderbar</groupId>
-            <artifactId>sliderbar</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-            <classifier>sources</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.workcraft.gwt</groupId>
-            <artifactId>slidingscale</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.workcraft.gwt</groupId>
-            <artifactId>slidingscale</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-            <classifier>sources</classifier>
-        </dependency>
-
-        <dependency>
             <groupId>org.workcraft.gwt</groupId>
             <artifactId>imagechooser</artifactId>
             <version>3.0.0-SNAPSHOT</version>
