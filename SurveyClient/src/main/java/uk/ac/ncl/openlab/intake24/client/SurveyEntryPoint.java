@@ -31,6 +31,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
@@ -156,6 +157,17 @@ public class SurveyEntryPoint implements EntryPoint {
 
                         recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
                         recallNumber.getElement().setId("intake24-recall-number");
+
+                        if (response.schemeId.equals("ndns1019") && userResponse.redirectToFeedback) {
+                            UrlBuilder builder = Window.Location.createUrlBuilder();
+                            for (String paramName : Window.Location.getParameterMap().keySet()) {
+                                builder.removeParameter(paramName);
+                            }
+
+                            builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
+                            Window.Location.replace(builder.buildString());
+                            return;
+                        }
 
                         UxEventsHelper.applySettings(response.uxEventsSettings);
                         Layout.createMainPageLayout();
