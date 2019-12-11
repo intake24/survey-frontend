@@ -80,8 +80,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
         <!-- FIXME: Hack to remove cookie consent message from Arabic version because it looks ugly, but
           needs a better solution eventually -->
         @if(!parameters.respondentLanguageId.startsWith("ar")) {
-            <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-            <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+            <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/cookieconsent/build/cookieconsent.min.css")" />
+            <script src="@routes.Assets.at("lib/cookieconsent/build/cookieconsent.min.js")"></script>
             <script>
                     window.addEventListener("load", function () {
                         window.cookieconsent.initialise({
