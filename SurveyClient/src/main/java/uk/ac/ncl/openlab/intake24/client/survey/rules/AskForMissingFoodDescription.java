@@ -21,7 +21,7 @@ public class AskForMissingFoodDescription implements PromptRule<FoodEntry, FoodO
     public Option<Prompt<FoodEntry, FoodOperation>> apply(FoodEntry data, SelectionMode selectionType, PSet<String> surveyFlags) {
         if (!surveyFlags.contains(Survey.FLAG_FREE_ENTRY_COMPLETE))
             return new Option.None<Prompt<FoodEntry, FoodOperation>>();
-        else if (data.isMissing() && data.flags.contains(MissingFood.NOT_HOME_RECIPE_FLAG) && !((MissingFood) data).isDescriptionComplete())
+        else if (data.isMissing() && !((MissingFood) data).isDescriptionComplete())
             return new Option.Some<Prompt<FoodEntry, FoodOperation>>(new MissingFoodDescriptionPrompt((MissingFood) data));
         else
             return new Option.None<Prompt<FoodEntry, FoodOperation>>();
