@@ -413,6 +413,10 @@ public interface PromptMessages extends Messages {
 
     public String drinkReminder_noDrinkButtonLabel();
 
+    public String additionalFood_goBack();
+
+    public String additionalFood_continue();
+
     public String noPortionMethod_promptText(String desc);
 
     public String noPortionMethod_continueButtonLabel();

@@ -57,7 +57,8 @@ public class SAB extends BasicScheme {
                 TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
                         .plus(AskForMealTime.withPriority(40))
                         .plus(ShowEditMeal.withPriority(30))
-                        .plus(ShowDrinkReminderPrompt.withPriority(20)),
+                        .plus(ShowDrinkReminderPrompt.withPriority(20))
+                        .plus(AskAboutAdditionalFood.withPriority(10)),
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
                         .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
                         .plus(ChoosePortionSizeMethod.withPriority(1))
