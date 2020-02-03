@@ -34,6 +34,7 @@ public class AskAboutAdditionalFood implements PromptRule<Meal, MealOperation> {
         mealList.add(messages.predefMeal_Breakfast().toLowerCase());
         mealList.add(messages.predefMeal_Lunch().toLowerCase());
         mealList.add(messages.predefMeal_Dinner().toLowerCase());
+        mealList.add(messages.predefMeal_EveningMeal().toLowerCase());
 
         if (mealList.contains(meal.name.toLowerCase()) && !meal.flags.contains(MEAL_ADDITIONAL_FOOD_KEY) && !meal.isEmpty() && meal.portionSizeComplete()) {
             SafeHtml promptSafeText = SafeHtmlUtils.fromSafeConstant(
