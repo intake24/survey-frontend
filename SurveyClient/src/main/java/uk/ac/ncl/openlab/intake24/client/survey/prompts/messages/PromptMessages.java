@@ -397,7 +397,11 @@ public interface PromptMessages extends Messages {
 
     public String splitFood_keep();
 
+    public String splitFood_keepEx(String meal);
+
     public String splitFood_separateSuggestion();
+
+    public String splitFood_separateSuggestionEx(String meal);
 
     public String splitFood_yesButtonLabel();
 
