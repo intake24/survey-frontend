@@ -50,6 +50,7 @@ import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.SurveyScheme;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
 import uk.ac.ncl.openlab.intake24.client.ui.ErrorPage;
 import uk.ac.ncl.openlab.intake24.client.ui.Layout;
 import uk.ac.ncl.openlab.intake24.client.ui.LogoutPage;
@@ -158,7 +159,8 @@ public class SurveyEntryPoint implements EntryPoint {
                         recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
                         recallNumber.getElement().setId("intake24-recall-number");
 
-                        if (response.schemeId.equals("ndns1019") && userResponse.redirectToFeedback) {
+                        // NDNS Y12 redirect to feedback
+                        if (response.schemeId.equals(October2019.ID) && userResponse.redirectToFeedback) {
                             UrlBuilder builder = Window.Location.createUrlBuilder();
                             for (String paramName : Window.Location.getParameterMap().keySet()) {
                                 builder.removeParameter(paramName);

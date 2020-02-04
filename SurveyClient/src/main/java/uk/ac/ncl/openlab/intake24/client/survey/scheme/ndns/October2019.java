@@ -26,81 +26,16 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 
-import org.pcollections.TreePVector;
+
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
-import uk.ac.ncl.openlab.intake24.client.survey.*;
-import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
-import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
+import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 
-import java.util.Date;
 
-public class October2019 extends BasicScheme {
-    final private static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
-
+public class October2019 extends NDNSDefault {
     public static final String ID = "ndns1019";
-    private static final double MAX_AGE_HOURS = 12.0;
 
     public October2019(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
         super(locale, surveyParameters, interfaceManager, userData);
-    }
-
-    @Override
-    public void showNextPage() {
-        final Survey state = getStateManager().getCurrentState();
-
-        if (!state.flags.contains(NameCheckPage.NAME_CHECK_DONE) && !userData.name.isEmpty()) {
-            interfaceManager.show(new NameCheckPage(state, userData));
-        } else
-            super.showNextPage();
-    }
-
-    @Override
-    protected Rules getRules(PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager, RecipeManager recipeManager) {
-        Rules baseRules = defaultRules(scriptManager, templateManager, recipeManager);
-
-        return new Rules(
-                baseRules.mealPromptRules
-                        .plus(AskAboutFoodSource.withPriority(9)),
-                TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
-                        .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
-                        .plus(ChoosePortionSizeMethod.withPriority(1))
-                        .plus(AskForMissingFoodDescription.withPriority(2))
-                        .plus(SplitFood.withPriority(4))
-                        .plus(InformFoodComplete.withPriority(-100)),
-                baseRules.extendedFoodPromptRules,
-                baseRules.surveyPromptRules
-                        .plus(RemindFrequentlyForgottenFoods.withPriority(31))
-                        .plus(AskIfUsualAmount.withPriority(30))
-                        .plus(AskIfUsualAmountReason.withPriority(29))
-                        .plus(AskAboutDiet.withPriority(28))
-                        .plus(AskAboutCookingOil.withPriority(27))
-                        .plus(RemindSupplements.withPriority(26))
-                        .plus(AskAboutProxy.withPriority(25))
-                        .plus(AskAboutProxyIssues.withPriority(24)),
-                baseRules.selectionRules
-        );
-    }
-
-    @Override
-    public String getDataVersion() {
-        return "1";
-    }
-
-    @Override
-    public String getSchemeId() {
-        return ID;
-    }
-
-    @Override
-    public Boolean getSurveyExpired(Survey survey) {
-        long currentTime = System.currentTimeMillis();
-        Date startDate = new Date(survey.startTime);
-
-        long msToMidnight = ((23 - startDate.getHours()) * 3600 + (59 - startDate.getMinutes()) * 60 + (59 - startDate.getSeconds() + 1)) * 1000;
-        long midnight = survey.startTime + msToMidnight;
-
-        return (((currentTime - survey.startTime) / 3600000.0) > MAX_AGE_HOURS || currentTime > midnight);
     }
 }
