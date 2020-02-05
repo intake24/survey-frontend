@@ -24,29 +24,36 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package uk.ac.ncl.openlab.intake24.client.survey.scheme.sab;
+package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
 
 import org.pcollections.TreePVector;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
-import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.AskIfUsualAmount;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.AskIfUsualAmountReason;
 
 import java.util.Date;
 
-public class SAB extends BasicScheme {
+public class NDNSDefault extends BasicScheme {
     final private static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
 
-    public static final String ID = "sab";
+    public static final String ID = "ndns_default";
     private static final double MAX_AGE_HOURS = 12.0;
 
-    public SAB(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
+    public NDNSDefault(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
         super(locale, surveyParameters, interfaceManager, userData);
+    }
+
+    @Override
+    public void showNextPage() {
+        final Survey state = getStateManager().getCurrentState();
+
+        if (!state.flags.contains(NameCheckPage.NAME_CHECK_DONE) && !userData.name.isEmpty()) {
+            interfaceManager.show(new NameCheckPage(state, userData));
+        } else
+            super.showNextPage();
     }
 
     @Override
@@ -54,11 +61,8 @@ public class SAB extends BasicScheme {
         Rules baseRules = defaultRules(scriptManager, templateManager, recipeManager);
 
         return new Rules(
-                TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
-                        .plus(AskForMealTime.withPriority(40))
-                        .plus(ShowEditMeal.withPriority(30))
-                        .plus(ShowDrinkReminderPrompt.withPriority(20))
-                        .plus(AskAboutAdditionalFood.withPriority(10)),
+                baseRules.mealPromptRules
+                        .plus(AskAboutFoodSource.withPriority(9)),
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
                         .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
                         .plus(ChoosePortionSizeMethod.withPriority(1))
@@ -72,9 +76,9 @@ public class SAB extends BasicScheme {
                         .plus(AskIfUsualAmountReason.withPriority(29))
                         .plus(AskAboutDiet.withPriority(28))
                         .plus(AskAboutCookingOil.withPriority(27))
-                        .plus(AskAboutSupplements.withPriority(26))
-                        .plus(AskAboutDifficultiesParticipant.withPriority(25))
-                        .plus(AskAboutDifficultiesInterviewer.withPriority(24)),
+                        .plus(RemindSupplements.withPriority(26))
+                        .plus(AskAboutProxy.withPriority(25))
+                        .plus(AskAboutProxyIssues.withPriority(24)),
                 baseRules.selectionRules
         );
     }

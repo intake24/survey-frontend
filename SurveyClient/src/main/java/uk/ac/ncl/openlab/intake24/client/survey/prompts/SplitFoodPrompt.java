@@ -28,7 +28,6 @@ package uk.ac.ncl.openlab.intake24.client.survey.prompts;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Button;
@@ -85,6 +84,16 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
                 if (result.parts.size() == 1)
                     onComplete.call(disableSplit);
                 else {
+                    String splitFood_keep;
+                    String splitFood_separateSuggestion;
+
+                    if (EmbeddedData.localeId.equals("SABv1")) {
+                        splitFood_keep = messages.splitFood_keepEx("rice and lentil porridge");
+                        splitFood_separateSuggestion = messages.splitFood_separateSuggestionEx("tea and biscuits");
+                    } else {
+                        splitFood_keep = messages.splitFood_keep();
+                        splitFood_separateSuggestion = messages.splitFood_separateSuggestion();
+                    }
 
                     StringBuilder sb = new StringBuilder();
 
@@ -111,10 +120,10 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
                     sb.append("</p>");
 
                     sb.append("<p>");
-                    sb.append(messages.splitFood_keep());
+                    sb.append(splitFood_keep);
                     sb.append("</p>");
                     sb.append("<p>");
-                    sb.append(messages.splitFood_separateSuggestion());
+                    sb.append(splitFood_separateSuggestion);
                     sb.append("</p>");
 
 

@@ -397,7 +397,11 @@ public interface PromptMessages extends Messages {
 
     public String splitFood_keep();
 
+    public String splitFood_keepEx(String meal);
+
     public String splitFood_separateSuggestion();
+
+    public String splitFood_separateSuggestionEx(String meal);
 
     public String splitFood_yesButtonLabel();
 
@@ -408,6 +412,10 @@ public interface PromptMessages extends Messages {
     public String drinkReminder_addDrinkButtonLabel();
 
     public String drinkReminder_noDrinkButtonLabel();
+
+    public String additionalFood_goBack();
+
+    public String additionalFood_continue();
 
     public String noPortionMethod_promptText(String desc);
 
