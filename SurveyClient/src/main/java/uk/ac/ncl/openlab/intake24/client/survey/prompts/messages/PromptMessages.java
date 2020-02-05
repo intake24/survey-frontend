@@ -525,6 +525,8 @@ public interface PromptMessages extends Messages {
 
     public String pizza_sliceQuantityPromptText();
 
+    public String pizza_wholeQuantityPromptText();
+
     public String pizza_sliceQuantityContinueButtonLabel();
 
     public String pizza_thicknessPromptText();

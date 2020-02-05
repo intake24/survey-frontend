@@ -104,7 +104,11 @@ public class PizzaPortionSizeScript implements PortionSizeScript {
                     "sliceImage", wholePizzaButton));
             return Option.some(portionSizePrompt);
         } else if (!data.containsKey("sliceQuantity")) {
-            return Option.some(PromptUtil.map(withBackLink(quantityPrompt(SafeHtmlUtils.fromSafeConstant(messages.pizza_sliceQuantityPromptText()),
+
+            boolean wholePizza = Integer.parseInt(data.get("sliceType")) == 0;
+            String quantityPromptText = (wholePizza) ? messages.pizza_wholeQuantityPromptText() : messages.pizza_sliceQuantityPromptText();
+
+            return Option.some(PromptUtil.map(withBackLink(quantityPrompt(SafeHtmlUtils.fromSafeConstant(quantityPromptText),
                     messages.pizza_sliceQuantityContinueButtonLabel(), "sliceQuantity")), new Function1<UpdateFunc, UpdateFunc>() {
                 @Override
                 public UpdateFunc apply(final UpdateFunc f) {
