@@ -31,8 +31,6 @@ public class AdditionalFoodReminderPrompt implements Prompt<Meal, MealOperation>
                                              final Callback1<Function1<Meal, Meal>> onIntermediateStateChange) {
         final FlowPanel content = new FlowPanel();
 
-        MealOperation.update(state -> state.withFlag(addFoodKey));
-
         content.add(WidgetFactory.createPromptPanel(promptText));
 
         Button goBackBtn = WidgetFactory.createGreenButton(messages.additionalFood_goBack(),
