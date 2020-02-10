@@ -120,12 +120,11 @@ public class SplitFoodPrompt implements Prompt<FoodEntry, FoodOperation> {
                     sb.append("</p>");
 
                     sb.append("<p>");
-                    sb.append(splitFood_keep);
-                    sb.append("</p>");
-                    sb.append("<p>");
                     sb.append(splitFood_separateSuggestion);
                     sb.append("</p>");
-
+                    sb.append("<p>");
+                    sb.append(splitFood_keep);
+                    sb.append("</p>");
 
                     SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(sb.toString());
 
