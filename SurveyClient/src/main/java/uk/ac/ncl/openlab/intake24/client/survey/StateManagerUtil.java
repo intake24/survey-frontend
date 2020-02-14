@@ -22,6 +22,8 @@ import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.json.SerialisableSurveyCodec;
+import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.SMeal;
+import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.SSelection;
 import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.SSurvey;
 import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.SSameAsBefore;
 import uk.ac.ncl.openlab.intake24.client.survey.json.serialisable.sameasbefore.SerialisableSameAsBeforeCodec;
@@ -191,6 +193,30 @@ public class StateManagerUtil {
         }
     }
 
+    public static boolean isSelectionValid(SSurvey survey) {
+        return survey.selectedElement.accept(new SSelection.Visitor<Boolean>() {
+
+            @Override
+            public Boolean visitMeal(SSelection.SSelectedMeal meal) {
+                return (meal.mealIndex > 0 && meal.mealIndex < survey.meals.size());
+            }
+
+            @Override
+            public Boolean visitFood(SSelection.SSelectedFood food) {
+                if (food.mealIndex > 0 && food.mealIndex < survey.meals.size()) {
+                    SMeal meal = survey.meals.get(food.mealIndex);
+                    return (food.foodIndex > 0 && food.foodIndex < meal.foods.size());
+                } else
+                    return false;
+            }
+
+            @Override
+            public Boolean visitNothing(SSelection.SEmptySelection selection) {
+                return true;
+            }
+        });
+    }
+
     public static Option<Survey> decodeSurvey(String data, String scheme_id, String version_id,
                                               PortionSizeScriptManager scriptManager,
                                               CompoundFoodTemplateManager templateManager) {
@@ -201,8 +227,18 @@ public class StateManagerUtil {
                 log.warning("Survey version mismatch: stored version is (" + decoded.schemeId + ", " + decoded.versionId
                         + "), runtime version is (" + scheme_id + ", " + version_id + "). Ignoring stored survey.");
                 return Option.none();
-            } else
-                return Option.some(decoded.toSurvey(scriptManager, templateManager));
+            } else {
+                if (!isSelectionValid(decoded)) {
+                    log.warning("Selected element is not valid in the stored survey, replacing with empty selection");
+
+                    SSurvey withEmptySelection = new SSurvey(decoded.meals,
+                            new SSelection.SEmptySelection(SelectionMode.AUTO_SELECTION), decoded.startTime,
+                            decoded.lastSaved, decoded.flags, decoded.customData, decoded.schemeId, decoded.versionId);
+
+                    return Option.some(withEmptySelection.toSurvey(scriptManager, templateManager));
+                } else
+                    return Option.some(decoded.toSurvey(scriptManager, templateManager));
+            }
         } catch (Throwable e) {
             e.printStackTrace();
             log.warning("Failed to parse saved survey state: " + e.getMessage() + "\n\n" + data);
