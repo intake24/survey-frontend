@@ -27,7 +27,7 @@ public class RemindFrequentlyForgottenFoods extends GenericReminder {
                         "<li>Savoury snacks, poppadum, crisps, sev, fritters, samosa, nuts</li>" +
                         "<li>Sweet snacks, sweet biscuits, sweets, chocolate, cakes, desserts, pastries, halwa, " +
                         "sweet flour or bean snacks</li>" +
-                        "<li>Bread, flatbread, paratha, roti, chapatti, roll</li>" +
+                        "<li>Bread, flatbread, paratha, roti, chapati, roll</li>" +
                         "<li>Sauces, dressings, chutneys, pickles, raita</li>" +
                         "<li>Paan, sauf, or other mouth fresheners</li>" +
                         "</ul></p>" +

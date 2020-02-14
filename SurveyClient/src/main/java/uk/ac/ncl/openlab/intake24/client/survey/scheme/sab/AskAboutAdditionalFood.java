@@ -21,7 +21,7 @@ public class AskAboutAdditionalFood implements PromptRule<Meal, MealOperation> {
             "did you have any of the following with your $meal?</p>" +
             "<ul>" +
             "<li>Rice</li>" +
-            "<li>Chapatti / roti / paratha / other bread</li>" +
+            "<li>Chapati / roti / paratha / other bread</li>" +
             "<li>Pickle or chutney</li>" +
             "<li>Raita, curd or yoghurt</li>" +
             "</ul>" +
