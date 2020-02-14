@@ -34,7 +34,7 @@ public class ResetSelectionOnPortionSizeComplete implements Function2<Survey, Su
                     Meal m0 = s0.meals.get(selection.mealIndex);
                     Meal m1 = s1.meals.get(selection.mealIndex);
 
-                    if (!m0.portionSizeComplete() && m1.portionSizeComplete()) {
+                    if (!m0.portionSizeComplete() && m1.foods.size() > 0 && m1.portionSizeComplete()) {
                         return s1.withSelection(new Selection.SelectedFood(selection.mealIndex, 0, SelectionMode.AUTO_SELECTION));
                     } else
                         return s1;
