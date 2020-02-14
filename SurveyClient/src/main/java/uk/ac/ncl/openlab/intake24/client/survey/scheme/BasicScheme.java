@@ -27,6 +27,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.scheme;
 
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -217,8 +218,8 @@ public abstract class BasicScheme implements SurveyScheme {
         Survey initialState = surveyOpt.accept(new Option.Visitor<Survey, Survey>() {
             @Override
             public Survey visitSome(Survey data) {
-                if (getSurveyExpired(data)) {
-                    logger.fine("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
+                if (Window.Location.getParameter("ignoreMaxAge") == null && getSurveyExpired(data)) {
+                    logger.warning("Saved state is older than " + MAX_AGE_HOURS + " hours and has expired.");
                     return startingSurveyData();
                 } else {
                     return data.clearCompletionConfirmed()
