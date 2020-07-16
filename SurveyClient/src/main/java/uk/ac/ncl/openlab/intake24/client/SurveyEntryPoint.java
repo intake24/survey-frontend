@@ -28,14 +28,12 @@ package uk.ac.ncl.openlab.intake24.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
@@ -50,6 +48,7 @@ import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.SurveyScheme;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.FollowUp;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
 import uk.ac.ncl.openlab.intake24.client.ui.ErrorPage;
 import uk.ac.ncl.openlab.intake24.client.ui.Layout;
@@ -159,8 +158,11 @@ public class SurveyEntryPoint implements EntryPoint {
                         recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
                         recallNumber.getElement().setId("intake24-recall-number");
 
-                        // NDNS Y12 redirect to feedback
-                        if (response.schemeId.equals(October2019.ID) && userResponse.redirectToFeedback) {
+                        // NDNS Y12/Followup redirect to feedback
+                        boolean redirect = userResponse.redirectToFeedback &&
+                                (response.schemeId.equals(October2019.ID) || response.schemeId.equals(FollowUp.ID));
+
+                        if (redirect) {
                             UrlBuilder builder = Window.Location.createUrlBuilder();
                             for (String paramName : Window.Location.getParameterMap().keySet()) {
                                 builder.removeParameter(paramName);
