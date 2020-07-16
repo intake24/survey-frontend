@@ -179,7 +179,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 }
 
-.intake24-text-box-question input[type="text"] {
+.intake24-text-box-question input[type="text"],
+.intake24-text-box-question select {
 	margin-bottom: 15px;
 }
 
