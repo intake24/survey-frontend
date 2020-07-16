@@ -20,8 +20,11 @@ import java.util.List;
 
 public class CheckListQuestion extends MultipleChoiceQuestion<List<MultipleChoiceQuestionAnswer>> {
 
-    public CheckListQuestion(SafeHtml promptText, PVector<MultipleChoiceQuestionOption> options) {
+    private boolean required;
+
+    public CheckListQuestion(SafeHtml promptText, PVector<MultipleChoiceQuestionOption> options, Boolean required) {
         super(promptText, options);
+        this.required = required;
     }
 
     public Option<List<MultipleChoiceQuestionAnswer>> getAnswer() {
@@ -38,7 +41,7 @@ public class CheckListQuestion extends MultipleChoiceQuestion<List<MultipleChoic
             }
         }
 
-        if (result.isEmpty()) {
+        if (required && result.isEmpty()) {
             showWarning();
             return Option.none();
         } else
