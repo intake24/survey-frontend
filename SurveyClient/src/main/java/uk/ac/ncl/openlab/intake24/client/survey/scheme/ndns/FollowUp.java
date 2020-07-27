@@ -65,14 +65,15 @@ public class FollowUp extends NDNSDefault {
                         .plus(AskAboutDiet.withPriority(28))
                         .plus(AskAboutCookingOil.withPriority(27))
                         .plus(RemindSupplements.withPriority(26))
-                        .plus(AskAboutProxy.withPriority(25))
-                        .plus(AskAboutProxyIssues.withPriority(24))
-                        .plus(AskAboutSelfIsolation.withPriority(23))
-                        .plus(InfrequentFoodSelectedFish.withPriority(22, userData))
-                        .plus(InfrequentFoodAnyFish.withPriority(21, userData))
-                        .plus(InfrequentFoodWhiteMeat.withPriority(20, userData))
-                        .plus(InfrequentFoodFruitJuice.withPriority(19, userData))
-                        .plus(InfrequentFoodSoftDrinks.withPriority(18, userData)),
+                        .plus(AskAboutSelfIsolation.withPriority(25))
+                        .plus(InfrequentFoodIntro.withPriority(24, userData))
+                        .plus(InfrequentFoodSelectedFish.withPriority(23, userData))
+                        .plus(InfrequentFoodAnyFish.withPriority(22, userData))
+                        .plus(InfrequentFoodWhiteMeat.withPriority(21, userData))
+                        .plus(InfrequentFoodFruitJuice.withPriority(20, userData))
+                        .plus(InfrequentFoodSoftDrinks.withPriority(19, userData))
+                        .plus(AskAboutProxy.withPriority(18))
+                        .plus(AskAboutProxyIssues.withPriority(17)),
                 baseRules.selectionRules
         );
     }

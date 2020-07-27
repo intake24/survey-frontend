@@ -32,7 +32,7 @@ public class AskAboutProxy implements PromptRule<Survey, SurveyOperation> {
                             "<p><small>Please note that recalls should be completed independently by the individual " +
                             "named on the first screen and only completed by someone else when necessary " +
                             "i.e. for young children, if there are language difficulties or the person " +
-                            "is not confident in using a computer to fill in the recall</small></p>"
+                            "is not confident in using a computer to fill in the recall.</small></p>"
             );
 
             RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutProxy.class.getSimpleName(),

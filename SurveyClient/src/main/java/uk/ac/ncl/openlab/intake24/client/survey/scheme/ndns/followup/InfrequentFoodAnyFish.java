@@ -16,8 +16,8 @@ public class InfrequentFoodAnyFish extends InfrequentFood {
 
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority, UserData userData) {
         return new WithPriority<>(new InfrequentFoodAnyFish(
-                "<p>In the last month, on how many days did you eat <strong>any type of fish</strong>? " +
-                        "This includes white fish such as cod, haddock, plaice, fresh or canned tuna and any " +
+                "<p>In the last month, on how many days did you eat <strong>any type of fish</strong>?</p>" +
+                        "<p>This includes white fish such as cod, haddock, plaice, fresh or canned tuna and any " +
                         "shellfish such as prawns or mussels. Include any oily fish that you might have mentioned " +
                         "in the question before. Include stews, pies and other dishes containing fish.</p>" +
                         "<p>If you did not eat in last month please enter 0.</p>",

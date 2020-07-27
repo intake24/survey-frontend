@@ -8,8 +8,8 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.ReminderPrompt;
 
 public abstract class GenericReminder implements PromptRule<Survey, SurveyOperation> {
 
-    private String reminderKey;
-    private SafeHtml promptText;
+    protected String reminderKey;
+    protected SafeHtml promptText;
 
     public GenericReminder(SafeHtml promptText, String reminderKey) {
         this.promptText = promptText;

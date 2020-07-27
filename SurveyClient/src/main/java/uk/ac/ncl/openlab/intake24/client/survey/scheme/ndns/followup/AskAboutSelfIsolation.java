@@ -17,19 +17,20 @@ public class AskAboutSelfIsolation implements PromptRule<Survey, SurveyOperation
     private static final String SELFISOLATION_COMPLETE = "selfIsolationComplete";
 
     final private PVector<MultipleChoiceQuestionOption> options = TreePVector.<MultipleChoiceQuestionOption>empty()
-            .plus(new MultipleChoiceQuestionOption("Self isolating at home due to you or a member of your household having COVID-19 symptoms ", "COVID-19 symptoms"))
-            .plus(new MultipleChoiceQuestionOption("Self isolating at home due to you or a member of your household having a positive or pending coronavirus test result", "positive/pending COVID-19 test"))
-            .plus(new MultipleChoiceQuestionOption("Shielding or isolating due to vulnerability such as age or health conditions ", "COVID-19 vulnerability"));
-
+            .plus(new MultipleChoiceQuestionOption("Self isolating due to you or a member of your household having COVID-19 symptoms ", "COVID-19 symptoms"))
+            .plus(new MultipleChoiceQuestionOption("Self isolating due to you or a member of your household having a positive or pending coronavirus test result", "positive/pending COVID-19 test"))
+            .plus(new MultipleChoiceQuestionOption("Shielding or isolating due to vulnerability such as age or health conditions ", "COVID-19 vulnerability"))
+            .plus(new MultipleChoiceQuestionOption("None of the above"));
+    
 
     @Override
     public Option<Prompt<Survey, SurveyOperation>> apply(Survey state, SelectionMode selectionType, PSet<String> surveyFlags) {
         if (!state.flags.contains(SELFISOLATION_COMPLETE) && state.portionSizeComplete()) {
 
-            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Do any of the following currently apply to you (tick all that apply):<p>");
+            SafeHtml promptText = SafeHtmlUtils.fromSafeConstant("<p>Do any of the following <strong><u>currently</u></strong> apply to you (tick all that apply):<p>");
 
             CheckListPrompt prompt = new CheckListPrompt(promptText, AskAboutSelfIsolation.class.getSimpleName(),
-                    options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel(), false);
+                    options, PromptMessages.INSTANCE.mealComplete_continueButtonLabel());
 
             return Option.some(PromptUtil.asSurveyPrompt(prompt, answers -> {
                 if (!answers.isEmpty()) {

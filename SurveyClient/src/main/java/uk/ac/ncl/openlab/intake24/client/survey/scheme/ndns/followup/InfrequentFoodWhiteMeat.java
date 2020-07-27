@@ -17,7 +17,8 @@ public class InfrequentFoodWhiteMeat extends InfrequentFood {
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority, UserData userData) {
         return new WithPriority<>(new InfrequentFoodWhiteMeat(
                 "<p>In the last month, on how many days did you eat <strong>white meat</strong> such as " +
-                        "chicken and turkey? Include stews, pies and other dishes containing white meat.</p>" +
+                        "chicken and turkey?</p>" +
+                        "<p>Include stews, pies and other dishes containing white meat.</p>" +
                         "<p>If you did not eat in last month please enter 0.</p>",
                 INFREQUENT_FOOD_KEY, userData), priority);
     }

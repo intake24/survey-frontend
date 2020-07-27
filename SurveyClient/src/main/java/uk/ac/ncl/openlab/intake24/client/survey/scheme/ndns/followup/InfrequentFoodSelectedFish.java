@@ -15,8 +15,8 @@ public class InfrequentFoodSelectedFish extends InfrequentFood {
         return new WithPriority<>(new InfrequentFoodSelectedFish(
                 "<p>In the last month, on how many days did you eat " +
                         "<strong>fresh, tinned or frozen oily fish</strong> " +
-                        "such as salmon, sardines, mackerel, kippers, anchovies, pilchards, trout? " +
-                        "Include oily fish eaten in stews, pies and other dishes. Do NOT include tuna.</p>" +
+                        "such as salmon, sardines, mackerel, kippers, anchovies, pilchards, trout?</p>" +
+                        "<p>Include oily fish eaten in stews, pies and other dishes. Do NOT include tuna.</p>" +
                         "<p>If you did not eat in last month please enter 0.</p>",
                 INFREQUENT_FOOD_KEY, userData), priority);
     }
