@@ -30,10 +30,9 @@ public class AskAboutDifficultiesInterviewer implements PromptRule<Survey, Surve
                     "<p><strong>For interviewer</strong></p>" +
                             "<p>Did you have any difficulties in recording the foods or drinks consumed " +
                             "by this participant?</p>" +
-                            "<p><small>For example, participant did not cook or prepare food themselves; " +
+                            "<p>For example, participant did not cook or prepare food themselves; " +
                             "participant was away from home; participant had difficulties remembering; foods " +
-                            "not found on food list, etc. Please provide as much information as possible." +
-                            "</small><p>"
+                            "not found on food list, etc. Please provide as much information as possible.</p>"
             );
 
             RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutDifficultiesInterviewer.class.getSimpleName(),
