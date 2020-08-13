@@ -19,8 +19,8 @@ public class AskAboutFoodSource extends FoodSource {
         return new WithPriority<>(new AskAboutFoodSource(
                 "<p>Where was <strong><u>most</u></strong> of the food for %s purchased or obtained from?</p>",
                 TreePVector.<MultipleChoiceQuestionOption>empty()
-                        .plus(new MultipleChoiceQuestionOption("Supermarket / convenience store / corner shop / petrol station – household shopping"))
-                        .plus(new MultipleChoiceQuestionOption("Supermarket / convenience store / corner shop / petrol station – food on the go"))
+                        .plus(new MultipleChoiceQuestionOption("Supermarket / convenience store / corner shop / petrol station - household shopping"))
+                        .plus(new MultipleChoiceQuestionOption("Supermarket / convenience store / corner shop / petrol station - food on the go"))
                         .plus(new MultipleChoiceQuestionOption("Fast food / take-away outlet"))
                         .plus(new MultipleChoiceQuestionOption("Café / coffee shop / sandwich bar / deli"))
                         .plus(new MultipleChoiceQuestionOption("Sit-down restaurant or pub"))
