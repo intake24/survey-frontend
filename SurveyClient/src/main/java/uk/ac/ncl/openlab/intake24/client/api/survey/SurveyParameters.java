@@ -11,4 +11,5 @@ public class SurveyParameters {
     public Option<String> finalPageHtml;
     public UxEventsSettings uxEventsSettings;
     public Boolean storeUserSessionOnServer;
+    public int maximumDailySubmissions;
 }

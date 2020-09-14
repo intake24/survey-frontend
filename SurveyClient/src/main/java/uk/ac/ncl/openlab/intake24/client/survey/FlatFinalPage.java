@@ -60,6 +60,10 @@ public class FlatFinalPage implements SurveyStage<Survey> {
   private final Survey data;
   private final List<String> log;
 
+  private native String getTimeZone() /*-{
+    return Intl.DateTimeFormat().resolvedOptions().timeZone
+  }-*/;
+
   public FlatFinalPage(String finalPageHtml, Survey data, List<String> log) {
     this.finalPageHtml = finalPageHtml;
     this.data = data;
@@ -74,20 +78,23 @@ public class FlatFinalPage implements SurveyStage<Survey> {
 
     contents.add(new LoadingPanel(messages.submitPage_loadingMessage()));
 
-    SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, new MethodCallback<SurveySubmissionResponse>() {
+    SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, getTimeZone(), finalData, new MethodCallback<SurveySubmissionResponse>() {
       @Override
       public void onFailure(Method method, Throwable exception) {
         contents.clear();
 
-        if (exception instanceof RequestTimeoutException) {
+        if (exception instanceof RequestTimeoutException || method.getResponse().getStatusCode() == 429) {
           final MethodCallback<SurveySubmissionResponse> outer = this;
 
-          contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
+          if (exception instanceof RequestTimeoutException)
+            contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
+          else
+            contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_tooManyRequests())));
 
           contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), "finalPageTryAgainButton", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-              SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, outer);
+              SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, getTimeZone(), finalData, outer);
             }
           }));
         } else {

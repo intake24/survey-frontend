@@ -34,6 +34,7 @@ public interface PromptMessages extends Messages {
 
     PromptMessages INSTANCE = GWT.create(PromptMessages.class);
 
+    String submitPage_tooManyRequests();
 
 
     public static class Util {

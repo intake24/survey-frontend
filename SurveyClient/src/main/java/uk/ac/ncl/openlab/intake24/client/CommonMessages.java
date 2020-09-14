@@ -33,6 +33,10 @@ public interface CommonMessages extends Messages {
 
   CommonMessages INSTANCE = GWT.create(CommonMessages.class);
 
+  String maximumSubmissionsReachedTitle();
+
+  String maximumSubmissionsReachedText(String supportEmail);
+
   public static class Util {
     private static CommonMessages instance = null;
 

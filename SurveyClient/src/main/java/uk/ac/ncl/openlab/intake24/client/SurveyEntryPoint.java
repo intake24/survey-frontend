@@ -57,12 +57,17 @@ import uk.ac.ncl.openlab.intake24.client.ui.LogoutPage;
 import uk.ac.ncl.openlab.intake24.client.ui.TutorialVideo;
 
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class SurveyEntryPoint implements EntryPoint {
 
     private Anchor watchTutorial;
     private Anchor logOut;
     private Anchor recallNumber;
+
+    private native String getTimeZone() /*-{
+        return Intl.DateTimeFormat().resolvedOptions().timeZone
+    }-*/;
 
     private void startSurvey(SurveyParameters params, UserData userData) {
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
@@ -134,7 +139,7 @@ public class SurveyEntryPoint implements EntryPoint {
             @Override
             public void onSuccess(Method method, SurveyParameters response) {
 
-                SurveyService.INSTANCE.getUserData(EmbeddedData.surveyId, new MethodCallback<UserData>() {
+                SurveyService.INSTANCE.getUserData(EmbeddedData.surveyId, getTimeZone(), new MethodCallback<UserData>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
 
@@ -153,43 +158,50 @@ public class SurveyEntryPoint implements EntryPoint {
 
                     @Override
                     public void onSuccess(Method method, UserData userResponse) {
+                        if (userResponse.maximumDailySubmissionsReached) {
+                            Layout.createMainPageLayout();
+                            Layout.setNavBarLinks(watchTutorial, logOut);
 
-                        NumberFormat nf = NumberFormat.getDecimalFormat();
+                            ErrorPage.showMaximumDailySubmissionsReached();
+                        } else {
 
-                        recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
-                        recallNumber.getElement().setId("intake24-recall-number");
+                            NumberFormat nf = NumberFormat.getDecimalFormat();
 
-                        // NDNS Y12 redirect to feedback
-                        if (response.schemeId.equals(October2019.ID) && userResponse.redirectToFeedback) {
-                            UrlBuilder builder = Window.Location.createUrlBuilder();
-                            for (String paramName : Window.Location.getParameterMap().keySet()) {
-                                builder.removeParameter(paramName);
+                            recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
+                            recallNumber.getElement().setId("intake24-recall-number");
+
+                            // NDNS Y12 redirect to feedback
+                            if (response.schemeId.equals(October2019.ID) && userResponse.redirectToFeedback) {
+                                UrlBuilder builder = Window.Location.createUrlBuilder();
+                                for (String paramName : Window.Location.getParameterMap().keySet()) {
+                                    builder.removeParameter(paramName);
+                                }
+
+                                builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
+                                Window.Location.replace(builder.buildString());
+                                return;
                             }
 
-                            builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
-                            Window.Location.replace(builder.buildString());
-                            return;
-                        }
+                            UxEventsHelper.applySettings(response.uxEventsSettings);
+                            Layout.createMainPageLayout();
+                            Layout.setNavBarLinks(watchTutorial, logOut);
 
-                        UxEventsHelper.applySettings(response.uxEventsSettings);
-                        Layout.createMainPageLayout();
-                        Layout.setNavBarLinks(watchTutorial, logOut);
-
-                        switch (response.state) {
-                            case "running":
-                                startSurvey(response, userResponse);
-                                break;
-                            case "pending":
-                                ErrorPage.showSurveyPendingPage();
-                                break;
-                            case "finished":
-                                ErrorPage.showSurveyFinishedPage();
-                                break;
-                            case "suspended":
-                                ErrorPage.showSurveySuspendedPage(response.suspensionReason);
-                                break;
-                            default:
-                                ErrorPage.showInternalServerErrorPage();
+                            switch (response.state) {
+                                case "running":
+                                    startSurvey(response, userResponse);
+                                    break;
+                                case "pending":
+                                    ErrorPage.showSurveyPendingPage();
+                                    break;
+                                case "finished":
+                                    ErrorPage.showSurveyFinishedPage();
+                                    break;
+                                case "suspended":
+                                    ErrorPage.showSurveySuspendedPage(response.suspensionReason);
+                                    break;
+                                default:
+                                    ErrorPage.showInternalServerErrorPage();
+                            }
                         }
                     }
                 });

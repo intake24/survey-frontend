@@ -83,4 +83,7 @@ public class ErrorPage extends Composite {
         showErrorPage(messages.surveySuspendedTitle(), messages.surveyFinishedText(EmbeddedData.surveySupportEmail));
     }
 
+    public static void showMaximumDailySubmissionsReached() {
+        showErrorPage(messages.maximumSubmissionsReachedTitle(), messages.maximumSubmissionsReachedText(EmbeddedData.surveySupportEmail));
+    }
 }

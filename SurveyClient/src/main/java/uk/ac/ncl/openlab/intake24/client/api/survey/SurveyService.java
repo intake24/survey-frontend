@@ -7,10 +7,7 @@ import org.fusesource.restygwt.client.RestService;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AccessDispatcher;
 import uk.ac.ncl.openlab.intake24.client.survey.CompletedSurvey;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 
 @Options(dispatcher=AccessDispatcher.class, serviceRootKey = "intake24-api")
 public interface SurveyService extends RestService {
@@ -27,9 +24,9 @@ public interface SurveyService extends RestService {
 
     @POST
     @Path("/surveys/{id}/submissions")
-    void submitSurvey(@PathParam("id") String surveyId, CompletedSurvey survey, MethodCallback<SurveySubmissionResponse> callback);
+    void submitSurvey(@PathParam("id") String surveyId,  @QueryParam("tz") String timeZone, CompletedSurvey survey, MethodCallback<SurveySubmissionResponse> callback);
 
     @GET
     @Path("/surveys/{id}/user-info")
-    void getUserData(@PathParam("id") String surveyId, MethodCallback<UserData> callback);
+    void getUserData(@PathParam("id") String surveyId, @QueryParam("tz") String timeZone, MethodCallback<UserData> callback);
 }

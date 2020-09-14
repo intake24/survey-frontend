@@ -7,4 +7,5 @@ public class UserData {
     public Option<String> name;
     public int recallNumber;
     public Boolean redirectToFeedback;
+    public Boolean maximumDailySubmissionsReached;
 }
