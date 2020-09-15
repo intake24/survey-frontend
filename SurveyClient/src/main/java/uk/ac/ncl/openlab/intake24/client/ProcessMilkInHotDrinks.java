@@ -19,7 +19,9 @@ import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.api.errors.ErrorReport;
 import uk.ac.ncl.openlab.intake24.client.api.errors.ErrorReportingService;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.DefaultPortionSizeScripts;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.MilkInHotDrinkPortionSizeScript;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.MilkInHotDrinkPortionSizeScriptLoader;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
 
 import java.util.HashMap;
@@ -81,16 +83,24 @@ public class ProcessMilkInHotDrinks implements Function1<Survey, Survey> {
     }
 
     public Meal processPair(Meal meal, Pair<Integer, Integer> pair) {
-        EncodedFood milk = meal.foods.get(pair.left)
-                .asEncoded();
-        EncodedFood drink = meal.foods.get(pair.right)
-                .asEncoded();
+        EncodedFood milk = meal.foods.get(pair.left).asEncoded();
+        EncodedFood drink = meal.foods.get(pair.right).asEncoded();
 
         CompletedPortionSize milk_ps = milk.completedPortionSize();
         CompletedPortionSize drink_ps = drink.completedPortionSize();
 
-        int milkPartIndex = Integer.parseInt(milk_ps.data.get("milkPartIndex"));
-        double milkPart = MilkInHotDrinkPortionSizeScript.amounts.get(milkPartIndex).weight;
+        double milkPart;
+
+        if (!milk_ps.data.containsKey(MilkInHotDrinkPortionSizeScript.MILK_VOLUME_KEY)) {
+            // Previously only standard milk percentage options were allowed, this has been changed to allow custom
+            // percentage values to be defined in survey schemes. This branch is intended to prevent crashes in case if
+            // partially completed surveys are cached using the old mechanism.
+
+            int milkPartIndex = Integer.parseInt(milk_ps.data.get("milkPartIndex"));
+            milkPart = DefaultPortionSizeScripts.defaultMilkInHotDrinkPercentages.get(milkPartIndex).weight;
+        } else {
+            milkPart = Double.parseDouble(milk_ps.data.get(MilkInHotDrinkPortionSizeScript.MILK_VOLUME_KEY));
+        }
 
         double drinkVolume = Double.parseDouble(drink_ps.data.get("servingWeight"));
         double drinkLeftoverVolume = Double.parseDouble(drink_ps.data.get("leftoversWeight"));

@@ -71,7 +71,7 @@ public class ExperimentalFlexibleRecallScheme extends DefaultScheme {
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
                         .plus(AskToLookupFoodFlexibleRecall.withPriority(3, locale, "paRules", recipeManager))
-                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
+                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager, getMilkPercentageOptions()))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
                         .plus(ShowCompoundFoodPromptFlexibleRecall.withPriority(0, locale))

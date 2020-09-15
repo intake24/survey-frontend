@@ -26,12 +26,15 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.scheme.sab;
 
+import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.StandardUnitDef;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.AskIfUsualAmount;
@@ -98,5 +101,13 @@ public class SAB extends BasicScheme {
         long midnight = survey.startTime + msToMidnight;
 
         return (((currentTime - survey.startTime) / 3600000.0) > MAX_AGE_HOURS || currentTime > midnight);
+    }
+
+    @Override
+    protected PVector<StandardUnitDef> getMilkPercentageOptions() {
+        return TreePVector.<StandardUnitDef>empty()
+                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLittle(), false, 0.10))
+                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountAverage(), false, 0.16))
+                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLot(), false, 0.24));
     }
 }

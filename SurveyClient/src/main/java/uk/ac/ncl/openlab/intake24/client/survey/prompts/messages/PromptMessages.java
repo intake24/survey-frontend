@@ -552,7 +552,7 @@ public interface PromptMessages extends Messages {
 
     public String readyMeals_promptText(String mealName);
 
-    public String milkInHotDrink_promptText(String milkName, String drinkName);
+    public String milkInHotDrink_promptText(String milkName);
 
     public String milkInHotDrink_confirmButtonLabel();
 

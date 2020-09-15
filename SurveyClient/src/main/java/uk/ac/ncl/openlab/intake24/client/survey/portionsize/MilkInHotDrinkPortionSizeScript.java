@@ -31,39 +31,45 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PMap;
 import org.pcollections.PVector;
-import org.pcollections.TreePVector;
-import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodData;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.StandardUnitPrompt;
 
+import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.map;
 import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.withBackLink;
 import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptUtil.done;
-import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptUtil.standardUnitChoicePrompt;
 
 
 public class MilkInHotDrinkPortionSizeScript implements PortionSizeScript {
     public static final String name = "milk-in-a-hot-drink";
 
+    public static final String MILK_PART_INDEX_KEY = "milkPartIndex";
+
+    public static final String MILK_VOLUME_KEY = "milkVolumePercentage";
+
     private final static PromptMessages messages = GWT.create(PromptMessages.class);
 
-    public static final PVector<StandardUnitDef> amounts =
-            TreePVector.<StandardUnitDef>empty()
-                    .plus(new StandardUnitDef(messages.milkInHotDrink_amountLittle(), false, 0.10))
-                    .plus(new StandardUnitDef(messages.milkInHotDrink_amountAverage(), false, 0.16))
-                    .plus(new StandardUnitDef(messages.milkInHotDrink_amountLot(), false, 0.24));
+    private final PVector<StandardUnitDef> percentages;
+
+    public MilkInHotDrinkPortionSizeScript(PVector<StandardUnitDef> percentages) {
+        this.percentages = percentages;
+    }
 
     @Override
     public Option<SimplePrompt<UpdateFunc>> nextPrompt(PMap<String, String> data, final FoodData foodData) {
-        if (!data.containsKey("milkPartIndex"))
-            return Option.some(withBackLink(standardUnitChoicePrompt(SafeHtmlUtils.fromSafeConstant(messages.milkInHotDrink_promptText(foodData.description().toLowerCase(), "tea or coffee")), messages.milkInHotDrink_confirmButtonLabel(), amounts, new Function1<StandardUnitDef, String>() {
-                @Override
-                public String apply(StandardUnitDef argument) {
-                    return argument.name;
-                }
-            }, "milkPartIndex")));
-        else
+        if (!(data.containsKey(MILK_VOLUME_KEY) && data.containsKey(MILK_PART_INDEX_KEY))) {
+            SimplePrompt<Integer> prompt = new StandardUnitPrompt(
+                    SafeHtmlUtils.fromSafeConstant(messages.milkInHotDrink_promptText(foodData.description().toLowerCase())),
+                    messages.milkInHotDrink_confirmButtonLabel(),
+                    percentages, argument -> argument.name);
+
+            return Option.some(withBackLink(map(prompt,
+                    index -> new UpdateFunc()
+                            .setField(MILK_PART_INDEX_KEY, Integer.toString(index))
+                            .setField(MILK_VOLUME_KEY, Double.toString(percentages.get(index).weight)))));
+        } else
             return done();
     }
 }

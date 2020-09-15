@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Panel;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.MilkInHotDrinkPortionSizeScript;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSize;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.StandardUnitDef;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.HelpMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
@@ -49,12 +50,14 @@ public class SameAsBeforePrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
 
     private final EncodedFood food;
     private final SameAsBefore asBefore;
+    private final PVector<StandardUnitDef> milkPercentages;
     private final int foodIndex;
 
-    public SameAsBeforePrompt(final Pair<FoodEntry, Meal> pair, final int foodIndex, SameAsBefore asBefore) {
+    public SameAsBeforePrompt(final Pair<FoodEntry, Meal> pair, final int foodIndex, SameAsBefore asBefore, PVector<StandardUnitDef> milkPercentageOptions) {
         this.foodIndex = foodIndex;
         this.food = pair.left.asEncoded();
         this.asBefore = asBefore;
+        this.milkPercentages = milkPercentageOptions;
     }
 
     @Override
@@ -101,7 +104,7 @@ public class SameAsBeforePrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpe
             String assocFoodDescription;
 
             if (assocFood.completedPortionSize().method.equals("milk-in-a-hot-drink"))
-                assocFoodDescription = SafeHtmlUtils.htmlEscape(assocFood.description()) + " (" + SafeHtmlUtils.htmlEscape(MilkInHotDrinkPortionSizeScript.amounts.get(Integer.parseInt(assocFood.completedPortionSize().data.get("milkPartIndex"))).name) + ")";
+                assocFoodDescription = SafeHtmlUtils.htmlEscape(assocFood.description()) + " (" + SafeHtmlUtils.htmlEscape(milkPercentages.get(Integer.parseInt(assocFood.completedPortionSize().data.get("milkPartIndex"))).name) + ")";
             else
                 assocFoodDescription = SafeHtmlUtils.htmlEscape(assocFood.description()) + " (" + Integer.toString((int) assocFood.completedPortionSize().servingWeight()) + (assocFood.isDrink() ? " ml" : " g") + ")";
 

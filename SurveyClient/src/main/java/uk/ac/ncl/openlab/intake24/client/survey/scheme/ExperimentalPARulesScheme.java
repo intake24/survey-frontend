@@ -79,7 +79,7 @@ public class ExperimentalPARulesScheme extends DefaultScheme {
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
                         .plus(AskToLookupFood.withPriority(3, locale, "paRules", true, recipeManager))
-                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
+                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager, getMilkPercentageOptions()))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
                         .plus(ShowCompoundFoodPrompt.withPriority(0, locale))

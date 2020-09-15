@@ -15,15 +15,22 @@ import org.pcollections.PMap;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import org.pcollections.PVector;
 
 public class MilkInHotDrinkPortionSizeScriptLoader implements PortionSizeScriptLoader {
+
+    private final PVector<StandardUnitDef> percentages;
+
+    public MilkInHotDrinkPortionSizeScriptLoader(PVector<StandardUnitDef> percentages) {
+        this.percentages = percentages;
+    }
 
     @Override
     public void loadResources(final PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
             public void execute() {
-                onComplete.onSuccess(new MilkInHotDrinkPortionSizeScript());
+                onComplete.onSuccess(new MilkInHotDrinkPortionSizeScript(percentages));
             }
         });
     }

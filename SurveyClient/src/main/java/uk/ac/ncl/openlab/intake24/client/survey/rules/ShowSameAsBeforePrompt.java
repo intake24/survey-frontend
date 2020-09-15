@@ -27,26 +27,31 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.survey.rules;
 
 import org.pcollections.PSet;
+import org.pcollections.PVector;
 import org.workcraft.gwt.shared.client.Option;
 import org.workcraft.gwt.shared.client.Pair;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.StandardUnitDef;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.SameAsBeforePrompt;
 
 public class ShowSameAsBeforePrompt implements PromptRule<Pair<FoodEntry, Meal>, MealOperation> {
     private final PortionSizeScriptManager scriptManager;
     private final CompoundFoodTemplateManager templateManager;
+    private final PVector<StandardUnitDef> milkPercentageOptions;
 
     private final String schemeId;
     private final String versionId;
 
-    public ShowSameAsBeforePrompt(String schemeId, String versionId, PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager) {
+    public ShowSameAsBeforePrompt(String schemeId, String versionId, PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager,
+                                  PVector<StandardUnitDef> milkPercentageOptions) {
 
         this.schemeId = schemeId;
         this.versionId = versionId;
         this.scriptManager = scriptManager;
         this.templateManager = templateManager;
+        this.milkPercentageOptions = milkPercentageOptions;
     }
 
     @Override
@@ -60,7 +65,7 @@ public class ShowSameAsBeforePrompt implements PromptRule<Pair<FoodEntry, Meal>,
                 return sameAsBefore.accept(new Option.Visitor<SameAsBefore, Option<Prompt<Pair<FoodEntry, Meal>, MealOperation>>>() {
                     @Override
                     public Option<Prompt<Pair<FoodEntry, Meal>, MealOperation>> visitSome(SameAsBefore item) {
-                        return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new SameAsBeforePrompt(pair, pair.right.foodIndex(pair.left), item));
+                        return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new SameAsBeforePrompt(pair, pair.right.foodIndex(pair.left), item, milkPercentageOptions));
                     }
 
                     @Override
@@ -73,7 +78,8 @@ public class ShowSameAsBeforePrompt implements PromptRule<Pair<FoodEntry, Meal>,
             return Option.none();
     }
 
-    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String schemeId, String versionId, PortionSizeScriptManager scriptManager, CompoundFoodTemplateManager templateManager) {
-        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new ShowSameAsBeforePrompt(schemeId, versionId, scriptManager, templateManager), priority);
+    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String schemeId, String versionId, PortionSizeScriptManager scriptManager,
+                                                                                              CompoundFoodTemplateManager templateManager, PVector<StandardUnitDef> milkPercentageOptions) {
+        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new ShowSameAsBeforePrompt(schemeId, versionId, scriptManager, templateManager, milkPercentageOptions), priority);
     }
 }

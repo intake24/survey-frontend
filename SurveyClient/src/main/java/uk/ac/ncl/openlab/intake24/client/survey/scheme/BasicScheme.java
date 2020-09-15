@@ -43,13 +43,13 @@ import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
-import uk.ac.ncl.openlab.intake24.client.survey.portionsize.DefaultPortionSizeScripts;
-import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.*;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -117,7 +117,7 @@ public abstract class BasicScheme implements SurveyScheme {
                 TreePVector.<WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>>empty()
                         .plus(ShowEditIngredientsPrompt.withPriority(3))
                         .plus(AskToLookupFood.withPriority(3, locale, "paRules", false, recipeManager))
-                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager))
+                        .plus(ShowSameAsBeforePrompt.withPriority(3, getSchemeId(), getDataVersion(), scriptManager, templateManager, getMilkPercentageOptions()))
                         .plus(ShowHomeRecipeServingsPrompt.withPriority(2))
                         .plus(ShowTemplateRecipeSavePrompt.withPriority(1, recipeManager))
                         .plus(ShowCompoundFoodPrompt.withPriority(0, locale))
@@ -169,7 +169,7 @@ public abstract class BasicScheme implements SurveyScheme {
             }
         });
 
-        defaultScriptManager = new PortionSizeScriptManager(DefaultPortionSizeScripts.getCtors());
+        defaultScriptManager = new PortionSizeScriptManager(getPortionSizeScriptConstructors());
 
         defaultTemplateManager = new CompoundFoodTemplateManager(HashTreePMap.<String, TemplateFoodData>empty()
                 .plus("sandwich", FoodTemplates.sandwich)
@@ -212,6 +212,20 @@ public abstract class BasicScheme implements SurveyScheme {
             setInitialState(StateManagerUtil.getLatestState(AuthCache.getCurrentUserId(), getSchemeId(),
                     getDataVersion(), defaultScriptManager, defaultTemplateManager));
         }
+    }
+
+    protected PVector<StandardUnitDef> getMilkPercentageOptions() {
+        return DefaultPortionSizeScripts.defaultMilkInHotDrinkPercentages;
+    }
+
+    protected Map<String, PortionSizeScriptConstructor> getPortionSizeScriptConstructors() {
+        Map<String, PortionSizeScriptConstructor> defaultConstructors = DefaultPortionSizeScripts.getConstructors();
+
+        defaultConstructors.put(
+                MilkInHotDrinkPortionSizeScript.name,
+                () -> new MilkInHotDrinkPortionSizeScriptLoader(getMilkPercentageOptions()));
+
+        return defaultConstructors;
     }
 
     private void setInitialState(Option<Survey> surveyOpt) {
