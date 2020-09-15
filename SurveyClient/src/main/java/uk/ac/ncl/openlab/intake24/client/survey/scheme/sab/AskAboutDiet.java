@@ -20,7 +20,7 @@ public class AskAboutDiet extends Diet {
     public static WithPriority<PromptRule<Survey, SurveyOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutDiet(SafeHtmlUtils.fromSafeConstant(
                 "<p>Are you following any kind of special diet?</p>" +
-                        "<p><small>You can specify more than one, e.g. vegetarian and gluten free.</small></p>"),
+                        "<p>You can specify more than one, e.g. vegetarian and gluten free.</p>"),
                 TreePVector.<MultipleChoiceQuestionOption>empty()
                         .plus(new MultipleChoiceQuestionOption("Not on a special diet"))
                         .plus(new MultipleChoiceQuestionOption("Vegetarian (does not eat meat or fish)", "Vegetarian"))

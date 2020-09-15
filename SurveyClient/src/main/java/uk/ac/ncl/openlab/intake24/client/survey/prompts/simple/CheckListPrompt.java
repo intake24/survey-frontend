@@ -23,6 +23,12 @@ import java.util.List;
 
 public class CheckListPrompt extends AbstractMultipleChoicePrompt<List<MultipleChoiceQuestionAnswer>> {
 
+    private boolean required = true;
+
+    public CheckListPrompt(SafeHtml promptText, String promptType, PVector<MultipleChoiceQuestionOption> options, String continueLabel, Boolean required) {
+        super(promptText, promptType, options, continueLabel);
+        this.required = required;
+    }
 
     public CheckListPrompt(SafeHtml promptText, String promptType, PVector<MultipleChoiceQuestionOption> options, String continueLabel) {
         super(promptText, promptType, options, continueLabel);
@@ -39,7 +45,7 @@ public class CheckListPrompt extends AbstractMultipleChoicePrompt<List<MultipleC
 
     @Override
     protected MultipleChoiceQuestion<List<MultipleChoiceQuestionAnswer>> createQuestion() {
-        return new CheckListQuestion(promptText, options);
+        return new CheckListQuestion(promptText, options, required);
     }
 
 }

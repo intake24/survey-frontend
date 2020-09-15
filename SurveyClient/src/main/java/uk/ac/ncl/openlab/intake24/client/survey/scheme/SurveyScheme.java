@@ -33,6 +33,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.birmingham.BirminghamNovember2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.April2019;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.FollowUp;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.NDNSDefault;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.sab.SAB;
@@ -72,6 +73,8 @@ public interface SurveyScheme {
                 return new April2019(locale, surveyParameters, interfaceManager, userData);
             case October2019.ID:
                 return new October2019(locale, surveyParameters, interfaceManager, userData);
+            case FollowUp.ID:
+                return new FollowUp(locale, surveyParameters, interfaceManager, userData);
             // SAB Schemes
             case SAB.ID:
                 return new SAB(locale, surveyParameters, interfaceManager, userData);

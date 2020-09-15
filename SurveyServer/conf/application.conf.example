@@ -10,12 +10,14 @@ intake24 {
   internalApiBaseUrl = "http://192.168.0.20:9001"
   externalApiBaseUrl = "http://192.168.0.20:9001"
 
+  ga.trackingCode = ""
+
   supportEmail = "support@intake24.co.uk"
   videoURL = "https://www.youtube.com/watch?v=70Wm_kyxpvg"
 
   survey {
     termsAndConditionsURL = "/info/terms#content"
     privacyPolicyURL = "/info/privacy#content"
-    showLogos = true
+    displayLogos = true
   }
 }

@@ -27,8 +27,8 @@ public class AskAboutProxyIssues implements PromptRule<Survey, SurveyOperation> 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(
                     "<p>Did you have any difficulties in recording foods " +
                             "or amounts eaten because you were completing this for someone else?</p>" +
-                            "<p><small>For example, occasions when your child was not in your care and " +
-                            "you are unsure of the details of a particular food or an entire meal.</small></p>"
+                            "<p>For example, occasions when your child was not in your care and " +
+                            "you are unsure of the details of a particular food or an entire meal.</p>"
             );
 
             RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutProxyIssues.class.getSimpleName(),
