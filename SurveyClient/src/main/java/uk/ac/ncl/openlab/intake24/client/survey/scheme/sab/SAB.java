@@ -106,8 +106,8 @@ public class SAB extends BasicScheme {
     @Override
     protected PVector<StandardUnitDef> getMilkPercentageOptions() {
         return TreePVector.<StandardUnitDef>empty()
-                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLittle(), false, 0.10))
-                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountAverage(), false, 0.16))
-                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLot(), false, 0.24));
+                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLittle(), false, 0.15))
+                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountAverage(), false, 0.25))
+                .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLot(), false, 0.5));
     }
 }
