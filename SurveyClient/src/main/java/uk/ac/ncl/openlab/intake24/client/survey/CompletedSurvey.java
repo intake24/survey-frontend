@@ -19,7 +19,9 @@ import java.util.Map;
 public class CompletedSurvey {
     public String startTime;
     public String endTime;
+    public String timeZone;
     public String uxSessionId;
+
     public List<CompletedMeal> meals;
     public Map<String, String> customData;
 
@@ -27,9 +29,10 @@ public class CompletedSurvey {
     public CompletedSurvey() {
     }
 
-    public CompletedSurvey(long startTime, long endTime, UUID uxSessionId, List<CompletedMeal> meals, Map<String, String> customData) {
+    public CompletedSurvey(long startTime, long endTime, String timeZone, UUID uxSessionId, List<CompletedMeal> meals, Map<String, String> customData) {
         this.startTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601).format(new Date(startTime));
         this.endTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601).format(new Date(endTime));
+        this.timeZone = timeZone;
         this.meals = meals;
         this.uxSessionId = uxSessionId.toString();
         this.customData = customData;

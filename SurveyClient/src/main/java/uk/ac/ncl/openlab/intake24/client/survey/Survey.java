@@ -68,6 +68,10 @@ public class Survey {
     public final PMap<String, String> customData;
     public final PVector<WithIndex<Meal>> mealsSortedByTime;
 
+    private native String getTimeZone() /*-{
+        return Intl.DateTimeFormat().resolvedOptions().timeZone
+    }-*/;
+
     public Survey(List<Meal> meals, Selection selectedElement, long startTime, long lastSaved, Set<String> flags, Map<String, String> customData) {
         this(TreePVector.<Meal>from(meals), selectedElement, startTime, lastSaved, HashTreePSet.<String>from(flags), HashTreePMap
                 .<String, String>from(customData));
@@ -179,7 +183,8 @@ public class Survey {
             }
         });
 
-        return new CompletedSurvey(startTime, System.currentTimeMillis(), UxEventsHelper.sessionId, new ArrayList<CompletedMeal>(completedMeals), new HashMap<String, String>(customData));
+        return new CompletedSurvey(startTime, System.currentTimeMillis(), getTimeZone(), UxEventsHelper.sessionId,
+                new ArrayList<CompletedMeal>(completedMeals), new HashMap<String, String>(customData));
     }
 
     public Survey withSelection(Selection selectedElement) {

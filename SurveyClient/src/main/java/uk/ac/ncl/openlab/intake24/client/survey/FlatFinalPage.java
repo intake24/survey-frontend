@@ -53,137 +53,133 @@ import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 import java.util.List;
 
 public class FlatFinalPage implements SurveyStage<Survey> {
-  private final static PromptMessages messages = PromptMessages.Util.getInstance();
-  private final static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
+    private final static PromptMessages messages = PromptMessages.Util.getInstance();
+    private final static SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
 
-  private final String finalPageHtml;
-  private final Survey data;
-  private final List<String> log;
+    private final String finalPageHtml;
+    private final Survey data;
+    private final List<String> log;
 
-  private native String getTimeZone() /*-{
-    return Intl.DateTimeFormat().resolvedOptions().timeZone
-  }-*/;
+    public FlatFinalPage(String finalPageHtml, Survey data, List<String> log) {
+        this.finalPageHtml = finalPageHtml;
+        this.data = data;
+        this.log = log;
+    }
 
-  public FlatFinalPage(String finalPageHtml, Survey data, List<String> log) {
-    this.finalPageHtml = finalPageHtml;
-    this.data = data;
-    this.log = log;
-  }
+    @Override
+    public SimpleSurveyStageInterface getInterface(Callback1<Survey> onComplete, Callback2<Survey, Boolean> onIntermediateStateChange) {
+        final CompletedSurvey finalData = data.finalise(log);
+        final FlowPanel contents = new FlowPanel();
+        contents.addStyleName("intake24-survey-content-container");
 
-  @Override
-  public SimpleSurveyStageInterface getInterface(Callback1<Survey> onComplete, Callback2<Survey, Boolean> onIntermediateStateChange) {
-    final CompletedSurvey finalData = data.finalise(log);
-    final FlowPanel contents = new FlowPanel();
-    contents.addStyleName("intake24-survey-content-container");
+        contents.add(new LoadingPanel(messages.submitPage_loadingMessage()));
 
-    contents.add(new LoadingPanel(messages.submitPage_loadingMessage()));
-
-    SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, getTimeZone(), finalData, new MethodCallback<SurveySubmissionResponse>() {
-      @Override
-      public void onFailure(Method method, Throwable exception) {
-        contents.clear();
-
-        if (exception instanceof RequestTimeoutException || method.getResponse().getStatusCode() == 429) {
-          final MethodCallback<SurveySubmissionResponse> outer = this;
-
-          if (exception instanceof RequestTimeoutException)
-            contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
-          else
-            contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_tooManyRequests())));
-
-          contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), "finalPageTryAgainButton", new ClickHandler() {
+        SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, new MethodCallback<SurveySubmissionResponse>() {
             @Override
-            public void onClick(ClickEvent event) {
-              SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, getTimeZone(), finalData, outer);
+            public void onFailure(Method method, Throwable exception) {
+                contents.clear();
+
+                if (exception instanceof RequestTimeoutException || method.getResponse().getStatusCode() == 429) {
+                    final MethodCallback<SurveySubmissionResponse> outer = this;
+
+                    if (exception instanceof RequestTimeoutException)
+                        contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_timeout())));
+                    else
+                        contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_tooManyRequests())));
+
+                    contents.add(WidgetFactory.createGreenButton(messages.submitPage_tryAgainButton(), "finalPageTryAgainButton", new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            SurveyService.INSTANCE.submitSurvey(EmbeddedData.surveyId, finalData, outer);
+                        }
+                    }));
+                } else {
+                    contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));
+                }
             }
-          }));
-        } else {
-          contents.add(new HTMLPanel(SafeHtmlUtils.fromSafeConstant(messages.submitPage_error())));
-        }
-      }
 
-      @Override
-      public void onSuccess(Method method, SurveySubmissionResponse response) {
-        contents.clear();
-
-        if (response.redirectToFeedback) {
-          HTMLPanel gotoFeedback = new HTMLPanel("h2", surveyMessages.finalPage_goToFeedback());
-          gotoFeedback.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
-          contents.add(gotoFeedback);
-        }
-
-        HTMLPanel p = new HTMLPanel(finalPageHtml);
-        p.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
-        contents.add(p);
-
-        if (response.redirectToFeedback) {
-
-          HTMLPanel p1 = new HTMLPanel("h4", surveyMessages.finalPage_feedbackLabel());
-          p1.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
-
-          contents.add(p1);
-
-          Button feedbackButton = WidgetFactory.createGreenButton(surveyMessages.finalPage_feedbackButtonLabel(), "feedbackButton", new ClickHandler() {
             @Override
-            public void onClick(ClickEvent clickEvent) {
-              UrlBuilder builder = Window.Location.createUrlBuilder();
+            public void onSuccess(Method method, SurveySubmissionResponse response) {
+                contents.clear();
 
-              for (String paramName : Window.Location.getParameterMap().keySet()) {
-                builder.removeParameter(paramName);
-              }
+                if (response.redirectToFeedback) {
+                    HTMLPanel gotoFeedback = new HTMLPanel("h2", surveyMessages.finalPage_goToFeedback());
+                    gotoFeedback.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
+                    contents.add(gotoFeedback);
+                }
 
-              builder.setPath(Window.Location.getPath() + "/feedback");
-              builder.setHash("/");
+                HTMLPanel p = new HTMLPanel(finalPageHtml);
+                p.getElement().getStyle().setMarginBottom(30, Style.Unit.PX);
+                contents.add(p);
 
-              Window.open(builder.buildString(), "_blank", "");
+                if (response.redirectToFeedback) {
+
+                    HTMLPanel p1 = new HTMLPanel("h4", surveyMessages.finalPage_feedbackLabel());
+                    p1.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+
+                    contents.add(p1);
+
+                    Button feedbackButton = WidgetFactory.createGreenButton(surveyMessages.finalPage_feedbackButtonLabel(), "feedbackButton", new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent clickEvent) {
+                            UrlBuilder builder = Window.Location.createUrlBuilder();
+
+                            for (String paramName : Window.Location.getParameterMap().keySet()) {
+                                builder.removeParameter(paramName);
+                            }
+
+                            builder.setPath(Window.Location.getPath() + "/feedback");
+                            builder.setHash("/");
+
+                            Window.open(builder.buildString(), "_blank", "");
+                        }
+                    }, "intake24-button-md");
+
+                    contents.add(feedbackButton);
+                }
+
+                response.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
+                    @Override
+                    public void visitSome(String url) {
+
+                        if (response.redirectToFeedback) {
+                            HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_afterFeedback());
+                            p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+                            contents.add(p2);
+                        } else {
+                            HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_noFeedback());
+                            p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+                            contents.add(p2);
+                        }
+
+                        FlowPanel externalLinkDiv = new FlowPanel();
+
+                        externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_externalFollowUpButtonLabel(), "finalPageExternalUrlButton", new ClickHandler() {
+                            @Override
+                            public void onClick(ClickEvent clickEvent) {
+                                Window.open(url, "_blank", "");
+                            }
+                        }));
+
+                        contents.add(externalLinkDiv);
+                    }
+
+                    @Override
+                    public void visitNone() {
+                    }
+                });
+
+                UxEventsHelper.cleanSessionId();
+
+                StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
+                StateManagerUtil.clearHistory();
             }
-          }, "intake24-button-md");
-
-          contents.add(feedbackButton);
-        }
-
-        response.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
-          @Override
-          public void visitSome(String url) {
-
-            if (response.redirectToFeedback) {
-              HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_afterFeedback());
-              p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
-              contents.add(p2);
-            } else {
-              HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_noFeedback());
-              p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
-              contents.add(p2);
-            }
-
-            FlowPanel externalLinkDiv = new FlowPanel();
-
-            externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_externalFollowUpButtonLabel(), "finalPageExternalUrlButton", new ClickHandler() {
-              @Override
-              public void onClick(ClickEvent clickEvent) {
-                Window.open(url, "_blank", "");
-              }
-            }));
-
-            contents.add(externalLinkDiv);
-          }
-
-          @Override
-          public void visitNone() {
-          }
         });
 
-        UxEventsHelper.cleanSessionId();
+        return new SimpleSurveyStageInterface(contents, FlatFinalPage.class.getSimpleName());
+    }
 
-        StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
-        StateManagerUtil.clearHistory();
-      }
-    });
+    private void showExternalFollowUpLink(SurveySubmissionResponse response, FlowPanel contents) {
 
-    return new SimpleSurveyStageInterface(contents, FlatFinalPage.class.getSimpleName());
-  }
-
-  private void showExternalFollowUpLink(SurveySubmissionResponse response, FlowPanel contents) {
-
-  }
+    }
 }
