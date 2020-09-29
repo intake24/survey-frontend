@@ -19,16 +19,17 @@ public class AskAboutFoodSource extends FoodSource {
         return new WithPriority<>(new AskAboutFoodSource(
                 "<p>Where was <strong><u>most</u></strong> of the food for your %s purchased from?</p>",
                 TreePVector.<MultipleChoiceQuestionOption>empty()
-                        .plus(new MultipleChoiceQuestionOption("Supermarket"))
-                        .plus(new MultipleChoiceQuestionOption("Convenience shop/corner shop/petrol station"))
-                        .plus(new MultipleChoiceQuestionOption("Fast food/take-away"))
-                        .plus(new MultipleChoiceQuestionOption("Café/coffee shop/sandwich bar/deli"))
-                        .plus(new MultipleChoiceQuestionOption("Sit-down restaurant or pub"))
-                        .plus(new MultipleChoiceQuestionOption("Canteen at work or school/university/college"))
-                        .plus(new MultipleChoiceQuestionOption("Burger, chip or kebab van/’street food’"))
-                        .plus(new MultipleChoiceQuestionOption("Leisure centre/recreation or entertainment venue"))
+                        .plus(new MultipleChoiceQuestionOption("Supermarket / local shop / petrol station - household shopping"))
+                        .plus(new MultipleChoiceQuestionOption("Supermarket / local shop / petrol station - food on the go"))
+                        .plus(new MultipleChoiceQuestionOption("Fast food / take-away outlet"))
+                        .plus(new MultipleChoiceQuestionOption("Café / coffee shop / sandwich bar / deli"))
+                        .plus(new MultipleChoiceQuestionOption("Restaurant or pub"))
+                        .plus(new MultipleChoiceQuestionOption("Canteen at work or school / university / college"))
+                        .plus(new MultipleChoiceQuestionOption("Burger, chip or kebab van / 'street food'"))
+                        .plus(new MultipleChoiceQuestionOption("Food bank (charity/community) or government food delivery scheme (food boxes/parcels)"))
+                        .plus(new MultipleChoiceQuestionOption("Leisure centre / recreation or entertainment venue"))
                         .plus(new MultipleChoiceQuestionOption("Vending machine in any location"))
-                        .plus(new MultipleChoiceQuestionOption("Other place (please specify):", "Other", true))
+                        .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
                         .plus(new MultipleChoiceQuestionOption("Don't know"))
         ), priority);
     }
