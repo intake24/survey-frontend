@@ -156,18 +156,6 @@ public class SurveyEntryPoint implements EntryPoint {
 
                     @Override
                     public void onSuccess(Method method, UserData userResponse) {
-                        if (userResponse.maximumDailySubmissionsReached) {
-                            Layout.createMainPageLayout();
-                            Layout.setNavBarLinks(watchTutorial, logOut);
-
-                            ErrorPage.showMaximumDailySubmissionsReached();
-                        } else {
-
-                            NumberFormat nf = NumberFormat.getDecimalFormat();
-
-                            recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
-                            recallNumber.getElement().setId("intake24-recall-number");
-
                         // NDNS Y12/Followup redirect to feedback
                         boolean redirect = userResponse.redirectToFeedback &&
                                 (response.schemeId.equals(October2019.ID) || response.schemeId.equals(FollowUp.ID));
@@ -178,10 +166,19 @@ public class SurveyEntryPoint implements EntryPoint {
                                 builder.removeParameter(paramName);
                             }
 
-                                builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
-                                Window.Location.replace(builder.buildString());
-                                return;
-                            }
+                            builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
+                            Window.Location.replace(builder.buildString());
+                        } else if (userResponse.maximumDailySubmissionsReached) {
+                            Layout.createMainPageLayout();
+                            Layout.setNavBarLinks(watchTutorial, logOut);
+
+                            ErrorPage.showMaximumDailySubmissionsReached();
+                        } else {
+                            NumberFormat nf = NumberFormat.getDecimalFormat();
+
+                            recallNumber = new Anchor(SurveyMessages.INSTANCE.navBar_currentRecallNumber(nf.format(userResponse.recallNumber)));
+                            recallNumber.getElement().setId("intake24-recall-number");
+
 
                             UxEventsHelper.applySettings(response.uxEventsSettings);
                             Layout.createMainPageLayout();
