@@ -35,7 +35,7 @@ public interface CommonMessages extends Messages {
 
   String maximumSubmissionsReachedTitle();
 
-  String maximumSubmissionsReachedText(String supportEmail);
+  String maximumSubmissionsReachedText();
 
   public static class Util {
     private static CommonMessages instance = null;
