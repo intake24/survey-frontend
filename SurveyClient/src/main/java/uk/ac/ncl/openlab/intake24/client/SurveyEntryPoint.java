@@ -99,6 +99,10 @@ public class SurveyEntryPoint implements EntryPoint {
         if (Window.Location.getParameter(UrlParameterConstants.generateUserKey) != null)
             AuthCache.clear();
 
+        // Force the generation of new user if the page is accessed with the createUser param
+        if (Window.Location.getParameter(UrlParameterConstants.createUserKey) != null)
+            AuthCache.clear();
+
         RootPanel.get("loading").getElement().removeFromParent();
 
         Defaults.setServiceRoot("/");
@@ -168,7 +172,7 @@ public class SurveyEntryPoint implements EntryPoint {
 
                             builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
                             Window.Location.replace(builder.buildString());
-                        } else if (userResponse.maximumDailySubmissionsReached) {
+                        } else if (userResponse.maximumDailySubmissionsReached || userResponse.maximumTotalSubmissionsReached) {
                             Layout.createMainPageLayout();
                             Layout.setNavBarLinks(watchTutorial, logOut);
 

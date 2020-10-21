@@ -44,6 +44,7 @@ import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
 import uk.ac.ncl.openlab.intake24.client.LoadingPanel;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.auth.DynamicRedirect;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveySubmissionResponse;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
@@ -138,36 +139,58 @@ public class FlatFinalPage implements SurveyStage<Survey> {
                     contents.add(feedbackButton);
                 }
 
-                response.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
-                    @Override
-                    public void visitSome(String url) {
+                String dynamicFollowUpUrl = null;
 
-                        if (response.redirectToFeedback) {
-                            HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_afterFeedback());
-                            p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
-                            contents.add(p2);
-                        } else {
-                            HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_noFeedback());
-                            p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
-                            contents.add(p2);
+                try {
+                    dynamicFollowUpUrl = DynamicRedirect.get(Long.parseLong(AuthCache.getCurrentUserId()));
+                } catch (RuntimeException e) {
+
+                }
+
+                if (dynamicFollowUpUrl != null) {
+                    String finalDynamicFollowUpUrl = dynamicFollowUpUrl;
+                    if (response.redirectToFeedback) {
+                        HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalDynamicFollowUpLabel_afterFeedback());
+                        p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+                        contents.add(p2);
+                    } else {
+                        HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalDynamicFollowUpLabel_noFeedback());
+                        p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+                        contents.add(p2);
+                    }
+
+                    FlowPanel externalLinkDiv = new FlowPanel();
+
+                    externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_externalDynamicFollowUpButtonLabel(),
+                            "finalPageExternalUrlButton", clickEvent -> Window.Location.replace(finalDynamicFollowUpUrl)));
+
+                    contents.add(externalLinkDiv);
+                } else
+                    response.followUpUrl.accept(new Option.SideEffectVisitor<String>() {
+                        @Override
+                        public void visitSome(String url) {
+                            if (response.redirectToFeedback) {
+                                HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_afterFeedback());
+                                p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+                                contents.add(p2);
+                            } else {
+                                HTMLPanel p2 = new HTMLPanel("h4", surveyMessages.finalPage_externalFollowUpLabel_noFeedback());
+                                p2.getElement().getStyle().setMarginBottom(0, Style.Unit.PX);
+                                contents.add(p2);
+                            }
+
+                            FlowPanel externalLinkDiv = new FlowPanel();
+
+                            externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_externalFollowUpButtonLabel(),
+                                    "finalPageExternalUrlButton", clickEvent -> Window.open(url, "_blank", "")));
+
+                            contents.add(externalLinkDiv);
                         }
 
-                        FlowPanel externalLinkDiv = new FlowPanel();
-
-                        externalLinkDiv.add(WidgetFactory.createGreenButton(surveyMessages.finalPage_externalFollowUpButtonLabel(), "finalPageExternalUrlButton", new ClickHandler() {
-                            @Override
-                            public void onClick(ClickEvent clickEvent) {
-                                Window.open(url, "_blank", "");
-                            }
-                        }));
-
-                        contents.add(externalLinkDiv);
-                    }
-
-                    @Override
-                    public void visitNone() {
-                    }
-                });
+                        @Override
+                        public void visitNone() {
+                        }
+                    });
 
                 UxEventsHelper.cleanSessionId();
 
@@ -177,9 +200,5 @@ public class FlatFinalPage implements SurveyStage<Survey> {
         });
 
         return new SimpleSurveyStageInterface(contents, FlatFinalPage.class.getSimpleName());
-    }
-
-    private void showExternalFollowUpLink(SurveySubmissionResponse response, FlowPanel contents) {
-
     }
 }

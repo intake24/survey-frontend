@@ -85,6 +85,12 @@ public interface SurveyMessages extends Messages {
 
 	public String finalPage_externalFollowUpButtonLabel();
 
+	public String finalPage_externalDynamicFollowUpLabel_afterFeedback();
+
+	public String finalPage_externalDynamicFollowUpLabel_noFeedback();
+
+	public String finalPage_externalDynamicFollowUpButtonLabel();
+
 	public String finalPage_text();
 
 	public String survey_notInitialised();
