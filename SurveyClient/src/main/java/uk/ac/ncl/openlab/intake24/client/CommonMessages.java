@@ -33,10 +33,6 @@ public interface CommonMessages extends Messages {
 
   CommonMessages INSTANCE = GWT.create(CommonMessages.class);
 
-  String maximumSubmissionsReachedTitle();
-
-  String maximumSubmissionsReachedText();
-
   public static class Util {
     private static CommonMessages instance = null;
 
@@ -98,6 +94,14 @@ public interface CommonMessages extends Messages {
   public String logoutPage_close();
 
   public String logoutPage_closeWithHelp(String supportEmail);
+
+  String maximumDailySubmissionsReachedTitle();
+
+  String maximumDailySubmissionsReachedText();
+
+  String maximumTotalSubmissionsReachedTitle();
+
+  String maximumTotalSubmissionsReachedText();
 
   public String authToken_invalid(String supportEmail);
 

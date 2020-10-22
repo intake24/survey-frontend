@@ -172,11 +172,16 @@ public class SurveyEntryPoint implements EntryPoint {
 
                             builder.setPath(Window.Location.getPath() + "/feedback").setHash("/");
                             Window.Location.replace(builder.buildString());
-                        } else if (userResponse.maximumDailySubmissionsReached || userResponse.maximumTotalSubmissionsReached) {
+                        } else if (userResponse.maximumDailySubmissionsReached) {
                             Layout.createMainPageLayout();
                             Layout.setNavBarLinks(watchTutorial, logOut);
 
                             ErrorPage.showMaximumDailySubmissionsReached();
+                        } else if (userResponse.maximumTotalSubmissionsReached) {
+                            Layout.createMainPageLayout();
+                            Layout.setNavBarLinks(watchTutorial, logOut);
+
+                            ErrorPage.showMaximumTotalSubmissionsReached();
                         } else {
                             NumberFormat nf = NumberFormat.getDecimalFormat();
 

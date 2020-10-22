@@ -27,11 +27,9 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 package uk.ac.ncl.openlab.intake24.client.ui;
 
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.CommonMessages;
 import uk.ac.ncl.openlab.intake24.client.EmbeddedData;
@@ -84,6 +82,10 @@ public class ErrorPage extends Composite {
     }
 
     public static void showMaximumDailySubmissionsReached() {
-        showErrorPage(messages.maximumSubmissionsReachedTitle(), messages.maximumSubmissionsReachedText());
+        showErrorPage(messages.maximumDailySubmissionsReachedTitle(), messages.maximumDailySubmissionsReachedText());
+    }
+
+    public static void showMaximumTotalSubmissionsReached() {
+        showErrorPage(messages.maximumTotalSubmissionsReachedTitle(), messages.maximumTotalSubmissionsReachedText());
     }
 }
