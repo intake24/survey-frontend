@@ -29,10 +29,9 @@ public class AskAboutProxy implements PromptRule<Survey, SurveyOperation> {
 
             SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(
                     "<p>Did you complete this recall on behalf of someone else?</p>" +
-                            "<p>Please note that recalls should be completed independently by the individual " +
-                            "named on the first screen and only completed by someone else when necessary " +
-                            "i.e. for young children, if there are language difficulties or the person " +
-                            "is not confident in using a computer to fill in the recall.</p>"
+                            "<p>Please note this recall should be completed independently, and only completed by " +
+                            "someone else when necessary i.e. for young children, if there are language difficulties " +
+                            "or the person is not confident in using a computer to fill in the recall.</p>"
             );
 
             RadioButtonPrompt prompt = new RadioButtonPrompt(promptText, AskAboutProxy.class.getSimpleName(),
