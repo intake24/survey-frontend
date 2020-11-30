@@ -32,16 +32,18 @@ public class UncaughtExceptionHandler implements GWT.UncaughtExceptionHandler {
     String surveyId = EmbeddedData.surveyId;
     Option<String> userId = AuthCache.getCurrentUserIdOption();
 
-    if (!userId.isEmpty())
+    if (!userId.isEmpty() && EmbeddedData.reportSurveyState)
       surveyStateJSON = StateManagerUtil.getLatestStateSerialised(userId.getOrDie()).getOrElse("{}");
 
     Throwable cur = exception;
 
     List<SThrowable> exceptionChain = new ArrayList<>();
 
-    while (cur != null) {
-      exceptionChain.add(new SThrowable(cur));
-      cur = cur.getCause();
+    if (EmbeddedData.reportStackTrace) {
+      while (cur != null) {
+        exceptionChain.add(new SThrowable(cur));
+        cur = cur.getCause();
+      }
     }
 
     reportErrorInProgress = true;
@@ -64,8 +66,6 @@ public class UncaughtExceptionHandler implements GWT.UncaughtExceptionHandler {
 
   @Override
   public void onUncaughtException(final Throwable e) {
-    GWT.log("Uncaught exception", e);
-
     reportError(e);
   }
 }

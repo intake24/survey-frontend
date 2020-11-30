@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.MetaElement;
 import com.google.gwt.dom.client.NodeList;
+import org.apache.xpath.operations.Bool;
 import org.workcraft.gwt.shared.client.Option;
 
 public class EmbeddedData {
@@ -39,6 +40,10 @@ public class EmbeddedData {
     public static String termsAndConditionsUrl = getMetaTagContent("intake24:termsAndConditionsURL").getOrDie();
 
     public static boolean displayLogos = Boolean.parseBoolean(getMetaTagContent("intake24:displayLogos").getOrDie());
+
+    public static boolean reportSurveyState = Boolean.parseBoolean(getMetaTagContent("intake24:reportSurveyStateOnError").getOrElse("true"));
+
+    public static boolean reportStackTrace = Boolean.parseBoolean(getMetaTagContent("intake24:reportStackTraceOnError").getOrElse("true"));
 
     public static Option<String> originatingUrl = getMetaTagContent("intake24:originatingUrl");
 }

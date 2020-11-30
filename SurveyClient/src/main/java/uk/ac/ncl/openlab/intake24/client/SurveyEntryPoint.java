@@ -64,7 +64,11 @@ public class SurveyEntryPoint implements EntryPoint {
     private Anchor recallNumber;
 
     private native String getTimeZone() /*-{
-        return Intl.DateTimeFormat().resolvedOptions().timeZone
+        if (Intl)
+            return Intl.DateTimeFormat().resolvedOptions().timeZone;
+        else
+        // workaround for old browsers
+            return 'Europe/London';
     }-*/;
 
     private void startSurvey(SurveyParameters params, UserData userData) {
@@ -88,8 +92,20 @@ public class SurveyEntryPoint implements EntryPoint {
         UxEventsHelper.postPageOpen();
     }
 
+    private static void reportClientError() {
+        UncaughtExceptionHandler.reportError(new RuntimeException("Test exception"));
+    }
+
+    private native void addReportClientErrorFunction() /*-{
+        $wnd.__intake24_reportClientError = function () {
+            @uk.ac.ncl.openlab.intake24.client.SurveyEntryPoint::reportClientError()();
+        };
+    }-*/;
+
     public void onModuleLoad() {
         GWT.setUncaughtExceptionHandler(UncaughtExceptionHandler.INSTANCE);
+
+        addReportClientErrorFunction();
 
         // Force re-authentication on page load if using URL token to make sure the current user matches the auth token
         if (Window.Location.getParameter(UrlParameterConstants.authTokenKey) != null)

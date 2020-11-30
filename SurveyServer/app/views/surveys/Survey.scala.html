@@ -50,6 +50,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
         <meta name="intake24:privacyPolicyURL" content="@privacyPolicyURL"/>
         <meta name="intake24:termsAndConditionsURL" content="@termsAndConditionsURL"/>
         <meta name="intake24:displayLogos" content="@displayLogos"/>
+        <meta name="intake24:reportSurveyStateOnError" content="@{parameters.errorReporting.reportSurveyState}"/>
+        <meta name="intake24:reportStackTraceOnError" content="@{parameters.errorReporting.reportStackTrace}"/>
 
         @if(parameters.originatingURL.nonEmpty) {
             <meta name="intake24:originatingUrl" content="@parameters.originatingURL.head"/>
@@ -77,7 +79,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
         <title>Intake24</title>
 
-        <!-- FIXME: Hack to remove cookie consent message from Arabic version because it looks ugly, but
+            <!-- FIXME: Hack to remove cookie consent message from Arabic version because it looks ugly, but
           needs a better solution eventually -->
         @if(!parameters.respondentLanguageId.startsWith("ar")) {
             <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/cookieconsent/build/cookieconsent.min.css")" />
