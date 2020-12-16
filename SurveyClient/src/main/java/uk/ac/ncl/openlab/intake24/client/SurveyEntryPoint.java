@@ -63,14 +63,6 @@ public class SurveyEntryPoint implements EntryPoint {
     private Anchor logOut;
     private Anchor recallNumber;
 
-    private native String getTimeZone() /*-{
-        if (Intl)
-            return Intl.DateTimeFormat().resolvedOptions().timeZone;
-        else
-        // workaround for old browsers
-            return 'Europe/London';
-    }-*/;
-
     private void startSurvey(SurveyParameters params, UserData userData) {
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
 
@@ -157,7 +149,7 @@ public class SurveyEntryPoint implements EntryPoint {
             @Override
             public void onSuccess(Method method, SurveyParameters response) {
 
-                SurveyService.INSTANCE.getUserData(EmbeddedData.surveyId, getTimeZone(), new MethodCallback<UserData>() {
+                SurveyService.INSTANCE.getUserData(EmbeddedData.surveyId, TimeZoneUtils.getTimeZone(), new MethodCallback<UserData>() {
                     @Override
                     public void onFailure(Method method, Throwable exception) {
 

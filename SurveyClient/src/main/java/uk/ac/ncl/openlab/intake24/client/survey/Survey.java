@@ -50,6 +50,7 @@ import org.pcollections.TreePVector;
 import org.workcraft.gwt.shared.client.CollectionUtils.WithIndex;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
+import uk.ac.ncl.openlab.intake24.client.TimeZoneUtils;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
 
 public class Survey {
@@ -67,10 +68,6 @@ public class Survey {
     public final PSet<String> flags;
     public final PMap<String, String> customData;
     public final PVector<WithIndex<Meal>> mealsSortedByTime;
-
-    private native String getTimeZone() /*-{
-        return Intl.DateTimeFormat().resolvedOptions().timeZone
-    }-*/;
 
     public Survey(List<Meal> meals, Selection selectedElement, long startTime, long lastSaved, Set<String> flags, Map<String, String> customData) {
         this(TreePVector.<Meal>from(meals), selectedElement, startTime, lastSaved, HashTreePSet.<String>from(flags), HashTreePMap
@@ -183,7 +180,7 @@ public class Survey {
             }
         });
 
-        return new CompletedSurvey(startTime, System.currentTimeMillis(), getTimeZone(), UxEventsHelper.sessionId,
+        return new CompletedSurvey(startTime, System.currentTimeMillis(), TimeZoneUtils.getTimeZone(), UxEventsHelper.sessionId,
                 new ArrayList<CompletedMeal>(completedMeals), new HashMap<String, String>(customData));
     }
 
