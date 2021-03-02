@@ -30,6 +30,13 @@ scalaVersion := "2.11.8"
 
 resolvers += Resolver.mavenLocal
 
+lazy val packageManagerSettings = Seq(
+  rpmRelease := "1",
+  rpmVendor := "typesafe",
+  rpmUrl := Some("http://github.com/paulp/sbt-extras"),
+  rpmLicense := Some("BSD")
+)
+
 libraryDependencies ++= Seq(
   ws,
   "org.webjars" % "font-awesome" % "5.7.2",
@@ -56,4 +63,4 @@ javaOptions in Universal ++= Seq(
   s"-Dlogger.file=/usr/share/${packageName.value}/conf/production-logger.xml"
 )
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala, SystemdPlugin, JDebPackaging)
+lazy val root = (project in file(".")).settings(packageManagerSettings: _*).enablePlugins(PlayScala, SystemdPlugin, JDebPackaging, RpmPlugin)
