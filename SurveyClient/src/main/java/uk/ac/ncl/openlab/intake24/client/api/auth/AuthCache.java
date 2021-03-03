@@ -1,9 +1,13 @@
 package uk.ac.ncl.openlab.intake24.client.api.auth;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.storage.client.Storage;
 import org.workcraft.gwt.shared.client.Option;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthCache {
     public final static String ACCESS_TOKEN_KEY = "accessToken";
@@ -26,13 +30,15 @@ public class AuthCache {
             currentUserId = null;
     }
 
-    private static String getUserIdFromJWT(String token) {
+    private static JSONObject parseJWT(String token) {
         String payloadBase64Url = token.split("\\.")[1];
-
         String payloadJson = new String(Base64Utils.fromBase64Url(payloadBase64Url));
-        JSONObject payloadValue = JSONParser.parseStrict(payloadJson).isObject();
+        return JSONParser.parseStrict(payloadJson).isObject();
+    }
 
-        return payloadValue.get("userId").toString();
+    private static String getUserIdFromJWT(String token) {
+        JSONObject payload = parseJWT(token);
+        return payload.get("userId").toString();
     }
 
     public static void clear() {
@@ -64,5 +70,28 @@ public class AuthCache {
 
     public static String getCurrentUserId() {
         return getCurrentUserIdOption().getOrDie("Current user id required, but is not known");
+    }
+
+    public static Map<String, String> getCurrentUserCustomFields() {
+        try {
+            HashMap<String, String> result = new HashMap<>();
+            JSONObject tokenPayload = parseJWT(getCachedAccessToken());
+
+            JSONArray customFields = tokenPayload.get("customFields").isArray();
+
+            if (customFields == null || customFields.size() == 0)
+                return result;
+
+            for (int i = 0; i < customFields.size(); i++) {
+                JSONObject field = customFields.get(i).isObject();
+                result.put(field.get("name").isString().stringValue().toLowerCase(),
+                        field.get("value").isString().stringValue().toLowerCase());
+            }
+
+            return result;
+
+        } catch (RuntimeException e) {
+            return new HashMap<>();
+        }
     }
 }
