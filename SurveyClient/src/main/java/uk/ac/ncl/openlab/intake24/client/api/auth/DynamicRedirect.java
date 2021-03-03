@@ -14,4 +14,8 @@ public class DynamicRedirect {
         Storage localStorage = Storage.getLocalStorageIfSupported();
         return localStorage.getItem(prefix + userId);
     }
+
+    public static void clear(Long userId) {
+        Storage.getLocalStorageIfSupported().removeItem(prefix + userId);
+    }
 }
