@@ -40,6 +40,7 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.ServiceRoots;
 import uk.ac.ncl.openlab.intake24.client.api.auth.AuthCache;
+import uk.ac.ncl.openlab.intake24.client.api.auth.DynamicRedirect;
 import uk.ac.ncl.openlab.intake24.client.api.auth.UrlParameterConstants;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyService;
@@ -56,6 +57,7 @@ import uk.ac.ncl.openlab.intake24.client.ui.LogoutPage;
 import uk.ac.ncl.openlab.intake24.client.ui.TutorialVideo;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class SurveyEntryPoint implements EntryPoint {
 
@@ -64,6 +66,22 @@ public class SurveyEntryPoint implements EntryPoint {
     private Anchor recallNumber;
 
     private void startSurvey(SurveyParameters params, UserData userData) {
+
+        Map<String, String> customFields = AuthCache.getCurrentUserCustomFields();
+
+        try {
+            int redirectRecallNumber = Integer.parseInt(customFields.get("redirect recall number"));
+            String redirectURL = customFields.get("redirect url");
+
+            if (userData.recallNumber == redirectRecallNumber && redirectURL != null) {
+                DynamicRedirect.set(Long.parseLong(AuthCache.getCurrentUserId()), redirectURL);
+            } else {
+                DynamicRedirect.clear(Long.parseLong(AuthCache.getCurrentUserId()));
+            }
+        } catch (RuntimeException e) {
+            BrowserConsole.error(e.getMessage());
+        }
+
         SurveyInterfaceManager surveyInterfaceManager = new SurveyInterfaceManager(Layout.getMainContentPanel());
 
         SurveyScheme scheme = SurveyScheme.createScheme(params, EmbeddedData.localeId, surveyInterfaceManager, userData);
