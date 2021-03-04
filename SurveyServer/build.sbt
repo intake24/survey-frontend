@@ -31,10 +31,10 @@ scalaVersion := "2.11.8"
 resolvers += Resolver.mavenLocal
 
 lazy val packageManagerSettings = Seq(
-  rpmRelease := "1",
-  rpmVendor := "typesafe",
-  rpmUrl := Some("http://github.com/paulp/sbt-extras"),
-  rpmLicense := Some("BSD")
+  rpmRelease := version,
+  rpmVendor := organization,
+  rpmUrl := Some("https://github.com/intake24/survey-frontend"),
+  rpmLicense := Some("ASL 2.0")
 )
 
 libraryDependencies ++= Seq(
