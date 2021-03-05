@@ -16,22 +16,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+val baseVersion = "3.0.0"
+val organization = "uk.ac.ncl.openlab.intake24"
+
 name := "intake24-survey-site"
 
-organization := "uk.ac.ncl.openlab.intake24"
+//organization := organizationVal
 
 description := "Intake24 GWT survey client"
 
 maintainer := "Ivan Poliakov <ivan.poliakov@ncl.ac.uk>"
 
-version := "3.0.0-SNAPSHOT"
+version := baseVersion + "-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
 resolvers += Resolver.mavenLocal
 
 lazy val packageManagerSettings = Seq(
-  rpmRelease := version,
+  rpmRelease := baseVersion,
   rpmVendor := organization,
   rpmUrl := Some("https://github.com/intake24/survey-frontend"),
   rpmLicense := Some("ASL 2.0")
