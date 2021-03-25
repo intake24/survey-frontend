@@ -153,7 +153,7 @@ public class DrinkScaleScript implements PortionSizeScript {
                                 withHeader(
                                         drinkScalePrompt(SafeHtmlUtils.fromSafeConstant(messages.drinkScale_leftPromptText(escapedFoodDesc)),
                                                 getScaleDef(Integer.parseInt(data.get("containerIndex"))), messages.drinkScale_leftLessButtonLabel(), messages.drinkScale_leftMoreButtonLabel(), messages.drinkScale_leftContinueButtonLabel(),
-                                                Double.parseDouble(data.get("fillLevel")), Double.parseDouble(data.get("fillLevel")), "leftoversLevel"), foodData.description())), calcLeftoversVolume));
+                                                Double.parseDouble(data.get("fillLevel")), 0, "leftoversLevel"), foodData.description())), calcLeftoversVolume));
         } else
             return done();
     }
