@@ -28,6 +28,7 @@ package uk.ac.ncl.openlab.intake24.client.survey.prompts.messages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import uk.ac.ncl.openlab.intake24.client.survey.Prompt;
 
 public interface PromptMessages extends Messages {
@@ -540,9 +541,9 @@ public interface PromptMessages extends Messages {
 
     public String pizza_thicknessPromptText();
 
-    public String standardUnit_quantityPromptText_omitFood(String unit);
+    public SafeHtml standardUnit_quantityPromptText_omitFood(SafeHtml unit);
 
-    public String standardUnit_quantityPromptText_includeFood(String unit, String foodDesc);
+    public SafeHtml standardUnit_quantityPromptText_includeFood(SafeHtml unit, String foodDesc);
 
     public String standardUnit_quantityContinueButtonLabel();
 

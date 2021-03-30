@@ -26,6 +26,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey.portionsize;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.pcollections.PMap;
 import org.workcraft.gwt.shared.client.Function1;
@@ -53,17 +54,17 @@ public class StandardPortionScript implements PortionSizeScript {
     }
 
     public Option<SimplePrompt<UpdateFunc>> mkQuantityPrompt(PMap<String, String> data, final int unitChoice, String foodDesc) {
-        String message;
+        SafeHtml message;
         StandardUnitDef unit = units.get(unitChoice);
 
         if (unit.omitFoodDesc)
-            message = messages.standardUnit_quantityPromptText_omitFood(SafeHtmlUtils.htmlEscape(unitNames.getString(unit.name + "_how_many")));
+            message = messages.standardUnit_quantityPromptText_omitFood(SafeHtmlUtils.fromSafeConstant(unitNames.getString(unit.name + "_how_many")));
         else
-            message = messages.standardUnit_quantityPromptText_includeFood(SafeHtmlUtils.htmlEscape(unitNames.getString(unit.name + "_how_many")), SafeHtmlUtils.htmlEscape(foodDesc.toLowerCase()));
+            message = messages.standardUnit_quantityPromptText_includeFood(SafeHtmlUtils.fromSafeConstant(unitNames.getString(unit.name + "_how_many")), SafeHtmlUtils.htmlEscape(foodDesc.toLowerCase()));
 
 
         return Option.some(withBackLink(PromptUtil.map(
-                quantityPrompt(SafeHtmlUtils.fromSafeConstant(message), messages.standardUnit_quantityContinueButtonLabel(), "quantity"),
+                quantityPrompt(message, messages.standardUnit_quantityContinueButtonLabel(), "quantity"),
                 new Function1<UpdateFunc, UpdateFunc>() {
                     @Override
                     public UpdateFunc apply(final UpdateFunc f) {
