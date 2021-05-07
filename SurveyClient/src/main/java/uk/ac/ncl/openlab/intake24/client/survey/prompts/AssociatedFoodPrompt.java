@@ -54,6 +54,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.ui.WidgetFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -162,31 +163,38 @@ public class AssociatedFoodPrompt implements Prompt<Pair<FoodEntry, Meal>, MealO
         final Callback1<FoodData> addNewFood = new Callback1<FoodData>() {
             @Override
             public void call(final FoodData result) {
-                onComplete.call(MealOperation.updateAndSelect( meal -> {
-                        // Special case for cereal:
-                        // if a "milk on cereal" food is linked to a cereal food
-                        // copy bowl type from the parent food
-                        Option<String> bowl_id = getParamValue(food, "bowl");
+                onComplete.call(MealOperation.updateAndSelect(meal -> {
+                    // Special case for cereal:
+                    // if a "milk on cereal" food is linked to a cereal food
+                    // copy bowl type from the parent food
+                    Option<String> bowl_id = getParamValue(food, "bowl");
 
-                        FoodData foodData = bowl_id.accept(new Option.Visitor<String, FoodData>() {
-                            @Override
-                            public FoodData visitSome(String bowl_id) {
-                                return result.withPortionSizeMethods(appendPotionSizeParameter(result.portionSizeMethods, "bowl", bowl_id));
-                            }
+                    FoodData foodData = bowl_id.accept(new Option.Visitor<String, FoodData>() {
+                        @Override
+                        public FoodData visitSome(String bowl_id) {
+                            return result.withPortionSizeMethods(appendPotionSizeParameter(result.portionSizeMethods, "bowl", bowl_id));
+                        }
 
-                            @Override
-                            public FoodData visitNone() {
-                                return result;
-                            }
-                        });
+                        @Override
+                        public FoodData visitNone() {
+                            return result;
+                        }
+                    });
 
-                        EncodedFood assocFood = new EncodedFood(foodData, FoodLink.newUnlinked(), "associated food prompt");
+                    // Special case for milk in hot drinks:
+                    // Override portion size methods for any food that comes from the MHDK category
+                    // with the special case milk-in-a-hot-drink estimation method
+                    if (foodData.categories.contains(SpecialData.FOOD_CODE_MILK_IN_HOT_DRINK) && !prompt.linkAsMain) {
+                        foodData = foodData.withPortionSizeMethods(Collections.singletonList(SpecialData.milkInAHotDrinkPortionSizeMethod));
+                    }
 
-                        Meal updatedMeal = linkAssociatedFood(meal.plusFood(assocFood), food, assocFood, prompt.linkAsMain);
-                        int updatedSelection = updatedMeal.foodIndex(assocFood);
+                    EncodedFood assocFood = new EncodedFood(foodData, FoodLink.newUnlinked(), "associated food prompt");
 
-                        return Pair.create(updatedMeal, updatedSelection);
-                    }));
+                    Meal updatedMeal = linkAssociatedFood(meal.plusFood(assocFood), food, assocFood, prompt.linkAsMain);
+                    int updatedSelection = updatedMeal.foodIndex(assocFood);
+
+                    return Pair.create(updatedMeal, updatedSelection);
+                }));
             }
         };
 

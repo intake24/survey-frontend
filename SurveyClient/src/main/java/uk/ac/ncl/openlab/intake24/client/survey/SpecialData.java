@@ -26,7 +26,12 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey;
 
+import uk.ac.ncl.openlab.intake24.client.api.foods.PortionSizeMethod;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.MilkInHotDrinkPortionSizeScript;
+import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionDescriptions;
+
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class SpecialData {
@@ -44,4 +49,16 @@ public class SpecialData {
     public static final String CATEGORY_HOT_CEREALS = "HTCL";
     public static final String CATEGORY_WEETABIX_CEREALS = "WTBI";
     public static final List<String> CATEGORIES_CEREAL_NO_MILK = Arrays.asList(CATEGORY_CEREAL_BARS, CATEGORY_HOT_CEREALS, CATEGORY_WEETABIX_CEREALS);
+
+    // This will only ever be used as the only available portion size method and the method selection
+    // screen won't be shown, so it doesn't matter what image to use.
+    // The placeholder base64 encoded image is a 1x1 white pixel .png
+    public static final PortionSizeMethod milkInAHotDrinkPortionSizeMethod = new PortionSizeMethod(
+            MilkInHotDrinkPortionSizeScript.name,
+            PortionDescriptions.Util.getInstance().use_a_standard_measure(),
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=",
+            false,
+            1.0,
+            new HashMap<>()
+    );
 }
