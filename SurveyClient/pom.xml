@@ -147,6 +147,7 @@
                     <localWorkers>6</localWorkers>
                     <hostedWebapp>${project.build.directory}</hostedWebapp>
                     <i18nMessagesBundle>net.scran24.client.Messages</i18nMessagesBundle>
+                    <extraJvmArgs>-Xmx1024M -Xms512M -Xss1024k</extraJvmArgs>
                 </configuration>
             </plugin>
 
