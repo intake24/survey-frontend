@@ -17,6 +17,7 @@ public class RawFood extends FoodEntry {
 	public static final String FLAG_DRINK = "drink";
 	public static final String FLAG_DISABLE_SPLIT = "disable-split";
 	public static final String FLAG_RECIPE_INGREDIENT = "recipe-ingredient";
+	public static final String FLAG_FOOD_SUPPLEMENT = "food-supplement";
 	public static final String KEY_BROWSE_CATEGORY_INSTEAD_OF_LOOKUP = "browse-category";
 
 	public final String description;

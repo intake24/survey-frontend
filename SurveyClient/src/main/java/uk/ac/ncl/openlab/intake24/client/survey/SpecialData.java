@@ -48,6 +48,7 @@ public class SpecialData {
     public static final String CATEGORY_CEREAL_BARS = "CRBR";
     public static final String CATEGORY_HOT_CEREALS = "HTCL";
     public static final String CATEGORY_WEETABIX_CEREALS = "WTBI";
+    public static final String CATEGORY_FOOD_SUPPLEMENTS = "SUPP";
     public static final List<String> CATEGORIES_CEREAL_NO_MILK = Arrays.asList(CATEGORY_CEREAL_BARS, CATEGORY_HOT_CEREALS, CATEGORY_WEETABIX_CEREALS);
 
     // This will only ever be used as the only available portion size method and the method selection

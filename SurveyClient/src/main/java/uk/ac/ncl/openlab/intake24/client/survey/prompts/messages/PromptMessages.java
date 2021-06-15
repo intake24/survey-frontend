@@ -37,7 +37,6 @@ public interface PromptMessages extends Messages {
 
     String submitPage_tooManyRequests();
 
-
     public static class Util {
         private static PromptMessages instance = null;
 
@@ -670,5 +669,13 @@ public interface PromptMessages extends Messages {
     public String breadLinkedFood_allButtonLabel();
 
     public String breadLinkedFood_someButtonLabel();
+
+    public String foodSupplements_confirmationPromptText();
+
+    public String foodSupplements_promptText();
+
+    public String foodSupplements_mealName();
+
+    public String foodSupplements_listTitle();
 
 }

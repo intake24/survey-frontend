@@ -144,7 +144,10 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
 
             if (food.flags.contains(RawFood.FLAG_RECIPE_INGREDIENT))
                 FoodLookupService.INSTANCE.lookupForRecipes(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
-            else {
+            else if (food.flags.contains(RawFood.FLAG_FOOD_SUPPLEMENT)) {
+                FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, description, SpecialData.CATEGORY_FOOD_SUPPLEMENTS,
+                        existingFoods, MAX_RESULTS, lookupCallback);
+            } else {
                 FoodLookupService.INSTANCE.lookup(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
             }
         }

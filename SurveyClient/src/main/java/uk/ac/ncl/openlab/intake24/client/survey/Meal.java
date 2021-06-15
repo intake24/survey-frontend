@@ -46,7 +46,7 @@ public class Meal {
     private static final String FLAG_NO_MEALS_AFTER = "no-meals-after";
     private static final String FLAG_NO_MEALS_BEFORE = "no-meals-before";
     private static final String FLAG_CONFIRMED_NO_DRINKS = "confirmed-no-drinks";
-    private static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
+    public static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
     private static final String FLAG_READY_MEALS_COMPLETE = "ready-meals-complete";
     private static final String FLAG_ASSOCIATED_FOODS_COMPLETE = "associated-foods-complete";
 
