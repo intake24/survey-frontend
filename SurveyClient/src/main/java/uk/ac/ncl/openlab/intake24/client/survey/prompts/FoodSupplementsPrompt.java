@@ -61,7 +61,7 @@ public class FoodSupplementsPrompt implements Prompt<Survey, SurveyOperation> {
 
                     Meal supplementsMeal = new Meal(messages.foodSupplements_mealName(), TreePVector.from(supplements), Option.some(new Time(23, 59)), HashTreePSet.empty(), HashTreePMap.empty());
 
-                    return survey.plusMeal(supplementsMeal.withFlag(ListFoodSupplements.supplementsMealFlag).withFlag(Meal.FLAG_FREE_ENTRY_COMPLETE));
+                    return survey.plusMeal(supplementsMeal.withFlag(ListFoodSupplements.SUPPLEMENTS_MEAL_FLAG).withFlag(Meal.FLAG_FREE_ENTRY_COMPLETE));
                 }));
             }
         });

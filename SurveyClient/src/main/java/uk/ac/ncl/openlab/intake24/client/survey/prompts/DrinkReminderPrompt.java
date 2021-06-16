@@ -39,6 +39,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.Meal;
 import uk.ac.ncl.openlab.intake24.client.survey.Prompt;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyStageInterface;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.ListFoodSupplements;
 
 public class DrinkReminderPrompt implements Prompt<Meal, MealOperation> {
     private final Meal meal;
@@ -51,13 +52,19 @@ public class DrinkReminderPrompt implements Prompt<Meal, MealOperation> {
     @Override
     public SurveyStageInterface getInterface(final Callback1<MealOperation> onComplete,
                                              final Callback1<Function1<Meal, Meal>> onIntermediateStateChange) {
-        final SafeHtml promptText = SafeHtmlUtils.fromSafeConstant(messages.drinkReminder_promptText((SafeHtmlUtils.htmlEscape(meal.name.toLowerCase()))));
+
+        final String mealName = SafeHtmlUtils.htmlEscape(meal.name.toLowerCase());
+
+        final SafeHtml promptText = meal.flags.contains(ListFoodSupplements.SUPPLEMENTS_MEAL_FLAG) ?
+                SafeHtmlUtils.fromSafeConstant(messages.foodSupplements_drinkReminderPromptText(mealName)) :
+                SafeHtmlUtils.fromSafeConstant(messages.drinkReminder_promptText(SafeHtmlUtils.htmlEscape(mealName)));
+
         final String addDrinkText = SafeHtmlUtils.htmlEscape(messages.drinkReminder_addDrinkButtonLabel());
         final String noDrinkText = SafeHtmlUtils.htmlEscape(messages.drinkReminder_noDrinkButtonLabel());
 
         FlowPanel content = new FlowPanel();
 
-        final HTMLPanel header = new HTMLPanel("h1", meal.name + " (" + meal.time.map(argument -> argument.toString()).getOrElse("Time unknown") + ")");
+        final HTMLPanel header = new HTMLPanel("h1", meal.safeNameWithTimeCapitalised());
 
         content.add(header);
 

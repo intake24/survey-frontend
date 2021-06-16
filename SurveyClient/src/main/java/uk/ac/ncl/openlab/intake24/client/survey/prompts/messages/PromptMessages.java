@@ -672,6 +672,8 @@ public interface PromptMessages extends Messages {
 
     public String foodSupplements_confirmationPromptText();
 
+    public String foodSupplements_drinkReminderPromptText(String mealName);
+
     public String foodSupplements_promptText();
 
     public String foodSupplements_mealName();
