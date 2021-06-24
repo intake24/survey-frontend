@@ -28,7 +28,6 @@ package uk.ac.ncl.openlab.intake24.client.survey.prompts.messages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import uk.ac.ncl.openlab.intake24.client.survey.Prompt;
 
 public interface PromptMessages extends Messages {
@@ -36,6 +35,7 @@ public interface PromptMessages extends Messages {
     PromptMessages INSTANCE = GWT.create(PromptMessages.class);
 
     String submitPage_tooManyRequests();
+
 
     public static class Util {
         private static PromptMessages instance = null;
@@ -540,9 +540,9 @@ public interface PromptMessages extends Messages {
 
     public String pizza_thicknessPromptText();
 
-    public SafeHtml standardUnit_quantityPromptText_omitFood(SafeHtml unit);
+    public String standardUnit_quantityPromptText_omitFood(String unit);
 
-    public SafeHtml standardUnit_quantityPromptText_includeFood(SafeHtml unit, String foodDesc);
+    public String standardUnit_quantityPromptText_includeFood(String unit, String foodDesc);
 
     public String standardUnit_quantityContinueButtonLabel();
 
@@ -679,5 +679,4 @@ public interface PromptMessages extends Messages {
     public String foodSupplements_mealName();
 
     public String foodSupplements_listTitle();
-
 }
