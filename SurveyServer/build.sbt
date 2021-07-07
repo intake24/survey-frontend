@@ -35,7 +35,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "font-awesome" % "5.7.2",
   "org.webjars.npm" % "cookieconsent" % "3.1.0",
   "org.webjars" %% "webjars-play" % "2.5.0-4",
-  "org.webjars" % "bootstrap" % "3.1.1-2",
+  "org.webjars" % "jquery" % "3.6.0",
+  "org.webjars" % "bootstrap" % "3.4.1",
   "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT",
   "com.lihaoyi" %% "upickle" % "0.4.1",
   "com.google.gwt" % "gwt-user" % "2.8.0" // for stack trace deobfuscator
