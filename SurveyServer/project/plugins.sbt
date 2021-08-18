@@ -18,14 +18,17 @@ limitations under the License.
 
 resolvers += "Typesafe repository" at "https://dl.bintray.com/typesafe/maven-releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.12")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.25")
 
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
+addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
 
-addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.2")
+addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.5.1")
+
+addSbtPlugin("net.vonbuchholtz" % "sbt-dependency-check" % "2.1.0")
 
 libraryDependencies ++= Seq(
   "org.vafer" % "jdeb" % "1.5" artifacts (Artifact("jdeb", "jar", "jar"))
 )
+
