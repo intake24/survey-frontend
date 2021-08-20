@@ -30,8 +30,6 @@ scalaVersion := "2.12.14"
 
 resolvers += Resolver.mavenLocal
 
-dependencyCheckFormats := Seq("JSON", "HTML")
-
 libraryDependencies ++= Seq(
   ws,
   guice,
