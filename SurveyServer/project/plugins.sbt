@@ -26,9 +26,6 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
 
 addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.5.1")
 
-addSbtPlugin("net.vonbuchholtz" % "sbt-dependency-check" % "2.1.0")
-
 libraryDependencies ++= Seq(
   "org.vafer" % "jdeb" % "1.5" artifacts (Artifact("jdeb", "jar", "jar"))
 )
-
