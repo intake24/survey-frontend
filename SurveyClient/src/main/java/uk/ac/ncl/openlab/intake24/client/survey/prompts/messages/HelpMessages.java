@@ -17,6 +17,7 @@ public interface HelpMessages extends Messages {
 
     HelpMessages INSTANCE = GWT.create(HelpMessages.class);
 
+
     public static class Util {
         private static HelpMessages instance = null;
 
@@ -339,4 +340,11 @@ public interface HelpMessages extends Messages {
 
     public String breadLinkedFood_someButtonDescription();
 
+    String foodSupplements_listTitle();
+
+    String foodSupplements_listDescription();
+
+    String foodSupplements_continueButtonTitle();
+
+    String foodSupplements_continueButtonDescription();
 }

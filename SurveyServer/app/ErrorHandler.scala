@@ -1,15 +1,13 @@
 package app
 
 import javax.inject.Inject
-
-import play.api.Configuration
+import play.api.{Application, Configuration, Logger}
 import play.api.http.HttpErrorHandler
 import play.api.mvc._
 import play.api.mvc.Results._
 
 import scala.concurrent._
 import javax.inject.Singleton
-
 import views.html.errors.{Error404, Error500}
 
 
@@ -25,6 +23,7 @@ class ErrorHandler @Inject()(config: Configuration) extends HttpErrorHandler {
   }
 
   def onServerError(request: RequestHeader, exception: Throwable) = {
+    Logger.logger.error(exception.getMessage, exception)
     Future.successful(
       InternalServerError(Error500(supportEmail))
     )

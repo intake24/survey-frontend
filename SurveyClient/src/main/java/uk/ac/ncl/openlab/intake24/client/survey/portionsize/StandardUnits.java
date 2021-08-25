@@ -974,6 +974,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String tablets_estimate_in();
 	public String tablets_how_many();
 
+	public String tablets_capsules_estimate_in();
+	public String tablets_capsules_how_many();
+
 	public String takeaway_portions_estimate_in();
 	public String takeaway_portions_how_many();
 

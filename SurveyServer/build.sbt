@@ -24,9 +24,9 @@ description := "Intake24 GWT survey client"
 
 maintainer := "Ivan Poliakov <ivan.poliakov@ncl.ac.uk>"
 
-version := "3.0.0-SNAPSHOT"
+version := "3.2.0-SNAPSHOT"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.14"
 
 resolvers += Resolver.mavenLocal
 
@@ -39,13 +39,20 @@ lazy val packageManagerSettings = Seq(
 
 libraryDependencies ++= Seq(
   ws,
+  guice,
   "org.webjars" % "font-awesome" % "5.7.2",
   "org.webjars.npm" % "cookieconsent" % "3.1.0",
-  "org.webjars" %% "webjars-play" % "2.5.0-4",
-  "org.webjars" % "bootstrap" % "3.1.1-2",
-  "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.0.0-SNAPSHOT",
-  "com.lihaoyi" %% "upickle" % "0.4.1",
-  "com.google.gwt" % "gwt-user" % "2.8.0" // for stack trace deobfuscator
+  "org.webjars" %% "webjars-play" % "2.7.0",
+  "org.webjars" % "jquery" % "3.6.0",
+  "org.webjars" % "bootstrap" % "3.4.1",
+  "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.1.0-SNAPSHOT",
+  "com.lihaoyi" %% "upickle" % "0.4.4",
+  "com.google.gwt" % "gwt-user" % "2.8.2" // for stack trace deobfuscator
+)
+
+dependencyOverrides ++= Set(
+  "org.apache.commons" % "commons-compress" % "1.21",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.10.8"
 )
 
 javaOptions in Universal ++= Seq(

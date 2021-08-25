@@ -34,6 +34,7 @@ import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.LocaleUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.ListFoodSupplements;
 
 import java.util.Collection;
 
@@ -46,7 +47,7 @@ public class Meal {
     private static final String FLAG_NO_MEALS_AFTER = "no-meals-after";
     private static final String FLAG_NO_MEALS_BEFORE = "no-meals-before";
     private static final String FLAG_CONFIRMED_NO_DRINKS = "confirmed-no-drinks";
-    private static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
+    public static final String FLAG_FREE_ENTRY_COMPLETE = "free-entry-complete";
     private static final String FLAG_READY_MEALS_COMPLETE = "ready-meals-complete";
     private static final String FLAG_ASSOCIATED_FOODS_COMPLETE = "associated-foods-complete";
 
@@ -123,7 +124,11 @@ public class Meal {
         return flags.contains(FLAG_NO_MEALS_AFTER);
     }
 
-    public boolean associatedFoodsComplete() { return flags.contains(FLAG_ASSOCIATED_FOODS_COMPLETE); };
+    public boolean associatedFoodsComplete() {
+        return flags.contains(FLAG_ASSOCIATED_FOODS_COMPLETE);
+    }
+
+    ;
 
     public boolean hasDrinks() {
         return CollectionUtils.exists(foods, new Function1<FoodEntry, Boolean>() {
@@ -273,21 +278,28 @@ public class Meal {
         return withFlag(FLAG_READY_MEALS_COMPLETE);
     }
 
-    public Meal markAssociatedFoodsComplete() { return withFlag(FLAG_ASSOCIATED_FOODS_COMPLETE); }
+    public Meal markAssociatedFoodsComplete() {
+        return withFlag(FLAG_ASSOCIATED_FOODS_COMPLETE);
+    }
 
-    public Meal clearAssociatedFoodsComplete() { return withoutFlag(FLAG_ASSOCIATED_FOODS_COMPLETE);}
+    public Meal clearAssociatedFoodsComplete() {
+        return withoutFlag(FLAG_ASSOCIATED_FOODS_COMPLETE);
+    }
 
     public String safeName() {
         return SafeHtmlUtils.htmlEscape(name.toLowerCase());
     }
 
     public String safeNameWithTime() {
-        return safeName() + " (" + time.map(new Function1<Time, String>() {
-            @Override
-            public String apply(Time argument) {
-                return argument.toString();
-            }
-        }).getOrElse("Time unknown") + ")";
+        if (flags.contains(ListFoodSupplements.SUPPLEMENTS_MEAL_FLAG))
+            return safeName();
+        else
+            return safeName() + " (" + time.map(new Function1<Time, String>() {
+                @Override
+                public String apply(Time argument) {
+                    return argument.toString();
+                }
+            }).getOrElse("Time unknown") + ")";
     }
 
     public String safeNameWithTimeCapitalised() {

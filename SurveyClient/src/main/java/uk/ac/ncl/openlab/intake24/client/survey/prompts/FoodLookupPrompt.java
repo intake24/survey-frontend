@@ -62,6 +62,8 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
 
     private static PortionSizeMethod cachedWeightPotionSizeMethod = null;
 
+    // This has to go through the API server because it needs to return the correct image URL
+    // for the portion size selection screen even though it does not have any parameters
     public static void getWeightPortionSizeMethod(final Callback1<PortionSizeMethod> onComplete) {
         if (cachedWeightPotionSizeMethod != null)
             onComplete.call(cachedWeightPotionSizeMethod);
@@ -142,7 +144,10 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
 
             if (food.flags.contains(RawFood.FLAG_RECIPE_INGREDIENT))
                 FoodLookupService.INSTANCE.lookupForRecipes(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
-            else {
+            else if (food.flags.contains(RawFood.FLAG_FOOD_SUPPLEMENT)) {
+                FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, description, SpecialData.CATEGORY_FOOD_SUPPLEMENTS,
+                        existingFoods, MAX_RESULTS, lookupCallback);
+            } else {
                 FoodLookupService.INSTANCE.lookup(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
             }
         }
@@ -249,7 +254,6 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             foodBrowser = new FoodBrowser(locale, new Callback2<FoodData, Integer>() {
                 @Override
                 public void call(final FoodData foodData, Integer index) {
-
                     food.link.linkedTo.accept(new Option.SideEffectVisitor<UUID>() {
                         @Override
                         public void visitSome(UUID id) {
@@ -262,8 +266,9 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
                                         onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData.withRecipePortionSizeMethods(psm), food.link, lastSearchTerm)));
                                     }
                                 });
-                            else
+                            else {
                                 onComplete.call(MealOperation.replaceFood(meal.foodIndex(food), new EncodedFood(foodData, food.link, lastSearchTerm)));
+                            }
                         }
 
                         @Override

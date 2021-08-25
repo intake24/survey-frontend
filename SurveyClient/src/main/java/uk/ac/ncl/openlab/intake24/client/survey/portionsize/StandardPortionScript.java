@@ -57,9 +57,9 @@ public class StandardPortionScript implements PortionSizeScript {
         StandardUnitDef unit = units.get(unitChoice);
 
         if (unit.omitFoodDesc)
-            message = messages.standardUnit_quantityPromptText_omitFood(SafeHtmlUtils.htmlEscape(unitNames.getString(unit.name + "_how_many")));
+            message = messages.standardUnit_quantityPromptText_omitFood(unitNames.getString(unit.name + "_how_many"));
         else
-            message = messages.standardUnit_quantityPromptText_includeFood(SafeHtmlUtils.htmlEscape(unitNames.getString(unit.name + "_how_many")), SafeHtmlUtils.htmlEscape(foodDesc.toLowerCase()));
+            message = messages.standardUnit_quantityPromptText_includeFood(unitNames.getString(unit.name + "_how_many"), SafeHtmlUtils.htmlEscape(foodDesc.toLowerCase()));
 
 
         return Option.some(withBackLink(PromptUtil.map(

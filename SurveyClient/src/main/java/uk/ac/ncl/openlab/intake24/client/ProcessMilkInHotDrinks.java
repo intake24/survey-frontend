@@ -46,19 +46,26 @@ public class ProcessMilkInHotDrinks implements Function1<Survey, Survey> {
                             @Override
                             public PVector<Pair<Integer, Integer>> visitEncoded(EncodedFood food) {
                                 if (food.isInCategory(SpecialData.FOOD_CODE_MILK_IN_HOT_DRINK)) {
-                                    return food.link.linkedTo.accept(new Option.Visitor<UUID, PVector<Pair<Integer, Integer>>>() {
-                                        @Override
-                                        public PVector<Pair<Integer, Integer>> visitSome(UUID drink_id) {
-                                            return pairs.plus(Pair.create(meal.foodIndex(next), meal.foodIndex(drink_id)));
-                                        }
+                                    // Foods from MHDK category must use milk-in-a-hot-drink for portion size estimation,
+                                    // but this requirement currently has to be maintained manually and is often violated.
+                                    // This will skip foods that are in MHDK but whose portion size has been estimated
+                                    // using a different method to prevent crashes in the post process function.
+                                    if (!food.completedPortionSize().method.equals(MilkInHotDrinkPortionSizeScript.name)) {
+                                        return pairs;
+                                    } else
+                                        return food.link.linkedTo.accept(new Option.Visitor<UUID, PVector<Pair<Integer, Integer>>>() {
+                                            @Override
+                                            public PVector<Pair<Integer, Integer>> visitSome(UUID drink_id) {
+                                                return pairs.plus(Pair.create(meal.foodIndex(next), meal.foodIndex(drink_id)));
+                                            }
 
-                                        @Override
-                                        public PVector<Pair<Integer, Integer>> visitNone() {
-                                            String details = "Milk from this category must be linked to a hot drink: \"" + food.description() + "\" in meal \"" + meal.name + "\"";
-                                            UncaughtExceptionHandler.reportError(new RuntimeException(details));
-                                            return pairs;
-                                        }
-                                    });
+                                            @Override
+                                            public PVector<Pair<Integer, Integer>> visitNone() {
+                                                String details = "Milk from this category must be linked to a hot drink: \"" + food.description() + "\" in meal \"" + meal.name + "\"";
+                                                UncaughtExceptionHandler.reportError(new RuntimeException(details));
+                                                return pairs;
+                                            }
+                                        });
                                 } else
                                     return pairs;
                             }
@@ -96,7 +103,7 @@ public class ProcessMilkInHotDrinks implements Function1<Survey, Survey> {
             // percentage values to be defined in survey schemes. This branch is intended to prevent crashes in case if
             // partially completed surveys are cached using the old mechanism.
 
-            int milkPartIndex = Integer.parseInt(milk_ps.data.get("milkPartIndex"));
+            int milkPartIndex = Integer.parseInt(milk_ps.data.get(MilkInHotDrinkPortionSizeScript.MILK_PART_INDEX_KEY));
             milkPart = DefaultPortionSizeScripts.defaultMilkInHotDrinkPercentages.get(milkPartIndex).weight;
         } else {
             milkPart = Double.parseDouble(milk_ps.data.get(MilkInHotDrinkPortionSizeScript.MILK_VOLUME_KEY));

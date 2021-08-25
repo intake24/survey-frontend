@@ -76,9 +76,11 @@ public class NDNSDefault extends BasicScheme {
                         .plus(AskIfUsualAmountReason.withPriority(29))
                         .plus(AskAboutDiet.withPriority(28))
                         .plus(AskAboutCookingOil.withPriority(27))
-                        .plus(RemindSupplements.withPriority(26))
-                        .plus(AskAboutProxy.withPriority(25))
-                        .plus(AskAboutProxyIssues.withPriority(24)),
+                        .plus(ConfirmFoodSupplements.withPriority(26))
+                        .plus(ListFoodSupplements.withPriority(25))
+                        //.plus(RemindSupplements.withPriority(26))
+                        .plus(AskAboutProxy.withPriority(24))
+                        .plus(AskAboutProxyIssues.withPriority(23)),
                 baseRules.selectionRules
         );
     }

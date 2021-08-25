@@ -10,6 +10,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.MultipleChoiceQuestionOption;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.RadioButtonPrompt;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.ListFoodSupplements;
 
 public abstract class FoodSource implements PromptRule<Meal, MealOperation> {
 
@@ -25,7 +26,7 @@ public abstract class FoodSource implements PromptRule<Meal, MealOperation> {
 
     @Override
     public Option<Prompt<Meal, MealOperation>> apply(Meal state, SelectionMode selectionType, PSet<String> surveyFlags) {
-        if (!state.customData.containsKey(FOOD_SOURCE_KEY) && !state.isEmpty() && state.portionSizeComplete()) {
+        if (!state.flags.contains(ListFoodSupplements.SUPPLEMENTS_MEAL_FLAG) && !state.customData.containsKey(FOOD_SOURCE_KEY) && !state.isEmpty() && state.portionSizeComplete()) {
             SafeHtml promptSafeText = SafeHtmlUtils.fromSafeConstant(
                     promptText.replace("%s", SafeHtmlUtils.htmlEscape(state.name.toLowerCase()))
             );

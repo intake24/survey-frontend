@@ -11,7 +11,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.simple.CheckListPrompt;
 
 public abstract class Supplements implements PromptRule<Survey, SurveyOperation> {
 
-    private static final String SUPPLEMENTS_COMPLETE = "supplementsComplete";
+    public static final String SUPPLEMENTS_COMPLETE = "supplementsComplete";
     private static final String SUPPLEMENTS_KEY = "supplements";
 
     private SafeHtml promptText;
