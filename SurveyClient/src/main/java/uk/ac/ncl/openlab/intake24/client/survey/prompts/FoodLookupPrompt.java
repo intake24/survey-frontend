@@ -53,6 +53,7 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
     private final static HelpMessages helpMessages = HelpMessages.Util.getInstance();
 
     private final String algorithmId;
+    private final int matchScoreWeight;
     private final Boolean categoryBrowseRanked;
     private final FoodEntry food;
     private final Meal meal;
@@ -82,9 +83,11 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             });
     }
 
-    public FoodLookupPrompt(final String locale, final String algorithmId, final Boolean categoryBrowseRanked, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
+    public FoodLookupPrompt(final String locale, final String algorithmId, int matchScoreWeight,
+                            final Boolean categoryBrowseRanked, final FoodEntry food, final Meal meal, RecipeManager recipeManager) {
         this.locale = locale;
         this.algorithmId = algorithmId;
+        this.matchScoreWeight = matchScoreWeight;
         this.categoryBrowseRanked = categoryBrowseRanked;
         this.food = food;
         this.meal = meal;
@@ -143,12 +146,12 @@ public class FoodLookupPrompt implements Prompt<Pair<FoodEntry, Meal>, MealOpera
             ArrayList<String> existingFoods = this.getExistingFoods();
 
             if (food.flags.contains(RawFood.FLAG_RECIPE_INGREDIENT))
-                FoodLookupService.INSTANCE.lookupForRecipes(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
+                FoodLookupService.INSTANCE.lookupForRecipes(locale, algorithmId, matchScoreWeight, description, existingFoods, MAX_RESULTS, lookupCallback);
             else if (food.flags.contains(RawFood.FLAG_FOOD_SUPPLEMENT)) {
-                FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, description, SpecialData.CATEGORY_FOOD_SUPPLEMENTS,
+                FoodLookupService.INSTANCE.lookupInCategory(locale, algorithmId, matchScoreWeight, description, SpecialData.CATEGORY_FOOD_SUPPLEMENTS,
                         existingFoods, MAX_RESULTS, lookupCallback);
             } else {
-                FoodLookupService.INSTANCE.lookup(locale, algorithmId, description, existingFoods, MAX_RESULTS, lookupCallback);
+                FoodLookupService.INSTANCE.lookup(locale, algorithmId, matchScoreWeight, description, existingFoods, MAX_RESULTS, lookupCallback);
             }
         }
 
