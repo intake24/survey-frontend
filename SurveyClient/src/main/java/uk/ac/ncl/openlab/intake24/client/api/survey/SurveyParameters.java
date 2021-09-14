@@ -12,4 +12,6 @@ public class SurveyParameters {
     public UxEventsSettings uxEventsSettings;
     public Boolean storeUserSessionOnServer;
     public int maximumDailySubmissions;
+    public String searchSortingAlgorithm;
+    public int searchMatchScoreWeight;
 }
