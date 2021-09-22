@@ -23,17 +23,19 @@ public interface FoodLookupService extends RestService {
 
     @GET
     @Path("/user/foods/{locale}/lookup")
-    void lookup(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("desc") String description,
-                @QueryParam("existing") List<String> existingFoods, @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
+    void lookup(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("matchScoreWeight") int matchScoreWeight,
+                @QueryParam("desc") String description, @QueryParam("existing") List<String> existingFoods,
+                @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
 
     @GET
     @Path("/user/foods/{locale}/lookup-for-recipes")
-    void lookupForRecipes(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("desc") String description,
-                          @QueryParam("existing") List<String> existingFoods, @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
+    void lookupForRecipes(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("matchScoreWeight") int matchScoreWeight,
+                          @QueryParam("desc") String description, @QueryParam("existing") List<String> existingFoods, @QueryParam("limit") int limit,
+                          MethodCallback<LookupResult> callback);
 
     @GET
     @Path("/user/foods/{locale}/lookup-in-category")
-    void lookupInCategory(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("desc") String description,
-                          @QueryParam("category") String category, @QueryParam("existing") List<String> existingFoods,
+    void lookupInCategory(@PathParam("locale") String localeId, @QueryParam("alg") String algorithmId, @QueryParam("matchScoreWeight") int matchScoreWeight,
+                          @QueryParam("desc") String description, @QueryParam("category") String category, @QueryParam("existing") List<String> existingFoods,
                           @QueryParam("limit") int limit, MethodCallback<LookupResult> callback);
 }

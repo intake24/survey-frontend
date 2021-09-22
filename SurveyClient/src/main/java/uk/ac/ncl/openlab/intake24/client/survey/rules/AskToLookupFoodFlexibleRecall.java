@@ -23,12 +23,14 @@ public class AskToLookupFoodFlexibleRecall implements PromptRule<Pair<FoodEntry,
      * Experimental. Flexible recall. Compared to original ignores FLAG_FREE_ENTRY_COMPLETE.
      */
 
+    private final int matchScoreWeight;
     final private RecipeManager recipeManager;
     final private String locale;
     final private String algorithmId;
 
-    public AskToLookupFoodFlexibleRecall(String locale, String algorithmId, RecipeManager recipeManager) {
+    public AskToLookupFoodFlexibleRecall(String locale, String algorithmId, int matchScoreWeight, RecipeManager recipeManager) {
         this.locale = locale;
+        this.matchScoreWeight = matchScoreWeight;
         this.recipeManager = recipeManager;
         this.algorithmId = algorithmId;
     }
@@ -38,7 +40,7 @@ public class AskToLookupFoodFlexibleRecall implements PromptRule<Pair<FoodEntry,
         if (data.left.isTemplate() || data.left.isCompound() || data.left.isMissing())
             return Option.none();
         else if (!data.left.isEncoded())
-            return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new FoodLookupPrompt(locale, algorithmId, false, data.left, data.right, recipeManager));
+            return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new FoodLookupPrompt(locale, algorithmId, matchScoreWeight, false, data.left, data.right, recipeManager));
         else
             return Option.none();
     }
@@ -48,7 +50,7 @@ public class AskToLookupFoodFlexibleRecall implements PromptRule<Pair<FoodEntry,
         return "Ask to look up food";
     }
 
-    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String locale, String algorithmId, RecipeManager recipeManager) {
-        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new AskToLookupFoodFlexibleRecall(locale, algorithmId, recipeManager), priority);
+    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String locale, String algorithmId, int matchScoreWeight, RecipeManager recipeManager) {
+        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new AskToLookupFoodFlexibleRecall(locale, algorithmId, matchScoreWeight, recipeManager), priority);
     }
 }

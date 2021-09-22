@@ -19,13 +19,15 @@ import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 
 public class AskToLookupFood implements PromptRule<Pair<FoodEntry, Meal>, MealOperation> {
 
+    final private int matchScoreWeight;
     final private RecipeManager recipeManager;
     final private String locale;
     final private String algorithmId;
     final private Boolean categoryBrowseRanked;
 
-    public AskToLookupFood(String locale, String algorithmId, Boolean categoryBrowseRanked, RecipeManager recipeManager) {
+    public AskToLookupFood(String locale, String algorithmId, int matchScoreWeight, Boolean categoryBrowseRanked, RecipeManager recipeManager) {
         this.locale = locale;
+        this.matchScoreWeight = matchScoreWeight;
         this.recipeManager = recipeManager;
         this.algorithmId = algorithmId;
         this.categoryBrowseRanked = categoryBrowseRanked;
@@ -36,7 +38,7 @@ public class AskToLookupFood implements PromptRule<Pair<FoodEntry, Meal>, MealOp
         if (!surveyFlags.contains(Survey.FLAG_FREE_ENTRY_COMPLETE) || data.left.isTemplate() || data.left.isCompound() || data.left.isMissing())
             return Option.none();
         else if (!data.left.isEncoded())
-            return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new FoodLookupPrompt(locale, algorithmId, categoryBrowseRanked, data.left, data.right, recipeManager));
+            return Option.<Prompt<Pair<FoodEntry, Meal>, MealOperation>>some(new FoodLookupPrompt(locale, algorithmId, matchScoreWeight, categoryBrowseRanked, data.left, data.right, recipeManager));
         else
             return Option.none();
     }
@@ -46,7 +48,7 @@ public class AskToLookupFood implements PromptRule<Pair<FoodEntry, Meal>, MealOp
         return "Ask to look up food";
     }
 
-    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String locale, String algorithmId, Boolean categoryBrowseRanked, RecipeManager recipeManager) {
-        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new AskToLookupFood(locale, algorithmId, categoryBrowseRanked, recipeManager), priority);
+    public static WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>> withPriority(int priority, String locale, String algorithmId, int matchScoreWeight, Boolean categoryBrowseRanked, RecipeManager recipeManager) {
+        return new WithPriority<PromptRule<Pair<FoodEntry, Meal>, MealOperation>>(new AskToLookupFood(locale, algorithmId, matchScoreWeight, categoryBrowseRanked, recipeManager), priority);
     }
 }
