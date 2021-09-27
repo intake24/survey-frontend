@@ -16,15 +16,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+val organization = "uk.ac.ncl.openlab.intake24"
+
 name := "intake24-survey-site"
 
-organization := "uk.ac.ncl.openlab.intake24"
+//organization := organizationVal
 
 description := "Intake24 GWT survey client"
 
 maintainer := "Ivan Poliakov <ivan.poliakov@ncl.ac.uk>"
 
+
 version := "3.2.0-SNAPSHOT"
+
 
 scalaVersion := "2.12.14"
 
