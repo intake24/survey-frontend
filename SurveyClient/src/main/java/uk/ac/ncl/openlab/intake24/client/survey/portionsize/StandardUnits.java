@@ -89,6 +89,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String buns_estimate_in();
 	public String buns_how_many();
 
+	public String burgers_estimate_in();
+	public String burgers_how_many();
+
 	public String burritos_estimate_in();
 	public String burritos_how_many();
 
@@ -163,6 +166,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String extra_large_bars_estimate_in();
 	public String extra_large_bars_how_many();
+
+	public String extra_large_biscuits_estimate_in();
+	public String extra_large_biscuits_how_many();
 
 	public String extra_large_eggs_estimate_in();
 	public String extra_large_eggs_how_many();
