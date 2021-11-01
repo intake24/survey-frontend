@@ -1069,4 +1069,7 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String yams_estimate_in();
 	public String yams_how_many();
+
+        public String zzz_test_estimate_in();
+        public String zzz_test_how_many();
 }
