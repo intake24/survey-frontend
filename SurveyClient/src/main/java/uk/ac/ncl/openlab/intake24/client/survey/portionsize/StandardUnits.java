@@ -128,6 +128,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String cloves_estimate_in();
 	public String cloves_how_many();
 
+	public String cocktail_sausages_estimate_in();
+	public String cocktail_sausages_how_many();
+
 	public String crackers_estimate_in();
 	public String crackers_how_many();
 
@@ -319,6 +322,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String large_jars_estimate_in();
 	public String large_jars_how_many();
+
+	public String large_kebabs_estimate_in();
+	public String large_kebabs_how_many();
 
 	public String large_kiwis_estimate_in();
 	public String large_kiwis_how_many();
@@ -721,6 +727,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String regular_churros_estimate_in();
 	public String regular_churros_how_many();
+
+	public String regular_standard_kebabs_estimate_in();
+	public String regular_standard_kebabs_how_many();
 
 	public String ribs_estimate_in();
 	public String ribs_how_many();
