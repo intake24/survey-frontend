@@ -95,6 +95,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String burritos_estimate_in();
 	public String burritos_how_many();
 
+	public String buttons_estimate_in();
+	public String buttons_how_many();
+
 	public String cakes_estimate_in();
 	public String cakes_how_many();
 
@@ -206,8 +209,14 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String fruits_estimate_in();
 	public String fruits_how_many();
 
+	public String giant_buttons_estimate_in();
+	public String giant_buttons_how_many();
+
 	public String giant_crumpets_estimate_in();
 	public String giant_crumpets_how_many();
+
+	public String goujons_estimate_in();
+	public String goujons_how_many();
 
 	public String grapes_estimate_in();
 	public String grapes_how_many();
@@ -241,6 +250,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String individual_pots_estimate_in();
 	public String individual_pots_how_many();
+
+	public String individual_slices_estimate_in();
+	public String individual_slices_how_many();
 
 	public String individual_tarts_estimate_in();
 	public String individual_tarts_how_many();
@@ -278,6 +290,12 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String large_bowls_estimate_in();
 	public String large_bowls_how_many();
 
+	public String large_burgers_estimate_in();
+	public String large_burgers_how_many();
+
+	public String large_cakes_estimate_in();
+	public String large_cakes_how_many();
+
 	public String large_carrots_estimate_in();
 	public String large_carrots_how_many();
 
@@ -301,6 +319,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String large_fillets_estimate_in();
 	public String large_fillets_how_many();
+
+	public String large_fingers_estimate_in();
+	public String large_fingers_how_many();
 
 	public String large_flapjacks_estimate_in();
 	public String large_flapjacks_how_many();
@@ -364,6 +385,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String large_pots_estimate_in();
 	public String large_pots_how_many();
+
+	public String large_rolls_estimate_in();
+	public String large_rolls_how_many();
 
 	public String large_scones_estimate_in();
 	public String large_scones_how_many();
@@ -518,6 +542,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String medium_pots_estimate_in();
 	public String medium_pots_how_many();
 
+	public String medium_rolls_estimate_in();
+	public String medium_rolls_how_many();
+
 	public String medium_scones_estimate_in();
 	public String medium_scones_how_many();
 
@@ -581,6 +608,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String mini_pots_estimate_in();
 	public String mini_pots_how_many();
 
+	public String mini_rolls_estimate_in();
+	public String mini_rolls_how_many();
+
 	public String mini_skewers_estimate_in();
 	public String mini_skewers_how_many();
 
@@ -611,6 +641,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String multipack_bags_estimate_in();
 	public String multipack_bags_how_many();
 
+	public String multipack_bars_estimate_in();
+	public String multipack_bars_how_many();
+
 	public String multipack_bottles_estimate_in();
 	public String multipack_bottles_how_many();
 
@@ -625,6 +658,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String new_potatoes_estimate_in();
 	public String new_potatoes_how_many();
+
+	public String nuggets_dippers_estimate_in();
+	public String nuggets_dippers_how_many();
 
 	public String nuts_estimate_in();
 	public String nuts_how_many();
