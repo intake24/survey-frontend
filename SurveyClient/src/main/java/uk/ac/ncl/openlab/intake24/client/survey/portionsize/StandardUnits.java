@@ -386,6 +386,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String large_pots_estimate_in();
 	public String large_pots_how_many();
 
+	public String large_pouches_estimate_in();
+	public String large_pouches_how_many();
+
 	public String large_rolls_estimate_in();
 	public String large_rolls_how_many();
 
@@ -541,6 +544,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String medium_pots_estimate_in();
 	public String medium_pots_how_many();
+
+	public String medium_pouches_estimate_in();
+	public String medium_pouches_how_many();
 
 	public String medium_rolls_estimate_in();
 	public String medium_rolls_how_many();
@@ -955,6 +961,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String small_pots_estimate_in();
 	public String small_pots_how_many();
+
+	public String small_pouches_estimate_in();
+	public String small_pouches_how_many();
 
 	public String small_scones_estimate_in();
 	public String small_scones_how_many();
