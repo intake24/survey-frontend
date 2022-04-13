@@ -1,6 +1,10 @@
 .intake24-login-header h1 {
     color: #000000;
 }
+.intake24-header h1 {
+    color: #000000;
+    font-weight: bold;
+}
 .intake24-navbar a {
 	color: #b32700;	
 }
