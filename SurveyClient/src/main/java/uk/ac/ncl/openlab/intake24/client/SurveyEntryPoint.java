@@ -154,7 +154,7 @@ public class SurveyEntryPoint implements EntryPoint {
             public void onFailure(Method method, Throwable exception) {
 
                 Layout.createMainPageLayout();
-                Layout.setNavBarLinks(logOut);
+                // Layout.setNavBarLinks(logOut);
 
                 switch (method.getResponse().getStatusCode()) {
                     case 403:
