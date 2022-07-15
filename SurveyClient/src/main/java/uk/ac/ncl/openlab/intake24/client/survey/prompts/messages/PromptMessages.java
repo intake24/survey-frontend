@@ -679,4 +679,6 @@ public interface PromptMessages extends Messages {
     public String foodSupplements_mealName();
 
     public String foodSupplements_listTitle();
+
+    public String foodSupplements_noLabel();
 }

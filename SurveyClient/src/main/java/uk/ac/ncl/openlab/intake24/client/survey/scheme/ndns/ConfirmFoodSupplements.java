@@ -16,7 +16,7 @@ public class ConfirmFoodSupplements implements PromptRule<Survey, SurveyOperatio
         if (!state.customData.containsKey(supplementsConfirmationKey) && state.portionSizeComplete()) {
             YesNoPrompt prompt = new YesNoPrompt(SafeHtmlUtils.fromSafeConstant(PromptMessages.INSTANCE.foodSupplements_confirmationPromptText()),
                     PromptMessages.INSTANCE.yesNoQuestion_defaultYesLabel(),
-                    PromptMessages.INSTANCE.yesNoQuestion_defaultNoLabel());
+                    PromptMessages.INSTANCE.foodSupplements_noLabel());
 
             return Option.some(PromptUtil.asSurveyPrompt(prompt, answer ->
                     SurveyOperation.update(survey -> survey.withData(supplementsConfirmationKey, Boolean.toString(answer)))));
