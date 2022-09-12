@@ -26,12 +26,16 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	font-size: 16px;
 	margin: 0px;
 	padding: 4px 0px;
+	max-width: 90%;
+	white-space: normal;
+	text-align: inherit;
+	line-break: normal;
+	line-height: inherit;
 }
 
 .intake24-food-browser-container {
 	zoom: 0;
-	outline-width: 0px;
-	outline: none;
+	outline: none 0px;
 
 	background-color: transparent;
 	border: none;
@@ -39,14 +43,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	color: black;
 	cursor: auto;
 	display: block;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif;
-	font-size: auto;
 	font-weight: normal;
-	padding: 0px;
-	line-height: 100%;
-	margin: 0px;
-	text-align: center;
-	white-space: nowrap;
 }
 
 .intake24-food-browser-container:focus {
