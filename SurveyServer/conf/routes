@@ -16,6 +16,7 @@ GET         /demo                              controllers.Surveys.survey(survey
 GET         /surveys/:surveyId                 controllers.Surveys.survey(surveyId: String, genUser: Option[String])
 GET         /surveys/:surveyId/feedback        controllers.Surveys.surveyFeedbackPage(surveyId: String)
 
++nocsrf
 POST        /errors/report                     controllers.Errors.report()
 
 GET         /assets/*file                      controllers.Assets.at(path="/public", file)
