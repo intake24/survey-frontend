@@ -26,32 +26,16 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 
 package uk.ac.ncl.openlab.intake24.client.survey;
 
-import static org.workcraft.gwt.shared.client.CollectionUtils.filter;
-import static org.workcraft.gwt.shared.client.CollectionUtils.flatten;
-import static org.workcraft.gwt.shared.client.CollectionUtils.flattenOption;
-import static org.workcraft.gwt.shared.client.CollectionUtils.forall;
-import static org.workcraft.gwt.shared.client.CollectionUtils.map;
-import static org.workcraft.gwt.shared.client.CollectionUtils.sort;
-import static org.workcraft.gwt.shared.client.CollectionUtils.zipWithIndex;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.pcollections.HashTreePMap;
-import org.pcollections.HashTreePSet;
-import org.pcollections.PMap;
-import org.pcollections.PSet;
-import org.pcollections.PVector;
-import org.pcollections.TreePVector;
-import org.workcraft.gwt.shared.client.CollectionUtils.WithIndex;
+import com.google.gwt.user.client.Window;
+import org.pcollections.*;
 import org.workcraft.gwt.shared.client.Function1;
 import org.workcraft.gwt.shared.client.Option;
 import uk.ac.ncl.openlab.intake24.client.TimeZoneUtils;
 import uk.ac.ncl.openlab.intake24.client.api.uxevents.UxEventsHelper;
+
+import java.util.*;
+
+import static org.workcraft.gwt.shared.client.CollectionUtils.*;
 
 public class Survey {
     public static final String FLAG_ENERGY_VALUE_CONFIRMED = "energy-value-confirmed";
@@ -176,12 +160,15 @@ public class Survey {
                 }));
 
                 return new CompletedMeal(meal.name, new ArrayList<CompletedFood>(completedFoods), new ArrayList<CompletedMissingFood>(missingFoods),
-                        meal.time.getOrDie("Cannot finalise survey because it contains an undefined time entry"), new HashMap<String, String>(meal.customData));
+                        meal.time.getOrDie("Cannot finalise survey because it contains an undefined time entry"),
+                        new HashMap<String, String>(meal.customData));
             }
         });
 
+        String userAgent = Window.Navigator.getUserAgent();
+
         return new CompletedSurvey(startTime, System.currentTimeMillis(), TimeZoneUtils.getTimeZone(), UxEventsHelper.sessionId,
-                new ArrayList<CompletedMeal>(completedMeals), new HashMap<String, String>(customData));
+                new ArrayList<CompletedMeal>(completedMeals), new HashMap<String, String>(customData.plus("_userAgent", userAgent)));
     }
 
     public Survey withSelection(Selection selectedElement) {
