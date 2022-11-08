@@ -128,6 +128,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String chocolates_estimate_in();
 	public String chocolates_how_many();
 
+	public String chunky_fingers_estimate_in();
+	public String chunky_fingers_how_many();
+
 	public String cloves_estimate_in();
 	public String cloves_how_many();
 
