@@ -104,6 +104,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String cannelloni_tubes_estimate_in();
 	public String cannelloni_tubes_how_many();
 
+	public String cans_estimate_in();
+	public String cans_how_many();
+
 	public String cartons_estimate_in();
 	public String cartons_how_many();
 
