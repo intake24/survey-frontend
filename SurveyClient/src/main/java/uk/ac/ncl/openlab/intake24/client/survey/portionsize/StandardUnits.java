@@ -341,6 +341,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String large_gherkins_estimate_in();
 	public String large_gherkins_how_many();
 
+	public String large_glasses_estimate_in();
+	public String large_glasses_how_many();
+
 	public String large_handfuls_estimate_in();
 	public String large_handfuls_how_many();
 
@@ -514,6 +517,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String medium_gherkins_estimate_in();
 	public String medium_gherkins_how_many();
+
+	public String medium_glasses_estimate_in();
+	public String medium_glasses_how_many();
 
 	public String medium_handfuls_estimate_in();
 	public String medium_handfuls_how_many();
@@ -919,6 +925,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String small_gherkins_estimate_in();
 	public String small_gherkins_how_many();
+
+	public String small_glasses_estimate_in();
+	public String small_glasses_how_many();
 
 	public String small_handfuls_estimate_in();
 	public String small_handfuls_how_many();
