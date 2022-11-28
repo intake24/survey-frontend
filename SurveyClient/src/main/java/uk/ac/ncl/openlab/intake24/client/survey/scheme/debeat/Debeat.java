@@ -24,35 +24,28 @@ Licensed under the Open Government Licence 3.0:
 http://www.nationalarchives.gov.uk/doc/open-government-licence/
 */
 
-package uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns;
+package uk.ac.ncl.openlab.intake24.client.survey.scheme.debeat;
 
 import org.pcollections.TreePVector;
 import uk.ac.ncl.openlab.intake24.client.api.survey.SurveyParameters;
 import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.*;
 import uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptManager;
+import uk.ac.ncl.openlab.intake24.client.survey.prompts.MealOperation;
 import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.RemindFrequentlyForgottenFoods;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.AskIfUsualAmount;
 
 import java.util.Date;
 
-public class NDNSDefault extends BasicScheme {
+public class Debeat extends BasicScheme {
 
-    public static final String ID = "ndns_default";
+    public static final String ID = "debeat";
     private static final double MAX_AGE_HOURS = 12.0;
 
-    public NDNSDefault(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
+    public Debeat(String locale, SurveyParameters surveyParameters, final SurveyInterfaceManager interfaceManager, UserData userData) {
         super(locale, surveyParameters, interfaceManager, userData);
-    }
-
-    @Override
-    public void showNextPage() {
-        final Survey state = getStateManager().getCurrentState();
-
-        if (!state.flags.contains(NameCheckPage.NAME_CHECK_DONE) && !userData.name.isEmpty()) {
-            interfaceManager.show(new NameCheckPage(state, userData));
-        } else
-            super.showNextPage();
     }
 
     @Override
@@ -60,8 +53,13 @@ public class NDNSDefault extends BasicScheme {
         Rules baseRules = defaultRules(scriptManager, templateManager, recipeManager);
 
         return new Rules(
-                baseRules.mealPromptRules
-                        .plus(AskAboutFoodSource.withPriority(9)),
+                TreePVector.<WithPriority<PromptRule<Meal, MealOperation>>>empty()
+                        .plus(AskForMealTime.withPriority(40))
+                        .plus(ShowEditMeal.withPriority(30))
+                        .plus(ShowDrinkReminderPrompt.withPriority(20))
+                        .plus(MealCompany.withPriority(10))
+                        .plus(MealLocation.withPriority(9))
+                        .plus(AskAboutFoodSource.withPriority(8)),
                 TreePVector.<WithPriority<PromptRule<FoodEntry, FoodOperation>>>empty()
                         .plus(ShowNextPortionSizeStep.withPriority(scriptManager, 0))
                         .plus(ChoosePortionSizeMethod.withPriority(1))
@@ -71,15 +69,7 @@ public class NDNSDefault extends BasicScheme {
                 baseRules.extendedFoodPromptRules,
                 baseRules.surveyPromptRules
                         .plus(RemindFrequentlyForgottenFoods.withPriority(31))
-                        .plus(AskIfUsualAmount.withPriority(30))
-                        .plus(AskIfUsualAmountReason.withPriority(29))
-                        .plus(AskAboutDiet.withPriority(28))
-                        .plus(AskAboutCookingOil.withPriority(27))
-                        .plus(ConfirmFoodSupplements.withPriority(26))
-                        .plus(ListFoodSupplements.withPriority(25))
-                        //.plus(RemindSupplements.withPriority(26))
-                        .plus(AskAboutProxy.withPriority(24))
-                        .plus(AskAboutProxyIssues.withPriority(23)),
+                        .plus(AskIfUsualAmount.withPriority(30)),
                 baseRules.selectionRules
         );
     }
