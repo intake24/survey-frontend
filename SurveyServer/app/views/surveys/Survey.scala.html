@@ -1,3 +1,4 @@
+@import views.html.helper.CSPNonce
 @(surveyId: String,
         parameters: PublicSurveyParameters,
         apiBaseUrl: String,
@@ -6,7 +7,7 @@
         displayLogos: Boolean,
         displayCookieConsent: Boolean,
         gaTrackingCode: Option[String],
-        additionalCss: Seq[String])
+        additionalCss: Seq[String])(implicit request: RequestHeader)
 
 <!--
 This file is part of Intake24.
@@ -80,8 +81,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
         <link type="text/css" rel="stylesheet" href="@href" />
         }
 
-        <script src="@routes.Assets.at("lib/jquery/jquery.min.js")"></script>
-        <script src="@routes.Assets.at("lib/survey-client/js/shepherd/shepherd.min.js")"></script>
+        <script @{CSPNonce.attr} src="@routes.Assets.at("lib/jquery/jquery.min.js")"></script>
+        <script @{CSPNonce.attr} src="@routes.Assets.at("lib/survey-client/js/shepherd/shepherd.min.js")"></script>
 
         <title>Intake24</title>
 
@@ -89,8 +90,8 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
           needs a better solution eventually -->
         @if(displayCookieConsent && !parameters.respondentLanguageId.startsWith("ar")) {
             <link type="text/css" rel="stylesheet" href="@routes.Assets.at("lib/cookieconsent/build/cookieconsent.min.css")" />
-            <script src="@routes.Assets.at("lib/cookieconsent/build/cookieconsent.min.js")"></script>
-            <script>
+            <script @{CSPNonce.attr} src="@routes.Assets.at("lib/cookieconsent/build/cookieconsent.min.js")"></script>
+            <script @{CSPNonce.attr}>
                     window.addEventListener("load", function () {
                         window.cookieconsent.initialise({
                             "palette": {
@@ -120,11 +121,11 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
             <![endif]-->
 
 
-        <script type="text/javascript" src="@routes.Assets.at("lib/survey-client/js/survey/survey.nocache.js")"></script>
+        <script @{CSPNonce.attr} type="text/javascript" src="@routes.Assets.at("lib/survey-client/js/survey/survey.nocache.js")"></script>
     </head>
 
     <body>
-        <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+        <iframe src="about:blank" id="__gwt_historyFrame" tabIndex='-1'
         style="position: absolute;
             width: 0;
             height: 0;
@@ -155,7 +156,7 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
             <!-- analytics -->
 
         @if(gaTrackingCode.isDefined) {
-            <script>
+            <script @{CSPNonce.attr}>
                     (function (i, s, o, g, r, a, m) {
                         i['GoogleAnalyticsObject'] = r;
                         i[r] = i[r] || function () {

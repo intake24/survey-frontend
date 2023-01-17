@@ -32,40 +32,40 @@ class Surveys @Inject()(config: Configuration, ws: WSClient) extends Controller 
   private implicit val surveyParamReads = Json.reads[PublicSurveyParameters]
 
   def survey(surveyId: String, genUser: Option[String]) = Action.async {
+    implicit request =>
 
-    val request = ws.url(s"$internalApiBaseUrl/surveys/$surveyId/public-parameters").withRequestTimeout(30 seconds)
+      val paramRequest = ws.url(s"$internalApiBaseUrl/surveys/$surveyId/public-parameters").withRequestTimeout(30 seconds)
 
+      paramRequest.get.map {
+        response =>
+          response.status match {
+            case 200 => {
 
-    request.get.map {
-      response =>
-        response.status match {
-          case 200 => {
+              val additionalCss = config.getOptional[Seq[String]](s"intake24.survey.${surveyId}.additionalCss").getOrElse(Seq())
 
-            val additionalCss = config.getOptional[Seq[String]](s"intake24.survey.${surveyId}.additionalCss").getOrElse(Seq())
-
-            Json.fromJson[PublicSurveyParameters](Json.parse(response.body)) match {
-              case JsSuccess(params, _) => Ok(Survey(surveyId, params, externalApiBaseUrl, privacyPolicyURL,
-                termsAndConditionsURL, displayLogos, displayCookieConsent, gaTrackingCode, additionalCss))
-              case JsError(p) =>
-                Logger.error("Could not parse API server public survey parameters response")
-                Logger.error("Response body: " + response.body)
-                Logger.error("Error: " + p.toString)
-                InternalServerError
+              Json.fromJson[PublicSurveyParameters](Json.parse(response.body)) match {
+                case JsSuccess(params, _) => Ok(Survey(surveyId, params, externalApiBaseUrl, privacyPolicyURL,
+                  termsAndConditionsURL, displayLogos, displayCookieConsent, gaTrackingCode, additionalCss))
+                case JsError(p) =>
+                  Logger.error("Could not parse API server public survey parameters response")
+                  Logger.error("Response body: " + response.body)
+                  Logger.error("Error: " + p.toString)
+                  InternalServerError
+              }
             }
+            case code =>
+              Logger.error(
+                s"""API request ${paramRequest.method} ${paramRequest.url} failed
+                   |The unexpected response was $code with the following body:
+                   |${response.body}
+                   |Forwarding the $code response to the user.""".stripMargin)
+              Status(code)
           }
-          case code =>
-            Logger.error(
-              s"""API request ${request.method} ${request.url} failed
-                 |The unexpected response was $code with the following body:
-                 |${response.body}
-                 |Forwarding the $code response to the user.""".stripMargin)
-            Status(code)
-        }
-    }
+      }
   }
 
   def surveyFeedbackPage(surveyId: String) = Action {
-    Ok(SurveyFeedback(externalApiBaseUrl, surveyId, gaTrackingCode))
+    implicit request =>
+      Ok(SurveyFeedback(externalApiBaseUrl, surveyId, gaTrackingCode))
   }
-
 }
