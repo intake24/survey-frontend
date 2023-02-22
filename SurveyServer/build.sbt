@@ -40,7 +40,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.4.1",
   "uk.ac.ncl.openlab.intake24" % "survey-client" % "3.1.0-SNAPSHOT",
   "com.lihaoyi" %% "upickle" % "0.4.4",
-  "com.google.gwt" % "gwt-user" % "2.8.2" // for stack trace deobfuscator
+  "com.google.gwt" % "gwt-user" % "2.8.2", // for stack trace deobfuscator
+  "com.google.code.gson" % "gson" % "2.9.1" // for stack trace deobfuscator 
 )
 
 dependencyOverrides ++= Set(
