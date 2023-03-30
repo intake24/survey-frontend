@@ -38,6 +38,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.FollowUp;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.NDNSDefault;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019Behaviour;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.nz.NZ;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.sab.SAB;
 
 import java.util.List;
@@ -86,6 +87,8 @@ public interface SurveyScheme {
                 return new BirminghamNovember2019(locale, surveyParameters, interfaceManager, userData);
             case Debeat.ID:
                 return new Debeat(locale, surveyParameters, interfaceManager, userData);
+            case NZ.ID:
+                return new NZ(locale, surveyParameters, interfaceManager, userData);
             default:
                 throw new RuntimeException("Unknown survey scheme: " + surveyParameters.schemeId);
         }
