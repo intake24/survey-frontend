@@ -35,6 +35,8 @@ import uk.ac.ncl.openlab.intake24.client.survey.rules.*;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.BasicScheme;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NZ extends BasicScheme {
 
@@ -89,5 +91,14 @@ public class NZ extends BasicScheme {
         long midnight = survey.startTime + msToMidnight;
 
         return (((currentTime - survey.startTime) / 3600000.0) > MAX_AGE_HOURS || currentTime > midnight);
+    }
+
+
+    @Override
+    protected Map<String, Boolean> getLeftoversOptions() {
+        return new HashMap<String, Boolean>() {{
+            put("drink-scale", false);
+            put("as-served", false);
+        }};
     }
 }

@@ -218,8 +218,20 @@ public abstract class BasicScheme implements SurveyScheme {
         return DefaultPortionSizeScripts.defaultMilkInHotDrinkPercentages;
     }
 
+    protected Map<String, Boolean> getLeftoversOptions() {
+        return DefaultPortionSizeScripts.defaultLeftovers;
+    }
+
     protected Map<String, PortionSizeScriptConstructor> getPortionSizeScriptConstructors() {
         Map<String, PortionSizeScriptConstructor> defaultConstructors = DefaultPortionSizeScripts.getConstructors();
+
+        defaultConstructors.put(
+                AsServedScript.name,
+                () -> new AsServedScriptLoader(getLeftoversOptions().get("as-served")));
+
+        defaultConstructors.put(
+                DrinkScaleScript.name,
+                () -> new DrinkScaleScriptLoader(getLeftoversOptions().get("drink-scale")));
 
         defaultConstructors.put(
                 MilkInHotDrinkPortionSizeScript.name,

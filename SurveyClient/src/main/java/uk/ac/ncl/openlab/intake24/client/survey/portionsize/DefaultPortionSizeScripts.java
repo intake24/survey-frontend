@@ -25,13 +25,18 @@ public class DefaultPortionSizeScripts {
                     .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountAverage(), false, 0.16))
                     .plus(new StandardUnitDef(PromptMessages.INSTANCE.milkInHotDrink_amountLot(), false, 0.24));
 
+    public static final Map<String, Boolean> defaultLeftovers = new HashMap<String, Boolean>() {{
+        put("drink-scale", true);
+        put("as-served", true);
+    }};
+
     public static Map<String, PortionSizeScriptConstructor> getConstructors() {
         final Map<String, PortionSizeScriptConstructor> ctors = new HashMap<String, PortionSizeScriptConstructor>();
 
         ctors.put(AsServedScript.name, new PortionSizeScriptConstructor() {
             @Override
             public PortionSizeScriptLoader newInstance() {
-                return new AsServedScriptLoader();
+                return new AsServedScriptLoader(defaultLeftovers.get("as-served"));
             }
         });
 
@@ -46,7 +51,7 @@ public class DefaultPortionSizeScripts {
 
             @Override
             public PortionSizeScriptLoader newInstance() {
-                return new DrinkScaleScriptLoader();
+                return new DrinkScaleScriptLoader(defaultLeftovers.get("drink-scale"));
             }
         });
 

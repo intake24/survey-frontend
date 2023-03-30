@@ -41,14 +41,17 @@ import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.withHeader;
 import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptUtil.*;
 
 public class AsServedScript implements PortionSizeScript {
+    private final boolean leftovers;
+
     public static final String name = "as-served";
 
     public final AsServedSet servingImages;
     public final Option<AsServedSet> leftoversImages;
 
-    public AsServedScript(AsServedSet servingImages, Option<AsServedSet> leftoversImages) {
+    public AsServedScript(AsServedSet servingImages, Option<AsServedSet> leftoversImages, boolean leftovers) {
         this.servingImages = servingImages;
         this.leftoversImages = leftoversImages;
+        this.leftovers = leftovers;
     }
 
     public Option<SimplePrompt<UpdateFunc>> nextPrompt(PMap<String, String> data, FoodData foodData) {
@@ -74,7 +77,7 @@ public class AsServedScript implements PortionSizeScript {
                         )
                     );
 
-            if (!hasLeftoverImages)
+            if (!leftovers || !hasLeftoverImages)
                 return Option.some(setAdditionalField(portionSizePrompt, "leftoversWeight", "0"));
             else
                 return Option.some(portionSizePrompt);

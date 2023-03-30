@@ -39,11 +39,12 @@ import uk.ac.ncl.openlab.intake24.client.survey.PromptUtil;
 import uk.ac.ncl.openlab.intake24.client.survey.SimplePrompt;
 import uk.ac.ncl.openlab.intake24.client.survey.prompts.messages.PromptMessages;
 
-import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.withBackLink;
-import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.withHeader;
+import static uk.ac.ncl.openlab.intake24.client.survey.PromptUtil.*;
 import static uk.ac.ncl.openlab.intake24.client.survey.portionsize.PortionSizeScriptUtil.*;
 
 public class DrinkScaleScript implements PortionSizeScript {
+    private final boolean leftovers;
+
     public static String name = "drink-scale";
 
     private final DrinkwareSet drinkwareDef;
@@ -51,9 +52,10 @@ public class DrinkScaleScript implements PortionSizeScript {
 
     private final PromptMessages messages = GWT.create(PromptMessages.class);
 
-    public DrinkScaleScript(ImageMap guideImage, DrinkwareSet drinkwareDef) {
+    public DrinkScaleScript(ImageMap guideImage, DrinkwareSet drinkwareDef, boolean leftovers) {
         this.guideImage = guideImage;
         this.drinkwareDef = drinkwareDef;
+        this.leftovers = leftovers;
     }
 
     private DrinkScale getScaleDef(int index) {
@@ -78,9 +80,16 @@ public class DrinkScaleScript implements PortionSizeScript {
                     int index = Integer.parseInt(argument.get("containerIndex"));
                     double f = Double.parseDouble(argument.get("initial-fill-level"));
 
-                    if (argument.get("skip-fill-level").equals("true"))
-                        return argument.plus("fillLevel", Double.toString(f)).plus("servingWeight", Double.toString(getScaleDef(index).calcVolume(f)));
-                    else
+                    if (argument.get("skip-fill-level").equals("true")) {
+                        if (!leftovers)
+                            return argument
+                                    .plus("fillLevel", Double.toString(f))
+                                    .plus("servingWeight", Double.toString(getScaleDef(index).calcVolume(f)))
+                                    .plus("leftoversLevel", "0")
+                                    .plus("leftoversWeight", "0");
+                        else
+                            return argument.plus("fillLevel", Double.toString(f)).plus("servingWeight", Double.toString(getScaleDef(index).calcVolume(f)));
+                    } else
                         return argument;
                 }
             });
@@ -133,13 +142,19 @@ public class DrinkScaleScript implements PortionSizeScript {
                                             guidePrompt(SafeHtmlUtils.fromSafeConstant(messages.drinkScale_containerPromptText(escapedFoodDesc)), guideImage, "containerIndex", "imageUrl"),
                                             foodData.description())), calcFillVolumeIfSkip));
         } else if (!data.containsKey("fillLevel")) {
-            return Option.some(PromptUtil.map(
+            SimplePrompt<UpdateFunc> portionSizePrompt = PromptUtil.map(
                     withBackLink(
                             withHeader(
                                     drinkScalePrompt(
                                             SafeHtmlUtils.fromSafeConstant(messages.drinkScale_servedPromptText()), getScaleDef(Integer.parseInt(data.get("containerIndex"))),
                                             messages.drinkScale_servedLessButtonLabel(), messages.drinkScale_servedMoreButtonLabel(), messages.drinkScale_servedContinueButtonLabel(),
-                                            1.0, Double.parseDouble(data.get("initial-fill-level")), "fillLevel"), foodData.description())), calcFillVolume));
+                                            1.0, Double.parseDouble(data.get("initial-fill-level")), "fillLevel"), foodData.description())), calcFillVolume);
+
+            if (!leftovers) {
+                portionSizePrompt = setAdditionalField(portionSizePrompt, "leftoversLevel", "0");
+                portionSizePrompt = setAdditionalField(portionSizePrompt, "leftoversWeight", "0");
+            }
+            return Option.some(portionSizePrompt);
         } else if (!data.containsKey("leftoversLevel")) {
             if (!data.containsKey("leftovers"))
                 return Option.some(PromptUtil.map(

@@ -39,6 +39,12 @@ import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
 
 public class AsServedScriptLoader implements PortionSizeScriptLoader {
 
+    private final boolean leftovers;
+
+    public AsServedScriptLoader(boolean leftovers) {
+        this.leftovers = leftovers;
+    }
+
     public final static String SERVING_SET_KEY = "serving-image-set";
     public final static String LEFTOVERS_SET_KEY = "leftovers-image-set";
 
@@ -62,11 +68,11 @@ public class AsServedScriptLoader implements PortionSizeScriptLoader {
 
                         @Override
                         public void onSuccess(Method method, AsServedSet leftoversSet) {
-                            onComplete.onSuccess(new AsServedScript(servingSet, Option.some(leftoversSet)));
+                            onComplete.onSuccess(new AsServedScript(servingSet, Option.some(leftoversSet), leftovers));
                         }
                     });
                 else
-                    onComplete.onSuccess(new AsServedScript(servingSet, Option.none()));
+                    onComplete.onSuccess(new AsServedScript(servingSet, Option.none(), leftovers));
 
             }
         });

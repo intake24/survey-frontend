@@ -30,12 +30,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.pcollections.PMap;
+import org.pcollections.PVector;
 import uk.ac.ncl.openlab.intake24.client.api.foods.DrinkwareSet;
 import uk.ac.ncl.openlab.intake24.client.api.foods.FoodDataService;
 import uk.ac.ncl.openlab.intake24.client.api.foods.SImageMap;
 
 
 public class DrinkScaleScriptLoader implements PortionSizeScriptLoader {
+
+    private final boolean leftovers;
+
+    public DrinkScaleScriptLoader(boolean leftovers) {
+        this.leftovers = leftovers;
+    }
 
     @Override
     public void loadResources(PMap<String, String> data, final AsyncCallback<PortionSizeScript> onComplete) {
@@ -57,7 +64,7 @@ public class DrinkScaleScriptLoader implements PortionSizeScriptLoader {
 
                     @Override
                     public void onSuccess(Method method, SImageMap imageMap) {
-                        onComplete.onSuccess(new DrinkScaleScript(imageMap.toImageMap(), drinkwareSet));
+                        onComplete.onSuccess(new DrinkScaleScript(imageMap.toImageMap(), drinkwareSet, leftovers));
                     }
 
                 });
