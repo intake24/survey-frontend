@@ -263,6 +263,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 	public String individual_tarts_estimate_in();
 	public String individual_tarts_how_many();
 
+	public String items_estimate_in();
+	public String items_how_many();
+
 	public String jars_estimate_in();
 	public String jars_how_many();
 
@@ -349,6 +352,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String large_hot_dogs_estimate_in();
 	public String large_hot_dogs_how_many();
+
+	public String large_items_estimate_in();
+	public String large_items_how_many();
 
 	public String large_jars_estimate_in();
 	public String large_jars_how_many();
@@ -526,6 +532,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String medium_hot_dogs_estimate_in();
 	public String medium_hot_dogs_how_many();
+
+	public String medium_items_estimate_in();
+	public String medium_items_how_many();
 
 	public String medium_jars_estimate_in();
 	public String medium_jars_how_many();
@@ -940,6 +949,9 @@ public interface StandardUnits extends ConstantsWithLookup {
 
 	public String small_individual_tubs_estimate_in();
 	public String small_individual_tubs_how_many();
+
+	public String small_items_estimate_in();
+	public String small_items_how_many();
 
 	public String small_jars_estimate_in();
 	public String small_jars_how_many();
