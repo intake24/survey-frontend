@@ -57,7 +57,7 @@ public class FSSIntakeChildren extends BasicScheme {
         final Survey state = getStateManager().getCurrentState();
 
         if (!state.flags.contains(TermsCheckPage.TERMS_CHECK_DONE)) {
-            interfaceManager.show(new TermsCheckPage(state, userData));
+            interfaceManager.show(new TermsCheckPage(state));
         } else
             super.showNextPage();
     }

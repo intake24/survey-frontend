@@ -49,11 +49,9 @@ public class TermsCheckPage implements SurveyStage<Survey> {
     private static final SurveyMessages surveyMessages = SurveyMessages.Util.getInstance();
 
     private final Survey initialData;
-    private final UserData userData;
 
-    public TermsCheckPage(Survey initialData, UserData userData) {
+    public TermsCheckPage(Survey initialData) {
         this.initialData = initialData;
-        this.userData = userData;
     }
 
     @Override
