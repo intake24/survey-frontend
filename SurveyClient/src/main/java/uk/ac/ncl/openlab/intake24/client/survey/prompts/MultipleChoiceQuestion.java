@@ -80,7 +80,7 @@ public abstract class MultipleChoiceQuestion<T> extends Composite {
 
             if (option.hasTextBox) {
                 TextBox textBox = new TextBox();
-                textBox.setMaxLength(80);
+                textBox.setMaxLength(500);
                 textBox.addFocusHandler(event -> checkBox.setValue(true));
                 textBox.addKeyUpHandler(event -> clearWarning());
 

@@ -157,6 +157,14 @@ http://www.nationalarchives.gov.uk/doc/open-government-licence/
 	margin-bottom: 5px;
 }
 
+.intake24-multiple-choice-question li div {
+	display: flex;
+}
+
+.intake24-multiple-choice-question li div input[type="text"] {
+	flex-grow: 1;
+}
+
 .intake24-multiple-choice-question input[type="text"] {
 	padding: 2px;
 }
