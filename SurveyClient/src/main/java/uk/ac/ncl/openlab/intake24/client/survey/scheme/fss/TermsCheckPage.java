@@ -71,8 +71,8 @@ public class TermsCheckPage implements SurveyStage<Survey> {
         content.getElement().addClassName("intake24-survey-content");
 
         HTMLPanel text1 = new HTMLPanel(SafeHtmlUtils.fromSafeConstant(
-                "<p>Throughout this food diary the questions will be phrased as \"what did you have to eat for ...\" " +
-                "This is in relation to what <strong>the child mentioned in the letter you received ate yesterday.</strong> " +
+                "<p>Throughout this food diary the questions will be phrased as \"what did you have to eat for ...\"</p>" +
+                "<p>This is in relation to what <strong>the child mentioned in the letter you received ate yesterday.</strong> " +
                 "Please respond for the child named in the letter throughout.</p>"));
 
         HTMLPanel text2 = new HTMLPanel(SafeHtmlUtils.fromSafeConstant(
@@ -84,22 +84,12 @@ public class TermsCheckPage implements SurveyStage<Survey> {
         content.add(text2);
 
         FlowPanel buttons = new FlowPanel("div");
-        final Button noButton = WidgetFactory.createRedButton("No, I do not agree", "termsCheckPageButtonNo", new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                UxEventsHelper.postPageClose();
-                UxEventsHelper.cleanSessionId();
-                StateManagerUtil.clearLatestState(AuthCache.getCurrentUserId());
-                AuthCache.clear();
-                LogoutPage.logoutWithHelp();
-            }
-        }, "intake24-button-md");
         final Button yesButton = WidgetFactory.createGreenButton("Yes, I agree", "termsCheckPageButtonYes", new ClickHandler() {
             public void onClick(ClickEvent event) {
                 onComplete.call(initialData.withFlag(TERMS_CHECK_DONE));
             }
         }, "intake24-button-md");
 
-        buttons.add(noButton);
         buttons.add(yesButton);
 
         content.add(buttons);
