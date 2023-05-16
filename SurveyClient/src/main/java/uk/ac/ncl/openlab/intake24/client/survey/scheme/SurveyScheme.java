@@ -32,6 +32,7 @@ import uk.ac.ncl.openlab.intake24.client.api.survey.UserData;
 import uk.ac.ncl.openlab.intake24.client.survey.Survey;
 import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.birmingham.BirminghamNovember2019;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.bristol.BristolOOH;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.debeat.Debeat;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.fss.FSSIntakeChildren;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.*;
@@ -84,6 +85,8 @@ public interface SurveyScheme {
                 return new SAB(locale, surveyParameters, interfaceManager, userData);
             case BirminghamNovember2019.ID:
                 return new BirminghamNovember2019(locale, surveyParameters, interfaceManager, userData);
+            case BristolOOH.ID:
+                return new BristolOOH(locale, surveyParameters, interfaceManager, userData);
             case Debeat.ID:
                 return new Debeat(locale, surveyParameters, interfaceManager, userData);
             case FSSIntakeChildren.ID:

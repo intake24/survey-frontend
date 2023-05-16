@@ -14,7 +14,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.ListFoodSupplements;
 
 public abstract class FoodSource implements PromptRule<Meal, MealOperation> {
 
-    private static final String FOOD_SOURCE_KEY = "foodSource";
+    public static final String FOOD_SOURCE_KEY = "foodSource";
 
     private String promptText;
     private PVector<MultipleChoiceQuestionOption> options;
