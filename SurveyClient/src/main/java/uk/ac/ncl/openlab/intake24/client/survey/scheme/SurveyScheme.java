@@ -34,11 +34,7 @@ import uk.ac.ncl.openlab.intake24.client.survey.SurveyInterfaceManager;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.birmingham.BirminghamNovember2019;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.debeat.Debeat;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.fss.FSSIntakeChildren;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.April2019;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.FollowUp;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.NDNSDefault;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019;
-import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.October2019Behaviour;
+import uk.ac.ncl.openlab.intake24.client.survey.scheme.ndns.*;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.nz.NZ;
 import uk.ac.ncl.openlab.intake24.client.survey.scheme.sab.SAB;
 
@@ -73,6 +69,8 @@ public interface SurveyScheme {
             // NDNS Schemes
             case NDNSDefault.ID:
                 return new NDNSDefault(locale, surveyParameters, interfaceManager, userData);
+            case NDNSDefaultSimplified.ID:
+                return new NDNSDefaultSimplified(locale, surveyParameters, interfaceManager, userData);
             case April2019.ID:
                 return new April2019(locale, surveyParameters, interfaceManager, userData);
             case October2019.ID:
