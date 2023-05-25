@@ -17,8 +17,8 @@ public class ReadyToEat implements PromptRule<Meal, MealOperation> {
     private static final String READY_TO_EAT_KEY = "readyToEat";
 
     private static final String promptTemplate = "<p>Was most of $meal ‘ready-to-eat’ when you got it?</p>" +
-            "<p><em>Ready-to-eat means items from outside the home that came already prepared, with no further cooking, " +
-            "heating or preparation required before being eaten or drank.</em></p>";
+            "<p><em>Ready-to-eat means <strong>items from outside the home that came already prepared</strong>, " +
+            "with no further cooking, heating or preparation required before being eaten or drank.</em></p>";
 
     private static final PVector<MultipleChoiceQuestionOption> options =
             TreePVector.<MultipleChoiceQuestionOption>empty()
