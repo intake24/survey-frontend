@@ -33,7 +33,7 @@ public class AskAboutFoodSource extends FoodSource {
                         .plus(new MultipleChoiceQuestionOption("Vending machine"))
                         .plus(new MultipleChoiceQuestionOption("Canteen (e.g. at work, college, university, etc.)", "Canteen"))
                         .plus(new MultipleChoiceQuestionOption("Grown at home / allotment"))
-                        .plus(new MultipleChoiceQuestionOption("Other (e.g. online store, food bank, etc.)", "Other", true))
+                        .plus(new MultipleChoiceQuestionOption("Other (e.g. online store, food bank, etc.)", "Other"))
                         .plus(new MultipleChoiceQuestionOption("Don't know"))
         ), priority);
     }
