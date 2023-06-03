@@ -16,7 +16,7 @@ public class MealLocationFollowUp implements PromptRule<Meal, MealOperation> {
 
     private static final String MEAL_LOCATION_FOLLOW_UP_KEY = "mealLocationFollowUp";
 
-    private static final String promptTemplate = "<p>Where were you when you had $meal?</p>";
+    private static final String promptTemplate = "<p>Where were you when you had your $meal?</p>";
 
     private static final PVector<MultipleChoiceQuestionOption> options =
             TreePVector.<MultipleChoiceQuestionOption>empty()

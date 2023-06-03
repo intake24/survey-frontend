@@ -17,7 +17,7 @@ public class MealCompany implements PromptRule<Meal, MealOperation> {
     private static final String MEAL_COMPANY_COMPLETE = "mealCompanyComplete";
     private static final String MEAL_COMPANY_KEY = "mealCompany";
 
-    private static final String promptTemplate = "<p>Who were you with while having $meal (tick all that apply)?</p>";
+    private static final String promptTemplate = "<p>Who were you with while having your $meal (tick all that apply)?</p>";
 
     private static final PVector<MultipleChoiceQuestionOption> options =
             TreePVector.<MultipleChoiceQuestionOption>empty()

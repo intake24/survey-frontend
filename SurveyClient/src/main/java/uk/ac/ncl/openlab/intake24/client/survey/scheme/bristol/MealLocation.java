@@ -16,7 +16,7 @@ public class MealLocation implements PromptRule<Meal, MealOperation> {
 
     public static final String MEAL_LOCATION_KEY = "mealLocation";
 
-    private static final String promptTemplate = "<p>Did you consume $meal in the same place as where you got it?</p>";
+    private static final String promptTemplate = "<p>Did you consume your $meal in the same place as where you got it?</p>";
 
     private static final PVector<MultipleChoiceQuestionOption> options =
             TreePVector.<MultipleChoiceQuestionOption>empty()

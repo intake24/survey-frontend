@@ -17,7 +17,7 @@ public class AskAboutFoodSource extends FoodSource {
 
     public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutFoodSource(
-                "<p>Where did you get <strong>most</strong> of the food/drink at %s?</p>",
+                "<p>Where did you get <strong>most</strong> of the food/drink for your %s?</p>",
                 TreePVector.<MultipleChoiceQuestionOption>empty()
                         .plus(new MultipleChoiceQuestionOption("Supermarket"))
                         .plus(new MultipleChoiceQuestionOption("Local / convenience store (e.g. Premier, Spar, Nisa, etc.)", "Local / convenience store"))
