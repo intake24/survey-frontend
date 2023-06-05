@@ -17,14 +17,12 @@ public class AskAboutFoodSourceSimple extends FoodSource {
 
     public static WithPriority<PromptRule<Meal, MealOperation>> withPriority(int priority) {
         return new WithPriority<>(new AskAboutFoodSourceSimple(
-                "<p>Where was <strong><u>most</u></strong> of the food for your %s purchased from?</p>",
+                "<p>Where did you get <strong><u>most</u></strong> of your food for your %s from?</p>",
                 TreePVector.<MultipleChoiceQuestionOption>empty()
                         .plus(new MultipleChoiceQuestionOption("Home"))
-                        .plus(new MultipleChoiceQuestionOption("Supermarket / local shop"))
-                        .plus(new MultipleChoiceQuestionOption("School canteen"))
+                        .plus(new MultipleChoiceQuestionOption("School"))
+                        .plus(new MultipleChoiceQuestionOption("Shop on way to / from school"))
                         .plus(new MultipleChoiceQuestionOption("Fast food / takeaway"))
-                        .plus(new MultipleChoiceQuestionOption("Café / restaurant/ pub"))
-                        .plus(new MultipleChoiceQuestionOption("Food bank"))
                         .plus(new MultipleChoiceQuestionOption("Other (please specify):", "Other", true))
                         .plus(new MultipleChoiceQuestionOption("Don't know"))
         ), priority);
