@@ -21,7 +21,6 @@ public class AskAboutFoodSourceFollowUp implements PromptRule<Meal, MealOperatio
         answers.add("Vending machine");
         answers.add("Canteen");
         answers.add("Grown at home / allotment");
-        answers.add("Other");
         answers.add("Don't know");
 
         boolean askFollowUp = state.customData.containsKey(AskAboutFoodSource.FOOD_SOURCE_KEY) && !answers.contains(state.customData.get(AskAboutFoodSource.FOOD_SOURCE_KEY));
