@@ -18,6 +18,7 @@ public class AskAboutFoodSourceFollowUp implements PromptRule<Meal, MealOperatio
     @Override
     public Option<Prompt<Meal, MealOperation>> apply(Meal state, SelectionMode selectionType, PSet<String> surveyFlags) {
         ArrayList<String> answers = new ArrayList<>();
+        answers.add("Traditional market / delicatessen / butchers / fishmongers / farm shop");
         answers.add("Vending machine");
         answers.add("Canteen");
         answers.add("Grown at home / allotment");
