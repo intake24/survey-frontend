@@ -29,7 +29,7 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
 addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.5.1")
 
 libraryDependencies ++= Seq(
-  "org.vafer" % "jdeb" % "1.5" artifacts (Artifact("jdeb", "jar", "jar"))
+  "org.vafer" % "jdeb" % "1.10" artifacts (Artifact("jdeb", "jar", "jar"))
 )
 // https://mvnrepository.com/artifact/org.sonatype.plexus/plexus-cipher
 libraryDependencies += "org.sonatype.plexus" % "plexus-cipher" % "1.4"
